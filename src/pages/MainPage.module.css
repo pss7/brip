@@ -1,0 +1,255 @@
+
+/* 공통-제목 */
+.title{color: #000; font-weight: 700; font-size: 24px; line-height: 1.2;}
+
+@media (max-width: 1199px){
+
+  .title{font-size: 22px;}
+
+}
+
+@media (max-width: 767px){
+
+  .title{font-size: 20px;}
+
+}
+
+/* 공통-슬라이드 */
+:global  .slick-track {display: flex!important;}
+
+/* 공통-슬라이드 버튼 */
+.control{display: flex; align-items: center; justify-content: space-between; gap: 0 41px;}
+.control button{display: block; width: 32px; height: 32px; border-radius: 50%;}
+.control button.prevBtn{background: url(../assets/images/main/Arrow_Prev_Icon.svg)no-repeat center;}
+.control button.nextBtn{background: url(../assets/images/main/Arrow_Next_Icon.svg)no-repeat center;}
+:global .slick-prev, :global .slick-next {display: none !important;}
+
+@media (max-width: 1199px){
+
+  .control{display: none;}
+
+}
+
+/* 링크영역 */
+#linkBox{padding: 41px 0;}
+#linkBox .linkList{display: flex; flex-wrap: wrap; justify-content: center; gap: 80px 53px;}
+#linkBox .linkList li a,
+#linkBox .linkList li img{display: block;}
+#linkBox .linkList li a .imgBox{margin:0 auto 35px; width: 80px; height: 80px;}
+#linkBox .linkList li a .imgBox img{display: block; width: 100%; margin: 0 auto; transition: all .5s;}
+#linkBox .linkList li a h3 span{position: relative; display: block; color: #5F616D; font-size: 20px; font-weight: 500; line-height: 1; text-align: center;}
+#linkBox .linkList li a h3 span::before{content: ''; position: absolute; left:0; bottom: -9px; width: 0; height: 2px; background-color: #5F616D; transition: all .5s;}
+#linkBox .linkList li a:hover h3 span::before{width: 100%;}
+#linkBox .linkList li a:hover .imgBox img{transform: translateY(-5px);}
+
+@media (max-width: 1199px){
+
+  #linkBox .linkList li a .imgBox{width: 70px; height: 70px; margin:0 auto 10px;}
+  #linkBox .linkList li a h3 span{font-size: 16px;}
+  #linkBox .linkList li a h3 span::before{display: none;}
+
+}
+
+@media (max-width: 1024px){
+
+  #linkBox .linkList{gap: 80px 2%;}
+  #linkBox .linkList li{width: 23%;}
+
+}
+
+@media (max-width: 767px){
+
+  #linkBox .linkList{gap: 50px 2%;}
+  #linkBox .linkList li a .imgBox{width: 60px; height: 60px; margin:0 auto 20px;}
+  #linkBox .linkList li a h3 span{font-size: 14px;}
+
+}
+
+@media (max-width: 480px){
+  
+  #linkBox .linkList{gap: 50px 2%;}
+  #linkBox .linkList li a .imgBox{width: 50px; height: 50px; margin:0 auto 15px;}
+
+}
+
+@media (max-width: 414px){
+
+  #linkBox{padding: 41px 0 25px;}
+  #linkBox .linkList{gap: 50px 0; justify-content: flex-start;}
+  #linkBox .linkList li{width: 50%;}
+
+}
+
+/* 가이드영역 */
+#guideBox{padding: 41px 0;}
+#guideBox .guideContent{position: relative;}
+#guideBox .titleBox{margin-bottom: 82px;}
+#guideBox .titleBox .title{margin-bottom: 36px;}
+#guideBox .titleBox .title + p{color: #737373; font-size: 20px; font-weight: 500; line-height: 1.2;}
+#guideBox .guideList .slide a{padding: 54px 0; display: block; width: 100%; height: 100%; border-radius: 10px; transition: all .5s;}
+#guideBox .guideList .slide a h4{display: flex; flex-direction: column; align-items: center; line-height: 1; font-weight: 600; color: #000; font-size: 20px; text-align: center;}
+#guideBox .guideList .slide a .imgBox{display: flex; align-items: center; justify-content: center; width: 73px; height: 73px; margin:0 auto 29px; border-radius: 50%;}
+#guideBox .guideList .slide a .imgBox img{display: block;}
+#guideBox .control{position: absolute; top:42px; right:0;}
+#guideBox :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
+#guideBox :global .slick-list{overflow: visible;}
+
+@media(min-width: 1200px){
+
+  #guideBox .guideList .slide a:hover{transform: scale(1.03); box-shadow: 10px 10px 10px rgba(0,0,0,.2);}
+
+}
+
+@media (max-width: 1199px){
+
+
+  #guideBox :global .slick-slider{margin: 0;}
+  #guideBox .titleBox .title + p{font-size: 18px;}
+  #guideBox .titleBox{margin-bottom: 50px;}
+  #guideBox .guideList .slide a h4{font-size: 18px;}
+  #guideBox .guideList::before,
+  #guideBox .guideList::after{display: none;}
+
+}
+
+@media (max-width: 1024px){
+
+  #guideBox .titleBox{margin-bottom: 30px;}
+  #guideBox .guideList .slide a h4{font-size: 16px;}
+
+}
+
+@media (max-width: 767px){
+
+  #guideBox .titleBox{margin-bottom: 30px;}
+  #guideBox .titleBox .title + p{font-size: 16px;}
+  #guideBox .titleBox .title{margin-bottom: 15px;}
+  #guideBox :global .slick-slide{flex: 0 0 250px; height: 200px; margin-right: 15px;}
+  #guideBox .guideList .slide a{padding: 40px 0;}
+  #guideBox .guideList .slide a .imgBox{width: 65px; height: 65px;}
+  #guideBox .guideList .slide a .imgBox img{width: 45px;}
+
+}
+
+@media (max-width: 414px){
+
+  #guideBox :global .slick-slide{flex: 0 0 200px; height: 190px;}
+  #guideBox .guideList .slide a .imgBox img{width: 35px;}
+
+}
+
+/* 교육영역 */
+#educationBox{padding: 41px 0;}
+#educationBox .educationContent{position: relative;}
+#educationBox .title{margin-bottom: 36px;}
+#educationBox .tabBox{margin-bottom: 67px; overflow-x: auto; padding-bottom: 15px;}
+#educationBox .tabBox::-webkit-scrollbar { height: 7px; }
+#educationBox .tabBox::-webkit-scrollbar-thumb {background-color: #1C1B18; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
+#educationBox .tabBox::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
+#educationBox .tabBox .tab{display: flex; align-items: center; gap: 11px;}
+#educationBox .tabBox .tab li a{position: relative; display: block; min-width: 110px; padding: 11px 14px; color: #5F616D; font-size: 20px; line-height: 1.1; border-radius: 50px; background-color: #FAFAFC; text-align: center; white-space: nowrap; z-index: 1; transition: all .5s;}
+#educationBox .tabBox .tab li a.active{background-color: #1C1B18; color: #fff;}
+#educationBox .cardList :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
+#educationBox .cardList :global .slick-list{overflow: visible;}
+#educationBox .control{position: absolute; top:39px; right:0;}
+
+@media (min-width: 1200px){
+
+  #educationBox .tabBox .tab li a:hover{color: #fff; background-color: #1C1B18;}
+
+}
+
+@media (max-width: 1199px){
+
+  #educationBox .tabBox{margin-bottom: 45px;}
+  #educationBox .tabBox .tab li a{font-size: 18px;}
+
+}
+
+@media (max-width: 1024px){
+
+  #educationBox .tabBox{margin-bottom: 30px;}
+
+}
+
+@media (max-width: 767px){
+
+  #educationBox{padding: 25px 0;}
+  #educationBox .title{margin-bottom: 30px;}
+  #educationBox .tabBox{margin-bottom: 25px;}
+  #educationBox .tabBox .tab li a{min-width: 80px; font-size: 14px;}
+  #educationBox .cardList :global .slick-slide{flex: 0 0 250px; margin-right: 15px;}
+
+}
+
+@media (max-width: 414px){
+
+  #educationBox .cardList :global .slick-slide{flex: 0 0 200px;}
+
+}
+
+/* 커리어영역 */
+#careerBox{padding: 41px 0;}
+#careerBox .titleBox{margin-bottom: 82px;}
+#careerBox .cardList{margin-bottom: 82px; display: flex; flex-wrap: wrap; gap: 50px 1.8%;}
+#careerBox .cardList:last-child{margin-bottom: 0;}
+#careerBox .cardList a{width: 23.65%;}
+
+@media (max-width: 1199px){
+
+  #careerBox .titleBox{margin-bottom: 36px;}
+
+}
+
+@media (max-width: 1024px){
+
+  #careerBox .cardList{gap: 50px 2%;}
+  #careerBox .cardList a{width: 49%;}
+
+}
+
+@media (max-width: 767px){
+
+  #careerBox{padding: 25px 0;}
+  #careerBox .titleBox{margin-bottom: 25px;}
+
+}
+
+@media (max-width: 414px){
+
+  #careerBox .cardList a{width: 100%;}
+
+}
+
+/* 성공사례영역 */
+#exampleBox{padding: 41px 0 82px;}
+#exampleBox .exampleContent{display: flex; gap: 0 59px; justify-content: center;}
+#exampleBox .imgBox{flex-shrink: 0; width: 661px; border-radius: 10px; overflow: hidden;}
+#exampleBox .imgBox img{display: block; width: 100%; }
+#exampleBox .textBox{padding: 26px 0;}
+#exampleBox .textBox .text{display: block; margin-bottom: 10px; color: #4334E0; font-weight: 600; line-height: 2.2;}
+#exampleBox .textBox .title{margin-bottom: 10px; font-size: 24px; color: #000;} 
+#exampleBox .textBox .content{color: #5F616D; line-height: 1.8;}
+
+@media (max-width: 1199px){
+
+  #exampleBox .imgBox{width: 500px;}
+  #exampleBox .textBox{padding: 0;}
+  #exampleBox .textBox .text{font-size: 14px;}
+  #exampleBox .textBox .title{font-size: 22px;}
+
+}
+
+@media (max-width: 1024px){
+
+  #exampleBox .exampleContent{display: block;}
+  #exampleBox .imgBox{width: 100%; margin-bottom: 25px;}
+  #exampleBox .textBox .title{font-size: 20px;}
+
+}
+
+@media (max-width: 767px){
+
+  #exampleBox .textBox .title{font-size: 18px;}
+
+}
