@@ -23,10 +23,10 @@ export default function PwFindPage() {
               <div className="container">
                 <form>
                   <div className="inputBox">
-                    <label htmlFor="email" className="labelSt">
+                    <label htmlFor="email" className="text">
                       이메일
                     </label>
-                    <input type="text" value="asdfd1234@naver.com" />
+                    <input id="email" type="text" value="asdfd1234@naver.com" />
                   </div>
 
                   <div className="inputBox">
@@ -58,7 +58,7 @@ export default function PwFindPage() {
 
               <Link to="/signin" className="linkbtn">
                 <span className="blind">
-                  로그인 화면으로 돌아가기
+                  로그인 화면으로 이동
                 </span>
               </Link>
 
