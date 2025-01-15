@@ -58,6 +58,50 @@ export default function Header() {
                   검색
                 </span>
               </button>
+
+              <form>
+              <div className={style.searchTextBox}>
+                <div className={style.searchInputBox}>
+                  <label htmlFor="search" className="blind">
+                    검색
+                  </label>
+                  <input id="search" type="text" />
+                </div>
+
+                <div className={style.searchKeywordBox}>
+                  <span className={style.keywordText}>
+                    최근 검색 키워드
+                  </span>
+                  <ul className={style.keywordList}>
+                    <li>
+                      <span>
+                        해운
+                      </span>
+                      <button className={style.keywordDelBtn}>
+                        <span className="blind">키워드삭제</span>
+                      </button>
+                    </li>
+                    <li>
+                      <span>
+                        여객
+                      </span>
+                      <button className={style.keywordDelBtn}>
+                        <span className="blind">키워드삭제</span>
+                      </button>
+                    </li>
+                    <li>
+                      <span>
+                        운송
+                      </span>
+                      <button className={style.keywordDelBtn}>
+                        <span className="blind">키워드삭제</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </form>
+
             </div>
 
             <div className={style.alarmBox}>
@@ -131,6 +175,20 @@ export default function Header() {
                 검색
               </span>
             </button>
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
           </div>
 
           <div className={style.alarmBox}>

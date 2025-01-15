@@ -30,8 +30,91 @@
 
 }
 
+/* 메인영역 */
+#visualBox{padding: 30px 0;}
+#visualBox .visualBox02{background-color: #FFD3EBE0!important;}
+#visualBox .visualBox03{background-color: #FFEEA6!important;}
+#visualBox .visualBox{padding:0 20px 0 115px; display: flex!important; align-items: center; gap: 0 44px; height: 312px; background-color: #1C1B18; border-radius: 20px;}
+#visualBox .visualBox .imgBox img{display: block;}
+#visualBox .visualBox .textBox h3{margin-bottom: 12px; color: #FFEEA6; font-size: 24px; font-weight: 600; line-height: 1;}
+#visualBox .visualBox .textBox p{color: #fff; font-size: 32px; font-weight: 500;}
+#visualBox .visualBox .textBox p strong{font-weight: 600;}
+#visualBox :global .slick-slide{margin: 0 15px;}
+#visualBox :global .slick-list{overflow: visible;}
+
+@media (max-width: 1024px){
+
+  #visualBox .visualBox{padding:0 20px 0 80px; height: 280px; border-radius: 15px;}
+  #visualBox .visualBox .imgBox img{width: 150px;}
+  #visualBox .visualBox .textBox h3{font-size: 20px;}
+  #visualBox .visualBox .textBox p{font-size: 26px;}
+
+}
+
+@media (max-width: 767px){
+
+  #visualBox{padding: 20px 0;}
+  #visualBox .visualBox{padding:0 20px; justify-content: center; height: 220px; border-radius: 10px;}
+  #visualBox .visualBox .imgBox img{width: 100px;}
+  #visualBox .visualBox .textBox h3{font-size: 18px;}
+  #visualBox .visualBox .textBox p{font-size: 20px;}
+  #visualBox :global .slick-slide{margin: 0 8px;}
+
+}
+
+@media (max-width: 576px){
+
+  #visualBox .visualBox{ height: 185px; border-radius: 10px; gap: 0 25px;}
+  #visualBox .visualBox .imgBox img{width: 80px;}
+  #visualBox .visualBox .textBox h3{font-size: 14px;}
+  #visualBox .visualBox .textBox p{font-size: 16px;}
+
+}
+
+@media (max-width: 414px){
+
+  #visualBox .visualBox{ height: 165px; border-radius: 10px; gap: 0 25px;}
+  #visualBox .visualBox .imgBox img{width: 70px;}
+  #visualBox .visualBox .textBox h3{font-size: 12px;}
+  #visualBox .visualBox .textBox p{font-size: 14px;}
+  #visualBox :global .slick-slide{margin: 0 5px;}
+
+}
+
+/* 로그인링크영역 */
+#loginLinkBox a{display: block; margin: 0 auto; display: flex; align-items: center; padding: 0 37px 0 49px; width: 100%; max-width: 577px; height: 82px; background-color: #FAFAFC; border-radius: 10px;}
+#loginLinkBox a p{padding-right: 18px; width: 100%; position: relative; padding-left: 80px; color: #000; font-weight: 600;}
+#loginLinkBox a p::before{content: ''; position: absolute; top:50%; transform: translateY(-50%); left:0; width: 44px; height: 46px; background: url(../assets/images/main/Link_Icon.svg)no-repeat center; background-size: cover;}
+#loginLinkBox a p::after{content: ''; width: 9px; height: 17px; position: absolute; top: 50%; right: 0; transform: translateY(-50%); background: url(../assets/images/main/Arrow_Icon.svg)no-repeat center; background-size: cover;}
+#loginLinkBox a p strong{color: #4334E0;}
+
+@media (max-width: 767px){
+
+  #loginLinkBox a{padding: 0 37px 0 33px; max-width: 520px;}
+  #loginLinkBox a p{padding-left: 68px;}
+  #loginLinkBox a p::before{width: 36px; height: 38px; }
+  #loginLinkBox a p{font-size: 14px;}
+
+}
+
+@media (max-width: 480px){
+
+  #loginLinkBox a{height: 68px;}
+  #loginLinkBox a p{padding-left: 60px; font-size: 12px;}
+  #loginLinkBox a p::before{width: 30px; height: 32px; }
+
+}
+
+@media (max-width: 414px){
+
+  #loginLinkBox a{padding: 0 20px 0 20px;}
+  #loginLinkBox a p{padding-left: 45px;}
+
+}
+
+
 /* 링크영역 */
-#linkBox{padding: 41px 0;}
+#linkBox{padding: 51px 0 41px;}
 #linkBox .linkList{display: flex; flex-wrap: wrap; justify-content: center; gap: 80px 53px;}
 #linkBox .linkList li a,
 #linkBox .linkList li img{display: block;}
@@ -86,6 +169,9 @@
 #guideBox .titleBox{margin-bottom: 82px;}
 #guideBox .titleBox .title{margin-bottom: 36px;}
 #guideBox .titleBox .title + p{color: #737373; font-size: 20px; font-weight: 500; line-height: 1.2;}
+#guideBox .guideList{position: relative;}
+#guideBox .guideList::before{content: ''; position: absolute; top: 0; left: -100%; bottom: 0; background-color: #fff; width: calc(100% - 17px); z-index: 99;}
+#guideBox .guideList::after{content: ''; position: absolute; top: 0; right: -100%; bottom: 0; background-color: #fff; width: calc(100% - 15px); z-index: 99;}
 #guideBox .guideList .slide a{padding: 54px 0; display: block; width: 100%; height: 100%; border-radius: 10px; transition: all .5s;}
 #guideBox .guideList .slide a h4{display: flex; flex-direction: column; align-items: center; line-height: 1; font-weight: 600; color: #000; font-size: 20px; text-align: center;}
 #guideBox .guideList .slide a .imgBox{display: flex; align-items: center; justify-content: center; width: 73px; height: 73px; margin:0 auto 29px; border-radius: 50%;}
@@ -102,12 +188,11 @@
 
 @media (max-width: 1199px){
 
-
   #guideBox :global .slick-slider{margin: 0;}
   #guideBox .titleBox .title + p{font-size: 18px;}
   #guideBox .titleBox{margin-bottom: 50px;}
   #guideBox .guideList .slide a h4{font-size: 18px;}
-  #guideBox .guideList::before,
+  #guideBox .guideList::before{left: -20px; width: 20px;}
   #guideBox .guideList::after{display: none;}
 
 }
@@ -149,6 +234,8 @@
 #educationBox .tabBox .tab{display: flex; align-items: center; gap: 11px;}
 #educationBox .tabBox .tab li a{position: relative; display: block; min-width: 110px; padding: 11px 14px; color: #5F616D; font-size: 20px; line-height: 1.1; border-radius: 50px; background-color: #FAFAFC; text-align: center; white-space: nowrap; z-index: 1; transition: all .5s;}
 #educationBox .tabBox .tab li a.active{background-color: #1C1B18; color: #fff;}
+#educationBox .cardList::before{content: ''; position: absolute; top: 0; left: -100%; bottom: 0; background-color: #fff; width: calc(100% - 17px); z-index: 99;}
+#educationBox .cardList::after{content: ''; position: absolute; top: 0; right: -100%; bottom: 0; background-color: #fff; width: calc(100% - 15px); z-index: 99;}
 #educationBox .cardList :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
 #educationBox .cardList :global .slick-list{overflow: visible;}
 #educationBox .control{position: absolute; top:39px; right:0;}
@@ -163,7 +250,9 @@
 
   #educationBox .tabBox{margin-bottom: 45px;}
   #educationBox .tabBox .tab li a{font-size: 18px;}
-
+  #educationBox .cardList::before{left: -20px; width: 20px;}
+  #educationBox .cardList::after{display: none;}
+  
 }
 
 @media (max-width: 1024px){
@@ -194,6 +283,8 @@
 #careerBox .cardList{margin-bottom: 82px; display: flex; flex-wrap: wrap; gap: 50px 1.8%;}
 #careerBox .cardList:last-child{margin-bottom: 0;}
 #careerBox .cardList a{width: 23.65%;}
+#careerBox .linkBtn{width: 28px; height: 24px; position: absolute; top:27px; right:15px; background: url(../assets/images/main/Link_Btn.svg)no-repeat center; }
+#careerBox .linkBtn.active{background: url(../assets/images/main/Like_Active_Icon.svg)no-repeat center;}
 
 @media (max-width: 1199px){
 

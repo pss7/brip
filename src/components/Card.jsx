@@ -7,8 +7,10 @@ export default function Card({ title, text, imgSrc, subText, children, className
   return (
     <Link to="#" className={`${style.cardBox} ${className ? style[className] : ''}`}>
       <div className={style.imgBox}>
-        <img src={imgSrc} alt="" />
-        {children}
+        <div className={style.img}>
+          <img src={imgSrc} alt="" />
+          {children}
+        </div>
       </div>
       <div className={style.textBox}>
         <span className={style.text01}>

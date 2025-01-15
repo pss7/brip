@@ -15,46 +15,79 @@ import Guide02 from "../assets/images/main/Guide_Icon02.svg";
 import Guide03 from "../assets/images/main/Guide_Icon03.svg";
 import Guide04 from "../assets/images/main/Guide_Icon04.svg";
 import ExampleImg from "../assets/images/main/Example_Img.png";
-
 import CardImg01 from "../assets/images/main/Card_Img01.png";
 import CardImg02 from "../assets/images/main/Card_Img02.png";
 import CardImg03 from "../assets/images/main/Card_Img03.png";
 import CardImg04 from "../assets/images/main/Card_Img04.png";
 import CardImg05 from "../assets/images/main/Card_Img05.png";
+import MainImg from "../assets/images/main/Main_Img01.png";
 
 import Slider from 'react-slick';
+import AOS from "aos";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "aos/dist/aos.css";
 import Card from "../components/Card";
-
 
 export default function MainPage() {
 
+  useEffect(() => {
+    AOS.init({
+      duration: 2000,
+    });
+  }, [])
+
+  const sliderRefMain = useRef(null);
   const sliderRef01 = useRef(null);
   const sliderRef02 = useRef(null);
-  
+  const [isLikeShow, setIsLikeShow] = useState(false);
+  const [activeTab, setActiveTab] = useState("직무/직군");
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab); // 클릭한 탭을 활성화
+  };
+
+  const mainSettings = {
+    dots: false,
+    infinite: true,
+    speed: 1500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    centerMode: true,
+    responsive: [
+      {
+        breakpoint: 577,
+        settings: {
+          centerMode: false,
+        },
+      },
+    ]
+  };
+
   function handlePrev(slider) {
     if (slider && slider.current) {
-        slider.current.slickPrev();
+      slider.current.slickPrev();
     }
-}
+  }
 
-function handleNext(slider) {
+  function handleNext(slider) {
     if (slider && slider.current) {
-        slider.current.slickNext();
+      slider.current.slickNext();
     }
-}
+  }
   const settings = {
     variableWidth: true,
     dots: false,
     infinite: false,
     arrow: false,
-    speed: 1500,
+    speed: 1000,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: false,
     useTransform: false,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 3000,
   };
 
   return (
@@ -63,12 +96,59 @@ function handleNext(slider) {
       <div id={style.visualBox}>
         <Container>
           <div className={style.visualContent}>
-            비주얼영역
+            <Slider className={style.visualSlider} ref={sliderRefMain} {...mainSettings}>
+              <div className={style.visualBox}>
+                <div className={style.imgBox}>
+                  <img src={MainImg} alt="Main Image 1" />
+                </div>
+                <div className={style.textBox}>
+                  <h3>로드맵 설계</h3>
+                  <p>
+                    <strong>커리어 성장</strong>을 위한 첫걸음, <br />
+                    지금 <strong>로드맵</strong>을 설정해보세요!
+                  </p>
+                </div>
+              </div>
+              <div className={`${style.visualBox} ${style.visualBox02}`}>
+                <div className={style.imgBox}>
+                  <img src={MainImg} alt="Main Image 2" />
+                </div>
+                <div className={style.textBox}>
+                  <h3>로드맵 설계</h3>
+                  <p>
+                    <strong>커리어 성장</strong>을 위한 첫걸음, <br />
+                    지금 <strong>로드맵</strong>을 설정해보세요!
+                  </p>
+                </div>
+              </div>
+              <div className={`${style.visualBox} ${style.visualBox03}`}>
+                <div className={style.imgBox}>
+                  <img src={MainImg} alt="Main Image 3" />
+                </div>
+                <div className={style.textBox}>
+                  <h3>로드맵 설계</h3>
+                  <p>
+                    <strong>커리어 성장</strong>을 위한 첫걸음, <br />
+                    지금 <strong>로드맵</strong>을 설정해보세요!
+                  </p>
+                </div>
+              </div>
+            </Slider>
           </div>
         </Container>
       </div>
 
-      <div id={style.linkBox}>
+      <div id={style.loginLinkBox} data-aos="fade-up">
+        <Container>
+          <div className={style.loginLinkContent}>
+            <Link to="/">
+              <p><strong>로그인</strong>하고 더 유용한 정보를 얻어보세요!</p>
+            </Link>
+          </div>
+        </Container>
+      </div>
+
+      <div id={style.linkBox} data-aos="fade-up">
         <Container>
           <div className={style.linkContent}>
             <ul className={style.linkList}>
@@ -150,7 +230,7 @@ function handleNext(slider) {
       <div id={style.guideBox}>
         <Container>
           <div className={style.guideContent}>
-            <div className={style.titleBox}>
+            <div className={style.titleBox} data-aos="fade-up">
               <h3 className={style.title}>
                 커리어 성장을 돕는 직무와 역량 정보
               </h3>
@@ -160,90 +240,92 @@ function handleNext(slider) {
               </p>
             </div>
 
-            <Slider className={style.guideList} ref={sliderRef01} {...settings}>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#EDC2F6' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#C6FFD0' }}>
-                    <img src={Guide01} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#CCE7FE' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#F6F0B3' }}>
-                    <img src={Guide02} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#FFD3EB' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#CCE7FE' }}>
-                    <img src={Guide03} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#FFEEA6' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#5E5C5C' }}>
-                    <img src={Guide04} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#EDC2F6' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#C6FFD0' }}>
-                    <img src={Guide01} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#CCE7FE' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#F6F0B3' }}>
-                    <img src={Guide02} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#FFD3EB' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#CCE7FE' }}>
-                    <img src={Guide03} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-              <div className={style.slide}>
-                <Link to="#" style={{ backgroundColor: '#FFEEA6' }}>
-                  <div className={style.imgBox} style={{ backgroundColor: '#5E5C5C' }}>
-                    <img src={Guide04} alt="" />
-                  </div>
-                  <h4>
-                    해상 여객운송 관리자
-                  </h4>
-                </Link>
-              </div>
-            </Slider>
+            <div data-aos="fade-up">
+              <Slider className={style.guideList} ref={sliderRef01} {...settings} >
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#EDC2F6' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#C6FFD0' }}>
+                      <img src={Guide01} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#CCE7FE' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#F6F0B3' }}>
+                      <img src={Guide02} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#FFD3EB' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#CCE7FE' }}>
+                      <img src={Guide03} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#FFEEA6' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#5E5C5C' }}>
+                      <img src={Guide04} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#EDC2F6' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#C6FFD0' }}>
+                      <img src={Guide01} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#CCE7FE' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#F6F0B3' }}>
+                      <img src={Guide02} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#FFD3EB' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#CCE7FE' }}>
+                      <img src={Guide03} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+                <div className={style.slide}>
+                  <Link to="#" style={{ backgroundColor: '#FFEEA6' }}>
+                    <div className={style.imgBox} style={{ backgroundColor: '#5E5C5C' }}>
+                      <img src={Guide04} alt="" />
+                    </div>
+                    <h4>
+                      해상 여객운송 관리자
+                    </h4>
+                  </Link>
+                </div>
+              </Slider>
+            </div>
 
-            <div className={style.control}>
+            <div className={style.control} data-aos="fade-up">
               <button
                 className={style.prevBtn}
                 onClick={() => handlePrev(sliderRef01)}
@@ -265,118 +347,274 @@ function handleNext(slider) {
       <div id={style.educationBox}>
         <Container>
           <div className={style.educationContent}>
-            <div className={style.titleBox}>
+            <div className={style.titleBox} data-aos="fade-up">
               <h3 className={style.title}>
                 직무에 필요한 필수 역량 교육
               </h3>
             </div>
 
-            <div className={style.tabBox}>
+            <div className={style.tabBox} data-aos="fade-up">
               <ul className={style.tab}>
                 <li>
-                  <Link to="#" className={style.active}>
+                  <Link
+                    to="#"
+                    className={activeTab === "직무/직군" ? style.active : ""}
+                    onClick={() => handleTabClick("직무/직군")}
+                  >
                     직무/직군
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link
+                    to="#"
+                    className={activeTab === "기술/역량" ? style.active : ""}
+                    onClick={() => handleTabClick("기술/역량")}
+                  >
                     기술/역량
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link
+                    to="#"
+                    className={activeTab === "전문과정" ? style.active : ""}
+                    onClick={() => handleTabClick("전문과정")}
+                  >
                     전문과정
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link
+                    to="#"
+                    className={activeTab === "자격증" ? style.active : ""}
+                    onClick={() => handleTabClick("자격증")}
+                  >
                     자격증
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link
+                    to="#"
+                    className={activeTab === "워크숍" ? style.active : ""}
+                    onClick={() => handleTabClick("워크숍")}
+                  >
                     워크숍
                   </Link>
                 </li>
               </ul>
             </div>
 
+
             <div className={style.cardList}>
-              <Slider ref={sliderRef02} className={style.cardSlider} {...settings}>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="해운항만물류 실무와 사례
-특강"
-                    imgSrc={CardImg01}
-                    subText="데이터리안"
-                  />
-                </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="[에듀윌] 물류관리사 0원 
-합격패스"
-                    imgSrc={CardImg04}
-                    subText="데이터리안"
-                  />
-                </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="이춘길 전 강좌 무료강의
+              {activeTab === "직무/직군" && (
+                <div data-aos="fade-up">
+                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                    {/* 직무/직군 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="이춘길 전 강좌 무료강의
 합격반"
-                    imgSrc={CardImg05}
-                    subText="데이터리안"
-                  />
-                </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="해운항만물류 실무와 사례
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="해운항만물류 실무와 사례
 특강"
-                    imgSrc={CardImg01}
-                    subText="데이터리안"
-                  />
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                  </Slider>
                 </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="해운항만물류 실무와 사례
+              )}
+
+              {activeTab === "기술/역량" && (
+                <div data-aos="fade-up">
+                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                    {/* 기술/역량 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="기술/역량"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="기술/역량"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="기술/역량"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="기술/역량"
+                        title="해운항만물류 실무와 사례
 특강"
-                    imgSrc={CardImg04}
-                    subText="데이터리안"
-                  />
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                  </Slider>
                 </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="해운항만물류 실무와 사례
+              )}
+
+              {activeTab === "전문과정" && (
+                <div data-aos="fade-up">
+                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                    {/* 전문과정 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="해운항만물류 실무와 사례
 특강"
-                    imgSrc={CardImg05}
-                    subText="데이터리안"
-                  />
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                  </Slider>
                 </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="해운항만물류 실무와 사례
+              )}
+
+              {activeTab === "자격증" && (
+                <div data-aos="fade-up">
+                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                    {/* 자격증 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="해운항만물류 실무와 사례
 특강"
-                    imgSrc={CardImg01}
-                    subText="데이터리안"
-                  />
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                  </Slider>
                 </div>
-                <div className={style.slide}>
-                  <Card
-                    text="직무직군"
-                    title="해운항만물류 실무와 사례
+              )}
+
+              {activeTab === "워크숍" && (
+                <div data-aos="fade-up">
+                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                    {/* 워크숍 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="해운항만물류 실무와 사례
 특강"
-                    imgSrc={CardImg01}
-                    subText="데이터리안"
-                  />
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                  </Slider>
                 </div>
-              </Slider>
-              <div className={style.control}>
+              )}
+              <div className={style.control} data-aos="fade-up">
                 <button
                   className={style.prevBtn}
                   onClick={() => handlePrev(sliderRef02)}
@@ -399,13 +637,13 @@ function handleNext(slider) {
       <div id={style.careerBox}>
         <Container>
           <div className={style.careerContent}>
-            <div className={style.titleBox}>
+            <div className={style.titleBox} data-aos="fade-up">
               <h3 className={style.title}>
                 최신 채용공고와 맞춤형 커리어
               </h3>
             </div>
 
-            <div className={style.cardList}>
+            <div className={style.cardList} data-aos="fade-up">
               <Card
                 className="cardType"
                 text="씨아이지해운(주)"
@@ -414,7 +652,7 @@ function handleNext(slider) {
                 imgSrc={CardImg02}
                 subText="~01.15(수)"
               >
-                <button className={style.linkBtn}>
+                <button className={`${style.linkBtn} ${isLikeShow ? `${style.active}` : ""}`} onClick={() => setIsLikeShow(!isLikeShow)}>
                   <span className="blind">
                     좋아요
                   </span>
@@ -464,7 +702,7 @@ function handleNext(slider) {
               </Card>
             </div>
 
-            <div className={style.cardList}>
+            <div className={style.cardList} data-aos="fade-up">
               <Card
                 className="cardType"
                 text="씨아이지해운(주)"
@@ -527,15 +765,15 @@ function handleNext(slider) {
         </Container>
       </div>
 
-      <div id={style.exampleBox}>
+      <div id={style.exampleBox} >
         <Container>
-          <div className={style.exampleContent}>
-            <div className={style.imgBox}>
+          <div className={style.exampleContent} >
+            <div className={style.imgBox} data-aos="fade-up">
               <Link to="#">
                 <img src={ExampleImg} alt="" />
               </Link>
             </div>
-            <div className={style.textBox}>
+            <div className={style.textBox} data-aos="fade-up">
               <span className={style.text}>
                 성공사례
               </span>
