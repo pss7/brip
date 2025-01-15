@@ -4,7 +4,7 @@ import MainPage from "./MainPage";
 export default function Home() {
 
   return (
-    <Main className="main">
+    <Main className="mainWrap">
       <MainPage />
     </Main>
   )

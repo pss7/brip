@@ -141,7 +141,7 @@ export default function MainPage() {
       <div id={style.loginLinkBox} data-aos="fade-up">
         <Container>
           <div className={style.loginLinkContent}>
-            <Link to="/">
+            <Link to="/login">
               <p><strong>로그인</strong>하고 더 유용한 정보를 얻어보세요!</p>
             </Link>
           </div>

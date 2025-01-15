@@ -113,7 +113,7 @@ export default function Header() {
             </div>
 
             <div className={style.loginBox}>
-              <Link to="#" className={style.loginBtn}>
+              <Link to="/signin" className={style.loginBtn}>
                 로그인
               </Link>
             </div>
@@ -200,7 +200,7 @@ export default function Header() {
           </div>
 
           <div className={style.loginBox}>
-            <Link to="#" className={style.loginBtn}>
+            <Link to="/signin" className={style.loginBtn}>
               로그인
             </Link>
           </div>
