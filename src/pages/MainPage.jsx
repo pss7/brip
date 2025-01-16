@@ -10,11 +10,11 @@ import Journey from "../assets/images/main/Journey_Icon.svg";
 import Commercial from "../assets/images/main/Commercial_Icon.svg";
 import Contact from "../assets/images/main/Contact_Icon.svg";
 import Goal from "../assets/images/main/Goal_Icon.svg";
+import ExampleImg from "../assets/images/main/Example_Img.png";
 import Guide01 from "../assets/images/main/Guide_Icon01.svg";
 import Guide02 from "../assets/images/main/Guide_Icon02.svg";
 import Guide03 from "../assets/images/main/Guide_Icon03.svg";
 import Guide04 from "../assets/images/main/Guide_Icon04.svg";
-import ExampleImg from "../assets/images/main/Example_Img.png";
 import CardImg01 from "../assets/images/main/Card_Img01.png";
 import CardImg02 from "../assets/images/main/Card_Img02.png";
 import CardImg03 from "../assets/images/main/Card_Img03.png";
@@ -28,6 +28,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "aos/dist/aos.css";
 import Card from "../components/Card";
+
+import "../assets/css/style.css";
+import BgCard from "../components/BgCard";
 
 export default function MainPage() {
 
@@ -141,7 +144,7 @@ export default function MainPage() {
       <div id={style.loginLinkBox} data-aos="fade-up">
         <Container>
           <div className={style.loginLinkContent}>
-            <Link to="/login">
+            <Link to="/signin">
               <p><strong>로그인</strong>하고 더 유용한 정보를 얻어보세요!</p>
             </Link>
           </div>
@@ -243,84 +246,74 @@ export default function MainPage() {
             <div data-aos="fade-up">
               <Slider className={style.guideList} ref={sliderRef01} {...settings} >
                 <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#EDC2F6' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#C6FFD0' }}>
-                      <img src={Guide01} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
+                  <BgCard
+                    bg={{ backgroundColor: '#EDC2F6' }}
+                    imgBg={{ backgroundColor: '#C6FFD0' }}
+                    imgSrc={Guide01}
+                    title="해상 여객운송 관리자"
+                  />
+                </div>
+
+                <div className={style.slide}>
+                  <BgCard
+                    bg={{ backgroundColor: '#CCE7FE' }}
+                    imgBg={{ backgroundColor: '#F6F0B3' }}
+                    imgSrc={Guide02}
+                    title="해상 여객운송 관리자"
+                  />
+                </div>
+
+                <div className={style.slide}>
+                  <BgCard
+                    bg={{ backgroundColor: '#FFD3EB' }}
+                    imgBg={{ backgroundColor: '#CCE7FE' }}
+                    imgSrc={Guide03}
+                    title="해상 여객운송 관리자"
+                  />
+                </div>
+
+                <div className={style.slide}>
+                  <BgCard
+                    bg={{ backgroundColor: '#FFEEA6' }}
+                    imgBg={{ backgroundColor: '#5E5C5C' }}
+                    imgSrc={Guide04}
+                    title="해상 여객운송 관리자"
+                  />
                 </div>
                 <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#CCE7FE' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#F6F0B3' }}>
-                      <img src={Guide02} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
+                  <BgCard
+                    bg={{ backgroundColor: '#EDC2F6' }}
+                    imgBg={{ backgroundColor: '#C6FFD0' }}
+                    imgSrc={Guide01}
+                    title="해상 여객운송 관리자"
+                  />
                 </div>
+
                 <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#FFD3EB' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#CCE7FE' }}>
-                      <img src={Guide03} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
+                  <BgCard
+                    bg={{ backgroundColor: '#CCE7FE' }}
+                    imgBg={{ backgroundColor: '#F6F0B3' }}
+                    imgSrc={Guide02}
+                    title="해상 여객운송 관리자"
+                  />
                 </div>
+
                 <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#FFEEA6' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#5E5C5C' }}>
-                      <img src={Guide04} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
+                  <BgCard
+                    bg={{ backgroundColor: '#FFD3EB' }}
+                    imgBg={{ backgroundColor: '#CCE7FE' }}
+                    imgSrc={Guide03}
+                    title="해상 여객운송 관리자"
+                  />
                 </div>
+
                 <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#EDC2F6' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#C6FFD0' }}>
-                      <img src={Guide01} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
-                </div>
-                <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#CCE7FE' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#F6F0B3' }}>
-                      <img src={Guide02} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
-                </div>
-                <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#FFD3EB' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#CCE7FE' }}>
-                      <img src={Guide03} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
-                </div>
-                <div className={style.slide}>
-                  <Link to="#" style={{ backgroundColor: '#FFEEA6' }}>
-                    <div className={style.imgBox} style={{ backgroundColor: '#5E5C5C' }}>
-                      <img src={Guide04} alt="" />
-                    </div>
-                    <h4>
-                      해상 여객운송 관리자
-                    </h4>
-                  </Link>
+                  <BgCard
+                    bg={{ backgroundColor: '#FFEEA6' }}
+                    imgBg={{ backgroundColor: '#5E5C5C' }}
+                    imgSrc={Guide04}
+                    title="해상 여객운송 관리자"
+                  />
                 </div>
               </Slider>
             </div>
@@ -403,12 +396,44 @@ export default function MainPage() {
               </ul>
             </div>
 
-
             <div className={style.cardList}>
               {activeTab === "직무/직군" && (
                 <div data-aos="fade-up">
                   <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    {/* 직무/직군 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="해운항만물류 실무와 사례
+특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
                     <div className={style.slide}>
                       <Card
                         text="직무직군"
@@ -450,10 +475,9 @@ export default function MainPage() {
               {activeTab === "기술/역량" && (
                 <div data-aos="fade-up">
                   <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    {/* 기술/역량 관련 카드들 */}
                     <div className={style.slide}>
                       <Card
-                        text="기술/역량"
+                        text="직무직군"
                         title="해운항만물류 실무와 사례 특강"
                         imgSrc={CardImg01}
                         subText="데이터리안"
@@ -461,7 +485,7 @@ export default function MainPage() {
                     </div>
                     <div className={style.slide}>
                       <Card
-                        text="기술/역량"
+                        text="직무직군"
                         title="[에듀윌] 물류관리사 0원 합격패스"
                         imgSrc={CardImg04}
                         subText="데이터리안"
@@ -469,7 +493,7 @@ export default function MainPage() {
                     </div>
                     <div className={style.slide}>
                       <Card
-                        text="기술/역량"
+                        text="직무직군"
                         title="이춘길 전 강좌 무료강의
 합격반"
                         imgSrc={CardImg05}
@@ -478,7 +502,41 @@ export default function MainPage() {
                     </div>
                     <div className={style.slide}>
                       <Card
-                        text="기술/역량"
+                        text="직무직군"
+                        title="해운항만물류 실무와 사례
+특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="직무직군"
                         title="해운항만물류 실무와 사례
 특강"
                         imgSrc={CardImg01}
@@ -492,7 +550,41 @@ export default function MainPage() {
               {activeTab === "전문과정" && (
                 <div data-aos="fade-up">
                   <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    {/* 전문과정 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="전문과정"
+                        title="해운항만물류 실무와 사례
+특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+
                     <div className={style.slide}>
                       <Card
                         text="전문과정"
@@ -534,7 +626,40 @@ export default function MainPage() {
               {activeTab === "자격증" && (
                 <div data-aos="fade-up">
                   <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    {/* 자격증 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="자격증"
+                        title="해운항만물류 실무와 사례
+특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
                     <div className={style.slide}>
                       <Card
                         text="자격증"
@@ -576,7 +701,40 @@ export default function MainPage() {
               {activeTab === "워크숍" && (
                 <div data-aos="fade-up">
                   <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    {/* 워크숍 관련 카드들 */}
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="해운항만물류 실무와 사례 특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="[에듀윌] 물류관리사 0원 합격패스"
+                        imgSrc={CardImg04}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="이춘길 전 강좌 무료강의
+합격반"
+                        imgSrc={CardImg05}
+                        subText="데이터리안"
+                      />
+                    </div>
+                    <div className={style.slide}>
+                      <Card
+                        text="워크숍"
+                        title="해운항만물류 실무와 사례
+특강"
+                        imgSrc={CardImg01}
+                        subText="데이터리안"
+                      />
+                    </div>
                     <div className={style.slide}>
                       <Card
                         text="워크숍"

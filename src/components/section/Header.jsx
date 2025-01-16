@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
-import { useState } from "react";
 
 export default function Header() {
 
   const [isMobileMenu, setIsMobileMenu] = useState(false);
+  const [isSearchShow, setIsSearchSHow] = useState(false);
 
   return (
     <header id={style.headerBox}>
@@ -53,19 +54,20 @@ export default function Header() {
 
           <div className={style.linkBox}>
             <div className={style.searchBox}>
-              <Link to="/search" className={style.searchBtn}>
+              <Link to="/search" className={style.searchBtn} onClick={() => setIsSearchSHow(true)}>
                 <span className="blind">
                   검색
                 </span>
               </Link>
 
               <form>
-                <div className={style.searchTextBox}>
+                <div className={`${style.searchTextBox} ${isSearchShow ? `${style.active}` : ""}`}>
                   <div className={style.searchInputBox}>
                     <label htmlFor="search" className="blind">
                       검색
                     </label>
                     <input id="search" type="text" />
+                    
                   </div>
 
                   <div className={style.searchKeywordBox}>

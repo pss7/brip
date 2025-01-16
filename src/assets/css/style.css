@@ -1,3 +1,23 @@
 #root{overflow-x: hidden;}
 .subWrap{padding: 43px 0; min-height: 600px;}
 .subWrap.bg{background-color:#FAFAFD;}
+
+/* 공통-카드 */
+.cardBox{display: block; width: 23.65%;}
+.cardContainer{display: flex; flex-wrap: wrap; gap: 50px 1.8%;}
+
+@media (max-width: 1024px){
+
+ .cardContainer{gap: 50px 2%;}
+ .cardContainerSt{gap: 20px 2%;}
+ .cardBox{width: 49%;}
+
+}
+
+
+@media (max-width: 414px){
+
+  .cardBox{width: 100%;}
+
+}
+

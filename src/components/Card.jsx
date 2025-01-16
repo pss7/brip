@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import style from "./Card.module.css";
 
-
 export default function Card({ title, text, imgSrc, subText, children, className }) {
 
   return (
-    <Link to="#" className={`${style.cardBox} ${className ? style[className] : ''}`}>
+    <Link to="#" className={`cardBox ${className ? style[className] : ""} ${style.link}`}>
       <div className={style.imgBox}>
         <div className={style.img}>
           <img src={imgSrc} alt="" />

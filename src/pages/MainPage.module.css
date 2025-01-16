@@ -172,26 +172,16 @@
 #guideBox .guideList{position: relative;}
 #guideBox .guideList::before{content: ''; position: absolute; top: 0; left: -100%; bottom: 0; background-color: #fff; width: calc(100% - 17px); z-index: 99;}
 #guideBox .guideList::after{content: ''; position: absolute; top: 0; right: -100%; bottom: 0; background-color: #fff; width: calc(100% - 15px); z-index: 99;}
-#guideBox .guideList .slide a{padding: 54px 0; display: block; width: 100%; height: 100%; border-radius: 10px; transition: all .5s;}
-#guideBox .guideList .slide a h4{display: flex; flex-direction: column; align-items: center; line-height: 1; font-weight: 600; color: #000; font-size: 20px; text-align: center;}
-#guideBox .guideList .slide a .imgBox{display: flex; align-items: center; justify-content: center; width: 73px; height: 73px; margin:0 auto 29px; border-radius: 50%;}
-#guideBox .guideList .slide a .imgBox img{display: block;}
+#guideBox .guideList .slide a{width: 100%; height: 100%; }
 #guideBox .control{position: absolute; top:42px; right:0;}
 #guideBox :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
 #guideBox :global .slick-list{overflow: visible;}
-
-@media(min-width: 1200px){
-
-  #guideBox .guideList .slide a:hover{transform: scale(1.03); box-shadow: 10px 10px 10px rgba(0,0,0,.2);}
-
-}
 
 @media (max-width: 1199px){
 
   #guideBox :global .slick-slider{margin: 0;}
   #guideBox .titleBox .title + p{font-size: 18px;}
   #guideBox .titleBox{margin-bottom: 50px;}
-  #guideBox .guideList .slide a h4{font-size: 18px;}
   #guideBox .guideList::before{left: -20px; width: 20px;}
   #guideBox .guideList::after{display: none;}
 
@@ -200,7 +190,6 @@
 @media (max-width: 1024px){
 
   #guideBox .titleBox{margin-bottom: 30px;}
-  #guideBox .guideList .slide a h4{font-size: 16px;}
 
 }
 
@@ -210,16 +199,12 @@
   #guideBox .titleBox .title + p{font-size: 16px;}
   #guideBox .titleBox .title{margin-bottom: 15px;}
   #guideBox :global .slick-slide{flex: 0 0 250px; height: 200px; margin-right: 15px;}
-  #guideBox .guideList .slide a{padding: 40px 0;}
-  #guideBox .guideList .slide a .imgBox{width: 65px; height: 65px;}
-  #guideBox .guideList .slide a .imgBox img{width: 45px;}
 
 }
 
 @media (max-width: 414px){
 
   #guideBox :global .slick-slide{flex: 0 0 200px; height: 190px;}
-  #guideBox .guideList .slide a .imgBox img{width: 35px;}
 
 }
 
@@ -239,6 +224,7 @@
 #educationBox .cardList :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
 #educationBox .cardList :global .slick-list{overflow: visible;}
 #educationBox .control{position: absolute; top:39px; right:0;}
+#educationBox a{width: auto;}
 
 @media (min-width: 1200px){
 
