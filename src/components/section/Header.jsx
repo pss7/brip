@@ -3,11 +3,14 @@ import { Link } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
+import Alarm from "../Alarm";
 
 export default function Header() {
 
-  const [isMobileMenu, setIsMobileMenu] = useState(false);
-  const [isSearchShow, setIsSearchSHow] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isalarmOpen, setIsAlarmOpen] = useState(false);
 
   return (
     <header id={style.headerBox}>
@@ -53,21 +56,37 @@ export default function Header() {
           </nav>
 
           <div className={style.linkBox}>
-            <div className={style.searchBox}>
-              <Link to="/search" className={style.searchBtn} onClick={() => setIsSearchSHow(true)}>
+            <div className={`${style.searchBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+              <Link to="/search" className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
                 <span className="blind">
                   검색
                 </span>
               </Link>
 
               <form>
-                <div className={`${style.searchTextBox} ${isSearchShow ? `${style.active}` : ""}`}>
-                  <div className={style.searchInputBox}>
+                <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+                  <div
+                    className={style.searchInputBox}
+                    onMouseLeave={() => {
+                      setIsSearchOpen(false)
+                      setSearchQuery('');
+                    }}
+                  >
                     <label htmlFor="search" className="blind">
                       검색
                     </label>
-                    <input id="search" type="text" />
-                    
+                    <input
+                      id="search"
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+
+                    <button className={`${style.searchTextDel} ${searchQuery.length > 0 ? `${style.active}` : ""}`} type="button">
+                      <span className="blind">
+                        입력삭제
+                      </span>
+                    </button>
                   </div>
 
                   <div className={style.searchKeywordBox}>
@@ -107,11 +126,17 @@ export default function Header() {
             </div>
 
             <div className={style.alarmBox}>
-              <button className={style.alarmBtn}>
+              <button
+                className={style.alarmBtn}
+                onClick={() => setIsAlarmOpen(true)}
+              >
                 <span className="blind">
                   알림
                 </span>
               </button>
+
+              <Alarm isalarmOpen={isalarmOpen} setIsAlarmOpen={setIsAlarmOpen}/>
+
             </div>
 
             <div className={style.loginBox}>
@@ -121,7 +146,7 @@ export default function Header() {
             </div>
           </div>
 
-          <button className={style.mobileMenuBtn} onClick={() => setIsMobileMenu(true)}>
+          <button className={style.mobileMenuBtn} onClick={() => setIsMobileMenuOpen(true)}>
             <em></em>
             <em></em>
             <span className="blind">모바일메뉴</span>
@@ -130,7 +155,7 @@ export default function Header() {
         </div>
       </Container>
 
-      <div className={`${style.mobileMenuBox} ${isMobileMenu ? `${style.active}` : ""}`}>
+      <div className={`${style.mobileMenuBox} ${isMobileMenuOpen ? `${style.active}` : ""}`}>
 
         <div className={style.mobileLogoBox}>
           <h1>
@@ -172,11 +197,11 @@ export default function Header() {
 
         <div className={style.linkBox}>
           <div className={style.searchBox}>
-            <button className={style.searchBtn}>
+            <Link to="/search" className={style.searchBtn}>
               <span className="blind">
                 검색
               </span>
-            </button>
+            </Link>
           </div>
 
           <div className={style.alarmBox}>
@@ -194,7 +219,7 @@ export default function Header() {
           </div>
         </div>
 
-        <button className={style.mobileCloseBtn} onClick={() => setIsMobileMenu(false)}>
+        <button className={style.mobileCloseBtn} onClick={() => setIsMobileMenuOpen(false)}>
           <span className="blind">
             모바일 메뉴 닫기
           </span>
@@ -202,7 +227,7 @@ export default function Header() {
 
       </div>
 
-      <div className={`${style.bg} ${isMobileMenu ? `${style.active}` : ""}`}></div>
+      <div className={`${style.bg} ${isMobileMenuOpen ? `${style.active}` : ""}`}></div>
 
     </header >
   )

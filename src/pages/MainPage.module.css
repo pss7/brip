@@ -220,7 +220,7 @@
 #educationBox .tabBox .tab li a{position: relative; display: block; min-width: 110px; padding: 11px 14px; color: #5F616D; font-size: 20px; line-height: 1.1; border-radius: 50px; background-color: #FAFAFC; text-align: center; white-space: nowrap; z-index: 1; transition: all .5s;}
 #educationBox .tabBox .tab li a.active{background-color: #1C1B18; color: #fff;}
 #educationBox .cardList::before{content: ''; position: absolute; top: 0; left: -100%; bottom: 0; background-color: #fff; width: calc(100% - 17px); z-index: 99;}
-#educationBox .cardList::after{content: ''; position: absolute; top: 0; right: -100%; bottom: 0; background-color: #fff; width: calc(100% - 15px); z-index: 99;}
+#educationBox .cardList::after{content: ''; position: absolute; top: 0; right: -100%; bottom: -84px; background-color: #fff; width: calc(100% - 15px); z-index: 99;}
 #educationBox .cardList :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
 #educationBox .cardList :global .slick-list{overflow: visible;}
 #educationBox .control{position: absolute; top:39px; right:0;}
