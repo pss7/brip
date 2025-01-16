@@ -4,6 +4,8 @@ import SignInPage from './pages/SignInPage';
 import PwFindPage from './pages/PwFindPage';
 import SignUpPage from './pages/SignUpPage';
 import SearchPage from './pages/SearchPage';
+import RoadMapInfoPage from './pages/RoadMapInfoPage';
+import RoadMapDesignPage from './pages/RoadMapDesignPage';
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
           <Route path='/passwordfind' element={<PwFindPage />} />
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/search' element={<SearchPage />} />
+          <Route path='/roadmapinfo' element={<RoadMapInfoPage />} />
+          <Route path='/roadmapdesign' element={<RoadMapDesignPage />} />
         </Routes>
       </BrowserRouter>
     </>

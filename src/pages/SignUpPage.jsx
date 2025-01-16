@@ -1,8 +1,9 @@
 import Container from "../components/Container";
 import Main from "../components/section/Main";
 import "../assets/css/login.css";
-import LoginImg from "../assets/images/login/Login_Img.svg"
 import { Link } from "react-router-dom";
+import ArrowPrevButton from "../components/ArrowPrevButton";
+import Button from "../components/Button";
 
 export default function SignUpPage() {
 
@@ -152,20 +153,14 @@ export default function SignUpPage() {
 
                   </div>
 
-                  <div className="btnBox">
-                    <button className="btn">
-                      회원가입
-                    </button>
-                  </div>
+                  <Button text="회원가입" />
 
                 </form>
               </div>
 
-              <Link to="/signin" className="linkbtn">
-                <span className="blind">
-                  로그인 화면으로 이동
-                </span>
-              </Link>
+              <div className="linkBox">
+                <ArrowPrevButton href="/signin" hiddenText="로그인 화면으로 이동" />
+              </div>
 
             </div>
           </Container>

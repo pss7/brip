@@ -1,4 +1,5 @@
 #root{overflow-x: hidden;}
+
 .subWrap{padding: 43px 0; min-height: 600px;}
 .subWrap.bg{background-color:#FAFAFD;}
 
@@ -14,10 +15,58 @@
 
 }
 
-
 @media (max-width: 414px){
 
   .cardBox{width: 100%;}
 
 }
 
+/* 로드맵 */
+.loadMapBox .loadMapContent{position: relative; padding: 50px 70px 55px; max-width: 583px; min-height: 800px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
+.loadMapBox .titleBox{margin-bottom: 60px;}
+.loadMapBox .titleBox h3{text-align: center; color: #000; font-weight: 700; font-size: 24px;}
+.loadMapBox .loadMapInfoList{margin-bottom: 62px;}
+.loadMapBox .loadMapInfoList li{position: relative; padding: 33px 52px 33px 95px; margin-bottom: 15px; line-height: 1.2; background-color: #fff; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); color: #000; font-weight: 500;}
+.loadMapBox .loadMapInfoList li:last-child{margin-bottom: 0;}
+.loadMapBox .loadMapInfoList li::before{content: ''; width: 48px; height: 40px; position: absolute; top:22px; left:26px; background: url(../images/sub/Icon01.svg)no-repeat center; background-size: cover;}
+
+/* 로드맵안내 */
+.loadMapBox.loadMapInfoBox .loadMapContent{padding: 90px 70px 55px;}
+.loadMapBox.loadMapInfoBox .titleBox{margin-bottom: 0;}
+.loadMapBox.loadMapInfoBox .titleBox h3{margin-bottom: 17px;}
+.loadMapBox.loadMapInfoBox .titleBox p{text-align: center; color: #5F616D; font-weight: 500; }
+.loadMapBox.loadMapInfoBox .imgBox{margin:0 0 -15px 27px;}
+.loadMapBox.loadMapInfoBox .imgBox img{display: block; width: 100%; margin: 0 auto;}
+.loadMapBox.loadMapInfoBox .infotext{margin-bottom: 40px; text-align: center; font-weight: 600; color: #000;}
+.loadMapBox.loadMapInfoBox .infotext02{margin-bottom: 28px; font-size: 14px;}
+
+@media (max-width: 1199px){
+
+  .loadMapBox .loadMapContent{padding: 80px 70px 55px!important;}
+  .loadMapBox .titleBox h3{font-size: 22px;}
+
+}
+
+@media (max-width: 767px){
+
+  .loadMapBox .loadMapContent{padding: 70px 20px 55px!important;}
+  .loadMapBox .loadMapInfoList li{margin-bottom: 10px; padding: 25px 20px 25px 65px;}
+  .loadMapBox .loadMapInfoList li::before{width: 38px; height: 30px; top: 20px; left: 16px;} 
+  .loadMapBox .titleBox h3{font-size: 20px;}
+  .loadMapBox .loadMapInfoList{margin-bottom: 45px;}
+
+}
+
+@media (max-width: 414px){
+
+  .loadMapBox.loadMapInfoBox .infotext{margin-bottom: 34px;}
+
+}
+
+.linkBox{position: absolute; top:28px; left:34px;}
+
+@media (max-width: 767px){
+
+  .linkBox{top: 15px; left: 15px;}
+
+}

@@ -102,7 +102,7 @@ export default function MainPage() {
             <Slider className={style.visualSlider} ref={sliderRefMain} {...mainSettings}>
               <div className={style.visualBox}>
                 <div className={style.imgBox}>
-                  <img src={MainImg} alt="Main Image 1" />
+                  <img src={MainImg} alt="" />
                 </div>
                 <div className={style.textBox}>
                   <h3>로드맵 설계</h3>
@@ -114,7 +114,7 @@ export default function MainPage() {
               </div>
               <div className={`${style.visualBox} ${style.visualBox02}`}>
                 <div className={style.imgBox}>
-                  <img src={MainImg} alt="Main Image 2" />
+                  <img src={MainImg} alt="" />
                 </div>
                 <div className={style.textBox}>
                   <h3>로드맵 설계</h3>
@@ -126,7 +126,7 @@ export default function MainPage() {
               </div>
               <div className={`${style.visualBox} ${style.visualBox03}`}>
                 <div className={style.imgBox}>
-                  <img src={MainImg} alt="Main Image 3" />
+                  <img src={MainImg} alt="" />
                 </div>
                 <div className={style.textBox}>
                   <h3>로드맵 설계</h3>
@@ -166,7 +166,7 @@ export default function MainPage() {
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="/roadmapinfo">
                   <div className={style.imgBox}>
                     <img src={Journey} alt="" />
                   </div>

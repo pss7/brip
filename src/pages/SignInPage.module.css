@@ -1,0 +1,8 @@
+.btnSt{margin: 60px auto 80px; max-width: 416px; height: 66px; font-size: 20px;}
+
+@media (max-width: 767px){
+
+  .btnSt{margin: 20px auto 75px; max-width: none; height: 48px; font-size: 14px;}
+
+
+}

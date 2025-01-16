@@ -28,27 +28,27 @@ export default function Header() {
           <nav className={style.navBox}>
             <ul>
               <li>
-                <Link>
+                <Link to="/">
                   홈
                 </Link>
               </li>
               <li>
-                <Link>
+                <Link to="#">
                   커리어
                 </Link>
               </li>
               <li>
-                <Link>
+                <Link to="#">
                   채용
                 </Link>
               </li>
               <li>
-                <Link>
+                <Link to="#">
                   커뮤니티
                 </Link>
               </li>
               <li>
-                <Link>
+                <Link to="#">
                   고객지원
                 </Link>
               </li>
@@ -168,7 +168,7 @@ export default function Header() {
         <nav className={style.mobileNav}>
           <ul>
             <li>
-              <Link to="#">
+              <Link to="/">
                 홈
               </Link>
             </li>

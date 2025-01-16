@@ -3,6 +3,8 @@ import Main from "../components/section/Main";
 import "../assets/css/login.css";
 import LoginImg from "../assets/images/login/Login_Img.svg"
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
+import style from "./SignInPage.module.css";
 
 export default function SignInPage() {
 
@@ -53,11 +55,7 @@ export default function SignInPage() {
                   </Link>
                 </div>
 
-                <div className="btnBox">
-                  <button className="btn">
-                    로그인
-                  </button>
-                </div>
+                <Button text="로그인" customClass={style.btnSt} />
 
               </form>
 
