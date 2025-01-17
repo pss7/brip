@@ -22,32 +22,32 @@
 }
 
 /* 로드맵 */
-.loadMapBox .loadMapContent{position: relative; padding: 50px 70px 55px; max-width: 583px; min-height: 800px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
-.loadMapBox .titleBox{margin-bottom: 60px;}
-.loadMapBox .titleBox h3{text-align: center; color: #000; font-weight: 700; font-size: 24px;}
-.loadMapBox .loadMapInfoList{margin-bottom: 62px;}
-.loadMapBox .loadMapInfoList li{position: relative; padding: 33px 52px 33px 95px; margin-bottom: 15px; line-height: 1.2; background-color: #fff; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); color: #000; font-weight: 500;}
-.loadMapBox .loadMapInfoList li:last-child{margin-bottom: 0;}
-.loadMapBox .loadMapInfoList li::before{content: ''; width: 48px; height: 40px; position: absolute; top:22px; left:26px; background: url(../images/sub/Icon01.svg)no-repeat center; background-size: cover;}
+.roadMapBox .roadMapContent{position: relative; padding: 50px 70px 55px; max-width: 583px; min-height: 800px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
+.roadMapBox .titleBox{margin-bottom: 60px;}
+.roadMapBox .titleBox h3{text-align: center; color: #000; font-weight: 700; font-size: 24px;}
+.roadMapBox .roadMapInfoList{margin-bottom: 62px;}
+.roadMapBox .roadMapInfoList li{position: relative; padding: 33px 52px 33px 95px; margin-bottom: 15px; line-height: 1.2; background-color: #fff; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); color: #000; font-weight: 500;}
+.roadMapBox .roadMapInfoList li:last-child{margin-bottom: 0;}
+.roadMapBox .roadMapInfoList li::before{content: ''; width: 48px; height: 40px; position: absolute; top:22px; left:26px; background: url(../images/sub/Icon01.svg)no-repeat center; background-size: cover;}
 
 /* 로드맵안내 */
-.loadMapBox.loadMapInfoBox .loadMapContent{padding: 90px 70px 55px;}
-.loadMapBox.loadMapInfoBox .titleBox{margin-bottom: 0;}
-.loadMapBox.loadMapInfoBox .titleBox h3{margin-bottom: 17px;}
-.loadMapBox.loadMapInfoBox .titleBox p{text-align: center; color: #5F616D; font-weight: 500; }
-.loadMapBox.loadMapInfoBox .imgBox{margin:0 0 -15px 27px;}
-.loadMapBox.loadMapInfoBox .imgBox img{display: block; width: 100%; margin: 0 auto;}
-.loadMapBox.loadMapInfoBox .infotext{margin-bottom: 40px; text-align: center; font-weight: 600; color: #000;}
-.loadMapBox.loadMapInfoBox .infotext02{margin-bottom: 28px; font-size: 14px;}
+.roadMapBox.roadMapInfoBox .roadMapContent{padding: 90px 70px 55px;}
+.roadMapBox.roadMapInfoBox .titleBox{margin-bottom: 0;}
+.roadMapBox.roadMapInfoBox .titleBox h3{margin-bottom: 17px;}
+.roadMapBox.roadMapInfoBox .titleBox p{text-align: center; color: #5F616D; font-weight: 500; }
+.roadMapBox.roadMapInfoBox .imgBox{margin:0 0 -15px 27px;}
+.roadMapBox.roadMapInfoBox .imgBox img{display: block; width: 100%; margin: 0 auto;}
+.roadMapBox.roadMapInfoBox .infotext{margin-bottom: 40px; text-align: center; font-weight: 600; color: #000;}
+.roadMapBox.roadMapInfoBox .infotext02{margin-bottom: 28px; font-size: 14px;}
 
 /* 로드맵선택 */
-.loadMapBox.roadMapDesignBox .selectBox{margin-bottom: 55px;}
-.loadMapBox.roadMapDesignBox .selectBox:last-child{margin-bottom: 0;}
-.loadMapBox.roadMapDesignBox .selectBox .selectText{margin-bottom: 31px; font-weight: 700; color: #000; font-size: 20px; line-height: 1.4;}
-.loadMapBox.roadMapDesignBox .selectBox .selectList li{margin-bottom: 16px;}
-.loadMapBox.roadMapDesignBox .selectBox .selectList li:last-child{margin-bottom: 0;}
-.loadMapBox.roadMapDesignBox .selectBox .selectList li a{padding: 17px 10px 17px 35px; display: block; background-color: #FAFAFC; color: #000; border-radius: 10px;}
-.loadMapBox.roadMapDesignBox .selectBox .selectList li a.active{border: 3px solid #1C1B18;}
+.roadMapBox.roadMapDesignBox .selectBox{margin-bottom: 55px;}
+.roadMapBox.roadMapDesignBox .selectBox:last-child{margin-bottom: 0;}
+.roadMapBox.roadMapDesignBox .selectBox .selectText{margin-bottom: 31px; font-weight: 700; color: #000; font-size: 20px; line-height: 1.4;}
+.roadMapBox.roadMapDesignBox .selectBox .selectList li{margin-bottom: 16px;}
+.roadMapBox.roadMapDesignBox .selectBox .selectList li:last-child{margin-bottom: 0;}
+.roadMapBox.roadMapDesignBox .selectBox .selectList li .selectBtn{display: block; width: 100%; padding: 17px 10px 17px 35px; display: block; background-color: #FAFAFC; color: #000; border-radius: 10px; text-align: left;}
+.roadMapBox.roadMapDesignBox .selectBox .selectList li .selectBtn.active{border: 3px solid #1C1B18;}
 
 
 
@@ -67,24 +67,24 @@
 
 @media (max-width: 1199px){
 
-  .loadMapBox .loadMapContent{padding: 80px 70px 55px!important;}
-  .loadMapBox .titleBox h3{font-size: 22px;}
+  .roadMapBox .roadMapContent{padding: 80px 70px 55px!important;}
+  .roadMapBox .titleBox h3{font-size: 22px;}
 
 }
 
 @media (max-width: 767px){
 
-  .loadMapBox .loadMapContent{padding: 70px 20px 55px!important;}
-  .loadMapBox .loadMapInfoList li{margin-bottom: 10px; padding: 25px 20px 25px 65px;}
-  .loadMapBox .loadMapInfoList li::before{width: 38px; height: 30px; top: 20px; left: 16px;} 
-  .loadMapBox .titleBox h3{font-size: 20px;}
-  .loadMapBox .loadMapInfoList{margin-bottom: 45px;}
+  .roadMapBox .roadMapContent{padding: 70px 20px 55px!important;}
+  .roadMapBox .roadMapInfoList li{margin-bottom: 10px; padding: 25px 20px 25px 65px;}
+  .roadMapBox .roadMapInfoList li::before{width: 38px; height: 30px; top: 20px; left: 16px;} 
+  .roadMapBox .titleBox h3{font-size: 20px;}
+  .roadMapBox .roadMapInfoList{margin-bottom: 45px;}
 
 }
 
 @media (max-width: 414px){
 
-  .loadMapBox.loadMapInfoBox .infotext{margin-bottom: 34px;}
+  .roadMapBox.roadMapInfoBox .infotext{margin-bottom: 34px;}
 
 }
 

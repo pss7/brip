@@ -5,12 +5,12 @@ import Button from "../components/Button";
 import RoadMapImg from "../assets/images/sub/RoadMap_Img.png";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 
-export default function RoadMapInfoPage() {
+export default function RoadMapResultPage() {
 
   return (
     <Main className="subWrap bg">
 
-      <div className="roadMapBox roadMapInfoBox">
+      <div className="roadMapBox roadMapResultBox">
         <Container>
           <div className="roadMapContent">
             <div className="titleBox">
