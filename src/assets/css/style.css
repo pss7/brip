@@ -40,6 +40,31 @@
 .loadMapBox.loadMapInfoBox .infotext{margin-bottom: 40px; text-align: center; font-weight: 600; color: #000;}
 .loadMapBox.loadMapInfoBox .infotext02{margin-bottom: 28px; font-size: 14px;}
 
+/* 로드맵선택 */
+.loadMapBox.roadMapDesignBox .selectBox{margin-bottom: 55px;}
+.loadMapBox.roadMapDesignBox .selectBox:last-child{margin-bottom: 0;}
+.loadMapBox.roadMapDesignBox .selectBox .selectText{margin-bottom: 31px; font-weight: 700; color: #000; font-size: 20px; line-height: 1.4;}
+.loadMapBox.roadMapDesignBox .selectBox .selectList li{margin-bottom: 16px;}
+.loadMapBox.roadMapDesignBox .selectBox .selectList li:last-child{margin-bottom: 0;}
+.loadMapBox.roadMapDesignBox .selectBox .selectList li a{padding: 17px 10px 17px 35px; display: block; background-color: #FAFAFC; color: #000; border-radius: 10px;}
+.loadMapBox.roadMapDesignBox .selectBox .selectList li a.active{border: 3px solid #1C1B18;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 1199px){
 
   .loadMapBox .loadMapContent{padding: 80px 70px 55px!important;}
