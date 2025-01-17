@@ -1,6 +1,6 @@
 import style from "./Button.module.css";
 
-export default function Button({ text, customClass, href }) {
+export default function Button({ text, customClass, href, type }) {
 
   function handleClick() {
 
@@ -11,7 +11,7 @@ export default function Button({ text, customClass, href }) {
   }
 
   return (
-    <button onClick={handleClick} className={`${style.btn} ${customClass}`}>
+    <button onClick={handleClick} className={`${style.btn} ${customClass}`} type={type}>
       {text}
     </button>
   )

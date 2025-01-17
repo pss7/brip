@@ -80,7 +80,10 @@ export default function RoadMapDesignPage() {
               </ul>
             </div>
 
-            <Button text="완료" />
+            <Button
+              text="완료"
+              href="/roadmapresult"
+            />
 
             <div className="linkBox">
               <ArrowPrevButton href="/roadmapinfo" hiddenText="로드맵안내화면으로 이동" />

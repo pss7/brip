@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage';
 import SearchPage from './pages/SearchPage';
 import RoadMapInfoPage from './pages/RoadMapInfoPage';
 import RoadMapDesignPage from './pages/RoadMapDesignPage';
+import RoadMapResultPage from './pages/RoadMapResultPage';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/search' element={<SearchPage />} />
           <Route path='/roadmapinfo' element={<RoadMapInfoPage />} />
           <Route path='/roadmapdesign' element={<RoadMapDesignPage />} />
+          <Route path='/roadmapresult' element={<RoadMapResultPage />} />
         </Routes>
       </BrowserRouter>
     </>
