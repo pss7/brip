@@ -9,8 +9,8 @@ export default function Button({ text, customClass, href }) {
 
     navigate(href); 
 
-
   }
+  
   return (
     <button onClick={handleClick} className={`${style.btn} ${customClass}`}>
       {text}

@@ -38,7 +38,7 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="/employment">
                   채용
                 </Link>
               </li>
@@ -178,7 +178,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="/employment">
                 채용
               </Link>
             </li>

@@ -7,6 +7,8 @@ import SearchPage from './pages/SearchPage';
 import RoadMapInfoPage from './pages/RoadMapInfoPage';
 import RoadMapDesignPage from './pages/RoadMapDesignPage';
 import RoadMapResultPage from './pages/RoadMapResultPage';
+import EmploymentPage from './pages/EmploymentPage';
+import EmploymentDetailPage from './pages/EmploymentDetailPage';
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
           <Route path='/roadmapinfo' element={<RoadMapInfoPage />} />
           <Route path='/roadmapdesign' element={<RoadMapDesignPage />} />
           <Route path='/roadmapresult' element={<RoadMapResultPage />} />
+          <Route path='/employment' element={<EmploymentPage />} />
+          <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
         </Routes>
       </BrowserRouter>
     </>
