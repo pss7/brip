@@ -50,7 +50,6 @@ export default function RoadMapInfoPage() {
             <Button
               text="로드맵 설계 시작하기"
               href="/roadmapdesign"
-              type="button"
             />
 
             <div className="linkBox">
