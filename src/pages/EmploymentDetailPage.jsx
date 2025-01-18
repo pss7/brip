@@ -7,8 +7,12 @@ import CardImg02 from "../assets/images/main/Card_Img02.png";
 import CardImg03 from "../assets/images/main/Card_Img03.png";
 import DetailImg from "../assets/images/sub/Detail_Img.png";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function EmploymentDetailPage() {
+
+  const [isResumeVisible, setIsResumeVisible] = useState(false);
 
   return (
     <Main className="subWrap">
@@ -85,7 +89,6 @@ export default function EmploymentDetailPage() {
 
                 </div>
 
-
                 <div className="employmentDetail">
                   <h4>
                     기술스택
@@ -138,16 +141,91 @@ export default function EmploymentDetailPage() {
                   <div className="mapBox">
                     지도영역
                   </div>
-
                 </div>
-
               </div>
 
               <div className="employmentDetailRight">
-                <Button
-                  text="지원하기"
-                  customClass={style.btn}
-                />
+
+                {
+                  isResumeVisible && (
+                    <div className="applyBox">
+
+                      <h4>
+                        지원하기
+                      </h4>
+
+                      <div className="selectBox">
+                        <label htmlFor="select" className="blind">
+                          지원분야 선택
+                        </label>
+                        <select id="select" className="select">
+                          <option value="">지원분야선택</option>
+                        </select>
+                      </div>
+
+                      <ul className="resumeList">
+                        <li>
+                          <Link to="#">
+                            <div className="resumeInfoList">
+                              <span className="basic">기본이력서</span>
+                              <span className="certification">경력인증</span>
+                            </div>
+
+                            <div className="titleBox">
+                              <h5>홍길동의 이력서</h5>
+                            </div>
+
+                            <span className="date">
+                              2024-12-12
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="#">
+                            <div className="resumeInfoList">
+                              <span className="basic">기본이력서</span>
+                              <span className="certification">경력인증</span>
+                            </div>
+
+                            <div className="titleBox">
+                              <h5>홍길동의 이력서</h5>
+                            </div>
+
+                            <span className="date">
+                              2024-12-12
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+
+                      <button className="writeBtn">
+                        <span>
+                          새 이력서 작성
+                        </span>
+                      </button>
+
+                      <Button
+                        text="제출하기"
+                        customClass={style.btn}
+                      />
+
+                      <Link className="link" to="/employment">
+                        <span className="blind">채용공고 화면으로 이동</span>
+                      </Link>
+
+                    </div>
+
+                  )
+                }
+
+                {!isResumeVisible && (
+                  <Button
+                    text="지원하기"
+                    customClass={style.btn}
+                    onClick={() => setIsResumeVisible(true)}
+                  />
+                )}
+
                 <div className="aiInfoBox">
                   <p>
                     이력서를 작성하면 <br />
