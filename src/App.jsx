@@ -9,6 +9,9 @@ import RoadMapDesignPage from './pages/RoadMapDesignPage';
 import RoadMapResultPage from './pages/RoadMapResultPage';
 import EmploymentPage from './pages/EmploymentPage';
 import EmploymentDetailPage from './pages/EmploymentDetailPage';
+import NoticePage from './pages/NoticePage';
+import NoticeDetailPage from './pages/NoticeDetailPage';
+import FAQPage from './pages/FAQPage';
 
 function App() {
 
@@ -26,6 +29,9 @@ function App() {
           <Route path='/roadmapresult' element={<RoadMapResultPage />} />
           <Route path='/employment' element={<EmploymentPage />} />
           <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
+          <Route path='/notice' element={<NoticePage />} />
+          <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
+          <Route path='/faq' element={<FAQPage />} />
         </Routes>
       </BrowserRouter>
     </>

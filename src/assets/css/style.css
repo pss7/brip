@@ -329,3 +329,90 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
   .linkBox{top: 15px; left: 15px;}
 
 }
+
+/* LNB레이아웃 */
+.lnbContainer{max-width: 1132px;}
+.lnbLayoutBox{display: flex;}
+.lnbLayoutBox aside{flex-shrink: 0; width: 254px; padding-left: 25px;}
+.lnbLayoutBox aside a{position: relative;}
+.lnbLayoutBox aside a span{width: 85%; padding: 0 0 0 50px; display: flex; align-items: center; height: 44px; color: #202224; font-size: 14px;}
+.lnbLayoutBox aside a.active span{background-color: #1C1B18; color: #fff; border-radius: 7px;}
+.lnbLayoutBox aside a.active::before{content: ''; position: absolute; top:0; left:-25px; bottom: 0; width: 5px; border-radius: 0 30px 30px 0; background-color: #1C1B18;}
+.lnbLayoutBox .content{ min-height: 800px; padding: 42px 39px 50px 39px; width: 100%; background-color: #fff; border-radius: 20px;}
+.lnbLayoutBox .content .topBox{margin-bottom: 30px; display: flex;  justify-content: space-between; position: relative;}
+.lnbLayoutBox .content h4{font-size: 20px; font-weight: 600; color: #000;}
+.lnbLayoutBox .content .searchBox{display: flex; gap: 0 22px; align-items: center;}
+.lnbLayoutBox .content .searchBox .search input{padding-left: 40px; width: 216px; height: 38px; border-radius: 10px; background-color: #F9FBFF; font-size: 12px; border: 0; }
+.lnbLayoutBox .content .searchBox .search input::placeholder{color: #B5B7C0;}
+.lnbLayoutBox .content .searchBox .search{position: relative;}
+.lnbLayoutBox .content .searchBox .search::before{width: 25px; height: 24px; content: ''; position: absolute; top:6px; left:8px; background: url(../images/sub/Search_Icon02.svg)no-repeat center;}
+.lnbLayoutBox .content .searchBox .select{padding-left: 15px; width: 135px; height: 38px; border: 0; font-size: 12px; color: #7E7E7E; -webkit-appearance:none;  -moz-appearance:none; appearance:none; background:#F9FBFF url(../images/sub/Select_Icon02.svg)no-repeat 87% center; background-size: 15px 8px; cursor: pointer; border-radius: 10px;}
+
+@media (max-width: 1024px){
+
+  .lnbLayoutBox{flex-direction: column;}
+  .lnbLayoutBox aside {margin-bottom: 35px; box-shadow: 5px 5px 10px rgba(0,0,0,.1); border-radius: 10px; overflow: hidden;}
+  .lnbLayoutBox aside a.active::before{display: none;}
+  .lnbLayoutBox aside{display: flex; flex-wrap: wrap; padding-left: 0; width: 100%; background-color: #fff; }
+  .lnbLayoutBox aside a{width: 33.33%;}
+  .lnbLayoutBox aside a span{padding: 0 10px; justify-content: center; width: 100%;}
+  .lnbLayoutBox aside a.active span{border-radius: 0;}
+  .lnbLayoutBox .content{border-radius: 10px;}
+
+}
+
+@media (max-width: 767px){
+
+  .lnbLayoutBox .content{padding: 30px;}
+  .lnbLayoutBox .content h4{font-size: 18px;}
+  .lnbLayoutBox .content .topBox{margin-bottom: 20px; flex-direction: column; gap: 35px 0;}
+  .lnbLayoutBox .content .searchBox{gap: 0 10px;}
+  .lnbLayoutBox .content .searchBox .search{width: 100%;}
+  .lnbLayoutBox .content .searchBox .search input{width: 100%; border-radius: 5px;}
+  .lnbLayoutBox .content .searchBox .select{border-radius: 5px;}
+   
+}
+
+@media (max-width: 414px){
+
+  .lnbLayoutBox .content .topBox{gap: 20px 0;}
+  .lnbLayoutBox .content .searchBox{flex-direction: column; gap: 5px 0;}
+  .lnbLayoutBox .content .searchBox .selectBox,
+  .lnbLayoutBox .content .searchBox .selectBox .select{width: 100%;}
+  .lnbLayoutBox .content .searchBox .selectBox .select{background-position-x: 95%;}
+  .lnbLayoutBox .content{padding: 30px 20px;}
+  .lnbLayoutBox aside a{width: 50%;}
+
+}
+
+/* 공지사항 상세 */
+.noticeDetailBox .content{display: flex; flex-direction: column;}
+.noticeDetailBox .topBox{padding-bottom: 20px; border-bottom: 1px solid #B3B3B3;}
+.noticeDetailBox .layoutBox{display: flex; gap: 0 30px;}
+.noticeDetailBox .topBox .category{color: #4A6CFC;}
+.noticeDetailBox .topBox span{color: #5E5C5C;}
+.noticeDetailBox .infoText{font-weight: 500; color: #000;}
+.noticeDetailBox .btn{margin-top: auto;}
+
+/* FAQ */
+.faqBox .faqTabBox{margin-bottom: 34px; display: flex; align-items: center; gap: 0 10px;}
+.faqBox .faqTabBox button{color: #353A3C;  font-size: 12px; width: 62px; height: 33px;}
+.faqBox .faqTabBox button.active{border-radius: 5px; background-color: #1C1B18; color: #fff; font-weight: 600;}
+.faqBox .faqContentBox .faqContent{border-bottom: 1px solid #E9E9E9;}
+.faqBox .faqContentBox .faqContent h4 .btn{position: relative; display: block; width: 100%; padding: 15px 42px 15px 35px; font-weight: 700; color: #313131; text-align: left;}
+.faqBox .faqContentBox .faqContent h4 .btn::after{content: ''; width: 11px; height: 6px; right: 17px; position: absolute; top:50%; transform: translateY(-50%); background: url(../images/sub/Arrow_Icon03.svg)no-repeat center;}
+.faqBox .faqContentBox .faqContent h4 .btn.active::after{transform: translateY(-50%) rotate(-180deg);}
+.faqBox .faqContentBox .faqContent h4 .btn::before{content: 'Q'; position: absolute; top:13px; left:8px; font-size: 16px; font-weight: 700; color: #000;}
+.faqBox .faqContentBox p{padding: 0 0 16px; color: #313131; font-size: 14px; line-height: 1.4;}
+
+
+
+
+
+
+
+/* 공통-텍스트정렬 */
+.textLeft{text-align: left!important;}
+
+/* 공통-1줄 말줄임 효과 */
+.ellipsisText{overflow: hidden; text-overflow:ellipsis; white-space: nowrap;}
