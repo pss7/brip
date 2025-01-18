@@ -405,6 +405,49 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .faqBox .faqContentBox .faqContent h4 .btn::before{content: 'Q'; position: absolute; top:13px; left:8px; font-size: 16px; font-weight: 700; color: #000;}
 .faqBox .faqContentBox p{padding: 0 0 16px; color: #313131; font-size: 14px; line-height: 1.4;}
 
+/* 이용약관 */
+.termsBox h5{margin: 20px 0 15px; color: #000; font-weight: 600; line-height: 1.6; font-size: 16px;}
+.termsBox h6{font-size: 14px; font-weight: 400; color: #000; line-height: 2;}
+.termsBox p{margin-bottom: 25px; font-size: 14px; color: #000; font-weight: 400; line-height: 2;}
+.termsBox .depth01{margin-bottom: 25px;}
+.termsBox .depth01 li{font-size: 14px; color: #000; font-weight: 400; line-height: 2;}
+.termsBox .depth02{margin-left: 20px;}
+.termsBox .content{min-height: auto; height: 800px; padding: 42px 68px 50px 39px; overflow-y: auto;}
+.termsBox .content::-webkit-scrollbar { width: 10px; }
+.termsBox .content::-webkit-scrollbar-thumb { background-color: #d5d5d5; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
+.termsBox .content::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
+
+/* 개인정보처리방침 */
+.policyBox h5{margin: 20px 0 15px; color: #000; font-weight: 600; line-height: 1.6; font-size: 16px;}
+.policyBox h6{font-size: 14px; font-weight: 400; color: #000; line-height: 2;}
+.policyBox p{margin-bottom: 25px; font-size: 14px; color: #000; font-weight: 400; line-height: 2;}
+.policyBox .depth01{margin-bottom: 25px;}
+.policyBox .depth01 li{font-size: 14px; color: #000; font-weight: 400; line-height: 2;}
+.policyBox .depth02{margin-left: 20px;}
+.policyBox .content{min-height: auto; height: 800px; padding: 42px 68px 50px 39px; overflow-y: auto;}
+.policyBox .content::-webkit-scrollbar { width: 10px; }
+.policyBox .content::-webkit-scrollbar-thumb { background-color: #d5d5d5; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
+.policyBox .content::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
+
+
+
+@media (max-width: 767px){
+
+  .termsBox .content{padding: 30px;}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

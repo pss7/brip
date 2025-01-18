@@ -24,8 +24,8 @@ export default function NoticePage() {
                 </Link>
                 <Link to="/faq"><span>FAQ</span></Link>
                 <Link to="#"><span>1:1 문의</span></Link>
-                <Link to="#"><span>이용약관</span></Link>
-                <Link to="#"><span>개인정보처리방침</span></Link>
+                <Link to="/terms"><span>이용약관</span></Link>
+                <Link to="/policy"><span>개인정보처리방침</span></Link>
               </aside>
 
               <div className="content">

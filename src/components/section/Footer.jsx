@@ -16,12 +16,12 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="/terms">
                 <span>이용약관</span>
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="/policy">
                 <span>개인정보처리방침</span>
               </Link>
             </li>

@@ -12,6 +12,8 @@ import EmploymentDetailPage from './pages/EmploymentDetailPage';
 import NoticePage from './pages/NoticePage';
 import NoticeDetailPage from './pages/NoticeDetailPage';
 import FAQPage from './pages/FAQPage';
+import TermsPage from './pages/TermsPage';
+import PolicyPage from './pages/policyPage';
 
 function App() {
 
@@ -32,6 +34,8 @@ function App() {
           <Route path='/notice' element={<NoticePage />} />
           <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
           <Route path='/faq' element={<FAQPage />} />
+          <Route path='/terms' element={<TermsPage />} />
+          <Route path='/policy' element={<PolicyPage />} />
         </Routes>
       </BrowserRouter>
     </>
