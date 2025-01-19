@@ -1,7 +1,7 @@
 import style from "./Button.module.css";
 import { useNavigate } from "react-router-dom";
 
-export default function Button({ text, customClass, href, onClick }) {
+export default function Button({ type, text, customClass, href, onClick }) {
 
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ export default function Button({ text, customClass, href, onClick }) {
   }
 
   return (
-    <button onClick={handleClick} className={`${style.btn} ${customClass}`}>
+    <button type={type} onClick={handleClick} className={`${style.btn} ${customClass}`}>
       {text}
     </button>
   );

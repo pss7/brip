@@ -14,6 +14,10 @@ import NoticeDetailPage from './pages/NoticeDetailPage';
 import FAQPage from './pages/FAQPage';
 import TermsPage from './pages/TermsPage';
 import PolicyPage from './pages/PolicyPage';
+import PrivateRoute from './pages/PrivateRoute';
+import MyPage from './pages/MyPage';
+import InquiryPage from './pages/InquiryPage';
+
 
 function App() {
 
@@ -36,6 +40,16 @@ function App() {
           <Route path='/faq' element={<FAQPage />} />
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/policy' element={<PolicyPage />} />
+          <Route path='/inquiry' element={<InquiryPage />} />
+          {/* 로그인 후에만 접근 가능한 페이지 */}
+          <Route
+            path="/mypage"
+            element={
+              <PrivateRoute>
+                <MyPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

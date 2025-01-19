@@ -23,7 +23,7 @@ export default function NoticePage() {
                   </span>
                 </Link>
                 <Link to="/faq"><span>FAQ</span></Link>
-                <Link to="#"><span>1:1 문의</span></Link>
+                <Link to="/inquiry"><span>1:1 문의</span></Link>
                 <Link to="/terms"><span>이용약관</span></Link>
                 <Link to="/policy"><span>개인정보처리방침</span></Link>
               </aside>
@@ -56,7 +56,26 @@ export default function NoticePage() {
                   </div>
                 </div>
 
-                <Table href="/noticedetail" data={data} className={"textLeft ellipsisText"}/>
+                <Table
+                  href="/noticedetail"
+                  data={data}
+                  className={"textLeft ellipsisText"}
+                >
+                  <colgroup>
+                    <col style={{ width: "100px" }} />
+                    <col style={{ width: "90px" }} />
+                    <col style={{ width: "auto" }} />
+                    <col style={{ width: "150px" }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>NO.</th>
+                      <th>구분</th>
+                      <th>제목</th>
+                      <th>등록일</th>
+                    </tr>
+                  </thead>
+                </Table>
 
               </div>
             </div>

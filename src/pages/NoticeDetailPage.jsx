@@ -24,12 +24,12 @@ export default function NoticeDetailPage() {
                   </span>
                 </Link>
                 <Link to="/faq"><span>FAQ</span></Link>
-                <Link to="#"><span>1:1 문의</span></Link>
+                <Link to="/inquiry"><span>1:1 문의</span></Link>
                 <Link to="/terms"><span>이용약관</span></Link>
                 <Link to="/policy"><span>개인정보처리방침</span></Link>
               </aside>
 
-              <div className="content">
+              <div className="content flexColumn">
                 <div className="topBox">
                   <h4>
                     {notice.title}
@@ -48,7 +48,11 @@ export default function NoticeDetailPage() {
                   {notice.content}
                 </p>
 
-                <Button customClass="btn" text="목록으로" href="/notice" />
+                <Button
+                  customClass="btn"
+                  text="목록으로"
+                  href="/notice"
+                />
 
               </div>
             </div>

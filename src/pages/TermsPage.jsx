@@ -18,7 +18,7 @@ export default function TermsPage() {
                   </span>
                 </Link>
                 <Link to="/faq"><span>FAQ</span></Link>
-                <Link to="#"><span>1:1 문의</span></Link>
+                <Link to="/inquiry"><span>1:1 문의</span></Link>
                 <Link to="/terms" className="active"><span>이용약관</span></Link>
                 <Link to="/policy"><span>개인정보처리방침</span></Link>
               </aside>

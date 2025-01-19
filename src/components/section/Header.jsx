@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
@@ -7,10 +7,19 @@ import Alarm from "../Alarm";
 
 export default function Header() {
 
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isalarmOpen, setIsAlarmOpen] = useState(false);
+  const [user] = useState(() => {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+  });
+
+  const getActiveClass = (path) => {
+    return location.pathname === path ? `${style.active}` : '';
+  };
 
   return (
     <header id={style.headerBox}>
@@ -28,27 +37,27 @@ export default function Header() {
           <nav className={style.navBox}>
             <ul>
               <li>
-                <Link to="/">
+                <Link to="/" className={getActiveClass('/')}>
                   홈
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="#" className={getActiveClass('/career')}>
                   커리어
                 </Link>
               </li>
               <li>
-                <Link to="/employment">
+                <Link to="/employment" className={getActiveClass('/employment')}>
                   채용
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="#" className={getActiveClass('/community')}>
                   커뮤니티
                 </Link>
               </li>
               <li>
-                <Link to="/notice">
+                <Link to="/notice" className={getActiveClass('/notice')}>
                   고객지원
                 </Link>
               </li>
@@ -135,15 +144,20 @@ export default function Header() {
                 </span>
               </button>
 
-              <Alarm isalarmOpen={isalarmOpen} setIsAlarmOpen={setIsAlarmOpen}/>
+              <Alarm isalarmOpen={isalarmOpen} setIsAlarmOpen={setIsAlarmOpen} />
 
             </div>
 
             <div className={style.loginBox}>
-              <Link to="/signin" className={style.loginBtn}>
-                로그인
-              </Link>
+              {user ? (
+                <Link to="/mypage">
+                  <img src={user.profileImg} alt="" />
+                </Link>  // 사용자 정보가 있으면 마이페이지 링크
+              ) : (
+                <Link to="/signin" className={style.loginBtn}>로그인</Link>  // 없으면 로그인 버튼
+              )}
             </div>
+
           </div>
 
           <button className={style.mobileMenuBtn} onClick={() => setIsMobileMenuOpen(true)}>
@@ -168,27 +182,27 @@ export default function Header() {
         <nav className={style.mobileNav}>
           <ul>
             <li>
-              <Link to="/">
+              <Link to="/" className={getActiveClass('/')}>
                 홈
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="#" className={getActiveClass('/career')}>
                 커리어
               </Link>
             </li>
             <li>
-              <Link to="/employment">
+              <Link to="/employment" className={getActiveClass('/employment')}>
                 채용
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="#" className={getActiveClass('/community')}>
                 커뮤니티
               </Link>
             </li>
             <li>
-              <Link to="/notice">
+              <Link to="/notice" className={getActiveClass('/notice')}>
                 고객지원
               </Link>
             </li>

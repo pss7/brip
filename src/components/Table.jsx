@@ -1,55 +1,29 @@
 import { Link } from "react-router-dom";
 import style from "./Table.module.css";
 
-export default function Table({ href, data, className }) {
+export default function Table({ caption, href, data, className, children, showStatus = false }) {
 
   return (
     <div className={style.tableBox}>
       <table className={style.table}>
         <caption className="blind">
-          공지사항
+          {caption}
         </caption>
-        <colgroup>
-          <col style={{ width: "100px" }} />
-          <col style={{ width: "90px" }} />
-          <col style={{ width: "auto" }} />
-          <col style={{ width: "150px" }} />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>
-              NO.
-            </th>
-            <th>
-              구분
-            </th>
-            <th>
-              제목
-            </th>
-            <th>
-              등록일
-            </th>
-          </tr>
-        </thead>
+        {children}
         <tbody>
           {
-            data.map((noticeData, index) => {
+            data.map((data, index) => {
               return (
                 <tr key={index}>
+                  <td>{data.id}</td>
+                  <td>{data.category}</td>
                   <td>
-                    {noticeData.id}
-                  </td>
-                  <td>
-                    {noticeData.category}
-                  </td>
-                  <td>
-                    <Link to={`${href}/${noticeData.id}`} className={className}>
-                      {noticeData.title}
+                    <Link to={`${href}/${data.id}`} className={className}>
+                      {data.title}
                     </Link>
                   </td>
-                  <td>
-                    {noticeData.date}
-                  </td>
+                  {showStatus && <td><span className={`${style.status} ${data.status === "답변완료" ? `${style.complete}` : ""}`}>{data.status}</span></td>}
+                  <td>{data.date}</td>
                 </tr>
               )
             })
