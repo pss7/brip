@@ -171,7 +171,7 @@ export default function MainPage() {
           <div className={style.linkContent}>
             <ul className={style.linkList}>
               <li>
-                <Link to="#">
+                <Link to="/career">
                   <div className={style.imgBox}>
                     <img src={JobSeeker} alt="" />
                   </div>
