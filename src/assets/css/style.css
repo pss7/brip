@@ -3,6 +3,15 @@
 .subWrap{padding: 43px 0; min-height: 600px;}
 .subWrap.bg{background-color:#FAFAFD;}
 
+/* 공통-정렬 */
+.flexColumn{display: flex; flex-direction: column;}
+
+/* 공통-텍스트정렬 */
+.textLeft{text-align: left!important;}
+
+/* 공통-1줄 말줄임 효과 */
+.ellipsisText{overflow: hidden; text-overflow:ellipsis; white-space: nowrap;}
+
 /* 공통-카드 */
 .cardBox{display: block; width: 23.65%;}
 .cardContainer{display: flex; flex-wrap: wrap; gap: 50px 1.8%;}
@@ -416,6 +425,12 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .termsBox .content::-webkit-scrollbar-thumb { background-color: #d5d5d5; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
 .termsBox .content::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
 
+@media (max-width: 767px){
+
+  .termsBox .content{padding: 30px;}
+
+}
+
 /* 개인정보처리방침 */
 .policyBox h5{margin: 20px 0 0; color: #000; font-weight: 600; line-height: 1.6; font-size: 16px;}
 .policyBox h6{font-size: 14px; font-weight: 400; color: #000; line-height: 2;}
@@ -440,11 +455,6 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 
 
 
-@media (max-width: 767px){
-
-  .termsBox .content{padding: 30px;}
-
-}
 
 
 
@@ -455,17 +465,3 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 
 
 
-
-
-
-
-
-
-/* 공통-정렬 */
-.flexColumn{display: flex; flex-direction: column;}
-
-/* 공통-텍스트정렬 */
-.textLeft{text-align: left!important;}
-
-/* 공통-1줄 말줄임 효과 */
-.ellipsisText{overflow: hidden; text-overflow:ellipsis; white-space: nowrap;}
