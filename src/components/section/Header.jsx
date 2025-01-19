@@ -92,7 +92,7 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link to="#" className={getActiveClass('/career')}>
+                <Link to="/career" className={getActiveClass('/career')}>
                   커리어
                 </Link>
               </li>
@@ -220,7 +220,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link to="#" className={getActiveClass('/career')}>
+              <Link to="/career" className={getActiveClass('/career')}>
                 커리어
               </Link>
             </li>
