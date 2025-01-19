@@ -1,4 +1,4 @@
-import ProfileImg from '/assets/images/common/Profile_Img.svg';
+import ProfileImg from '/assets/images/sub/Profile_Img.svg';
 
 export const userData = {
   name: '홍길동',
