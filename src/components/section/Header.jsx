@@ -9,6 +9,7 @@ export default function Header() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [recentSearches, setRecentSearches] = useState(loadRecentSearches());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,35 +23,36 @@ export default function Header() {
     return location.pathname === path ? `${style.active}` : '';
   };
 
-  // 최근 검색어 목록 로딩
-  const loadRecentSearches = () => {
-    const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-    return recentSearches;
+  // 로컬 스토리지에서 최근 검색어 목록 불러오기
+  function loadRecentSearches() {
+    return JSON.parse(localStorage.getItem('recentSearches')) || [];
+  }
+
+  // 최근 검색어 목록 업데이트
+  const updateRecentSearches = (newSearches) => {
+    localStorage.setItem('recentSearches', JSON.stringify(newSearches));
+    setRecentSearches(newSearches);
   };
 
   // 검색어 추가
   const addRecentSearch = (newSearch) => {
-    let recentSearches = loadRecentSearches();
+    // 새로운 검색어 추가 (중복 제거)
+    let updatedSearches = recentSearches.filter(search => search !== newSearch);
+    updatedSearches.unshift(newSearch);
 
-    // 검색어가 이미 목록에 있으면 제거하고 다시 추가
-    recentSearches = recentSearches.filter(search => search !== newSearch);
-    recentSearches.unshift(newSearch);
-
-    // 최근 검색어가 최대 5개까지만 저장되도록 설정
-    if (recentSearches.length > 5) {
-      recentSearches = recentSearches.slice(0, 5);
+    // 최대 5개까지만 저장
+    if (updatedSearches.length > 5) {
+      updatedSearches = updatedSearches.slice(0, 5);
     }
 
-    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+    updateRecentSearches(updatedSearches);
   };
 
   // 최근 검색어 삭제
   const handleKeywordDelete = (keyword) => {
-    let recentSearches = loadRecentSearches();
-    recentSearches = recentSearches.filter(search => search !== keyword);
-    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+    const updatedSearches = recentSearches.filter(search => search !== keyword);
+    updateRecentSearches(updatedSearches);
   };
-
 
   // 검색어 입력 시 상태 변경
   const handleChange = (e) => {
@@ -100,7 +102,7 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link to="#" className={getActiveClass('/community')}>
+                <Link to="/community" className={getActiveClass('/community')}>
                   커뮤니티
                 </Link>
               </li>
@@ -114,13 +116,11 @@ export default function Header() {
 
           <div className={style.linkBox}>
             <div className={`${style.searchBox} ${isSearchOpen ? `${style.active}` : ""}`}>
-              <Link to="#" className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
+              <Link className={style.searchBtn} onClick={() => setIsSearchOpen(!isSearchOpen)}>
                 <span className="blind">
                   검색
                 </span>
               </Link>
-
-
               <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
                 <div
                   className={style.searchInputBox}
@@ -230,7 +230,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link to="#" className={getActiveClass('/community')}>
+              <Link to="/community" className={getActiveClass('/community')}>
                 커뮤니티
               </Link>
             </li>
@@ -244,7 +244,11 @@ export default function Header() {
 
         <div className={style.linkBox}>
           <div className={style.searchBox}>
-            <Link to="#" className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
+            <Link
+              to="/search"
+              className={style.searchBtn}
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+            >
               <span className="blind">
                 검색
               </span>
@@ -264,6 +268,7 @@ export default function Header() {
               로그인
             </Link>
           </div>
+
         </div>
 
         <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
@@ -281,8 +286,8 @@ export default function Header() {
               onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
             />
           </div>
-        </div>
 
+        </div>
         <button className={style.mobileCloseBtn} onClick={() => setIsMobileMenuOpen(false)}>
           <span className="blind">
             모바일 메뉴 닫기

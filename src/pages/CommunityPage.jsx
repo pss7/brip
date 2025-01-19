@@ -2,7 +2,7 @@
 import Container from "../components/Container";
 import Main from "../components/section/Main";
 
-export default function MyPage() {
+export default function CommunityPage() {
 
   return (
     <Main className="subWrap bg">
@@ -10,7 +10,7 @@ export default function MyPage() {
       <div className="communityBox">
         <Container className="lnbContainer">
           <div className="communityContent">
-            마이페이지
+            커뮤니티
           </div>
         </Container>
       </div >
