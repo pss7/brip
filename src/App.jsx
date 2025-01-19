@@ -13,7 +13,7 @@ import NoticePage from './pages/NoticePage';
 import NoticeDetailPage from './pages/NoticeDetailPage';
 import FAQPage from './pages/FAQPage';
 import TermsPage from './pages/TermsPage';
-import PolicyPage from './pages/policyPage';
+import PolicyPage from './pages/PolicyPage';
 
 function App() {
 
