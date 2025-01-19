@@ -22,6 +22,36 @@ export default function Header() {
     return location.pathname === path ? `${style.active}` : '';
   };
 
+    // 최근 검색어 목록 로딩
+    const loadRecentSearches = () => {
+      const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+      return recentSearches;
+    };
+
+     // 검색어 추가
+  const addRecentSearch = (newSearch) => {
+    let recentSearches = loadRecentSearches();
+
+    // 검색어가 이미 목록에 있으면 제거하고 다시 추가
+    recentSearches = recentSearches.filter(search => search !== newSearch);
+    recentSearches.unshift(newSearch);
+
+    // 최근 검색어가 최대 5개까지만 저장되도록 설정
+    if (recentSearches.length > 5) {
+      recentSearches = recentSearches.slice(0, 5);
+    }
+
+    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+  };
+
+    // 최근 검색어 삭제
+    const handleKeywordDelete = (keyword) => {
+      let recentSearches = loadRecentSearches();
+      recentSearches = recentSearches.filter(search => search !== keyword);
+      localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+    };
+  
+
   // 검색어 입력 시 상태 변경
   const handleChange = (e) => {
     setSearchQuery(e.target.value);
@@ -29,9 +59,12 @@ export default function Header() {
 
   // 엔터키 입력 시 검색 실행
   const handleKeyDown = (e) => {
-    e.preventDefault();
     if (e.key === 'Enter') {
-      navigate(`/search?query=${searchQuery}`);
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        addRecentSearch(searchQuery.trim());
+        navigate(`/search?query=${searchQuery}`);
+      }
     }
   };
 
@@ -119,34 +152,19 @@ export default function Header() {
                   </div>
 
                   <div className={style.searchKeywordBox}>
-                    <span className={style.keywordText}>
-                      최근 검색 키워드
-                    </span>
+                    <span className={style.keywordText}>최근 검색 키워드</span>
                     <ul className={style.keywordList}>
-                      <li>
-                        <span>
-                          해운
-                        </span>
-                        <button className={style.keywordDelBtn}>
-                          <span className="blind">키워드삭제</span>
-                        </button>
-                      </li>
-                      <li>
-                        <span>
-                          여객
-                        </span>
-                        <button className={style.keywordDelBtn}>
-                          <span className="blind">키워드삭제</span>
-                        </button>
-                      </li>
-                      <li>
-                        <span>
-                          운송
-                        </span>
-                        <button className={style.keywordDelBtn}>
-                          <span className="blind">키워드삭제</span>
-                        </button>
-                      </li>
+                      {loadRecentSearches().map((keyword, index) => (
+                        <li key={index}>
+                          <span>{keyword}</span>
+                          <button
+                            className={style.keywordDelBtn}
+                            onClick={() => handleKeywordDelete(keyword)}
+                          >
+                            <span className="blind">키워드삭제</span>
+                          </button>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
