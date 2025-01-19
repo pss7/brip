@@ -78,9 +78,9 @@
 .signinBox.signupBox .inputPasswordBox .inputBox{margin-bottom: 0;}
 .signinBox.signupBox .inputPasswordBox .inputBox input{padding: 0 52px 0 16px;}
 
-@media (max-width: 767px){
+@media (max-width: 1199px){
 
-  .signinContent{padding: 40px 20px 50px;}
+  .signinContent{padding: 40px 0 50px;}
   .signinBox h3{font-size: 22px;}
   .signinBox .inputBox{margin-bottom: 10px;}
   .signinBox .inputBox input{height: 60px;}

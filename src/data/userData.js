@@ -6,4 +6,6 @@ export const userData = {
   email: 'test@email.com',
   password: '123',
   profileImg: ProfileImg,
+  phone: '010-5167-1674',
+  birthDate: '2007-03-22',
 };

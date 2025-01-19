@@ -400,7 +400,7 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .noticeDetailBox .layoutBox{display: flex; gap: 0 30px;}
 .noticeDetailBox .topBox .category{color: #4A6CFC;}
 .noticeDetailBox .topBox span{color: #5E5C5C;}
-.noticeDetailBox .infoText{font-weight: 500; color: #000;}
+.noticeDetailBox .infoText{padding: 0; font-weight: 500!important; color: #000!important; font-size: 16px; text-align: left;}
 .noticeDetailBox .btn{margin-top: auto;}
 
 /* FAQ */
@@ -584,3 +584,15 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 /* 커뮤니티 노하우 상세 */
 .communityQABox .header{margin-bottom: 41px; display: flex
 ; align-items: center; justify-content: center; height: 48px; font-weight: 400!important;}
+
+/* 마이페이지 */
+.mypageBox .content{padding: 42px 153px 50px; max-width: 633px;}
+.mypageBox .signinContent{max-width: none; background-color: #FAFAFD;}
+.mypageBox h4{text-align: center; margin-bottom: 62px;}
+
+@media (max-widtH: 1024px){
+
+  .mypageBox h4{margin-bottom: 40px;}
+  .mypageBox .content{max-width: 100%; padding: 42px 30px 50px;}
+
+}
