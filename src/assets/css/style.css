@@ -454,6 +454,9 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 }
 
 /* 커뮤니티 */
+.communityBox .header{position: relative;}
+.communityBox .header h4{font-size: 20px; font-weight: 400; color: #000;}
+.communityBox .header .link{position: absolute; top: 50%; transform: translateY(-50%); left:0; width: 9px; height: 14px; background: url(../images/sub/Arrow_Icon05.svg)no-repeat center;}
 .communityBox .lnbLayoutBox .content{padding: 42px 39px 50px 48px;}
 .communityBox aside{padding: 33px 30px 27px; width: 340px; height: 200px; background-color: #FAFAFC; border-radius: 10px; box-shadow: none;}
 .communityBox aside .infoBox{margin-bottom: 24px; display: flex; gap: 0 32px;}
@@ -521,7 +524,8 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 
 /* 커뮤니티-실시간채팅 */
 .communityChatBox .lnbLayoutBox .content{padding: 0 0 0 49px;}
-.communityChatBox h4{margin-bottom: 41px; display: flex; align-items: center; justify-content: center; height: 48px; font-size: 18px; font-weight: 400!important; color: #090A0A; text-align: center;}
+.communityChatBox .header{ display: flex; align-items: center; justify-content: center; height: 48px; margin-bottom: 41px;}
+.communityChatBox h4{font-size: 18px; font-weight: 400!important; color: #090A0A; text-align: center;}
 .communityChatBox .message{margin-bottom: 30px; display: flex; gap: 0 10px;}
 .communityChatBox .message .imgBox{flex-shrink: 0; width: 32px; height: 32px;}
 .communityChatBox .message .imgBox img{display: block; width: 100%; height: 100%; object-fit: cover;} 
@@ -577,5 +581,5 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 }
 
 /* 커뮤니티 노하우 상세 */
-.communityQABox h4{margin-bottom: 41px; display: flex
+.communityQABox .header{margin-bottom: 41px; display: flex
 ; align-items: center; justify-content: center; height: 48px; font-weight: 400!important;}

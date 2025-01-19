@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";  // useState와 useEffect를 임포트
 import Container from "../components/Container";
 import Main from "../components/section/Main";
@@ -90,8 +90,15 @@ export default function QADetailPage({ user }) {
                 </div>
               </aside>
 
-              <div className="content">
-                <h4>노하우 Q&A</h4>
+              <div className="content flexColumn">
+                <div className="header">
+                  <Link to="/community" className="link">
+                    <span className="blind">
+                      노하우Q&A리스트 화면으로 이동
+                    </span>
+                  </Link>
+                  <h4>노하우 Q&A</h4>
+                </div>
                 <div className="qaContentList">
                   <div className="top">
                     <span className="name">{qa.nickname}</span>

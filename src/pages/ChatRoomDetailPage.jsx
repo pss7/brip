@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { chatRoomsData } from "../data/chatRoomsData";
 import Main from "../components/section/Main";
 import Container from "../components/Container";
@@ -120,7 +120,14 @@ export default function ChatRoomDetailPage({ user }) {
               </aside>
 
               <div className="content flexColumn">
-                <h4>{chatRoom.roomName}</h4>
+                <div className="header">
+                  <Link to="/community" className="link">
+                    <span className="blind">
+                      노하우Q&A리스트 화면으로 이동
+                    </span>
+                  </Link>
+                  <h4>{chatRoom.roomName}</h4>
+                </div>
                 <p className="chatStartDate">{getChatStartDate()}</p>
                 {/* groupedMessages를 순회하며 날짜별로 출력 */}
                 <div className="chatMessages">
