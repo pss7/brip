@@ -1,11 +1,11 @@
-import thumbnailImg01 from '../assets/images/sub/ThumbnailImg01.svg';
-import thumbnailImg02 from '../assets/images/sub/ThumbnailImg02.svg';
-import thumbnailImg03 from '../assets/images/sub/ThumbnailImg03.svg';
-import thumbnailImg04 from '../assets/images/sub/ThumbnailImg04.svg';
-import thumbnailImg05 from '../assets/images/sub/ThumbnailImg05.svg';
-import thumbnailImg06 from '../assets/images/sub/ThumbnailImg06.svg';
-import thumbnailImg07 from '../assets/images/sub/ThumbnailImg07.svg';
-import UserDefalutImg from '../assets/images/sub/User_Default_Img.svg';
+import thumbnailImg01 from '/assets/images/sub/ThumbnailImg01.svg';
+import thumbnailImg02 from '/assets/images/sub/ThumbnailImg02.svg';
+import thumbnailImg03 from '/assets/images/sub/ThumbnailImg03.svg';
+import thumbnailImg04 from '/assets/images/sub/ThumbnailImg04.svg';
+import thumbnailImg05 from '/assets/images/sub/ThumbnailImg05.svg';
+import thumbnailImg06 from '/assets/images/sub/ThumbnailImg06.svg';
+import thumbnailImg07 from '/assets/images/sub/ThumbnailImg07.svg';
+import UserDefalutImg from '/assets/images/sub/User_Default_Img.svg';
 
 export const chatRoomsData = [
   {
