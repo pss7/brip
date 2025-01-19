@@ -34,6 +34,15 @@ import BgCard from "../components/BgCard";
 
 export default function MainPage() {
 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
   useEffect(() => {
     AOS.init({
       duration: 2000,
@@ -141,15 +150,21 @@ export default function MainPage() {
         </Container>
       </div>
 
-      <div id={style.loginLinkBox} data-aos="fade-up">
-        <Container>
-          <div className={style.loginLinkContent}>
-            <Link to="/signin">
-              <p><strong>로그인</strong>하고 더 유용한 정보를 얻어보세요!</p>
-            </Link>
+      {
+        user ? (
+          <> </>
+        ) : (
+          <div id={style.loginLinkBox} data-aos="fade-up">
+            <Container>
+              <div className={style.loginLinkContent}>
+                <Link to="/signin">
+                  <p><strong>로그인</strong>하고 더 유용한 정보를 얻어보세요!</p>
+                </Link>
+              </div>
+            </Container>
           </div>
-        </Container>
-      </div>
+        )
+      }
 
       <div id={style.linkBox} data-aos="fade-up">
         <Container>

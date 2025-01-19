@@ -168,37 +168,6 @@ export default function CommunityPage({ user }) {
                   </div>
                 )}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 {activeTab === "realTimeChat" && (
                   <div className="chatRoomContentBox">
                     <div className="shareBox">
@@ -220,21 +189,17 @@ export default function CommunityPage({ user }) {
                   </div>
                 )}
 
-
-
                 {activeTab === "industry" && (
                   <div className="industryContentBox">
-                    <p>업종별/연차별 탭 내용</p>
+                    <p className="infoText">현재 페이지 제작중입니다.</p>
                   </div>
                 )}
 
                 {activeTab === "infoShare" && (
                   <div className="infoShareContentBox">
-                    <p>정보공유 탭 내용</p>
+                    <p className="infoText">현재 페이지 제작중입니다.</p>
                   </div>
                 )}
-
-
 
               </div>
             </div>

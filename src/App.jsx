@@ -53,7 +53,7 @@ function App() {
           <Route path='/policy' element={<PolicyPage />} />
           <Route path='/inquiry' element={<InquiryPage />} />
           <Route path="/chat/:roomId" element={<ChatRoomDetailPage user={user} />} />
-          <Route path="/qa/:qaId" element={<QADetailPage user={user} />} /> 
+          <Route path="/qa/:qaId" element={<QADetailPage user={user} />} />
 
           {/* 로그인 후에만 접근 가능한 페이지 */}
           <Route path="/roadmapinfo" element={

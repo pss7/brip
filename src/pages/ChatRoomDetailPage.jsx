@@ -123,7 +123,7 @@ export default function ChatRoomDetailPage({ user }) {
                 <div className="header">
                   <Link to="/community" className="link">
                     <span className="blind">
-                      노하우Q&A리스트 화면으로 이동
+                      채팅리스트 화면으로 이동
                     </span>
                   </Link>
                   <h4>{chatRoom.roomName}</h4>
