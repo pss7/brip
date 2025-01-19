@@ -245,7 +245,7 @@ export default function Header() {
         <div className={style.linkBox}>
           <div className={style.searchBox}>
             <Link
-              to="/search"
+              to="#"
               className={style.searchBtn}
               onClick={() => setIsSearchOpen(!isSearchOpen)}
             >
@@ -264,9 +264,17 @@ export default function Header() {
           </div>
 
           <div className={style.loginBox}>
-            <Link to="/signin" className={style.loginBtn}>
-              로그인
-            </Link>
+            {user ? (
+              <Link to="/mypage">
+                <img src={user.profileImg} alt="" />
+              </Link>  // 사용자 정보가 있으면 마이페이지 링크
+            ) : (
+              <Link
+                to="/signin"
+                className={style.loginBtn}>
+                로그인
+              </Link>
+            )}
           </div>
 
         </div>

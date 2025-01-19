@@ -18,8 +18,22 @@ import PrivateRoute from './pages/PrivateRoute';
 import InquiryPage from './pages/InquiryPage';
 import CommunityPage from './pages/CommunityPage';
 import MyPage from './pages/MyPage';
+import { useEffect, useState } from 'react';
+import ChatRoomDetailPage from './pages/ChatRoomDetailPage';
+import QADetailPage from './pages/QADetailPage';
+
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
 
   return (
     <>
@@ -30,9 +44,6 @@ function App() {
           <Route path='/passwordfind' element={<PwFindPage />} />
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/search' element={<SearchPage />} />
-          <Route path='/roadmapinfo' element={<RoadMapInfoPage />} />
-          <Route path='/roadmapdesign' element={<RoadMapDesignPage />} />
-          <Route path='/roadmapresult' element={<RoadMapResultPage />} />
           <Route path='/employment' element={<EmploymentPage />} />
           <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
           <Route path='/notice' element={<NoticePage />} />
@@ -41,8 +52,25 @@ function App() {
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/policy' element={<PolicyPage />} />
           <Route path='/inquiry' element={<InquiryPage />} />
+          <Route path="/chat/:roomId" element={<ChatRoomDetailPage user={user} />} />
+          <Route path="/qa/:qaId" element={<QADetailPage user={user} />} /> 
 
           {/* 로그인 후에만 접근 가능한 페이지 */}
+          <Route path="/roadmapinfo" element={
+            <PrivateRoute>
+              <RoadMapInfoPage />
+            </PrivateRoute>
+          } />
+          <Route path="/roadmapdesign" element={
+            <PrivateRoute>
+              <RoadMapDesignPage />
+            </PrivateRoute>
+          } />
+          <Route path="/roadmapresult" element={
+            <PrivateRoute>
+              <RoadMapResultPage />
+            </PrivateRoute>
+          } />
           <Route path="/mypage" element={
             <PrivateRoute>
               <MyPage />
@@ -50,7 +78,7 @@ function App() {
           } />
           <Route path="/community" element={
             <PrivateRoute>
-              <CommunityPage />
+              <CommunityPage user={user} />
             </PrivateRoute>
           } />
 
