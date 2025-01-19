@@ -3,7 +3,6 @@ import Container from "../components/Container";
 import Main from "../components/section/Main";
 import style from "./SearchPage.module.css";
 import "../assets/css/style.css";
-import Guide01 from "../assets/images/main/Guide_Icon01.svg";
 import Guide02 from "../assets/images/main/Guide_Icon02.svg";
 import Guide03 from "../assets/images/main/Guide_Icon03.svg";
 import Guide04 from "../assets/images/main/Guide_Icon04.svg";
@@ -12,8 +11,21 @@ import CardImg03 from "../assets/images/main/Card_Img03.png";
 import CardImg06 from "../assets/images/main/Card_Img06.png";
 import CardImg07 from "../assets/images/main/Card_Img07.png";
 import BgCard from "../components/BgCard";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function SearchPage() {
+
+  const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const query = queryParams.get('query');  // 쿼리 파라미터에서 searchQuery 가져오기
+    if (query) {
+      setSearchQuery(query);  // 검색어가 있으면 상태 업데이트
+    }
+  }, [location.search]);  // location.search가 변경될 때마다 실행
 
   return (
     <>
@@ -27,7 +39,7 @@ export default function SearchPage() {
                   검색결과
                 </h3>
                 <p>
-                  <strong>"해운"</strong>에 대한 검색결과입니다.
+                  <strong>"{searchQuery}"</strong>에 대한 검색결과입니다.
                 </p>
               </div>
 

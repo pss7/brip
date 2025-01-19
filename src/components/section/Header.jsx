@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
@@ -7,6 +7,7 @@ import Alarm from "../Alarm";
 
 export default function Header() {
 
+  const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -19,6 +20,19 @@ export default function Header() {
 
   const getActiveClass = (path) => {
     return location.pathname === path ? `${style.active}` : '';
+  };
+
+  // 검색어 입력 시 상태 변경
+  const handleChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // 엔터키 입력 시 검색 실행
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    if (e.key === 'Enter') {
+      navigate(`/search?query=${searchQuery}`);
+    }
   };
 
   return (
@@ -66,7 +80,7 @@ export default function Header() {
 
           <div className={style.linkBox}>
             <div className={`${style.searchBox} ${isSearchOpen ? `${style.active}` : ""}`}>
-              <Link to="/search" className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
+              <Link className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
                 <span className="blind">
                   검색
                 </span>
@@ -76,10 +90,10 @@ export default function Header() {
                 <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
                   <div
                     className={style.searchInputBox}
-                    onMouseLeave={() => {
-                      setIsSearchOpen(false)
-                      setSearchQuery('');
-                    }}
+                  // onMouseLeave={() => {
+                  //   setIsSearchOpen(false)
+                  //   setSearchQuery('');
+                  // }}
                   >
                     <label htmlFor="search" className="blind">
                       검색
@@ -88,10 +102,16 @@ export default function Header() {
                       id="search"
                       type="text"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={handleChange}
+                      onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
                     />
 
-                    <button className={`${style.searchTextDel} ${searchQuery.length > 0 ? `${style.active}` : ""}`} type="button">
+                    <button
+                      className={`${style.searchTextDel} 
+                    ${searchQuery.length > 0 ? `${style.active}` : ""}`}
+                      type="button"
+                      onClick={() => { setSearchQuery('') }}
+                    >
                       <span className="blind">
                         입력삭제
                       </span>
