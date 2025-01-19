@@ -22,13 +22,13 @@ export default function Header() {
     return location.pathname === path ? `${style.active}` : '';
   };
 
-    // 최근 검색어 목록 로딩
-    const loadRecentSearches = () => {
-      const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-      return recentSearches;
-    };
+  // 최근 검색어 목록 로딩
+  const loadRecentSearches = () => {
+    const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    return recentSearches;
+  };
 
-     // 검색어 추가
+  // 검색어 추가
   const addRecentSearch = (newSearch) => {
     let recentSearches = loadRecentSearches();
 
@@ -44,13 +44,13 @@ export default function Header() {
     localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
   };
 
-    // 최근 검색어 삭제
-    const handleKeywordDelete = (keyword) => {
-      let recentSearches = loadRecentSearches();
-      recentSearches = recentSearches.filter(search => search !== keyword);
-      localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-    };
-  
+  // 최근 검색어 삭제
+  const handleKeywordDelete = (keyword) => {
+    let recentSearches = loadRecentSearches();
+    recentSearches = recentSearches.filter(search => search !== keyword);
+    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+  };
+
 
   // 검색어 입력 시 상태 변경
   const handleChange = (e) => {
@@ -61,6 +61,7 @@ export default function Header() {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+      setIsMobileMenuOpen(false);
       if (searchQuery.trim()) {
         addRecentSearch(searchQuery.trim());
         navigate(`/search?query=${searchQuery}`);
@@ -113,63 +114,57 @@ export default function Header() {
 
           <div className={style.linkBox}>
             <div className={`${style.searchBox} ${isSearchOpen ? `${style.active}` : ""}`}>
-              <Link className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
+              <Link to="#" className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
                 <span className="blind">
                   검색
                 </span>
               </Link>
 
-              <form>
-                <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
-                  <div
-                    className={style.searchInputBox}
-                  // onMouseLeave={() => {
-                  //   setIsSearchOpen(false)
-                  //   setSearchQuery('');
-                  // }}
-                  >
-                    <label htmlFor="search" className="blind">
-                      검색
-                    </label>
-                    <input
-                      id="search"
-                      type="text"
-                      value={searchQuery}
-                      onChange={handleChange}
-                      onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
-                    />
 
-                    <button
-                      className={`${style.searchTextDel} 
+              <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+                <div
+                  className={style.searchInputBox}
+                >
+                  <label htmlFor="search" className="blind">
+                    검색
+                  </label>
+                  <input
+                    id="search"
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
+                  />
+
+                  <button
+                    className={`${style.searchTextDel} 
                     ${searchQuery.length > 0 ? `${style.active}` : ""}`}
-                      type="button"
-                      onClick={() => { setSearchQuery('') }}
-                    >
-                      <span className="blind">
-                        입력삭제
-                      </span>
-                    </button>
-                  </div>
-
-                  <div className={style.searchKeywordBox}>
-                    <span className={style.keywordText}>최근 검색 키워드</span>
-                    <ul className={style.keywordList}>
-                      {loadRecentSearches().map((keyword, index) => (
-                        <li key={index}>
-                          <span>{keyword}</span>
-                          <button
-                            className={style.keywordDelBtn}
-                            onClick={() => handleKeywordDelete(keyword)}
-                          >
-                            <span className="blind">키워드삭제</span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    type="button"
+                    onClick={() => { setSearchQuery('') }}
+                  >
+                    <span className="blind">
+                      입력삭제
+                    </span>
+                  </button>
                 </div>
-              </form>
 
+                <div className={style.searchKeywordBox}>
+                  <span className={style.keywordText}>최근 검색 키워드</span>
+                  <ul className={style.keywordList}>
+                    {loadRecentSearches().map((keyword, index) => (
+                      <li key={index}>
+                        <span>{keyword}</span>
+                        <button
+                          className={style.keywordDelBtn}
+                          onClick={() => handleKeywordDelete(keyword)}
+                        >
+                          <span className="blind">키워드삭제</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <div className={style.alarmBox}>
@@ -249,7 +244,7 @@ export default function Header() {
 
         <div className={style.linkBox}>
           <div className={style.searchBox}>
-            <Link to="/search" className={style.searchBtn}>
+            <Link to="#" className={style.searchBtn} onClick={() => setIsSearchOpen(true)}>
               <span className="blind">
                 검색
               </span>
@@ -268,6 +263,23 @@ export default function Header() {
             <Link to="/signin" className={style.loginBtn}>
               로그인
             </Link>
+          </div>
+        </div>
+
+        <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+          <div
+            className={style.searchInputBox}
+          >
+            <label htmlFor="search" className="blind">
+              검색
+            </label>
+            <input
+              id="search"
+              type="text"
+              value={searchQuery}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
+            />
           </div>
         </div>
 
