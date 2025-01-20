@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import Main from "../components/section/Main";
 import { useEffect, useState } from "react";
+import google from "../assets/images/login/Google_Img.svg";
+import kakao from "../assets/images/login/Kakao_Img.svg";
+import naver from "../assets/images/login/Naver_Img.svg";
+
 
 export default function MyPage() {
 
@@ -66,14 +70,24 @@ export default function MyPage() {
                     <label htmlFor="number" className="text">
                       휴대폰번호
                     </label>
-                    <input id="number" type="text" value="010-5167-1674" />
+                    <div className="layoutBox">
+                      <input id="number" type="text" value="010-5167-1674" />
+                      <button className="changeBtn" type="button">
+                        변경
+                      </button>
+                    </div>
                   </div>
 
                   <div className="inputBox">
                     <label htmlFor="email" className="text">
                       이메일
                     </label>
-                    <input id="email" type="text" value={user.email} />
+                    <div className="layoutBox">
+                      <input id="email" type="text" value={user.email} />
+                      <button className="changeBtn" type="button">
+                        변경
+                      </button>
+                    </div>
                   </div>
 
                   <div className="inputBox">
@@ -85,14 +99,39 @@ export default function MyPage() {
 
                 </form>
 
-                <ul className="snsSignIn">
-                  <li>
-                    <span>
+                <div className="snsSignInBox">
+                  <h5>
+                    SNS 로그인 연결
+                  </h5>
+                  <ul className="snsSignInList">
+                    <li>
+                      <div className="imgBox">
+                        <img src={naver} alt="네이버로그인" />
+                      </div>
+                      <span className="snsText">
+                        네이버 로그인
+                      </span>
+                      <button className="connectBtn">
+                        연결
+                      </button>
+                    </li>
+                    <li className="kakao">
+                      <div className="imgBox">
+                        <img src={kakao} alt="카카오로그인" />
+                      </div>
+                      <span className="snsText">
+                        카카오 로그인
+                      </span>
+                      <button className="connectBtn">
+                        연결
+                      </button>
+                    </li>
+                  </ul>
+                </div>
 
-                    </span>
-                  </li>
-                </ul>
-
+                <button className="terminationBtn">
+                  서비스 해지
+                </button>
 
               </div>
             </div>
