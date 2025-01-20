@@ -54,7 +54,7 @@ export default function EmploymentPage() {
         <div className="employmentContent">
           <Container className={style.container}>
 
-            <div className="searchBox">
+            <div className="comSearchBox">
               <form>
                 <div className="inputBox">
                   <label htmlFor="search" className="blind">
@@ -66,7 +66,7 @@ export default function EmploymentPage() {
             </div>
 
             <div className="employmentInfoList">
-              <div className="employmentInfoTop">
+              <div className="comTabMenu">
                 <ul className="list">
                   <li>
                     <Link to="#" className="active">
@@ -91,11 +91,11 @@ export default function EmploymentPage() {
                 </ul>
               </div>
 
-              <div className="employmentInfoContent">
+              <div className="comTabContent">
 
                 <ul className="list">
                   <li>
-                    <Link to="#">
+                    <Link to="#"  className="active">
                       전체
                     </Link>
                   </li>
@@ -105,7 +105,7 @@ export default function EmploymentPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#" className="active">
+                    <Link to="#">
                       경기도
                     </Link>
                   </li>
@@ -183,7 +183,7 @@ export default function EmploymentPage() {
 
                 <ul className="list list02">
                   <li>
-                    <Link to="#">
+                    <Link to="#"  className="active">
                       전체
                     </Link>
                   </li>
@@ -228,7 +228,7 @@ export default function EmploymentPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#" className="active">
+                    <Link to="#">
                       남동구
                     </Link>
                   </li>
