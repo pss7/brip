@@ -227,7 +227,7 @@ export default function CareerPage() {
                     선박운항관리자
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       선박의 안전한 운항을 계획하고 관리하며 항로와 일정 조율을 담당
                     </Link>
                   </td>
@@ -251,7 +251,7 @@ export default function CareerPage() {
                     하역전문가
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       화물의 적재와 하역 작업을 안전하고 효율적으로 수행하고 감독
                     </Link>
                   </td>
@@ -275,7 +275,7 @@ export default function CareerPage() {
                     선용품공급업
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       선박에 필요한 연료, 자재, 장비 등을 공급하며 품질과 물류를 관리
                     </Link>
                   </td>
@@ -299,7 +299,7 @@ export default function CareerPage() {
                     SCM(공급망 관리) 전문가
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       공급망의 모든 흐름을 계획하고 최적화하여 물류 비용과 시간을 효율화
                     </Link>
                   </td>
@@ -323,7 +323,7 @@ export default function CareerPage() {
                     해상화물운송관리자
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       해상 화물의 운송 일정, 경로, 안전을 조율하며 운송 계약을 관리
                     </Link>
                   </td>
@@ -347,7 +347,7 @@ export default function CareerPage() {
                     항로계획관리자
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       선박 운항의 최적 항로를 설계하고, 연료 효율성과 안전을 최우선으로 고려
                     </Link>
                   </td>
@@ -371,7 +371,7 @@ export default function CareerPage() {
                     선박엔지니어
                   </td>
                   <td className="textLeft title">
-                    <Link to="#">
+                    <Link to="/careerdetail">
                       선박의 엔진, 전기 및 기계 시스템을 유지보수하고 기술적 문제를 해결
                     </Link>
                   </td>

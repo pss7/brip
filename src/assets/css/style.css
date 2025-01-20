@@ -1,8 +1,6 @@
 #root{overflow-x: hidden;}
-
 .subWrap{padding: 43px 0; min-height: 600px;}
 .subWrap.bg{background-color:#FAFAFD;}
-.infoText{padding: 150px 20px; font-size: 28px; text-align: center; font-weight: 600;}
 
 /* 공통-정렬 */
 .flexColumn{display: flex; flex-direction: column;}
@@ -115,30 +113,31 @@
 .roadMapBox.roadMapResultBox .resultInfoBox .scoreBox .score02{height: 12px; border-radius: 50px; background-color: #E9E9E9; overflow: hidden;}
 .roadMapBox.roadMapResultBox .resultInfoBox .infoText{margin-bottom: 27px; font-size: 20px; color: #000;}
 .roadMapBox.roadMapResultBox .recommendedRoadmap h4{margin-bottom: 21px; font-weight: 700; font-size: 20px; line-height: 1.4; color: #000;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab{margin-bottom: 52px; display: flex; align-items: center; gap: 0 6px;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab li a{padding: 9px 27px; display: block; border-radius: 50px; color: #5F616D; font-size: 14px; background-color: #E8EAE9;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab li a.active{background-color: #1C1B18; color: #fff;}
+.roadMapTab{margin-bottom: 52px; display: flex; align-items: center; gap: 0 6px;}
+.roadMapTab li a{padding: 9px 27px; display: block; border-radius: 50px; color: #5F616D; font-size: 14px; background-color: #E8EAE9;}
+.roadMapTab li a.active{background-color: #1C1B18; color: #fff;}
 .roadMapBox.roadMapResultBox .downloadBtn{ display: block; max-width: 202px; width: 100%; height: 48px; margin: 0 auto 46px; border: 1px solid #E9E9E9; box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);}
 .roadMapBox.roadMapResultBox .downloadBtn span{padding-left: 25px; position: relative; color: #313131;}
 .roadMapBox.roadMapResultBox .downloadBtn span::before{content: ''; width: 15px; height: 17px; position: absolute; left:0; top:3px; background: url(../images/sub/PdfDownload_Icon.svg)no-repeat center;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01{ margin-bottom: 53px;position: relative; padding-left: 65px;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01::before{content: ''; position: absolute; top:1px; left:10px; bottom: 7%; width: 5px; background-color: #1C1B18;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li:last-child{margin-bottom: 0;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li{position: relative; margin-bottom: 36px;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li::before{content: ''; position: absolute; top: 0; left:-65px; width: 27px; height: 27px; border-radius: 50%; background-color: #1C1B18; z-index: 99;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li > a{padding: 21px 20px 21px 31px; display: flex; align-items: center; background-color: #1C1B18; border-radius: 10px; font-weight: 600; color: #fff;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02{position: relative; padding: 0 0 0 43px; margin: 19px 0 82px;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li{position: relative; margin-bottom: 9px;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02::before{content: ''; position: absolute; top: -19px; left:15px; bottom: 14%; width: 3px; background-color: #D9D9D9;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li{position: relative;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li::before{content: ''; position: absolute; top:50%; left:-28px; width: 28px; height: 3px; transform: translateY(-50%); background-color: #D9D9D9;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li:last-child{margin-bottom: 0;}
-.roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li a{display: block; padding: 20px 20px 20px 23px; color: #000; font-weight: 500; background-color: #FFF7D7; word-break: keep-all;}
+.roadmapList01{margin-bottom: 53px;position: relative; padding-left: 65px;}
+.roadmapList01::before{content: ''; position: absolute; top:1px; left:10px; bottom: 7%; width: 5px; background-color: #1C1B18;}
+.roadmapList01 > li:last-child{margin-bottom: 0;}
+.roadmapList01 > li{position: relative; margin-bottom: 36px;}
+.roadmapList01 > li::before{content: ''; position: absolute; top: 0; left:-65px; width: 27px; height: 27px; border-radius: 50%; background-color: #1C1B18; z-index: 99;}
+.roadmapList01 > li > a{padding: 21px 20px 21px 31px; display: flex; align-items: center; background-color: #1C1B18; border-radius: 10px; font-weight: 600; color: #fff;}
+.roadmapList02{position: relative; padding: 0 0 0 43px; margin: 19px 0 82px;}
+.roadmapList02 li{position: relative; margin-bottom: 9px;}
+.roadmapList02::before{content: ''; position: absolute; top: -19px; left:15px; bottom: 14%; width: 3px; background-color: #D9D9D9;}
+.roadmapList02 li{position: relative;}
+.roadmapList02 li::before{content: ''; position: absolute; top:50%; left:-28px; width: 28px; height: 3px; transform: translateY(-50%); background-color: #D9D9D9;}
+.roadmapList02 li:last-child{margin-bottom: 0;}
+.roadmapList02 li a{display: block; padding: 20px 20px 20px 23px; color: #000; font-weight: 500; background-color: #FFF7D7; word-break: keep-all;}
 
 @media(min-width: 1199px){
 
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab li a{transition: all .5s;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab li a:hover{background-color: #1C1B18; color: #fff;}
+  .roadMapTab li a{transition: all .5s;}
+  .roadMapTab li a:hover{background-color: #1C1B18; color: #fff;}
+
 
 }
 
@@ -146,6 +145,7 @@
 
   .roadMapBox .roadMapContent{padding: 80px 70px 55px!important;}
   .roadMapBox .titleBox h3{font-size: 22px;}
+  .roadmapList01{width: auto;}
 
 }
 
@@ -170,14 +170,14 @@
   .roadMapBox.roadMapResultBox .resultInfoBox .infoText{margin-bottom: 15px; font-size: 16px}
   .roadMapBox.roadMapResultBox .ViewBox a .textBox h6{font-size: 16px;}
 
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li::before{width: 15px; height: 15px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01::before{width: 3px; left: 6px; bottom: 55px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li > a{padding: 20px 20px 20px 30px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02{margin: 19px 0 55px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li a{padding: 20px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01{padding-left: 50px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li::before{left: -50px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li{margin-bottom: 20px;}
+  .roadmapList01 > li::before{width: 15px; height: 15px;}
+  .roadmapList01::before{width: 3px; left: 6px; bottom: 55px;}
+  .roadmapList01 > li > a{padding: 20px 20px 20px 30px;}
+  .roadmapList02{margin: 19px 0 55px;}
+  .roadmapList02 li a{padding: 20px;}
+  .roadmapList01{padding-left: 50px;}
+  .roadmapList01 > li::before{left: -50px;}
+  .roadmapList01 > li{margin-bottom: 20px;}
    
 }
 
@@ -186,19 +186,19 @@
   .roadMapBox.roadMapInfoBox .infotext{margin-bottom: 34px;}
   .roadMapBox.roadMapResultBox .ViewBox a{flex-direction: column;}
   .roadMapBox.roadMapResultBox .ViewBox a .imgBox{width: 100%; height: auto;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab{display: block;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab li a{border-radius: 0; text-align: center;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li{margin-bottom: 10px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li::before{display: none;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01::before{display: none;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01{padding: 0;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02{margin: 10px 0 45px; padding: 0;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02::before{display: none;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li a{font-size: 14px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList02 li::before{display: none;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li > a{border-radius: 5px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadMapTab{margin-bottom: 30px;}
-  .roadMapBox.roadMapResultBox .recommendedRoadmap .roadmapList01 > li > a{padding: 20px; font-size: 14px;}
+  .roadMapTab{display: block;}
+  .roadMapTab li a{border-radius: 0; text-align: center;}
+  .roadmapList01 > li{margin-bottom: 10px;}
+  .roadmapList01 > li::before{display: none;}
+  .roadmapList01::before{display: none;}
+  .roadmapList01{padding: 0;}
+  .roadmapList02{margin: 10px 0 45px; padding: 0;}
+  .roadmapList02::before{display: none;}
+  .roadmapList02 li a{font-size: 14px;}
+  .roadmapList02 li::before{display: none;}
+  .roadmapList01 > li > a{border-radius: 5px;}
+  .roadMapTab{margin-bottom: 30px;}
+  .roadmapList01 > li > a{padding: 20px; font-size: 14px;}
   .roadMapBox.roadMapResultBox .downloadBtn{font-size: 14px;}
   .roadMapBox.roadMapResultBox .downloadBtn span::before{top: 2px;}
 }
@@ -693,6 +693,51 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
   .careerBox .comTabContent .list li{width: 50%;}
 
 }
+
+
+/* 커리어상세 */
+.careerDetailBox .employmentDetailTop{margin-bottom: 0; border: 0;}
+.careerDetailBox .careerDetailTab{display: flex; margin-bottom: 50px;}
+.careerDetailBox .careerDetailTab li{width: 25%;}
+.careerDetailBox .careerDetailTab li a{height: 50px; display:flex; align-items: center; justify-content: center; color: #969696; font-weight: 600; text-align: center;}
+.careerDetailBox .careerDetailTab li a.active{color: #4334E0; border-bottom: 2px solid #4334E0;}
+.careerDetailBox .employmentDetail h4{margin-bottom: 30px;}
+.careerDetailBox .employmentDetail .subTitle{color: #000; font-size: 16px; line-height: 1.6; font-weight: 400;}
+.careerDetailBox .list {margin-bottom: 30px;}
+.careerDetailBox .list li{position: relative; padding-left: 18px; color: #000;}
+.careerDetailBox .list li::before{content: ''; position: absolute; top:9px; left:4px; width: 4px; height: 4px; border-radius: 50px; background-color: #000; line-height: 1.6;}
+.careerDetailBox .box{margin:  0 0 50px 55px;}
+.careerDetailBox select{margin-bottom: 24px; padding-left: 16px; width: 311px; height: 38px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; background: url(../images/sub/Select_Icon.svg)no-repeat 93% center; -webkit-appearance:none;  -moz-appearance:none; appearance:none; cursor: pointer;}
+
+.careerDetailBox .guideList{display: flex; gap: 16px 2%; flex-wrap: wrap; margin-bottom: 62px;}
+.careerDetailBox .guideList > li{width: 48%; word-break: keep-all;}
+.careerDetailBox .guideList > li{padding: 32px 20px 20px; min-height: 200px; border-radius: 10px; background-color: #FAFAFC;}
+.careerDetailBox .guideList li h4{margin-bottom: 20px; text-align: center;}
+.careerDetailBox .employmentDetailContent{display: block;}
+.careerDetailBox .employmentDetailLeft{width: 100%;}
+.careerDetailBox .layoutBox{margin-left: 89px; max-width: 752px;}
+.careerDetailBox .roadmapList01::before{bottom: 9%;}
+.careerDetailBox .roadmapList02::before{bottom: 23%;}
+.careerDetailBox .roadmapList02{margin-bottom: 38px;}
+.careerDetailBox .roadMapTab{margin-bottom: 40px;}
+.careerDetailBox .roadmapList01{width: 540px;}
+ 
+
+@media (max-width: 1199px){
+
+  .careerDetailBox .layoutBox{margin-left: 0; max-width: none;}
+  .careerDetailBox .box{margin: 30px 0 40px;}
+  .careerDetailBox .employmentDetail h4{margin-bottom: 20px;}
+  .careerDetailBox .roadmapList01{width: auto;}
+
+}
+
+@media (max-width: 576px){
+
+  .careerDetailBox .guideList > li{width: 100%;}
+
+}
+
 
 /* 초기화버튼 */
 .resetBtn{position: absolute; right: 0; bottom: -30px; line-height: 1;}

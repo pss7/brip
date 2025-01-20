@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import ChatRoomDetailPage from './pages/ChatRoomDetailPage';
 import QADetailPage from './pages/QADetailPage';
 import CareerPage from './pages/CareerPage';
+import CareerDetailPage from './pages/CareerDetailPage';
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           <Route path="/chat/:roomId" element={<ChatRoomDetailPage user={user} />} />
           <Route path="/qa/:qaId" element={<QADetailPage user={user} />} />
           <Route path="career" element={<CareerPage/>} />
+          <Route path="careerdetail" element={<CareerDetailPage/>} />
           {/* 로그인 후에만 접근 가능한 페이지 */}
           <Route path="/roadmapinfo" element={
             <PrivateRoute>
