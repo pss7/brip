@@ -105,12 +105,12 @@ export default function EmploymentPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#">
+                    <Link to="#" className="active">
                       경기도
                     </Link>
                   </li>
                   <li>
-                    <Link to="#" className="active">
+                    <Link to="#">
                       인천광역시
                     </Link>
                   </li>
@@ -126,17 +126,57 @@ export default function EmploymentPage() {
                   </li>
                   <li>
                     <Link to="#">
-                      강원특별자치도
+                      부산광역시
                     </Link>
                   </li>
                   <li>
                     <Link to="#">
-                      강원특별자치도
+                      대구광역시
                     </Link>
                   </li>
                   <li>
                     <Link to="#">
-                      강원특별자치도
+                      울산광역시
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      광주광역시
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      충청북도
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      충청남도
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      전라북도
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      전라남도
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      경상북도
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      경상남도
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#">
+                      제주특별자치도
                     </Link>
                   </li>
                 </ul>
