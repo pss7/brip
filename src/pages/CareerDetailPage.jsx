@@ -250,6 +250,14 @@ export default function CareerDetailPage() {
                             <Link to="/">
                               기술학습
                             </Link>
+                            <ul className="roadmapList03">
+                              <li>
+                                설계 도구 자격증 취득(AutoCAD Certified User 등)
+                              </li>
+                              <li>
+                                선박 엔진과 전기 시스템 기본 구조 이해
+                              </li>
+                            </ul>
                           </li>
                           <li>
                             <Link to="/">

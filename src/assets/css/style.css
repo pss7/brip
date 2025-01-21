@@ -708,7 +708,6 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .careerDetailBox .list li::before{content: ''; position: absolute; top:9px; left:4px; width: 4px; height: 4px; border-radius: 50px; background-color: #000; line-height: 1.6;}
 .careerDetailBox .box{margin:  0 0 50px 55px;}
 .careerDetailBox select{margin-bottom: 24px; padding-left: 16px; width: 311px; height: 38px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; background: url(../images/sub/Select_Icon.svg)no-repeat 93% center; -webkit-appearance:none;  -moz-appearance:none; appearance:none; cursor: pointer;}
-
 .careerDetailBox .guideList{display: flex; gap: 16px 2%; flex-wrap: wrap; margin-bottom: 62px;}
 .careerDetailBox .guideList > li{width: 48%; word-break: keep-all;}
 .careerDetailBox .guideList > li{padding: 32px 20px 20px; min-height: 200px; border-radius: 10px; background-color: #FAFAFC;}
@@ -717,7 +716,7 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .careerDetailBox .employmentDetailLeft{width: 100%;}
 .careerDetailBox .layoutBox{margin-left: 89px; max-width: 752px;}
 .careerDetailBox .roadmapList01::before{bottom: 11%;}
-.careerDetailBox .roadmapList02::before{bottom: 23%;}
+.careerDetailBox .roadmapList02::before{bottom: 12%;}
 .careerDetailBox .roadmapList02{margin-bottom: 38px;}
 .careerDetailBox .roadMapTab{margin-bottom: 40px;}
 .careerDetailBox .roadmapList01{margin-bottom: 70px; width: 540px;}
@@ -727,6 +726,9 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .careerDetailBox .story p{color: #6C7072;}
 .careerDetailBox .story h5{margin-bottom: 20px; font-size: 20px; color: #000;}
 .careerDetailBox .story img{margin: 0 0 28px;}
+.careerDetailBox .roadmapList03{margin-top: 9px;}
+.careerDetailBox .roadmapList03 li{padding: 17px 10px 16px 23px; font-weight: 500; color: #000; background-color: #F5F5F5;}
+.careerDetailBox .roadmapList03 li::before{display: none;}
 
 @media (max-width: 1199px){
 
