@@ -4,6 +4,7 @@ import Main from "../components/section/Main";
 import style from "./EmploymentDetailPage.module.css";
 import { Link } from "react-router-dom";
 import Career_Img01 from "../assets/images/sub/Career_Img01.jpg";
+import Story_Img from "../assets/images/sub/Story_Img.png";
 
 export default function CareerDetailPage() {
 
@@ -216,67 +217,80 @@ export default function CareerDetailPage() {
                       </li>
                     </ul>
 
-               
+
                     <h4>
-                    경력 로드맵과 마일스톤
-                  </h4>
+                      경력 로드맵과 마일스톤
+                    </h4>
 
-                  <ul className="roadMapTab">
-                    <li>
-                      <Link to="#" className="active">
-                        단기목표
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        중기목표
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        장기목표
-                      </Link>
-                    </li>
-                  </ul>
+                    <ul className="roadMapTab">
+                      <li>
+                        <Link to="#" className="active">
+                          단기목표
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="#">
+                          중기목표
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="#">
+                          장기목표
+                        </Link>
+                      </li>
+                    </ul>
 
-                  <ul className="roadmapList01">
-                    <li>
-                      <Link to="/">
-                        초급
-                      </Link>
-                      <ul className="roadmapList02">
-                        <li>
-                          <Link to="/">
-                            기술학습
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/">
-                            실무경험
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <Link to="/">
-                        중급
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/">
-                        고급
-                      </Link>
-                    </li>
-                  </ul>
+                    <ul className="roadmapList01">
+                      <li>
+                        <Link to="/">
+                          초급
+                        </Link>
+                        <ul className="roadmapList02">
+                          <li>
+                            <Link to="/">
+                              기술학습
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/">
+                              실무경험
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <Link to="/">
+                          중급
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/">
+                          고급
+                        </Link>
+                      </li>
+                    </ul>
+
+                    <div className="story">
+                      <h4>
+                        성공사례
+                      </h4>
+                      <img src={Story_Img} alt="" />
+                      <h5>
+                        선박엔지니어 김현우님의 성공이야기
+                      </h5>
+                      <p>
+                        김현우님(35)은 대학 시절 기계공학을 전공하며 막연히 자동차나 항공 분야에 진출할 것을 꿈꿨습니다. 하지만 졸업 직전, 해운 산업에 대해 배우게 되면서 선박의 기계와 전기 시스템을 설계하는 일에 흥미를 느끼게 됩니다. “친환경 선박 기술이 각광받고 있다는 걸 알게 된 게 결정적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.” <br />
+                        그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다.
+                        입사 초기, 그는 선박 유지보수 팀에 배치되어 주로 소형 화물선의 엔진 설계 보조와 정기 점검 업무를 맡았습니다. "당시엔 모든 게 새로웠고, 선박 시스템의 복잡함에 매일 놀랐죠." 현우님은 주어진 작업을 수행하며 AutoCAD와 SolidWorks 같은 설계 도구를 익히고, 유지보수 프로세스의 기초를 배웠습니다. <br />
+                        첫 프로젝트는 노후 선박의 엔진 효율 개선 작업이었습니다. 설계 보조 역할을 맡은 그는 베테랑 팀원들의 지도 아래, 효율적인 냉각 시스템 설계에 성공적으로 기여했습니다. “작은 역할이었지만, 제 아이디어가 실제로 선박 개선에 쓰이는 걸 보고 큰 자부심을 느꼈어요.” <br />
+                        이후 그는 선박 기초 설계와 유지보수 점검 업무에서 3년간 경험을 쌓으며, 기본적인 역량을 다지는 데 집중했습니다.
+                      </p>
+                    </div>
+
                   </div>
-
-
-         
                 </div>
-
               </div>
             </div>
-
           </div>
         </Container>
       </div >
