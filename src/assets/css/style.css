@@ -749,6 +749,12 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 
 }
 
+@media (max-width: 414px){
+
+  .careerDetailBox .roadmapList03 li{font-size: 14px;}
+
+}
+
 
 /* 초기화버튼 */
 .resetBtn{position: absolute; right: 0; bottom: -30px; line-height: 1;}
