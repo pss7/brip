@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { chatRoomsData } from "../data/chatRoomsData";
 import Main from "../components/section/Main";
 import Container from "../components/Container";
 import Message from "../components/Message";
+import { UserContext } from "../context/UserProvider";
 
-export default function ChatRoomDetailPage({ user }) {
+export default function ChatRoomDetailPage() {
+
+  const { user } = useContext(UserContext);
 
   const { roomId } = useParams(); // URL에서 roomId를 가져옴
   const [chatRoom, setChatRoom] = useState(null);

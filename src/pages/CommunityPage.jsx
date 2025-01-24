@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Container from "../components/Container";
 import Main from "../components/section/Main";
 import { chatRoomsData } from "../data/chatRoomsData";
 import { QAData } from "../data/QAData";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserProvider";
 
 // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
 const formatDate = (dateString) => {
@@ -15,7 +16,9 @@ const formatDate = (dateString) => {
   return `${month}/${day} ${hours}:${minutes}`;
 };
 
-export default function CommunityPage({ user }) {
+export default function CommunityPage() {
+
+  const { user } = useContext(UserContext);
 
   const [chatRooms] = useState(chatRoomsData);
   const [qaList] = useState(QAData)

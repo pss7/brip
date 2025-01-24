@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import Main from "../components/section/Main";
 import Container from "../components/Container";
 import Pagination from "../components/Pagination";
+import SubSearch from "../components/SubSearch";
+import style from "./CareerPage.module.css";
 
 export default function CareerPage() {
 
@@ -21,16 +23,8 @@ export default function CareerPage() {
 
         <Container className="container">
           <div className="careerBoxContent">
-            <div className="comSearchBox">
-              <form>
-                <div className="inputBox">
-                  <label htmlFor="search" className="blind">
-                    검색
-                  </label>
-                  <input id="search" type="text" placeholder="직무를 검색해주세요." />
-                </div>
-              </form>
-            </div>
+
+            <SubSearch />
 
             <div className="tabBox">
               <div className="comTabMenu">
@@ -121,7 +115,7 @@ export default function CareerPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#"  className="active">
+                    <Link to="#" className="active">
                       선박 관리자
                     </Link>
                   </li>
@@ -146,7 +140,7 @@ export default function CareerPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#"  className="active">
+                    <Link to="#" className="active">
                       선박 엔지니어
                     </Link>
                   </li>
@@ -164,24 +158,25 @@ export default function CareerPage() {
                 </span>
               </button>
             </div>
+            
           </div>
 
-          <div className="selectBox">
-            <span className="length">
+          <div className={style.selectBox}>
+            <span className={style.length}>
               총 3,452건
             </span>
             <label htmlFor="select" className="blind">
               선택
             </label>
-            <select id="select" className="select">
+            <select id="select" className={style.select}>
               <option>
                 가나다순
               </option>
             </select>
           </div>
 
-          <div className="tableBox">
-            <table className="table">
+          <div className={style.tableBox}>
+            <table className={style.table}>
               <caption className="blind">
                 직무정보
               </caption>
@@ -388,11 +383,11 @@ export default function CareerPage() {
             </table>
           </div>
 
-          <div className="pageSelectBox">
+          <div className={style.pageSelectBox}>
             <label htmlFor="pageSelect" className="blind">
               페이지수 조정
             </label>
-            <select id="pageSelect" className="pageSelect">
+            <select id="pageSelect" className={style.pageSelect}>
               <option>
                 10
               </option>
@@ -402,7 +397,8 @@ export default function CareerPage() {
           <Pagination />
 
         </Container>
-      </div>
+
+      </div >
 
     </Main >
   )

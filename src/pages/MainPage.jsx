@@ -15,12 +15,9 @@ import Guide01 from "../assets/images/main/Guide_Icon01.svg";
 import Guide02 from "../assets/images/main/Guide_Icon02.svg";
 import Guide03 from "../assets/images/main/Guide_Icon03.svg";
 import Guide04 from "../assets/images/main/Guide_Icon04.svg";
-import CardImg01 from "../assets/images/main/Card_Img01.png";
-import CardImg02 from "../assets/images/main/Card_Img02.png";
-import CardImg03 from "../assets/images/main/Card_Img03.png";
-import CardImg04 from "../assets/images/main/Card_Img04.png";
-import CardImg05 from "../assets/images/main/Card_Img05.png";
 import MainImg from "../assets/images/main/Main_Img01.png";
+import { announcementData } from "../data/announcementData";
+import { educationData } from "../data/educationData";
 
 import Slider from 'react-slick';
 import AOS from "aos";
@@ -35,6 +32,8 @@ import BgCard from "../components/BgCard";
 export default function MainPage() {
 
   const [user, setUser] = useState(null);
+  const [announcements, setAnnouncements] = useState(announcementData);
+  const [educations, serEducations] = useState(educationData);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -52,7 +51,6 @@ export default function MainPage() {
   const sliderRefMain = useRef(null);
   const sliderRef01 = useRef(null);
   const sliderRef02 = useRef(null);
-  const [isLikeShow, setIsLikeShow] = useState(false);
   const [activeTab, setActiveTab] = useState("직무/직군");
 
   const handleTabClick = (tab) => {
@@ -100,6 +98,16 @@ export default function MainPage() {
     autoplay: false,
     useTransform: false,
     autoplaySpeed: 3000,
+  };
+
+  const handleLikeToggle = (id) => {
+    setAnnouncements(prevAnnouncements =>
+      prevAnnouncements.map(announcement =>
+        announcement.id === id
+          ? { ...announcement, isLiked: !announcement.isLiked }
+          : announcement
+      )
+    );
   };
 
   return (
@@ -363,444 +371,48 @@ export default function MainPage() {
 
             <div className={style.tabBox} data-aos="fade-up">
               <ul className={style.tab}>
-                <li>
-                  <Link
-                    to="#"
-                    className={activeTab === "직무/직군" ? style.active : ""}
-                    onClick={() => handleTabClick("직무/직군")}
-                  >
-                    직무/직군
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className={activeTab === "기술/역량" ? style.active : ""}
-                    onClick={() => handleTabClick("기술/역량")}
-                  >
-                    기술/역량
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className={activeTab === "전문과정" ? style.active : ""}
-                    onClick={() => handleTabClick("전문과정")}
-                  >
-                    전문과정
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className={activeTab === "자격증" ? style.active : ""}
-                    onClick={() => handleTabClick("자격증")}
-                  >
-                    자격증
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className={activeTab === "워크숍" ? style.active : ""}
-                    onClick={() => handleTabClick("워크숍")}
-                  >
-                    워크숍
-                  </Link>
-                </li>
+                {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => (
+                  <li key={tab}>
+                    <Link
+                      to="#"
+                      className={activeTab === tab ? style.active : ""}
+                      onClick={() => handleTabClick(tab)}
+                    >
+                      {tab}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div className={style.cardList}>
-              {activeTab === "직무/직군" && (
-                <div data-aos="fade-up">
-                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                  </Slider>
-                </div>
-              )}
+              <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                {educations[activeTab]?.map((data, index) => (
+                  <div key={index} data-aos="fade-up">
+                    <Card
+                      text={activeTab}
+                      title={data.title}
+                      imgSrc={data.imgSrc}
+                      subText={data.subText}
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
 
-              {activeTab === "기술/역량" && (
-                <div data-aos="fade-up">
-                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="직무직군"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                  </Slider>
-                </div>
-              )}
-
-              {activeTab === "전문과정" && (
-                <div data-aos="fade-up">
-                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="전문과정"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                  </Slider>
-                </div>
-              )}
-
-              {activeTab === "자격증" && (
-                <div data-aos="fade-up">
-                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="자격증"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                  </Slider>
-                </div>
-              )}
-
-              {activeTab === "워크숍" && (
-                <div data-aos="fade-up">
-                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="해운항만물류 실무와 사례 특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="[에듀윌] 물류관리사 0원 합격패스"
-                        imgSrc={CardImg04}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="이춘길 전 강좌 무료강의
-합격반"
-                        imgSrc={CardImg05}
-                        subText="데이터리안"
-                      />
-                    </div>
-                    <div className={style.slide}>
-                      <Card
-                        text="워크숍"
-                        title="해운항만물류 실무와 사례
-특강"
-                        imgSrc={CardImg01}
-                        subText="데이터리안"
-                      />
-                    </div>
-                  </Slider>
-                </div>
-              )}
-              <div className={style.control} data-aos="fade-up">
-                <button
-                  className={style.prevBtn}
-                  onClick={() => handlePrev(sliderRef02)}
-                >
-                  <span className="blind">이전</span>
-                </button>
-                <button
-                  className={style.nextBtn}
-                  onClick={() => handleNext(sliderRef02)}
-                >
-                  <span className="blind">다음</span>
-                </button>
-              </div>
+            <div className={style.control} data-aos="fade-up">
+              <button
+                className={style.prevBtn}
+                onClick={() => handlePrev(sliderRef02)}
+              >
+                <span className="blind">이전</span>
+              </button>
+              <button
+                className={style.nextBtn}
+                onClick={() => handleNext(sliderRef02)}
+              >
+                <span className="blind">다음</span>
+              </button>
             </div>
 
           </div>
@@ -817,123 +429,25 @@ export default function MainPage() {
             </div>
 
             <div className={style.cardList} data-aos="fade-up">
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg02}
-                subText="~01.15(수)"
-              >
-                <button className={`${style.linkBtn} ${isLikeShow ? `${style.active}` : ""}`} onClick={() => setIsLikeShow(!isLikeShow)}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg03}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg02}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg03}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-            </div>
 
-            <div className={style.cardList} data-aos="fade-up">
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg02}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg03}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg02}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-              <Card
-                className="cardType"
-                text="씨아이지해운(주)"
-                title="해운항만물류 실무와 사례
-특강"
-                imgSrc={CardImg03}
-                subText="~01.15(수)"
-              >
-                <button className={style.linkBtn}>
-                  <span className="blind">
-                    좋아요
-                  </span>
-                </button>
-              </Card>
-            </div>
+              {
+                announcements.map((data) => {
+                  return (
+                    <Card
+                      key={data.id}
+                      className="cardType"
+                      text={data.text}
+                      imgSrc={data.imgSrc}
+                      title={data.title}
+                      date={data.subText}
+                      isLiked={data.isLiked}
+                      handleLikeToggle={() => handleLikeToggle(data.id)}
+                    />
+                  )
+                })
+              }
 
+            </div>
           </div>
         </Container>
       </div>

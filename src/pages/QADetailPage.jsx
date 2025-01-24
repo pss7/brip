@@ -4,8 +4,11 @@ import Container from "../components/Container";
 import Main from "../components/section/Main";
 import { QAData } from "../data/QAData";
 import Message from "../components/Message";
+import { UserContext } from "../context/UserProvider";
 
-export default function QADetailPage({ user }) {
+export default function QADetailPage() {
+
+    const { user } = useContext(UserContext);
 
   // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
   const formatDate = (dateString) => {

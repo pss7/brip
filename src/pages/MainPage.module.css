@@ -269,8 +269,7 @@
 #careerBox .cardList{margin-bottom: 82px; display: flex; flex-wrap: wrap; gap: 50px 1.8%;}
 #careerBox .cardList:last-child{margin-bottom: 0;}
 #careerBox .cardList a{width: 23.65%;}
-#careerBox .linkBtn{width: 28px; height: 24px; position: absolute; top:27px; right:15px; background: url(../assets/images/main/Link_Btn.svg)no-repeat center; }
-#careerBox .linkBtn.active{background: url(../assets/images/main/Like_Active_Icon.svg)no-repeat center;}
+
 
 @media (max-width: 1199px){
 

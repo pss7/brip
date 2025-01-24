@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import style from "./Card.module.css";
 
-export default function Card({ title, text, imgSrc, subText, children, className }) {
+export default function Card({ title, text, subText, className, handleLikeToggle, isLiked, imgSrc }) {
 
   return (
     <Link to="#" className={`cardBox ${className ? style[className] : ""} ${style.link}`}>
       <div className={style.imgBox}>
         <div className={style.img}>
           <img src={imgSrc} alt="" />
-          {children}
         </div>
       </div>
       <div className={style.textBox}>
@@ -21,6 +20,16 @@ export default function Card({ title, text, imgSrc, subText, children, className
         <em className={style.text02}>
           {subText}
         </em>
+        {handleLikeToggle && isLiked !== undefined && (
+          <button
+            className={`${style.linkBtn} ${isLiked ? `${style.active}` : ""}`}
+            onClick={handleLikeToggle}
+          >
+            <span className="blind">
+              {isLiked ? "좋아요 취소" : "좋아요"}
+            </span>
+          </button>
+        )}
       </div>
     </Link>
   )

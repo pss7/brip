@@ -5,6 +5,7 @@ import Table from "../components/Table";
 import Button from "../components/Button";
 import { inquiryData } from "../data/inquiryData";
 import { useState } from "react";
+import style from "./InquiryPage.module.css";
 
 export default function InquiryPage() {
 
@@ -31,7 +32,7 @@ export default function InquiryPage() {
                   1:1문의
                 </h4>
 
-                <p className="inquiryInfoText">
+                <p className={style.inquiryInfoText}>
                   문의량이 많을 시 답변이 지연 될 수 있습니다.  <br />
                   답변은 평일 9:30 ~ 17:00 에 등록되며, 가능한 빨리 답변드릴 수 있도록 노력하겠습니다.
                 </p>
@@ -66,7 +67,7 @@ export default function InquiryPage() {
                   <Button
                     href="/inquirydetail"
                     text="1:1문의 등록"
-                    customClass="btn"
+                    customClass={style.btn}
                   />
                 )}
 

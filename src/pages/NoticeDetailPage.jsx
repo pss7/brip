@@ -3,6 +3,7 @@ import Container from "../components/Container";
 import Main from "../components/section/Main";
 import Button from "../components/Button";
 import { noticeData } from "../data/noticeData";
+import style from "./NoticeDetailPage.module.css";
 
 export default function NoticeDetailPage() {
 
@@ -13,7 +14,7 @@ export default function NoticeDetailPage() {
   return (
     <Main className="subWrap bg">
 
-      <div className="noticeBox noticeDetailBox">
+      <div className="noticeBox">
         <Container className="lnbContainer">
           <div className="noticeContent">
             <div className="lnbLayoutBox">
@@ -30,26 +31,26 @@ export default function NoticeDetailPage() {
               </aside>
 
               <div className="content flexColumn">
-                <div className="topBox">
+                <div className={`topBox ${style.topBox}`}>
                   <h4>
                     {notice.title}
                   </h4>
-                  <div className="layoutBox">
-                    <span className="category">
+                  <div className={style.layoutBox}>
+                    <span className={style.category}>
                       {notice.category}
                     </span>
-                    <span className="date">
+                    <span className={style.data}>
                       {notice.date}
                     </span>
                   </div>
                 </div>
 
-                <p className="infoText">
+                <p className={style.infoText}>
                   {notice.content}
                 </p>
 
                 <Button
-                  customClass="btn"
+                  customClass={style.btn}
                   text="목록으로"
                   href="/notice"
                 />

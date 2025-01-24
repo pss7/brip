@@ -3,6 +3,7 @@ import Container from "../components/Container";
 import Main from "../components/section/Main";
 import { faqData } from "../data/faqData";
 import { useState } from "react";
+import style from "./FAQPage.module.css";
 
 export default function FAQPage() {
 
@@ -18,13 +19,12 @@ export default function FAQPage() {
   const toggleAnswer = (id) => {
     setOpenedFaqs((prevState) => ({
       ...prevState,
-      [id]: !prevState[id]  
+      [id]: !prevState[id]
     }));
   };
 
   return (
     <Main className="subWrap bg">
-
       <div className="faqBox">
         <Container className="lnbContainer">
           <div className="fqaContent">
@@ -56,11 +56,11 @@ export default function FAQPage() {
                   </div>
                 </div>
 
-                <div className="faqTabBox">
+                <div className={style.faqTabBox}>
                   {Object.keys(faqData).map((category) => (
                     <button
                       key={category}
-                      className={activeTab === category ? "active" : ""}
+                      className={activeTab === category ? `${style.active}` : ""}
                       onClick={() => handleTabClick(category)}
                     >
                       {category}
@@ -68,13 +68,13 @@ export default function FAQPage() {
                   ))}
                 </div>
 
-                <div className="faqContentBox">
+                <div className={style.faqContentBox}>
                   {faqData[activeTab]?.map((faq) => (
-                    <div key={faq.id} className="faqContent">
+                    <div key={faq.id} className={style.faqContent}>
                       <h4>
                         <button
-                          className={`btn ${openedFaqs[faq.id] ? "active" : ""}`}
-                          onClick={() => toggleAnswer(faq.id)}  
+                          className={`${style.btn} ${openedFaqs[faq.id] ? `${style.active}` : ""}`}
+                          onClick={() => toggleAnswer(faq.id)}
                         >
                           {faq.question}
                         </button>

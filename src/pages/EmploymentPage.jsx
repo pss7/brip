@@ -4,6 +4,7 @@ import Main from "../components/section/Main";
 import style from "./EmploymentPage.module.css"
 import { jobPostingsData } from "../data/jobPostingsData";
 import { useState } from "react";
+import SubSearch from "../components/SubSearch";
 
 export default function EmploymentPage() {
 
@@ -38,7 +39,7 @@ export default function EmploymentPage() {
   }
 
   return (
-    <Main className={`subWrap ${style.subWrap}`}>
+    <Main className="subWrap">
 
       <div className="employmentBox">
 
@@ -52,18 +53,9 @@ export default function EmploymentPage() {
         </div>
 
         <div className="employmentContent">
-          <Container className={style.container}>
+          <Container className="container">
 
-            <div className="comSearchBox">
-              <form>
-                <div className="inputBox">
-                  <label htmlFor="search" className="blind">
-                    검색
-                  </label>
-                  <input id="search" type="text" placeholder="직무를 검색해주세요." />
-                </div>
-              </form>
-            </div>
+            <SubSearch />
 
             <div className="employmentInfoList">
               <div className="comTabMenu">
@@ -95,7 +87,7 @@ export default function EmploymentPage() {
 
                 <ul className="list">
                   <li>
-                    <Link to="#"  className="active">
+                    <Link to="#" className="active">
                       전체
                     </Link>
                   </li>
@@ -183,7 +175,7 @@ export default function EmploymentPage() {
 
                 <ul className="list list02">
                   <li>
-                    <Link to="#"  className="active">
+                    <Link to="#" className="active">
                       전체
                     </Link>
                   </li>
@@ -248,18 +240,18 @@ export default function EmploymentPage() {
 
             </div>
 
-            <ul className="employmentApplyList">
+            <ul className={style.employmentApplyList}>
 
               {
                 postings.map((data, index) => {
                   return (
                     <li key={index}>
-                      <div className="companyBox">
-                        <span className="company">
+                      <div className={style.companyBox}>
+                        <span className={style.company}>
                           {data.company}
                         </span>
                         <button
-                          className={`likeBtn ${data.isLiked ? "active" : ""}`}
+                          className={`${style.likeBtn} ${data.isLiked ? `${style.active}` : ""}`}
                           onClick={() => ToggleLike(index)}
                         >
                           <span className="blind">
@@ -267,18 +259,18 @@ export default function EmploymentPage() {
                           </span>
                         </button>
                       </div>
-                      <div className="titleBox">
+                      <div className={style.titleBox}>
                         <Link to="/employmentdetail">
                           <h4>
                             {data.title}
                           </h4>
                         </Link>
-                        <p className="condition">
+                        <p className={style.condition}>
                           {data.condition}
                         </p>
                       </div>
                       <button
-                        className={`applyBtn ${data.isApplied ? "complete" : ""}`}
+                        className={`${style.applyBtn} ${data.isApplied ? `${style.complete}` : ""}`}
                         onClick={() => ToggleApply(index)}
                       >
                         <span>

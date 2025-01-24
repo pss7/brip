@@ -4,6 +4,7 @@ import "../assets/css/style.css";
 import Button from "../components/Button";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import { useState } from "react";
+import style from "./RoadMapDesignPage.module.css";
 
 export default function RoadMapDesignPage() {
 
@@ -36,24 +37,24 @@ export default function RoadMapDesignPage() {
 
   return (
     <Main className="subWrap bg">
-      <div className="roadMapBox roadMapDesignBox">
+      <div className="roadMapBox">
         <Container>
           <div className="roadMapContent">
             <div className="titleBox">
               <h3>나만의 커리어 로드맵 설계</h3>
             </div>
 
-            <div className="selectBox">
-              <p className="selectText">
+            <div className={style.selectBox}>
+              <p className={style.selectText}>
                 안녕하세요! 홍길동님 <br />
                 현재 상태를 선택해주세요.
               </p>
 
-              <ul className="selectList">
+              <ul className={style.selectList}>
                 {options1.map((option, index) => (
                   <li key={index}>
                     <button
-                      className={`selectBtn ${selectState[index] ? "active" : ""}`}
+                      className={`${style.selectBtn} ${selectState[index] ? `${style.active}` : ""}`}
                       onClick={() => handleSelect(index)}
                     >
                       {option}
@@ -63,14 +64,14 @@ export default function RoadMapDesignPage() {
               </ul>
             </div>
 
-            <div className="selectBox">
-              <p className="selectText">어떤 직무 분야에 관심이 있나요?</p>
+            <div className={style.selectBox}>
+              <p className={style.selectText}>어떤 직무 분야에 관심이 있나요?</p>
 
-              <ul className="selectList">
+              <ul className={style.selectList}>
                 {options2.map((option, index) => (
                   <li key={index}>
                     <button
-                      className={`selectBtn ${selectState[index + options1.length] ? "active" : ""}`}
+                      className={`${style.selectBtn} ${selectState[index + options1.length] ? `${style.active}`  : ""}`}
                       onClick={() => handleSelect(index + options1.length)}
                     >
                       {option}
@@ -86,7 +87,9 @@ export default function RoadMapDesignPage() {
             />
 
             <div className="linkBox">
-              <ArrowPrevButton href="/roadmapinfo" hiddenText="로드맵안내화면으로 이동" />
+              <ArrowPrevButton
+                href="/roadmapinfo"
+                hiddenText="로드맵안내화면으로 이동" />
             </div>
           </div>
         </Container>

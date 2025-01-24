@@ -1,12 +1,17 @@
-export default function Input({ id, type, placeholder, hiddenText, value, onChange }) {
+import style from "./Input.module.css";
+
+export default function Input({ label, id, type, placeholder, value, onChange, children }) {
 
   return (
     <>
-      <label htmlFor={id}>
-        <span className="blind">
-          {hiddenText}
-        </span>
-      </label>
+      {
+
+        label && <label htmlFor={id}>
+          {label}
+        </label>
+
+      }
+
       <input
         id={id}
         type={type}
@@ -14,7 +19,11 @@ export default function Input({ id, type, placeholder, hiddenText, value, onChan
         value={value}
         onChange={onChange}
       />
+
+      {children}
+
     </>
+
   )
 
 }

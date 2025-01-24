@@ -17,30 +17,30 @@ export default function EmploymentDetailPage() {
   return (
     <Main className="subWrap">
 
-      <div className="employmentBox employmentDetailBox">
-        <Container className={style.container}>
+      <div className={`employmentBox ${style.employmentDetailBox}` }>
+        <Container className="container">
           <div className="employmentContent">
 
-            <div className="employmentDetailTop">
-              <div className="imgBox">
+            <div className={style.employmentDetailTop}>
+              <div className={style.imgBox}>
                 <img src={DetailImg} alt="" />
               </div>
-              <div className="textBox">
-                <span className="company">
+              <div className={style.textBox}>
+                <span className={style.company}>
                   (주)국토해양환경기술단
                 </span>
-                <div className="titleBox">
+                <div className={style.titleBox}>
                   <h3>
                     해양생태계분야(해조류/해초류)직원채용공고
                   </h3>
-                  <span className="dDAY">
+                  <span className={style.dDAY}>
                     D-12
                   </span>
                 </div>
-                <p className="condition">
+                <p className={style.condition}>
                   신입·경력  대졸↑  정규직  경기 수원시
                 </p>
-                <button className="likeBtn">
+                <button className={style.likeBtn}>
                   <span className="blind">
                     좋아요
                   </span>
@@ -53,14 +53,14 @@ export default function EmploymentDetailPage() {
               />
             </div>
 
-            <div className="employmentDetailContent">
-              <div className="employmentDetailLeft">
-                <div className="employmentDetail">
+            <div className={style.employmentDetailContent}>
+              <div className={style.employmentDetailLeft}>
+                <div className={style.employmentDetail}>
                   <h4>
                     상세요강
                   </h4>
 
-                  <ul className="detailContentList">
+                  <ul className={style.detailContentList}>
                     <li>
                       <span>[교용형태]</span>
                       <em>
@@ -83,18 +83,18 @@ export default function EmploymentDetailPage() {
                     </li>
                   </ul>
 
-                  <button className="detailView">
+                  <button className={style.detailView}>
                     상세정보 더보기
                   </button>
 
                 </div>
 
-                <div className="employmentDetail">
+                <div className={style.employmentDetail}>
                   <h4>
                     기술스택
                   </h4>
 
-                  <ul className="techStack">
+                  <ul className={style.techStack}>
                     <li>
                       Github
                     </li>
@@ -110,26 +110,26 @@ export default function EmploymentDetailPage() {
                   </ul>
                 </div>
 
-                <div className="employmentDetail">
+                <div className={style.employmentDetail}>
                   <h4>
                     마감일
                   </h4>
-                  <span className="deadlineText">
+                  <span className={style.deadlineText}>
                     2024.12.22
                   </span>
                 </div>
 
-                <div className="employmentDetail">
+                <div className={style.employmentDetail}>
                   <h4>
                     기업정보
                   </h4>
 
-                  <div className="corporateInfo">
+                  <div className={style.corporateInfo}>
                     기업정보영역
                   </div>
                 </div>
 
-                <div className="employmentDetail">
+                <div className={style.employmentDetail}>
                   <h4>
                     근무위치
                   </h4>
@@ -138,67 +138,67 @@ export default function EmploymentDetailPage() {
                     경기 수원시 영통구 덕영대로 1556번길 15
                   </address>
 
-                  <div className="mapBox">
+                  <div className={style.mapBox}>
                     지도영역
                   </div>
                 </div>
               </div>
 
-              <div className="employmentDetailRight">
+              <div className={style.employmentDetailRight}>
 
                 {
                   isResumeVisible && (
-                    <div className="applyBox">
+                    <div className={style.applyBox}>
 
                       <h4>
                         지원하기
                       </h4>
 
-                      <div className="selectBox">
+                      <div className={style.selectBox}>
                         <label htmlFor="select" className="blind">
                           지원분야 선택
                         </label>
-                        <select id="select" className="select">
+                        <select id="select" className={style.select}>
                           <option value="">지원분야선택</option>
                         </select>
                       </div>
 
-                      <ul className="resumeList">
+                      <ul className={style.resumeList}>
                         <li>
                           <Link to="#">
-                            <div className="resumeInfoList">
+                            <div className={style.resumeInfoList}>
                               <span className="basic">기본이력서</span>
-                              <span className="certification">경력인증</span>
+                              <span className={style.certification}>경력인증</span>
                             </div>
 
-                            <div className="titleBox">
+                            <div className={style.titleBox}>
                               <h5>홍길동의 이력서</h5>
                             </div>
 
-                            <span className="date">
+                            <span className={style.date}>
                               2024-12-12
                             </span>
                           </Link>
                         </li>
                         <li>
                           <Link to="#">
-                            <div className="resumeInfoList">
-                              <span className="basic">기본이력서</span>
-                              <span className="certification">경력인증</span>
+                            <div className={style.resumeInfoList}>
+                              <span className={style.basic}>기본이력서</span>
+                              <span className={style.certification}>경력인증</span>
                             </div>
 
-                            <div className="titleBox">
+                            <div className={style.titleBox}>
                               <h5>홍길동의 이력서</h5>
                             </div>
 
-                            <span className="date">
+                            <span className={style.date}>
                               2024-12-12
                             </span>
                           </Link>
                         </li>
                       </ul>
 
-                      <button className="writeBtn">
+                      <button className={style.writeBtn}>
                         <span>
                           새 이력서 작성
                         </span>
@@ -209,7 +209,7 @@ export default function EmploymentDetailPage() {
                         customClass={style.btn}
                       />
 
-                      <Link className="link" to="/employment">
+                      <Link className={style.link} to="/employment">
                         <span className="blind">채용공고 화면으로 이동</span>
                       </Link>
 
@@ -226,7 +226,7 @@ export default function EmploymentDetailPage() {
                   />
                 )}
 
-                <div className="aiInfoBox">
+                <div className={style.aiInfoBox}>
                   <p>
                     이력서를 작성하면 <br />
                     AI가 <strong>채용공고를 추천</strong>해줘요!
@@ -238,7 +238,7 @@ export default function EmploymentDetailPage() {
         </Container>
 
         <Container>
-          <h4 className="aiTitle">
+          <h4 className={style.title}>
             AI추천공고
           </h4>
           <div className="cardContainer">
