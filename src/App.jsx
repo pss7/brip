@@ -24,7 +24,8 @@ import CareerPage from './pages/CareerPage';
 import CareerDetailPage from './pages/CareerDetailPage';
 import InterestPage from './pages/InterestPage';
 import UserProvider from './context/UserProvider';
-import ResumePage from './pages/resumePage';
+import ResumePage from './pages/ResumePage';
+
 
 function App() {
 
