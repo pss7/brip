@@ -25,6 +25,7 @@ import CareerDetailPage from './pages/CareerDetailPage';
 import InterestPage from './pages/InterestPage';
 import UserProvider from './context/UserProvider';
 import ResumePage from './pages/ResumePage';
+import ApplyPage from './pages/ApplyPage';
 
 
 function App() {
@@ -98,6 +99,11 @@ function App() {
             <Route path="/resume" element={
               <PrivateRoute>
                 <ResumePage />
+              </PrivateRoute>
+            } />
+            <Route path="/apply" element={
+              <PrivateRoute>
+                <ApplyPage />
               </PrivateRoute>
             } />
 
