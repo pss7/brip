@@ -14,7 +14,7 @@
 .linkBox .searchBox.active{overflow: visible;}
 .linkBox .searchBox .searchBtn{display: block; width: 27px; height: 27px; background: url(../../assets/images/common/search_icon.svg)no-repeat center; background-size: cover;}
 .linkBox .alarmBox{position: relative;}
-.linkBox .alarmBox .alarmBtn{display: block; width: 24px; height: 26px; background: url(../../assets/images/common/alarm_icon.svg)no-repeat center; background-size: cover;} 
+.linkBox .alarmBox .alarmBtn{display: block; width: 32px; height: 32px; background: url(../../assets/images/common/Alarm_Icon3.svg)no-repeat center; background-size: cover;} 
 .linkBox .loginBox .loginBtn{display: flex; align-items: center; justify-content: center; width: 77px; height: 48px; border-radius: 4px; background-color: #1C1B18; color: #fff; font-weight: 700; color: #fff;}
 .searchTextBox.active{opacity: 1; display: block; z-index: 9999;}
 .searchTextBox{opacity: 0; position: absolute; top:50%; transform: translateY(-50%); left:-275px; transition: all .5s; z-index: -999;}
@@ -34,7 +34,7 @@
   .linkBox{transform: none; top: auto; position: absolute; bottom: 30px; right: auto; width: 100%; justify-content: center; gap: 0 28px;}
   .linkBox .loginBox .loginBtn{width: 60px; height: 40px; font-size: 14px;}
   .linkBox .searchBox .searchBtn{width: 23px; height: 23px;}
-  .linkBox .alarmBox .alarmBtn{width: 20px; height: 22px;}
+  .linkBox .alarmBox .alarmBtn{width: 29px; height: 29px;}
 
   #headerBox .linkBox{display: none;}
   #headerBox .navBox{display: none;}

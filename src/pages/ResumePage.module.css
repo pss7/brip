@@ -5,10 +5,6 @@
 .resumeList li h5{margin-bottom: 15px; color: #000; font-weight: 600; font-size: 16px;}
 .resumeList li .date{font-size: 12px; color: #5F616D;}
 .resumeList li .viewBox{ position: absolute; top:17px; right:24px; }
-.resumeList li .viewBox .viewBtn{display: block; width: 3px; height: 16px;background: url(../assets/images/sub/Setting_Btn.svg)no-repeat center;}
-.resumeList li .viewBox .btnBox{display: flex; align-items: center; flex-direction: column; justify-content: center; position: absolute; top:-12px; right: -60px; width: 48px; height: 78px; border-radius: 6px; background-color: #fff; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.10); z-index: 999;}
-.resumeList li .viewBox .btnBox button{display: block; width: 40px; height: 33px; font-size: 13px; color: #415980;}
-.resumeList li .viewBox .btnBox button.active{background-color: #F3F7FE; border-radius: 4px;}
 
 .btn{margin-top: auto;}
 

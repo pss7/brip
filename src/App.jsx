@@ -26,6 +26,7 @@ import InterestPage from './pages/InterestPage';
 import UserProvider from './context/UserProvider';
 import ResumePage from './pages/ResumePage';
 import ApplyPage from './pages/ApplyPage';
+import ActivityPage from './pages/ActivityPage';
 
 
 function App() {
@@ -104,6 +105,12 @@ function App() {
             <Route path="/apply" element={
               <PrivateRoute>
                 <ApplyPage />
+              </PrivateRoute>
+            } />
+
+            <Route path="/activity" element={
+              <PrivateRoute>
+                <ActivityPage />
               </PrivateRoute>
             } />
 

@@ -1,9 +1,17 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import Main from "../components/section/Main";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import CalendarIcon from "../assets/images/sub/Calendar_Icon.svg";
+
 import style from "./ApplyPage.module.css";
 
 export default function ApplyPage() {
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   return (
     <Main className="subWrap bg">
@@ -34,6 +42,30 @@ export default function ApplyPage() {
                 <p className="subTitle">
                   내가 지원한 채용 공고의 진행 상황을 한눈에 확인하세요
                 </p>
+
+                <div className="datepickerBox">
+                  <div className="box">
+                    <label htmlFor="datepicker01">
+                      <DatePicker
+                        id="datepicker01"
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                      />
+                      <img src={CalendarIcon} alt="달력아이콘" />
+                    </label>
+                  </div>
+                  <span>~</span>
+                  <div className="box">
+                    <label htmlFor="datepicker02">
+                      <DatePicker
+                        id="datepicker02"
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                      />
+                      <img src={CalendarIcon} alt="달력아이콘" />
+                    </label>
+                  </div>
+                </div>
 
                 <ul className={style.infoList}>
                   <li>
@@ -84,10 +116,36 @@ export default function ApplyPage() {
                       지원내역삭제
                     </button>
                   </li>
+                  <li>
+                    <div className={style.topBox}>
+                      <span className={style.receipt}>
+                        접수마감
+                      </span>
+                      <div className={style.textBox}>
+                        <em>
+                          (주)국토해양환경기술단
+                        </em>
+                        <h5>
+                          해양생태계분야(해조류/해초류)직원채용공고
+                        </h5>
+                      </div>
+                    </div>
+                    <div className={style.dateBox}>
+                      <span>
+                        지원일
+                      </span>
+                      <em className={style.date}>
+                        2024.12.22
+                      </em>
+                      <span className={style.viewingDate}>
+                        열람 12/23
+                      </span>
+                    </div>
+                    <button className={style.delBtn}>
+                      지원취소
+                    </button>
+                  </li>
                 </ul>
-
-
-
               </div>
             </div>
           </div>

@@ -5,16 +5,17 @@ import style from "./ResumePage.module.css";
 import Button from "../components/Button";
 import { useState } from "react";
 import { resumeData } from "../data/resumeData";
+import ViewButton from "../components/ViewButton";
 
 export default function ResumePage() {
 
   const [resumeList, setResumeList] = useState(resumeData);
 
-  function handleToggleExpand(id) {
+  function handleToggle(id) {
     setResumeList((prevList) =>
       prevList.map((resume) =>
         resume.id === id
-          ? { ...resume, isExpanded: !resume.isExpanded }
+          ? { ...resume, isActionsVisible: !resume.isActionsVisible }
           : resume
       )
     );
@@ -70,26 +71,11 @@ export default function ResumePage() {
                             <span className={style.date}>
                               {data.date}
                             </span>
-                            <div className={style.viewBox}>
-                              <button
-                                className={style.viewBtn}
-                                onClick={() => handleToggleExpand(data.id)}
-                              >
-                                <span className="blind">
-                                  수정, 삭제 더보기 버튼
-                                </span>
-                              </button>
-                              {data.isExpanded && (
-                                <div className={style.btnBox}>
-                                  <button className={style.editBtn}>
-                                    수정
-                                  </button>
-                                  <button className={style.delbtn}>
-                                    삭제
-                                  </button>
-                                </div>
-                              )}
-                            </div>
+                            <ViewButton
+                              className={`${style.viewBox}`}
+                              handleToggle={handleToggle}
+                              data={data}
+                            />
                           </li>
                         </>
                       )

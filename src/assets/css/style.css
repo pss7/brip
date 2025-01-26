@@ -447,3 +447,35 @@
   .mypageBox .subTitle{font-size: 14px;}
 
 }
+
+/* 데이터피커 */
+.datepickerBox{display: flex; align-items: center; gap: 0 17px; margin-bottom: 25px;}
+.datepickerBox label{margin-bottom: 0;}
+.datepickerBox .box{position: relative;}
+.datepickerBox .react-datepicker-wrapper input{padding-left: 7px; width: 139px; height: 40px; border-radius: 5px; font-size: 16px; color: #636363; border: 1px solid #CBCBCB;}
+.datepickerBox .react-datepicker__tab-loop{position: absolute; top:0;}
+.datepickerBox .box img{position: absolute; top: 50%; transform: translateY(-50%); right:14px;}
+
+@media (max-width: 414px){
+
+  .datepickerBox{gap: 0 10px;}
+  .datepickerBox .react-datepicker-wrapper input{width: 100%; font-size: 14px;}
+  .datepickerBox .box img{right: 10px; width: 15px;}
+  
+}
+
+@media (max-width: 360px){
+
+  .datepickerBox .react-datepicker-wrapper input{font-size: 12px;}
+
+}
+
+@media (max-width: 320px){
+
+  .datepickerBox{flex-direction: column; gap: 6px 0;}
+  .datepickerBox .box,
+  .datepickerBox .react-datepicker-wrapper input,
+  .datepickerBox .react-datepicker-wrapper{width: 100%;}
+  .datepickerBox span{display: none;}
+
+}
