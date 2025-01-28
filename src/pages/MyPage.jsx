@@ -40,13 +40,15 @@ export default function MyPage() {
                   </h4>
                   <form>
 
-                    <div className="inputBox">
-                      <Input
-                        id="name"
-                        type="text"
-                        value={user.name}
-                        label="이름"
-                      />
+                    <div className="inputWrap">
+                      <div className="inputBox">
+                        <Input
+                          id="name"
+                          type="text"
+                          value={user.name}
+                          label="이름"
+                        />
+                      </div>
                     </div>
 
                     <div className="inputWrap">
@@ -100,13 +102,15 @@ export default function MyPage() {
                       </div>
                     </div>
 
-                    <div className="inputBox">
-                      <Input
-                        id="email"
-                        type="text"
-                        value="1998-01-01"
-                        label="생년월일"
-                      />
+                    <div className="inputWrap">
+                      <div className="inputBox">
+                        <Input
+                          id="email"
+                          type="text"
+                          value="1998-01-01"
+                          label="생년월일"
+                        />
+                      </div>
                     </div>
 
                   </form>

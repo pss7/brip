@@ -48,20 +48,20 @@ export default function SignInPage() {
     <>
       <Main className="subWrap bg">
 
-        <div className="signinBox signinSt">
+        <div className="signinBox">
           <Container>
-            <div className="signinContent">
+            <div className={`signinContent ${style.signinContent}`}>
 
-              <h3>
+              <h3 className={style.title}>
                 로그인
               </h3>
 
-              <div className="imgBox">
+              <div className={style.imgBox}>
                 <img src={LoginImg} alt="" />
               </div>
 
               <form onSubmit={handleSubmit}>
-                <div className="inputBox">
+                <div className={style.inputBox}>
                   <Input
                     id="email"
                     type="email"
@@ -72,7 +72,7 @@ export default function SignInPage() {
                   />
                 </div>
 
-                <div className="inputBox">
+                <div className={style.inputBox}>
                   <Input
                     id="password"
                     type="password"
@@ -83,14 +83,14 @@ export default function SignInPage() {
                   />
                 </div>
 
-                <div className="signinFindBox">
-                  <div className="inputChkBox">
+                <div className={style.signinFindBox}>
+                  <div className={style.inputChkBox}>
                     <input id="loginIdSave" type="checkbox" />
-                    <label htmlFor="loginIdSave" className="loginIdSave">
+                    <label htmlFor="loginIdSave">
                       아이디저장
                     </label>
                   </div>
-                  <Link to="/passwordfind" className="pwFindLink">
+                  <Link to="/passwordfind" className={style.pwFindLink}>
                     비밀번호를 잊어버리셨나요?
                   </Link>
                 </div>
@@ -103,31 +103,31 @@ export default function SignInPage() {
                   isLoading ? "로그인 중" : (
                     <Button
                       text="로그인"
-                      customClass={style.btnSt}
+                      customClass={style.btn}
                     />
                   )
                 }
 
               </form>
 
-              <div className="snsListBox">
-                <ul className="snsList">
+              <div className={style.snsListBox}>
+                <ul className={style.snsList}>
                   <li>
-                    <Link to="/" className="naverLogin">
+                    <Link to="/" className={style.naverLogin}>
                       <span className="blind">
                         네이버 로그인
                       </span>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/" className="kakaoLogin">
+                    <Link to="/" className={style.kakaoLogin}>
                       <span className="blind">
                         카카오 로그인
                       </span>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/" className="googleLogin">
+                    <Link to="/" className={style.googleLogin}>
                       <span className="blind">
                         구글 로그인
                       </span>
@@ -135,13 +135,13 @@ export default function SignInPage() {
                   </li>
                 </ul>
 
-                <div className="easySignInBox">
+                <div className={style.easySignInBox}>
                   3초 간편로그인
                 </div>
 
               </div>
 
-              <div className="signupLinkBox">
+              <div className={style.signupLinkBox}>
                 <span>
                   아직 계정이 없으신가요?
                 </span>

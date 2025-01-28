@@ -3,47 +3,54 @@ import Main from "../components/section/Main";
 import "../assets/css/login.css";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import Button from "../components/Button";
+import style from "./PwFindPage.module.css";
+import Input from "../components/Input";
 
 export default function PwFindPage() {
 
   return (
     <>
       <Main className="subWrap bg">
-        <div className="signinBox pwFindBox">
+        <div className="signinBox">
           <Container>
-            <div className="signinContent">
+            <div className={`signinContent ${style.signinContent}`}>
 
-              <h3>
+              <h3 className={style.title}>
                 비밀번호 찾기
               </h3>
 
-              <p className="subText">
+              <p className={style.subText}>
                 비밀번호를 재설정할 수 있는 인증코드를 보내드려요.
               </p>
 
               <div className="container">
                 <form>
-                  <div className="inputBox">
-                    <label htmlFor="email" className="text">
-                      이메일
-                    </label>
-                    <input id="email" type="text" value="asdfd1234@naver.com" />
+
+                  <div className={style.inputWrap}>
+                    <div className="inputBox">
+                      <Input
+                        label="이메일"
+                        id="email"
+                        value="asdfd1234@naver.com"
+                        type="text"
+                      />
+                    </div>
                   </div>
 
                   <div className="inputBox">
-                    <label htmlFor="password">
-                      <span className="blind">
-                        비밀번호 재설정 인증코드
-                      </span>
-                    </label>
-                    <input id="password" type="text" />
+                    <Input
+                      className="blind"
+                      label="비밀번호 재설정 인증코드"
+                      id="password"
+                      type="text"
+                    />
                   </div>
 
-                  <div className="codeBox">
+                  <div className={style.codeBox}>
                     <span>
                       인증코드가 오지 않나요?
                     </span>
-                    <button className="codeBtn" type="button">
+                    <button className={style.codeBtn} type="button">
                       인증코드 재전송
                     </button>
                   </div>

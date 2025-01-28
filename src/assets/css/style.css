@@ -2,7 +2,8 @@
 .subWrap{padding: 43px 0; min-height: 600px;}
 .subWrap.bg{background-color:#FAFAFD;}
 
-.inputBox{position: relative; margin-bottom: 35px;}
+.inputWrap{margin-bottom: 35px;}
+.inputBox{position: relative;}
 
 /* 공통-정렬 */
 .flexColumn{display: flex; flex-direction: column;}

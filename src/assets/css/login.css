@@ -1,110 +1,23 @@
-.signinBox .container{max-width: 328px; margin: 0 auto;}
-.signinBox .inputChkBox{display: flex; align-items: center; gap: 0 11px;}
-.signinBox .inputChkBox label{color: #737373; cursor: pointer;}
-
-@media (max-width: 767px){
-
-  .signinBox .container{max-width: none;}
-
-}
-
 /* 로그인 */
-.signinBox.signinSt h3{margin-bottom: -40px; }
-.signinBox.signinSt .imgBox{margin: 0 0 -40px 13px;}
-.signinContent{position: relative; padding: 30px 70px 50px; max-width: 580px; width: 100%; min-height: 851px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
 .signinBox h3{margin-bottom: 30px; color: #000; font-size: 24px; font-weight: 700; text-align: center;}
-.signinBox .imgBox img{display: block; margin: 0 auto;}
-.signinBox .inputBox{position: relative; margin-bottom: 16px;}
-.signinBox .inputBox:last-child{margin-bottom: 0;}
-.signinBox .inputBox input{display: block; padding:0 16px; /*max-width: 403px;*/ width: 100%; height: 66px; margin: 0 auto; border-radius: 8px; border: 1px solid #E3E5E5; color: #000;}
-.signinBox .inputBox input::placeholder{color: #72777A;}
-.signinBox .signinFindBox{margin: 23px 0 35px; display: flex; justify-content: space-between; align-items: center;}
-.signinBox .signinFindBox .pwFindLink{display: block; color: #737373; text-decoration: underline;}
-.signinBox .snsListBox{position: relative;}
-.signinBox .snsListBox .easySignInBox{position: absolute; top:-45px; left: 50%; transform: translateX(-50%); width: 106px; height: 32px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #fff; font-size: 12px; font-weight: 700; background-color: #000; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);}
-.signinBox .snsListBox .easySignInBox::after{content: ''; width: 13px; height: 13px; position: absolute;  bottom: -6px; left: 50%; transform: translateX(-50%); background: url(../../assets/images/login/Icon01.svg)no-repeat center;}
-.signinBox .snsListBox .snsList{margin-bottom: 25px; display: flex; justify-content: center; align-items: center;}
-.signinBox .snsListBox .snsList li a{position: relative; display: block; width: 54px; height: 54px; border-radius: 50px; transition: all .5s;}
-.signinBox .snsListBox .snsList li a:hover{transform: translateY(-10px);}
-.signinBox .snsListBox .snsList li a::after{content: ''; position: absolute; top:54%; left: 50%; transform:translate(-50%, -50%);}
-.signinBox .snsListBox .snsList li a.naverLogin,
-.signinBox .snsListBox .snsList li a.kakaoLogin{width: 54px; height: 54px;}
-.signinBox .snsListBox .snsList li a.naverLogin::after{width: 54px; height: 54px; background: url(../../assets/images/login/Naver_Img.svg)no-repeat center; background-size: 100% auto;}
-.signinBox .snsListBox .snsList li a.kakaoLogin{margin-right: 10px;}
-.signinBox .snsListBox .snsList li a.kakaoLogin::after{width: 54px; height: 54px; background: url(../../assets/images/login/Kakao_Img.svg)no-repeat center; background-size: 100% auto;}
-.signinBox .snsListBox .snsList li a.googleLogin{width: 46px; height: 46px; box-shadow: 4px 4px 20px rgba(217, 217, 217, 1);}
-.signinBox .snsListBox .snsList li a.googleLogin::after{width: 46px; height: 46px; background: url(../../assets/images/login/Google_Img.svg)no-repeat center;}
-.signinBox .signupLinkBox{display: flex; gap: 0 6px; justify-content: center;}
-.signinBox .signupLinkBox span{color: #000;}
-.signinBox .signupLinkBox a{color: #000; font-weight: 600; text-decoration: underline;}
-.signinBox .text{display: block; margin-bottom: 24px; color: #090A0A; font-weight: 500;}
-
-/* 비밀번호 찾기 */
-.signinBox.pwFindBox .signinContent{padding: 90px 70px 50px;}
-.signinBox.pwFindBox .subText{margin-bottom: 40px; color: #5E5C5C; font-size: 20px; font-weight: 500; line-height: 1.2; text-align: center;}
-.signinBox.pwFindBox .inputBox{margin-bottom: 13px;}
-.signinBox.pwFindBox .inputBox input{height: 48px;}
-.signinBox.pwFindBox .codeBox{margin:17px 0 45px; display: flex; align-items: center; justify-content: space-between;}
-.signinBox.pwFindBox .codeBox span{font-size: 12px; color: #737373;}
-.signinBox.pwFindBox .codeBox .codeBtn{width: 97px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50px; font-size: 12px; color: #313131; background-color: #F2F2F2; letter-spacing: -1px;}
-.signinBox .linkbtn{position: absolute; top:28px; left:34px; ;}
-
-/* 회원가입 */
-.signupBox h3{margin-bottom: 46px;}
-.signinBox.signupBox .text{margin-bottom: 14px;}
-.signinBox.signupBox  .inputBox{margin-bottom: 20px;}
-.signinBox.signupBox  .inputBox input{height: 48px;}
-.signinBox.signupBox .agreeChkBox{margin: 47px 0 50px;}
-.signinBox.signupBox .agreeChkBox .inputChkBox{display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;}
-.signinBox.signupBox .agreeChkBox .inputChkBox:last-child{margin-bottom: 0;}
-.signinBox.signupBox .agreeChkBox .inputChkBox input:checked + label::before{content: '✓'; text-align: center;}
-.signinBox.signupBox .agreeChkBox .inputChkBox label .allChk{font-weight: 600;}
-.signinBox.signupBox .agreeChkBox .inputChkBox label{padding-left: 41px; position: relative; font-weight: 500; color: #343330;}
-.signinBox.signupBox .agreeChkBox .inputChkBox label::before{content: ''; position: absolute; top:-2px; left:0; width: 24px; height: 24px; border: 2px solid #d9d9d9; border-radius: 5px;}
-.signinBox.signupBox .agreeChkBox .inputChkBox a{display: block; font-size: 12px; color: #656565; text-decoration: underline;} 
-.signinBox.signupBox .inputEmailBox{margin-bottom: 20px; }
-.signinBox.signupBox .inputEmailBox .inputLayoutBox{display: flex; gap: 0 5px; align-items: center;}
-.signinBox.signupBox .inputEmailBox .inputBox{margin-bottom: 0;}
-.signinBox.signupBox .infoText{margin-top: 12px; font-size: 12px; line-height: 20px; color: #72777A;}
-.signinBox.signupBox .btn{height: 48px; font-size: 16px;}
-
-
-.signinBox.signupBox .selectBox{margin-left: 5px;}
-.signinBox.signupBox .selectBox .select{padding-left: 18px; width: 110px; height: 50px; border: 1px solid #E7E8E8; border-radius: 8px; color: #72777A; cursor: pointer;   -webkit-appearance: none;-moz-appearance: none;  appearance: none; background: url(../images/login/Select_Arrow_Icon.svg)no-repeat 75px center; background-size: 17px 9px;}
-.signinBox.signupBox .inputPasswordBox{margin-bottom: 20px;}
-.signinBox.signupBox .inputPasswordBox{position: relative;}
-.signinBox.signupBox .inputPasswordBox .pwHiddenToggleBtn{width: 25px; height: 27px; position: absolute; top: 50%; right:19px; transform: translateY(-50%); background: url(../images/login/Hidden_Icon.svg)no-repeat center;}
-.signinBox.signupBox .inputPasswordBox .inputBox{margin-bottom: 0;}
-.signinBox.signupBox .inputPasswordBox .inputBox input{padding: 0 52px 0 16px;}
+.signinContent{position: relative; padding: 30px 70px 50px; max-width: 580px; width: 100%; min-height: 851px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
+.signinBox .container{max-width: 328px; margin: 0 auto;}
+.signinBox .linkbtn{position: absolute; top:28px; left:34px;}
 
 @media (max-width: 1199px){
 
-  .signinContent{padding: 20px 30px 50px;}
-  .signinBox h3{font-size: 22px;}
-  .signinBox .inputBox{margin-bottom: 10px;}
-  .signinBox .inputBox input{height: 60px;}
-
-  .signinBox.signinSt h3{margin-bottom: -10px;}
-  .signinBox.signinSt .imgBox{margin: 0 0 -20px 15px;}
-  .signinBox.signinSt .imgBox img{max-width: 300px; width: 100%;}
-
-  .signinBox.pwFindBox .signinContent{padding: 90px 20px 50px;}
-  .signinBox.pwFindBox h3{margin-bottom: 20px;}
-  .signinBox.pwFindBox .subText{font-size: 16px;}
-  
   .signinBox .linkbtn{left: 20px; top: 20px;}
-  .signinBox .inputBox{width: 100%;}
-
-  .signinBox.signupBox .inputEmailBox .inputLayoutBox{flex-direction: column; gap: 5px 0;}
-  .signinBox.signupBox .selectBox{margin: 5px 0 0; width: 100%;}
-  .signinBox.signupBox .selectBox .select{width: 100%; background-position-x: 96%;}
-
-  .signupBox h3{margin-bottom: 30px;}
-  
-}
-
-@media (max-width: 375px){
-
-  .signinBox .signinFindBox{flex-direction: column; gap: 20px 0;}
+  .signinContent{padding: 20px 30px 50px;}
+  .signinBox .inputBox input{height: 60px;}
+  .signinBox .container{max-width: none;}
+  .signinBox h3{font-size: 22px;}
 
 }
+
+@media (max-width: 767px){
+
+  .signinBox h3{font-size: 18px;}
+
+}
+
+

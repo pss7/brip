@@ -219,7 +219,7 @@ export default function MainPage() {
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="/resume">
                   <div className={style.imgBox}>
                     <img src={Resume} alt="" />
                   </div>
@@ -229,7 +229,7 @@ export default function MainPage() {
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="/apply">
                   <div className={style.imgBox}>
                     <img src={Contact} alt="" />
                   </div>
