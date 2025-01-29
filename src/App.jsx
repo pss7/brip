@@ -15,7 +15,6 @@ import FAQPage from './pages/FAQPage';
 import TermsPage from './pages/TermsPage';
 import PolicyPage from './pages/PolicyPage';
 import PrivateRoute from './pages/PrivateRoute';
-import InquiryPage from './pages/InquiryPage';
 import CommunityPage from './pages/CommunityPage';
 import MyPage from './pages/MyPage';
 import ChatRoomDetailPage from './pages/ChatRoomDetailPage';
@@ -27,6 +26,9 @@ import UserProvider from './context/UserProvider';
 import ResumePage from './pages/ResumePage';
 import ApplyPage from './pages/ApplyPage';
 import ActivityPage from './pages/ActivityPage';
+import InquiryPage from './pages/InquiryPage';
+import InquiryRegisterPage from './pages/InquiryRegisterPage';
+import InquiryDetailPage from './pages/InquiryDetailPage';
 
 
 function App() {
@@ -55,6 +57,8 @@ function App() {
             <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
             <Route path='/faq' element={<FAQPage />} />
             <Route path='/inquiry' element={<InquiryPage />} />
+            <Route path='/inquiryreg' element={<InquiryRegisterPage />} />
+            <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
             <Route path='/terms' element={<TermsPage />} />
             <Route path='/policy' element={<PolicyPage />} />
 

@@ -4,8 +4,10 @@ import Main from "../components/section/Main";
 import Table from "../components/Table";
 import { noticeData } from "../data/noticeData";
 import { useState } from "react";
+import style from "./NoticePage.module.css";
 
 export default function NoticePage() {
+
   const [data] = useState(noticeData);
   const [sortOrder, setSortOrder] = useState("최신순");
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -71,6 +73,7 @@ export default function NoticePage() {
                       </label>
                       <input
                         id="search"
+                        placeholder="키워드를 검색해주세요."
                         value={searchKeyword}
                         onChange={handleSearchChange}
                       />
@@ -98,23 +101,18 @@ export default function NoticePage() {
                   <Table
                     href="/noticedetail"
                     filteredData={sortedData}
-                    className={"textLeft ellipsisText"}
-                  >
-                    <colgroup>
-                      <col style={{ width: "100px" }} />
-                      <col style={{ width: "90px" }} />
-                      <col style={{ width: "auto" }} />
-                      <col style={{ width: "150px" }} />
-                    </colgroup>
-                    <thead>
-                      <tr>
-                        <th>NO.</th>
-                        <th>구분</th>
-                        <th>제목</th>
-                        <th>등록일</th>
-                      </tr>
-                    </thead>
-                  </Table>
+                    className={`${style.tableBox}`}
+                    textClassName="textLeft ellipsisText"
+                    columns={["NO.", "구분", "제목", "등록일"]}
+                    colgroup={(
+                      <>
+                        <col style={{ width: "90px" }} />
+                        <col style={{ width: "100px" }} />
+                        <col style={{ width: "auto" }} />
+                        <col style={{ width: "150px" }} />
+                      </>
+                    )}
+                  />
                 )}
               </div>
             </div>

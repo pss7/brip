@@ -15,9 +15,9 @@ export default function SignUpPage() {
 
         <div className="signinBox">
           <Container>
-            <div className="signinContent">
+            <div className={`signinContent ${style.signinContent}`}>
 
-              <h3>
+              <h3 className={style.title}>
                 회원가입
               </h3>
 

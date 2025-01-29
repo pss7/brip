@@ -1,5 +1,3 @@
-import "./Input.module.css";
-
 export default function Input({ title, label, id, type, placeholder, value, onChange, children, className }) {
 
   return (
