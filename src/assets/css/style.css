@@ -195,7 +195,7 @@ input::placeholder{color: #72777A;}
 }
 
 /* LNB레이아웃 */
-.lnbContainer{max-width: 1132px;}
+.lnbContainer{max-width: 1132px!important;}
 .lnbLayoutBox{display: flex;}
 .lnbLayoutBox aside{flex-shrink: 0; width: 254px; padding-left: 25px;}
 .lnbLayoutBox aside a{position: relative;}
