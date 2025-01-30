@@ -11,25 +11,23 @@ import { useContext, useEffect } from "react";
 
 export default function MyPage() {
 
-  const { user, loading } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);  // UserContext에서 user와 loading 상태 가져오기
   const navigate = useNavigate();
 
-  // 로딩 중에는 사용자 정보가 불러와질 때까지 대기
   useEffect(() => {
     if (loading) {
-      return; // 로딩 중이면 아무것도 하지 않음
+      return;  // 로딩 중이면 아무것도 하지 않음
     }
 
     if (!user) {
-      navigate("/signin"); // 사용자 정보가 없으면 로그인 페이지로 리디렉션
+      navigate("/signin");  // 사용자 정보가 없으면 로그인 페이지로 리디렉션
     }
   }, [user, loading, navigate]);
 
-  // 로딩 상태일 경우 로딩 중 메시지 표시
   if (loading) {
-    return <div>로딩 중...</div>;
+    return <div>로딩 중...</div>;  // 로딩 중일 때는 "로딩 중..." 메시지를 보여줌
   }
-  
+
   return (
     <Main className="subWrap bg">
 

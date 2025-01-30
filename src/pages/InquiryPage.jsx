@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "../components/Table";
-import { inquiryData } from "../data/inquiryData";
 import { UserContext } from "../context/UserProvider";
 import { useContext } from "react";
 import style from "./InquiryPage.module.css";
@@ -10,8 +9,16 @@ import Container from "../components/Container";
 import Main from "../components/section/Main";
 
 export default function InquiryPage() {
-  const [data] = useState(inquiryData);
+  const [data, setData] = useState([]);
   const { user } = useContext(UserContext);
+
+  // 로컬스토리지에서 데이터 가져오기
+  useEffect(() => {
+    const storedData = localStorage.getItem("inquiryData");
+    if (storedData) {
+      setData(JSON.parse(storedData)); // 로컬스토리지에서 데이터를 불러와서 상태에 저장
+    }
+  }, []);
 
   // 최신순으로 정렬
   const sortedData = data.sort((a, b) => {
@@ -72,7 +79,7 @@ export default function InquiryPage() {
             </div>
           </div>
         </Container>
-      </div >
-    </Main >
+      </div>
+    </Main>
   );
 }

@@ -18,7 +18,11 @@ export default function Button({ type, text, customClass, href, onClick }) {
   }
 
   return (
-    <button type={type} onClick={handleClick} className={`${style.btn} ${customClass}`}>
+    <button
+      type={type}
+      onClick={handleClick}
+      className={`${style.btn} ${customClass}`}
+    >
       {text}
     </button>
   );

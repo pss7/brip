@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import FileIcon from '../assets/images/sub/File_Icon.svg';
 
-export default function FileUpload() {
+export default function FileUpload({ onChange }) {
   const [uploadedFiles, setUploadedFiles] = useState([]); // 업로드된 파일 상태
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -29,9 +29,14 @@ export default function FileUpload() {
     } else {
       setErrorMessage('');
       // 유효한 파일 상태에 추가
-      setUploadedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      setUploadedFiles((prevFiles) => {
+        const newFiles = [...prevFiles, ...validFiles];
+        // 부모 컴포넌트로 파일을 전달
+        onChange(newFiles);
+        return newFiles;
+      });
     }
-  }, [uploadedFiles]); // uploadedFiles 상태가 변경될 때마다 콜백 호출
+  }, [uploadedFiles, onChange]); // uploadedFiles와 onChange 상태 변경 시 콜백 호출
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,

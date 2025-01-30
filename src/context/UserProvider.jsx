@@ -5,15 +5,16 @@ export const UserContext = createContext();
 
 export default function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);  // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);  // 로딩 상태
 
   useEffect(() => {
+    // 로컬스토리지에서 사용자 정보 로드
     const userData = localStorage.getItem("user");
     if (userData) {
-      setUser(JSON.parse(userData));  // 로컬스토리지에서 데이터가 있으면 user 상태에 저장
+      setUser(JSON.parse(userData));  // 로컬스토리지에서 데이터를 user 상태에 저장
     }
     setLoading(false);  // 로딩이 끝났음을 알려줌
-  }, []);  // 최초 렌더링 시에만 실행되도록
+  }, []);  // 최초 렌더링 시에만 실행
 
   // 로그인 함수
   const login = (userData) => {

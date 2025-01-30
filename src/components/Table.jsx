@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import style from "./Table.module.css";
 import Loading from "./Loading";
 
@@ -16,23 +16,17 @@ export default function Table({
 }) {
   const [visibleData, setVisibleData] = useState(filteredData.slice(0, 10)); // 처음 10개 항목만 표시
   const [loading, setLoading] = useState(false); // 로딩 상태
+  const [scrollTop, setScrollTop] = useState(0); // 스크롤 위치 추적
 
   // 필터된 데이터가 변경되면 처음부터 10개 데이터를 보여줌
   useEffect(() => {
     setVisibleData(filteredData.slice(0, 10));
   }, [filteredData.length]);
 
-  // 스크롤 이벤트 핸들러
-  const handleScroll = (e) => {
-    const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
-    if (bottom && !loading && visibleData.length < filteredData.length) {
-      loadMoreData();
-    }
-  };
-
-  // 데이터를 추가로 불러오는 함수
-  const loadMoreData = () => {
-    if (loading) return;
+  // 데이터 추가 로딩 함수
+  const loadMoreData = useCallback(() => {
+    if (loading || visibleData.length >= filteredData.length) return;
+    
     setLoading(true);
     setTimeout(() => {
       setVisibleData((prevData) => [
@@ -40,8 +34,17 @@ export default function Table({
         ...filteredData.slice(prevData.length, prevData.length + 10),
       ]);
       setLoading(false);
-    }, 1000); // 로딩 상태를 유지하고, 1초 후 데이터를 추가
-  };
+    }, 1000); // 1초 후 데이터를 추가
+  }, [filteredData, loading, visibleData.length]);
+
+  // 스크롤 이벤트 핸들러
+  const handleScroll = useCallback((e) => {
+    const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+    if (bottom) {
+      loadMoreData(); // 데이터 추가 로드
+    }
+    setScrollTop(e.target.scrollTop); // 스크롤 위치 업데이트
+  }, [loadMoreData]);
 
   return (
     <div className={`${className} ${style.tableBox}`} onScroll={handleScroll}>
@@ -82,7 +85,7 @@ export default function Table({
           })}
         </tbody>
       </table>
-      {loading && <Loading />}
+      {loading && <Loading />} {/* 로딩 중이면 로딩 컴포넌트 표시 */}
     </div>
   );
 }
