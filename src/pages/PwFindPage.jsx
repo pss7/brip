@@ -33,6 +33,7 @@ export default function PwFindPage() {
                         id="email"
                         value="asdfd1234@naver.com"
                         type="text"
+                        className="mb-15"
                       />
                     </div>
                   </div>

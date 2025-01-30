@@ -1,10 +1,12 @@
+import style from "./Input.module.css";
+
 export default function Input({ title, label, id, type, placeholder, value, onChange, children, className }) {
 
   return (
     <>
       {
 
-        label && <label htmlFor={id} className={className}>
+        label && <label htmlFor={id} className={`${className} ${style.label}`}>
           {label}
         </label>
 
@@ -17,6 +19,7 @@ export default function Input({ title, label, id, type, placeholder, value, onCh
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        className={`${style.input}`}
       />
 
       {children}

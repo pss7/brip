@@ -9,7 +9,7 @@
 
 @media (max-width: 767px){
 
- .tableBox{border-radius: 5px; overflow-x: auto;}
+ .tableBox{border-radius: 5px; overflow-x: auto!important;}
  .tableBox colgroup col:nth-child(1){width: 60px!important;}
  .tableBox table{width: 767px!important;}
    

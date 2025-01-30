@@ -30,12 +30,13 @@ export default function SignUpPage() {
                         id="name"
                         label="이름"
                         placeholder="이름 입력"
+                        className="mb-15"
                       />
                     </div>
                   </div>
 
                   <div className="inputWrap">
-                    <label>
+                    <label className="mb-15">
                       닉네임
                     </label>
                     <div className={`inputBox ${style.inputNicknameBox}`}>
@@ -52,7 +53,7 @@ export default function SignUpPage() {
                   </div>
 
                   <div className="inputWrap">
-                    <label>
+                    <label className="mb-15">
                       이메일
                     </label>
                     <div className={style.layoutBox}>
@@ -78,7 +79,7 @@ export default function SignUpPage() {
                   </div>
 
                   <div className="inputWrap">
-                    <label htmlFor="password">
+                    <label htmlFor="password" className="mb-15">
                       비밀번호
                     </label>
                     <div className="inputBox">
@@ -102,7 +103,7 @@ export default function SignUpPage() {
                   </div>
 
                   <div className="inputWrap">
-                    <label htmlFor="passwordCheck">
+                    <label htmlFor="passwordCheck" className="mb-15">
                       비밀번호 확인
                     </label>
                     <div className="inputBox">
