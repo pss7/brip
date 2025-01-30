@@ -4,7 +4,7 @@ export const userData = {
   nickname: "김새는 소나무",
   email: 'test@email.com',
   password: '123',
-  profileImg: '/assets/images/sub/Profile_Img.svg',
+  profileImg: '/assets/images/sub/Profile_Img.png',
   phone: '010-5167-1674',
   birthDate: '2007-03-22',
 };
