@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
+import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import Alarm from "../Alarm";
 import { UserContext } from "../../context/UserProvider";
 
@@ -188,7 +189,7 @@ export default function Header() {
             <div className={style.loginBox}>
               {user ? (
                 <Link to="/mypage">
-                  <img src={user.profileImg} alt="" />
+                  <img src={ProfileImg} alt="프로필이미지" />
                 </Link>  // 사용자 정보가 있으면 마이페이지 링크
               ) : (
                 <Link to="/signin" className={style.loginBtn}>로그인</Link>  // 없으면 로그인 버튼
@@ -270,7 +271,7 @@ export default function Header() {
           <div className={style.loginBox}>
             {user ? (
               <Link to="/mypage">
-                <img src={user.profileImg} alt="" />
+                <img src={ProfileImg} alt="프로필이미지" />
               </Link>  // 사용자 정보가 있으면 마이페이지 링크
             ) : (
               <Link

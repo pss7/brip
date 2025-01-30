@@ -1,4 +1,5 @@
 import style from "./Message.module.css";
+import ProfileImg from "../assets/images/common/Profile_Img.svg";
 
 export default function Message({ user, id, hiddenText, newMessage, setNewMessage, handleKeyDown, handleSendMessage, placeholder }) {
 
@@ -6,7 +7,7 @@ export default function Message({ user, id, hiddenText, newMessage, setNewMessag
     <div className={style.messageInput}>
       <div className={style.layoutBox}>
         <div className={style.imgBox}>
-          <img src={user.profileImg} alt={user.name} />
+          <img src={ProfileImg} alt={user.name} />
         </div>
         <div className={style.textareaBox}>
           <label htmlFor={id} className="blind">{hiddenText}</label>

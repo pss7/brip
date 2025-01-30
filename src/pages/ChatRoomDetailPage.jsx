@@ -5,6 +5,7 @@ import Main from "../components/section/Main";
 import Container from "../components/Container";
 import Message from "../components/Message";
 import { UserContext } from "../context/UserProvider";
+import ProfileImg from "../assets/images/common/Profile_Img.svg";
 
 export default function ChatRoomDetailPage() {
 
@@ -101,7 +102,7 @@ export default function ChatRoomDetailPage() {
               <aside>
                 <div className="infoBox">
                   <div className="imgBox">
-                    <img src={user.profileImg} alt="" />
+                    <img src={ProfileImg} alt="프로필이미지" />
                   </div>
                   <div className="textBox">
                     <p className="nickname">
@@ -151,7 +152,7 @@ export default function ChatRoomDetailPage() {
                       {group.messages.map((msg) => (
                         <div key={msg.id} className={`message ${msg.user === user.nickname ? 'myMessage' : ''}`}>
                           <div className="imgBox">
-                            <img src={msg.thumbnailImg} alt={msg.user} />
+                            <img src={ProfileImg} alt="프로필이미지" />
                           </div>
                           <div className="textBox">
                             <span className="nickname">{msg.user}</span>

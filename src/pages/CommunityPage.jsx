@@ -5,6 +5,7 @@ import { chatRoomsData } from "../data/chatRoomsData";
 import { QAData } from "../data/QAData";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserProvider";
+import ProfileImg from "../assets/images/common/Profile_Img.svg";
 
 // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
 const formatDate = (dateString) => {
@@ -62,7 +63,7 @@ export default function CommunityPage() {
               <aside>
                 <div className="infoBox">
                   <div className="imgBox">
-                    <img src={user.profileImg} alt="" />
+                    <img src={ProfileImg} alt="프로필이미지" />
                   </div>
                   <div className="textBox">
                     <p className="nickname">
@@ -124,7 +125,7 @@ export default function CommunityPage() {
                   <div className="qaContentBox">
                     <div className="shareBox">
                       <div className="imgBox">
-                        <img src={user.profileImg} alt="" />
+                        <img src={ProfileImg} alt="프로필이미지" />
                       </div>
                       <p>나누고 싶은 이야기를 공유해보세요!</p>
                     </div>
@@ -175,7 +176,7 @@ export default function CommunityPage() {
                   <div className="chatRoomContentBox">
                     <div className="shareBox">
                       <div className="imgBox">
-                        <img src={user.profileImg} alt="" />
+                        <img src={ProfileImg} alt="프로필이미지" />
                       </div>
                       <p>나누고 싶은 이야기를 공유해보세요!</p>
                     </div>
