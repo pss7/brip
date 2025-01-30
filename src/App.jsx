@@ -30,7 +30,6 @@ import InquiryPage from './pages/InquiryPage';
 import InquiryRegisterPage from './pages/InquiryRegisterPage';
 import InquiryDetailPage from './pages/InquiryDetailPage';
 
-
 function App() {
 
   return (

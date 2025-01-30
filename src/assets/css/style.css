@@ -438,6 +438,7 @@
 .policyBox .content::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
 
 /* 마이페이지 */
+.mypageBox label{display: block; color: #090A0A; font-weight: 500;}
 .mypageBox .content{padding: 42px 70px 50px;}
 .mypageBox .content .title{font-size: 24px;}
 .mypageBox .subTitle{margin: 20px 0 32px; color: #5E5C5C; font-weight: 500; line-height: 1.7;}
