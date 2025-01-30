@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
 import Alarm from "../Alarm";
+import { UserContext } from "../../context/UserProvider";
 
 export default function Header() {
 
@@ -18,6 +19,9 @@ export default function Header() {
     const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   });
+
+
+  // const { user } = useContext(UserContext);
 
   const getActiveClass = (path) => {
     return location.pathname === path ? `${style.active}` : '';
