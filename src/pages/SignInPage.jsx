@@ -32,15 +32,16 @@ export default function SignInPage() {
     setEmail(emailValue);
 
     setError('');
+    setEmailError(''); // 이메일 오류 초기화
 
     if (!emailValue) {
       setEmailError('이메일을 확인해주세요.');
     } else if (!emailRegex.test(emailValue)) {
       setEmailError('유효한 이메일 형식을 입력해주세요.');
-    } else {
-      setEmailError('');
     }
-    checkButtonEnable(email, passwordValue, emailError, passwordError);
+
+    // 이메일 유효성 검사 후 버튼 상태 체크
+    checkButtonEnable(emailValue, password, emailError, passwordError);
   }
 
   // 비밀번호 유효성 검사
@@ -49,21 +50,25 @@ export default function SignInPage() {
     setPassword(passwordValue);
 
     setError('');
+    setPasswordError(''); // 비밀번호 오류 초기화
 
     if (!passwordValue) {
       setPasswordError('비밀번호를 입력해주세요.');
     }
+
+    // 비밀번호 유효성 검사 후 버튼 상태 체크
     checkButtonEnable(email, passwordValue, emailError, passwordError);
   }
 
   // 버튼 활성화/비활성화 체크
   function checkButtonEnable(emailValue, passwordValue, emailError, passwordError) {
+    // 이메일과 비밀번호 모두 유효한지, 오류가 없을 때만 버튼 활성화
     if (emailRegex.test(emailValue) && passwordValue && !emailError && !passwordError) {
       setDisabled(false); // 조건이 맞으면 버튼 활성화
     } else {
       setDisabled(true); // 조건이 맞지 않으면 버튼 비활성화
     }
-  };
+  }
 
   // 로그인 처리 함수
   function handleSubmit(e) {
