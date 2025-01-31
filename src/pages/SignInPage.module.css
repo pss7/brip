@@ -1,6 +1,6 @@
 
 .title{margin-bottom: -40px!important;}
-.imgBox{margin: 0 0 -40px -5px;}
+.imgBox{position: relative; margin: 0 0 -40px -5px;}
 .imgBox img{display: block; margin: 0 auto;}
 .snsListBox{position: relative;}
 .snsListBox .easySignInBox{position: absolute; top:-45px; left: 50%; transform: translateX(-50%); width: 106px; height: 32px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #fff; font-size: 12px; font-weight: 700; background-color: #000; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);}
@@ -23,7 +23,7 @@
 .signinFindBox{margin: 23px 0 35px; display: flex; justify-content: space-between; align-items: center;}
 .inputChkBox{display: flex; align-items: center; gap: 0 11px;}
 .inputChkBox label{margin: 0; color: #737373; cursor: pointer;}
-.inputBox{margin-bottom: 16px;}
+.inputBox{position: relative; margin-bottom: 16px; z-index: 99;}
 .inputBox input{height: 66px!important;}
 .inputBox:last-child{margin-bottom: 0;}
 .btn{margin: 60px auto 80px; max-width: 416px; height: 66px; font-size: 20px;}

@@ -13,20 +13,53 @@ export default function SignInPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null); // 에러 메시지 관리
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 관리
+  const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState(''); // 이메일 오류 메시지
+  const [passwordError, setPasswordError] = useState(''); // 비밀번호 오류 메시지
   const navigate = useNavigate(); // 페이지 이동을 위한 hook
 
   const validEmail = userData.email;
   const validPassword = userData.password;
 
+  // 이메일 형식 정규식
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // 이메일 유효성 검사
+  function handleEmailChange(e) {
+    const emailValue = e.target.value;
+    setEmail(emailValue);
+
+    setError('');
+
+    if (!emailValue) {
+      setEmailError('이메일을 확인해주세요.');
+    } else if (!emailRegex.test(emailValue)) {
+      setEmailError('유효한 이메일 형식을 입력해주세요.');
+    } else {
+      setEmailError('');
+    }
+  }
+
+  // 비밀번호 유효성 검사
+  function handlePasswordChange(e) {
+    const passwordValue = e.target.value;
+    setPassword(passwordValue);
+
+    setError('');
+
+    if (!passwordValue) {
+      setPasswordError('비밀번호를 입력해주세요.');
+    } else {
+      setPasswordError('');
+    }
+  }
+
   // 로그인 처리 함수
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setIsLoading(true); // 로딩 시작
-
-    if (email === validEmail && password === validPassword) {
+    // 이메일과 비밀번호의 오류가 없으면 로그인 진행
+    if (!emailError && !passwordError && email === validEmail && password === validPassword) {
 
       localStorage.setItem("authToken", "dummyToken_12345");
       localStorage.setItem("user", JSON.stringify(userData));  // 사용자 정보 저장
@@ -36,18 +69,14 @@ export default function SignInPage() {
       navigate(redirectUrl);
 
     } else {
-      // 인증 실패 시 에러 메시지 표시
       setError('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
-
-    setIsLoading(false); // 로딩 종료
 
   };
 
   return (
     <>
       <Main className="subWrap bg">
-
         <div className="signinBox">
           <Container>
             <div className={`signinContent ${style.signinContent}`}>
@@ -68,8 +97,9 @@ export default function SignInPage() {
                     value={email}
                     placeholder="이메일 입력"
                     hiddenText="이메일 입력"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleEmailChange}
                   />
+                  {emailError && <p className="errorMessage">{emailError}</p>}
                 </div>
 
                 <div className={style.inputBox}>
@@ -79,8 +109,9 @@ export default function SignInPage() {
                     value={password}
                     placeholder="비밀번호 입력"
                     hiddenText="비밀번호 입력"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
                   />
+                  {passwordError && <p className="errorMessage">{passwordError}</p>}
                 </div>
 
                 <div className={style.signinFindBox}>
@@ -95,19 +126,12 @@ export default function SignInPage() {
                   </Link>
                 </div>
 
-                {
-                  error && <p className="error-message">{error}</p>
-                }
+                {error && <p className="errorMessage">{error}</p>}
 
-                {
-                  isLoading ? "로그인 중" : (
-                    <Button
-                      text="로그인"
-                      customClass={style.btn}
-                    />
-                  )
-                }
-
+                <Button
+                  text="로그인"
+                  customClass={style.btn}
+                />
               </form>
 
               <div className={style.snsListBox}>
@@ -155,6 +179,5 @@ export default function SignInPage() {
         </div >
       </Main >
     </>
-  )
-
+  );
 }
