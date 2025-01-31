@@ -1,7 +1,7 @@
 import style from "./Button.module.css";
 import { useNavigate } from "react-router-dom";
 
-export default function Button({ type, text, customClass, href, onClick }) {
+export default function Button({ type, text, customClass, href, onClick, disabled}) {
 
   const navigate = useNavigate();
 
@@ -22,6 +22,7 @@ export default function Button({ type, text, customClass, href, onClick }) {
       type={type}
       onClick={handleClick}
       className={`${style.btn} ${customClass}`}
+      disabled={disabled}
     >
       {text}
     </button>

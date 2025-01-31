@@ -6,16 +6,18 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import style from "./SignInPage.module.css";
 import Input from "../components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { userData } from "../data/userData";
 
 export default function SignInPage() {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [emailError, setEmailError] = useState(''); // 이메일 오류 메시지
-  const [passwordError, setPasswordError] = useState(''); // 비밀번호 오류 메시지
+  const [disabled, setDisabled] = useState(true); // 버튼 비활성화 상태
+  const [email, setEmail] = useState(''); //이메일 입력 상태
+  const [password, setPassword] = useState(''); //비밀번호 입력 상태
+  const [error, setError] = useState(''); //이메일, 비밀번호 오류 메세지
+  const [emailError, setEmailError] = useState(''); // 이메일 오류 메세지
+  const [passwordError, setPasswordError] = useState(''); // 비밀번호 오류 메세지
+  const [isRemembered, setIsRemembered] = useState(false); // 아이디 저장 체크 상태
   const navigate = useNavigate(); // 페이지 이동을 위한 hook
 
   const validEmail = userData.email;
@@ -38,6 +40,7 @@ export default function SignInPage() {
     } else {
       setEmailError('');
     }
+    checkButtonEnable(email, passwordValue, emailError, passwordError);
   }
 
   // 비밀번호 유효성 검사
@@ -49,14 +52,29 @@ export default function SignInPage() {
 
     if (!passwordValue) {
       setPasswordError('비밀번호를 입력해주세요.');
-    } else {
-      setPasswordError('');
     }
+    checkButtonEnable(email, passwordValue, emailError, passwordError);
   }
 
+  // 버튼 활성화/비활성화 체크
+  function checkButtonEnable(emailValue, passwordValue, emailError, passwordError) {
+    if (emailRegex.test(emailValue) && passwordValue && !emailError && !passwordError) {
+      setDisabled(false); // 조건이 맞으면 버튼 활성화
+    } else {
+      setDisabled(true); // 조건이 맞지 않으면 버튼 비활성화
+    }
+  };
+
   // 로그인 처리 함수
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
+
+    // 아이디 저장 체크가 되어 있으면 이메일을 localStorage에 저장
+    if (isRemembered) {
+      localStorage.setItem("savedEmail", email);
+    } else {
+      localStorage.removeItem("savedEmail");
+    }
 
     // 이메일과 비밀번호의 오류가 없으면 로그인 진행
     if (!emailError && !passwordError && email === validEmail && password === validPassword) {
@@ -73,6 +91,20 @@ export default function SignInPage() {
     }
 
   };
+
+  // 컴포넌트가 마운트될 때 저장된 이메일을 불러옵니다.
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("savedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setIsRemembered(true); // "아이디 저장" 체크 상태를 true로 설정
+    }
+  }, []);
+
+  // 아이디 저장 체크박스 상태 변화
+  function handleRememberMeChange(e) {
+    setIsRemembered(e.target.checked);
+  }
 
   return (
     <>
@@ -94,7 +126,6 @@ export default function SignInPage() {
                   <Input
                     id="email"
                     type="email"
-                    value={email}
                     placeholder="이메일 입력"
                     hiddenText="이메일 입력"
                     onChange={handleEmailChange}
@@ -106,7 +137,6 @@ export default function SignInPage() {
                   <Input
                     id="password"
                     type="password"
-                    value={password}
                     placeholder="비밀번호 입력"
                     hiddenText="비밀번호 입력"
                     onChange={handlePasswordChange}
@@ -116,7 +146,12 @@ export default function SignInPage() {
 
                 <div className={style.signinFindBox}>
                   <div className={style.inputChkBox}>
-                    <input id="loginIdSave" type="checkbox" />
+                    <input
+                      id="loginIdSave"
+                      type="checkbox"
+                      checked={isRemembered}
+                      onChange={handleRememberMeChange}
+                    />
                     <label htmlFor="loginIdSave">
                       아이디저장
                     </label>
@@ -131,6 +166,7 @@ export default function SignInPage() {
                 <Button
                   text="로그인"
                   customClass={style.btn}
+                  disabled={disabled}
                 />
               </form>
 
