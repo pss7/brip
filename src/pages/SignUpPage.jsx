@@ -1,6 +1,6 @@
 import Container from "../components/Container";
 import Main from "../components/section/Main";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import Button from "../components/Button";
 import style from "./SignUpPage.module.css";
@@ -9,6 +9,7 @@ import Select from "../components/Select";
 import { useState, useEffect } from "react";
 
 export default function SignUpPage() {
+  const navigate = useNavigate();
   const [nickname, setNickname] = useState(""); // 닉네임 입력값
   const [nicknameError, setNicknameError] = useState(""); // 닉네임 오류 메시지
   const [nicknameCheckMessage, setNicknameCheckMessage] = useState(""); // 중복 확인 메시지 상태
@@ -165,12 +166,27 @@ export default function SignUpPage() {
     if (isNicknameAvailable) {
       const updatedNicknames = [...existingNicknames, nickname];
       localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
+  
+      // 회원가입 후 사용자 정보 저장
+      const user = {
+        nickname: nickname,
+        email: email + "@" + emailDomain,
+        password: password,
+      };
+  
+      // 로컬스토리지에 사용자 정보 저장
+      localStorage.setItem("user", JSON.stringify(user));
+  
+      // 로그인 후 인증 토큰 생성
+      localStorage.setItem("authToken", "dummyToken_12345");
+  
       alert("회원가입이 완료되었습니다.");
+      navigate("/"); // 홈 화면으로 이동 (로그인 없이 바로 메인 페이지로 이동)
     } else {
       alert("닉네임이 유효하지 않거나 중복되었습니다.");
     }
   }
-
+  
   return (
     <Main className="subWrap bg">
       <div className="signinBox">

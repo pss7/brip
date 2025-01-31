@@ -1,7 +1,7 @@
 import Container from "../components/Container";
 import Main from "../components/section/Main";
 import "../assets/css/login.css";
-import LoginImg from "../assets/images/login/Login_Img.svg"
+import LoginImg from "../assets/images/login/Login_Img.svg";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import style from "./SignInPage.module.css";
@@ -10,11 +10,10 @@ import { useEffect, useState } from "react";
 import { userData } from "../data/userData";
 
 export default function SignInPage() {
-
   const [disabled, setDisabled] = useState(true); // 버튼 비활성화 상태
-  const [email, setEmail] = useState(''); //이메일 입력 상태
-  const [password, setPassword] = useState(''); //비밀번호 입력 상태
-  const [error, setError] = useState(''); //이메일, 비밀번호 오류 메세지
+  const [email, setEmail] = useState(''); // 이메일 입력 상태
+  const [password, setPassword] = useState(''); // 비밀번호 입력 상태
+  const [error, setError] = useState(''); // 이메일, 비밀번호 오류 메세지
   const [emailError, setEmailError] = useState(''); // 이메일 오류 메세지
   const [passwordError, setPasswordError] = useState(''); // 비밀번호 오류 메세지
   const [isRemembered, setIsRemembered] = useState(false); // 아이디 저장 체크 상태
@@ -25,6 +24,14 @@ export default function SignInPage() {
 
   // 이메일 형식 정규식
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // 로그인 페이지가 렌더링될 때 이미 로그인된 상태라면, 홈 페이지로 리디렉션
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      navigate("/"); // 이미 로그인된 상태라면 홈 페이지로 리디렉션
+    }
+  }, [navigate]);
 
   // 이메일 유효성 검사
   function handleEmailChange(e) {
@@ -74,28 +81,20 @@ export default function SignInPage() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // 아이디 저장 체크가 되어 있으면 이메일을 localStorage에 저장
-    if (isRemembered) {
-      localStorage.setItem("savedEmail", email);
-    } else {
-      localStorage.removeItem("savedEmail");
-    }
+    // 로컬스토리지에서 사용자 정보를 가져옴
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    // 이메일과 비밀번호의 오류가 없으면 로그인 진행
-    if (!emailError && !passwordError && email === validEmail && password === validPassword) {
-
-      localStorage.setItem("authToken", "dummyToken_12345");
-      localStorage.setItem("user", JSON.stringify(userData));  // 사용자 정보 저장
-
-      // 마지막으로 접근하려던 페이지로 리디렉션
-      const redirectUrl = localStorage.getItem('redirectUrl') || '/'; // 기본 페이지는 /home
-      navigate(redirectUrl);
-
+    // 이메일과 비밀번호 비교
+    if (storedUser && storedUser.email === email && storedUser.password === password) {
+      localStorage.setItem("authToken", "dummyToken_12345");  // 인증 토큰 저장
+      if (isRemembered) {
+        localStorage.setItem("savedEmail", email); // 아이디 저장 체크된 경우 이메일 저장
+      }
+      navigate("/");  // 로그인 후 홈 화면으로 이동
     } else {
       setError('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
-
-  };
+  }
 
   // 컴포넌트가 마운트될 때 저장된 이메일을 불러옵니다.
   useEffect(() => {
@@ -118,9 +117,7 @@ export default function SignInPage() {
           <Container>
             <div className={`signinContent ${style.signinContent}`}>
 
-              <h3 className={style.title}>
-                로그인
-              </h3>
+              <h3 className={style.title}>로그인</h3>
 
               <div className={style.imgBox}>
                 <img src={LoginImg} alt="" />
@@ -134,6 +131,7 @@ export default function SignInPage() {
                     placeholder="이메일 입력"
                     hiddenText="이메일 입력"
                     onChange={handleEmailChange}
+                    value={email}
                   />
                   {emailError && <p className="errorMessage">{emailError}</p>}
                 </div>
@@ -157,9 +155,7 @@ export default function SignInPage() {
                       checked={isRemembered}
                       onChange={handleRememberMeChange}
                     />
-                    <label htmlFor="loginIdSave">
-                      아이디저장
-                    </label>
+                    <label htmlFor="loginIdSave">아이디저장</label>
                   </div>
                   <Link to="/passwordfind" className={style.pwFindLink}>
                     비밀번호를 잊어버리셨나요?
@@ -179,23 +175,17 @@ export default function SignInPage() {
                 <ul className={style.snsList}>
                   <li>
                     <Link to="/" className={style.naverLogin}>
-                      <span className="blind">
-                        네이버 로그인
-                      </span>
+                      <span className="blind">네이버 로그인</span>
                     </Link>
                   </li>
                   <li>
                     <Link to="/" className={style.kakaoLogin}>
-                      <span className="blind">
-                        카카오 로그인
-                      </span>
+                      <span className="blind">카카오 로그인</span>
                     </Link>
                   </li>
                   <li>
                     <Link to="/" className={style.googleLogin}>
-                      <span className="blind">
-                        구글 로그인
-                      </span>
+                      <span className="blind">구글 로그인</span>
                     </Link>
                   </li>
                 </ul>
@@ -203,22 +193,17 @@ export default function SignInPage() {
                 <div className={style.easySignInBox}>
                   3초 간편로그인
                 </div>
-
               </div>
 
               <div className={style.signupLinkBox}>
-                <span>
-                  아직 계정이 없으신가요?
-                </span>
-                <Link to="/signup">
-                  회원가입
-                </Link>
+                <span>아직 계정이 없으신가요?</span>
+                <Link to="/signup">회원가입</Link>
               </div>
 
             </div>
           </Container>
-        </div >
-      </Main >
+        </div>
+      </Main>
     </>
   );
 }
