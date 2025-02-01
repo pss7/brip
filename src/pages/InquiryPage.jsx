@@ -87,7 +87,6 @@ export default function InquiryPage() {
         </Container>
       </div>
 
-      {/* 팝업을 여는 상태가 true일 때 */}
       {isPopupOpen && (
         <ConfirmPopup
           message="로그인이 필요한 서비스 입니다."
@@ -95,11 +94,11 @@ export default function InquiryPage() {
           confirmText="로그인"
           cancelText="취소"
           onConfirm={() => {
-            // 로그인 페이지로 리디렉션
             window.location.href = "/signin";
             closePopup(); // 팝업 닫기
           }}
           onCancel={() => closePopup()} // 취소 클릭 시 팝업 닫기
+          isOpen={isPopupOpen} // 애니메이션을 위해 isOpen 전달
         />
       )}
     </Main>
