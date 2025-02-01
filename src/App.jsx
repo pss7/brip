@@ -29,7 +29,7 @@ import ActivityPage from './pages/ActivityPage';
 import InquiryPage from './pages/InquiryPage';
 import InquiryRegisterPage from './pages/InquiryRegisterPage';
 import InquiryDetailPage from './pages/InquiryDetailPage';
-import { PopupProvider } from './context/popupProvider';
+import { PopupProvider } from './context/PopupProvider';
 
 function App() {
 
