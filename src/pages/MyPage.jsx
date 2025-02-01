@@ -33,34 +33,36 @@ export default function MyPage() {
 
   // 닉네임 완료 버튼 클릭 시 동작하는 함수
   const handleNicknameSubmit = () => {
+    // 로컬스토리지에서 저장된 닉네임들 가져오기
     const allNicknames = JSON.parse(localStorage.getItem("nicknames")) || [];
-  
+
     // 중복 체크
     if (allNicknames.includes(nickname)) {
-      openPopup("닉네임이 이미 존재합니다.", true);  // 중복일 경우 error: true 전달
+      openPopup();
       return;
     }
-  
+
     // 이전 닉네임이 있다면 삭제
     if (user?.nickname) {
+      // 이전 닉네임을 삭제
       const updatedNicknames = allNicknames.filter((nick) => nick !== user.nickname);
+
+      // 변경된 nicknames 배열을 로컬스토리지에 저장
       localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
     }
-  
+
     // 새로운 닉네임을 배열에 추가
-    const updatedNicknames = [...allNicknames, nickname];
-    localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
-  
-    // 사용자 정보 업데이트
+    const updatedNicknames = [...allNicknames, nickname];  // 기존 배열에 새로운 닉네임 추가
+    localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));  // 변경된 배열을 로컬스토리지에 저장
+
+    // 사용자 정보 업데이트 (UserContext에 반영)
     if (updateUser) {
-      const updatedUser = { ...user, nickname };
-      updateUser(updatedUser);
+      const updatedUser = { ...user, nickname };  // 새로운 닉네임 반영한 사용자 정보
+      updateUser(updatedUser);  // UserContext의 updateUser 함수 호출하여 닉네임 업데이트
     }
-  
     setDisabled(true);
-    openPopup("닉네임이 변경되었습니다.", false);  // 변경 성공 시 success 메시지
+    openPopup();
   };
-  
 
   // 사용자 정보가 없으면 로그인 페이지로 리디렉션
   useEffect(() => {
