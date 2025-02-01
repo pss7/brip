@@ -1,16 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Table from "../components/Table";
 import { UserContext } from "../context/UserProvider";
-import { useContext } from "react";
+import { usePopup } from "../context/PopupProvider";
 import style from "./InquiryPage.module.css";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Container from "../components/Container";
 import Main from "../components/section/Main";
+import ConfirmPopup from "../components/ConfirmPopup";
 
 export default function InquiryPage() {
   const [data, setData] = useState([]);
   const { user } = useContext(UserContext);
+  const { isPopupOpen, openPopup, closePopup } = usePopup();
 
   // 로컬스토리지에서 데이터 가져오기
   useEffect(() => {
@@ -18,7 +20,11 @@ export default function InquiryPage() {
     if (storedData) {
       setData(JSON.parse(storedData)); // 로컬스토리지에서 데이터를 불러와서 상태에 저장
     }
-  }, []);
+
+    if (!user) {
+      openPopup(); // 팝업을 연다 (ConfirmPopup에 직접 전달할 내용은 아래 props로 전달)
+    }
+  }, [user]);
 
   // 최신순으로 정렬
   const sortedData = data.sort((a, b) => {
@@ -80,6 +86,22 @@ export default function InquiryPage() {
           </div>
         </Container>
       </div>
+
+      {/* 팝업을 여는 상태가 true일 때 */}
+      {isPopupOpen && (
+        <ConfirmPopup
+          message="로그인이 필요한 서비스 입니다."
+          subMessage="로그인 하시겠습니까?"
+          confirmText="로그인"
+          cancelText="취소"
+          onConfirm={() => {
+            // 로그인 페이지로 리디렉션
+            window.location.href = "/signin";
+            closePopup(); // 팝업 닫기
+          }}
+          onCancel={() => closePopup()} // 취소 클릭 시 팝업 닫기
+        />
+      )}
     </Main>
   );
 }
