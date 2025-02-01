@@ -14,7 +14,6 @@ export default function InquiryPage() {
   const { user } = useContext(UserContext);
   const { isPopupOpen, openPopup, closePopup } = usePopup();
 
-  // 로컬스토리지에서 데이터 가져오기
   useEffect(() => {
     const storedData = localStorage.getItem("inquiryData");
     if (storedData) {
@@ -22,13 +21,12 @@ export default function InquiryPage() {
     }
 
     if (!user) {
-      openPopup(); // 팝업을 연다 (ConfirmPopup에 직접 전달할 내용은 아래 props로 전달)
+      openPopup(); // 사용자가 로그인하지 않았다면 팝업을 연다
     }
   }, [user]);
 
-  // 최신순으로 정렬
   const sortedData = data.sort((a, b) => {
-    return new Date(b.date) - new Date(a.date); // 최신순
+    return new Date(b.date) - new Date(a.date); // 최신순 정렬
   });
 
   return (
@@ -58,7 +56,7 @@ export default function InquiryPage() {
                   <Table
                     caption="1:1문의하기"
                     href="/inquirydetail"
-                    filteredData={sortedData} // 최신순으로 정렬된 데이터
+                    filteredData={sortedData}
                     className="textLeft ellipsisText"
                     showStatus={true}
                     columns={["NO.", "구분", "제목", "처리상태", "등록일"]}
@@ -87,6 +85,7 @@ export default function InquiryPage() {
         </Container>
       </div>
 
+      {/* 팝업을 열기 위한 상태가 true일 때 */}
       {isPopupOpen && (
         <ConfirmPopup
           message="로그인이 필요한 서비스 입니다."
@@ -94,11 +93,11 @@ export default function InquiryPage() {
           confirmText="로그인"
           cancelText="취소"
           onConfirm={() => {
-            window.location.href = "/signin";
+            window.location.href = "/signin"; // 로그인 페이지로 이동
             closePopup(); // 팝업 닫기
           }}
           onCancel={() => closePopup()} // 취소 클릭 시 팝업 닫기
-          isOpen={isPopupOpen} // 애니메이션을 위해 isOpen 전달
+          isOpen={isPopupOpen} // 팝업 열기/닫기 상태 전달
         />
       )}
     </Main>

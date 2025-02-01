@@ -28,8 +28,14 @@ export default function UserProvider({ children }) {
     setUser(null);  // user 상태 초기화
   };
 
+  // 사용자 정보 업데이트 함수
+  const updateUser = (updatedUserData) => {
+    setUser(updatedUserData);  // user 상태 업데이트
+    localStorage.setItem('user', JSON.stringify(updatedUserData));  // 로컬스토리지에도 저장
+  };
+
   return (
-    <UserContext.Provider value={{ user, loading, login, logout }}>
+    <UserContext.Provider value={{ user, loading, login, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );

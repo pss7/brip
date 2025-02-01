@@ -5,6 +5,8 @@
 .inputWrap{margin-bottom: 35px;}
 .inputBox{position: relative;}
 
+button:disabled{ cursor: auto!important; background-color: #ddd!important;}
+
 /* 공통-정렬 */
 .flexColumn{display: flex; flex-direction: column;}
 

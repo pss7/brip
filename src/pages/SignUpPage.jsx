@@ -9,7 +9,10 @@ import Select from "../components/Select";
 import { useState, useEffect } from "react";
 
 export default function SignUpPage() {
+
   const navigate = useNavigate();
+
+  const [name, setName] = useState(""); //이름 입력값
   const [nickname, setNickname] = useState(""); // 닉네임 입력값
   const [nicknameError, setNicknameError] = useState(""); // 닉네임 오류 메시지
   const [nicknameCheckMessage, setNicknameCheckMessage] = useState(""); // 중복 확인 메시지 상태
@@ -108,6 +111,8 @@ export default function SignUpPage() {
   // 전체 동의 처리
   function handleAgreeAllChange() {
     const newAgreeAll = !agreeAll;
+
+    // "모두 동의"가 체크되면 모든 항목을 체크, 해제되면 모든 항목을 해제
     setAgreeAll(newAgreeAll);
     setAgreeAge(newAgreeAll);
     setAgreeTerms(newAgreeAll);
@@ -135,6 +140,16 @@ export default function SignUpPage() {
         break;
     }
   }
+
+  // "모두 동의" 체크 상태 업데이트 함수
+  useEffect(() => {
+    // "모두 동의"가 체크되려면 필수 항목 모두 체크되어야 함
+    if (agreeAge && agreeTerms && agreePrivacy) {
+      setAgreeAll(true);
+    } else {
+      setAgreeAll(false);
+    }
+  }, [agreeAge, agreeTerms, agreePrivacy, agreeMarketing]);
 
   // 폼 유효성 검사
   useEffect(() => {
@@ -166,27 +181,28 @@ export default function SignUpPage() {
     if (isNicknameAvailable) {
       const updatedNicknames = [...existingNicknames, nickname];
       localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
-  
+
       // 회원가입 후 사용자 정보 저장
       const user = {
+        name: name,
         nickname: nickname,
         email: email + "@" + emailDomain,
         password: password,
       };
-  
+
       // 로컬스토리지에 사용자 정보 저장
       localStorage.setItem("user", JSON.stringify(user));
-  
+
       // 로그인 후 인증 토큰 생성
       localStorage.setItem("authToken", "dummyToken_12345");
-  
+
       alert("회원가입이 완료되었습니다.");
       navigate("/"); // 홈 화면으로 이동 (로그인 없이 바로 메인 페이지로 이동)
     } else {
       alert("닉네임이 유효하지 않거나 중복되었습니다.");
     }
   }
-  
+
   return (
     <Main className="subWrap bg">
       <div className="signinBox">
@@ -203,6 +219,7 @@ export default function SignUpPage() {
                       label="이름"
                       placeholder="이름 입력"
                       className="mb-15"
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                 </div>

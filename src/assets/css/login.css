@@ -1,6 +1,7 @@
 /* 로그인 */
 .mb-15{margin-bottom: 15px;}
 .errorMessage{margin-top: 5px; color: #f55050; font-size: 14px;}
+.infoMessage{margin-top: 5px; color: #090A0A; font-size: 14px;} 
 .signinBox h3{margin-bottom: 30px; color: #000; font-size: 24px; font-weight: 700; text-align: center;}
 .signinContent{position: relative; padding: 30px 70px 50px; max-width: 580px; width: 100%; min-height: 851px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
 .signinBox .container{max-width: 328px; margin: 0 auto;}

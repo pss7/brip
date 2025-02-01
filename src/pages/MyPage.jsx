@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import Main from "../components/section/Main";
@@ -6,41 +5,89 @@ import kakao from "../assets/images/login/Kakao_Img.svg";
 import naver from "../assets/images/login/Naver_Img.svg";
 import style from "./MyPage.module.css";
 import Input from "../components/Input";
+import { usePopup } from "../context/PopupProvider";
 import { UserContext } from "../context/UserProvider";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import CompletePopup from "../components/CompletePopup";
 
 export default function MyPage() {
-
-  const { user, loading } = useContext(UserContext);  // UserContext에서 user와 loading 상태 가져오기
   const navigate = useNavigate();
 
+  // UserContext에서 user와 loading 상태 가져오기
+  const { user, loading, updateUser } = useContext(UserContext);
+
+  const { isPopupOpen, openPopup, closePopup } = usePopup();
+
+  // 버튼 활성화, 비활성화 상태 관리
+  const [disabled, setDisabled] = useState(true);
+
+  // nickname 상태 추가
+  const [nickname, setNickname] = useState(user?.nickname || "");
+
+  // Input의 값이 변경될 때 상태 업데이트
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value);
+    setDisabled(false); // 입력이 있으면 완료 버튼 활성화
+    setError(""); // 에러 초기화
+  };
+
+  // 닉네임 완료 버튼 클릭 시 동작하는 함수
+  const handleNicknameSubmit = () => {
+    const allNicknames = JSON.parse(localStorage.getItem("nicknames")) || [];
+  
+    // 중복 체크
+    if (allNicknames.includes(nickname)) {
+      openPopup("닉네임이 이미 존재합니다.", true);  // 중복일 경우 error: true 전달
+      return;
+    }
+  
+    // 이전 닉네임이 있다면 삭제
+    if (user?.nickname) {
+      const updatedNicknames = allNicknames.filter((nick) => nick !== user.nickname);
+      localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
+    }
+  
+    // 새로운 닉네임을 배열에 추가
+    const updatedNicknames = [...allNicknames, nickname];
+    localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
+  
+    // 사용자 정보 업데이트
+    if (updateUser) {
+      const updatedUser = { ...user, nickname };
+      updateUser(updatedUser);
+    }
+  
+    setDisabled(true);
+    openPopup("닉네임이 변경되었습니다.", false);  // 변경 성공 시 success 메시지
+  };
+  
+
+  // 사용자 정보가 없으면 로그인 페이지로 리디렉션
   useEffect(() => {
     if (loading) {
       return;  // 로딩 중이면 아무것도 하지 않음
     }
 
     if (!user) {
-      navigate("/signin");  // 사용자 정보가 없으면 로그인 페이지로 리디렉션
+      navigate("/signin");
     }
   }, [user, loading, navigate]);
 
-  if (loading) {
-    return <div>로딩 중...</div>;  // 로딩 중일 때는 "로딩 중..." 메시지를 보여줌
-  }
+  // 페이지 새로 고침 후 로컬스토리지에서 최신 값 가져오기
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+    setNickname(storedUser.nickname || user?.nickname || "");
+  }, [user?.nickname]);
 
   return (
     <Main className="subWrap bg">
-
       <div className="mypageBox">
         <Container className="lnbContainer">
           <div className="mypageContent">
-
             <div className={`lnbLayoutBox ${style.lnbLayoutBox}`}>
               <aside>
                 <Link to="/mypage" className="active">
-                  <span>
-                    프로필
-                  </span>
+                  <span>프로필</span>
                 </Link>
                 <Link to="/interest"><span>관심공고</span></Link>
                 <Link to="/resume"><span>이력서관리</span></Link>
@@ -50,17 +97,14 @@ export default function MyPage() {
 
               <div className={`content ${style.content}`}>
                 <div className={style.box}>
-                  <h4 className={`title ${style.title}`}>
-                    프로필
-                  </h4>
+                  <h4 className={`title ${style.title}`}>프로필</h4>
                   <form>
-
                     <div className="inputWrap">
                       <div className="inputBox">
                         <Input
                           id="name"
                           type="text"
-                          value={user.name}
+                          value={user?.name || ""}
                           label="이름"
                           className="mb-15"
                         />
@@ -75,13 +119,20 @@ export default function MyPage() {
                         <Input
                           id="nickname"
                           type="text"
-                          value={user.nickname}
+                          value={nickname}
+                          onChange={handleNicknameChange}
+                        />
+                        {/* 완료 버튼 */}
+                        <button
+                          className={style.duplicateChkBtn}
+                          type="button"
+                          disabled={disabled}
+                          onClick={handleNicknameSubmit}
                         >
-                          <button className={style.duplicateChkBtn} type="button">
-                            완료
-                          </button>
-                        </Input>
+                          완료
+                        </button>
                       </div>
+                      {/* {error && <span className="errorMessage">{error}</span>} */}
                     </div>
 
                     <div className="inputWrap">
@@ -92,12 +143,11 @@ export default function MyPage() {
                         <Input
                           id="number"
                           type="text"
-                          value="010-5167-1674"
-                        >
-                          <button className={style.changeBtn} type="button">
-                            변경
-                          </button>
-                        </Input>
+                          value={user?.phone || ""}
+                        />
+                        <button className={style.changeBtn} type="button">
+                          변경
+                        </button>
                       </div>
                     </div>
 
@@ -109,21 +159,20 @@ export default function MyPage() {
                         <Input
                           id="email"
                           type="text"
-                          value={user.email}
-                        >
-                          <button className={style.changeBtn} type="button">
-                            변경
-                          </button>
-                        </Input>
+                          value={user?.email || ""}
+                        />
+                        <button className={style.changeBtn} type="button">
+                          변경
+                        </button>
                       </div>
                     </div>
 
                     <div className="inputWrap">
                       <div className="inputBox">
                         <Input
-                          id="email"
+                          id="birthdate"
                           type="text"
-                          value="1998-01-01"
+                          value={user?.birthdate || ""}
                           label="생년월일"
                           className="mb-15"
                         />
@@ -133,31 +182,21 @@ export default function MyPage() {
                   </form>
 
                   <div className={style.snsSignInBox}>
-                    <h5>
-                      SNS 로그인 연결
-                    </h5>
+                    <h5>SNS 로그인 연결</h5>
                     <ul className={style.snsSignInList}>
                       <li>
                         <div className={style.imgBox}>
                           <img src={naver} alt="네이버로그인" />
                         </div>
-                        <span className={style.snsText}>
-                          네이버 로그인
-                        </span>
-                        <button className={style.connectBtn}>
-                          연결
-                        </button>
+                        <span className={style.snsText}>네이버 로그인</span>
+                        <button className={style.connectBtn}>연결</button>
                       </li>
                       <li className={style.kakao}>
                         <div className={style.imgBox}>
                           <img src={kakao} alt="카카오로그인" />
                         </div>
-                        <span className={style.snsText}>
-                          카카오 로그인
-                        </span>
-                        <button className={style.connectBtn}>
-                          연결
-                        </button>
+                        <span className={style.snsText}>카카오 로그인</span>
+                        <button className={style.connectBtn}>연결</button>
                       </li>
                     </ul>
                   </div>
@@ -170,8 +209,15 @@ export default function MyPage() {
             </div>
           </div>
         </Container>
-      </div >
-    </Main >
-  )
-
+      </div>
+      {
+        isPopupOpen &&
+        <CompletePopup
+          message="사용 가능한 닉네임입니다."
+          onCancel={() => closePopup()}
+          isOpen={isPopupOpen}
+        />
+      }
+    </Main>
+  );
 }
