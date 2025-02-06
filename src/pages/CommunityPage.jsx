@@ -6,6 +6,7 @@ import { QAData } from "../data/QAData";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserProvider";
 import ProfileImg from "../assets/images/common/Profile_Img.svg";
+import WritePopup from "../components/WritePopup";
 
 // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
 const formatDate = (dateString) => {
@@ -21,6 +22,7 @@ export default function CommunityPage() {
 
   const { user } = useContext(UserContext);
 
+  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
   const [chatRooms] = useState(chatRoomsData);
   const [qaList] = useState(QAData)
   const [likes, setLikes] = useState({});     // 좋아요 상태
@@ -54,6 +56,14 @@ export default function CommunityPage() {
     }));
   };
 
+  const openPopup = () => {
+    setShowPopup(true); // 팝업을 열기
+  };
+
+  const closePopup = () => {
+    setShowPopup(false); // 팝업을 닫기
+  };
+
   return (
     <Main className="subWrap">
       <div className="communityBox communityQABox">
@@ -75,7 +85,10 @@ export default function CommunityPage() {
                   </div>
                 </div>
                 <div className="addBtnBox">
-                  <button className="addBtn">
+                  <button
+                    className="addBtn"
+                    onClick={openPopup}
+                  >
                     <span>채팅방 생성</span>
                   </button>
                   <button className="addBtn communityWrite">
@@ -210,6 +223,9 @@ export default function CommunityPage() {
           </div>
         </Container>
       </div >
+      {
+        showPopup && <WritePopup closePopup={closePopup}/>
+      }
     </Main >
   );
 }
