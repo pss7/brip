@@ -5,6 +5,13 @@ import Input from "./Input";
 export default function AddPopup({ closePopup }) {
 
   const [image, setImage] = useState(null); // 선택된 이미지 저장 상태
+  const [chatType, setChatType] = useState("group"); // 기본값은 그룹 채팅
+
+  // 채팅방 유형 선택 핸들러
+  const handleChatTypeChange = (event) => {
+    setChatType(event.target.value); // 선택된 채팅 타입 업데이트
+  };
+
 
   // 이미지 첨부 핸들러
   const handleImageChange = (event) => {
@@ -24,6 +31,35 @@ export default function AddPopup({ closePopup }) {
         <h3>
           채팅방 생성
         </h3>
+
+        <div className="box">
+          <div className="chatTypeOptions">
+            <div className="radioOption">
+              <input
+                type="radio"
+                id="groupChat"
+                name="chatType"
+                value="group"
+                checked={chatType === "group"}
+                onChange={handleChatTypeChange}
+                className="blind"
+              />
+              <label htmlFor="groupChat" className="customRadio">그룹 채팅</label>
+            </div>
+            <div className="radioOption">
+              <input
+                type="radio"
+                id="oneToOneChat"
+                name="chatType"
+                value="oneToOne"
+                checked={chatType === "oneToOne"}
+                onChange={handleChatTypeChange}
+                className="blind"
+              />
+              <label htmlFor="oneToOneChat" className="customRadio">1:1 채팅</label>
+            </div>
+          </div>
+        </div>
 
         <div className="box">
           <label htmlFor="name" className="label">

@@ -13,7 +13,22 @@
 .imageUpload .previewImage {display: block; width: 100%; height: 100%; }
 .closeBtn{position: absolute; top:0; right:0;}
 .popupWrap .popupBox .closeBtn{width: 20px; height: 20px; position: absolute; top:32px; right:42px; background: url(../assets/images/sub/close_btn_icon.svg)no-repeat center;}
-
 .popupWrap .box{margin-bottom: 38px;}
 .popupWrap .box .label,
 .popupWrap .box h4{display: block; margin-bottom: 12px; font-size: 16px; font-weight: 500; color: #090A0A;} 
+.popupWrap .chatTypeOptions{display: flex; gap: 0 72px;}
+.popupWrap .customRadio {display: inline-block; position: relative; padding-left: 40px;   cursor: pointer; font-weight: 500; color: #090A0A;}
+.popupWrap .customRadio::before {content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border: 2px solid #cdcfD0;  border-radius: 50%; background-color: white; transition: background-color 0.3s, border 0.3s;}
+.popupWrap input[type="radio"]:checked + .customRadio::before {background-color: black; border: none;}
+.popupWrap input[type="radio"]:checked + .customRadio::after {content: ''; position: absolute;
+  top: 8px; left: 7px; width: 8px; height: 8px; border-radius: 50%; background-color: white;}
+.popupWrap .radioOption {display: flex; align-items: center; margin-right: 20px;}
+.popupWrap .radioOption span {font-size: 14px; margin-left: 10px;}
+
+@media (max-width: 480px){
+
+  .popupWrap .chatTypeOptions{flex-direction: column; gap: 20px;}
+
+}
+
+
