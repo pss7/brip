@@ -264,7 +264,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .lnbLayoutBox .content .searchBox .search input::placeholder{color: #B5B7C0;}
 .lnbLayoutBox .content .searchBox .search{position: relative;}
 .lnbLayoutBox .content .searchBox .search::before{width: 25px; height: 24px; content: ''; position: absolute; top:6px; left:8px; background: url(../assets/images/sub/Search_Icon02.svg)no-repeat center;}
-.lnbLayoutBox .content .searchBox .select{padding-left: 15px; width: 135px; height: 38px; border: 0; font-size: 12px; color: #7E7E7E; -webkit-appearance:none;  -moz-appearance:none; appearance:none; background:#F9FBFF url(../images/sub/Select_Icon02.svg)no-repeat 87% center; background-size: 15px 8px; cursor: pointer; border-radius: 10px;}
+.lnbLayoutBox .content .searchBox .select{padding-left: 15px; width: 135px; height: 38px; border: 0; font-size: 12px; color: #7E7E7E; -webkit-appearance:none;  -moz-appearance:none; appearance:none; background:#F9FBFF url(../assets/images/sub/Select_Icon02.svg)no-repeat 87% center; background-size: 15px 8px; cursor: pointer; border-radius: 10px;}
 
 @media (max-width: 1024px){
 
@@ -306,7 +306,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 /* 커뮤니티 */
 .communityBox .header{position: relative;}
 .communityBox .header h4{font-size: 20px; font-weight: 400; color: #000;}
-.communityBox .header .link{position: absolute; top: 50%; transform: translateY(-50%); left:0; width: 9px; height: 14px; background: url(../images/sub/Arrow_Icon05.svg)no-repeat center;}
+.communityBox .header .link{position: absolute; top: 50%; transform: translateY(-50%); left:0; width: 9px; height: 14px; background: url(../assets/images/sub/Arrow_Icon05.svg)no-repeat center;}
 .communityBox .lnbLayoutBox .content{padding: 42px 39px 50px 48px;}
 .communityBox aside{padding: 33px 30px 27px; width: 340px; height: 200px; background-color: #FAFAFC; border-radius: 10px; box-shadow: none;}
 .communityBox aside .infoBox{margin-bottom: 24px; display: flex; gap: 0 32px;}
@@ -317,7 +317,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .communityBox aside .addBtnBox{display: flex; gap: 0 12px;}
 .communityBox aside .addBtnBox .addBtn{padding-left: 25px; display: block; width: 134px; height: 36px; border-radius: 4px; background-color: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
 .communityBox aside .addBtnBox .addBtn span{display: flex; align-items: center; gap: 0 9px ; color: #313131; font-size: 14px;}
-.communityBox aside .addBtnBox .addBtn span::before{content: ''; width: 11px; height: 10px; background: url(../images/sub/Plus_Icon.svg)no-repeat center;}
+.communityBox aside .addBtnBox .addBtn span::before{content: ''; width: 11px; height: 10px; background: url(../assets/images/sub/Plus_Icon.svg)no-repeat center;}
 .communityBox aside .addBtnBox .addBtn.communityWrite{padding-left: 12px;}
 .communityBox .communityTab{margin-bottom: 33px; display: flex; flex-wrap: wrap; gap: 10px 12px;}
 .communityBox .communityTab li .tabBtn{padding: 9px 18px; border-radius: 50px; background-color: #E8EAE9; color: #5F616D; font-size: 14px; transition: all .5s;}
@@ -410,10 +410,10 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .communityQABox .qaContent{display: block; margin-bottom: 41px; font-size: 20px; color: #000; line-height: 1.4;}
 .communityQABox .qaContentList{position: relative; padding:  40px 30px 40px 0; border-bottom: 1px solid #EAEAEA;}
 .communityQABox .LikeBox{display: flex; align-items: center; gap: 0 17px;}
-.communityQABox .LikeBox .likeBtn{width: 28px; height: 24px; background: url(../images/sub/Link_Btn.svg) no-repeat center;}
+.communityQABox .LikeBox .likeBtn{width: 28px; height: 24px; background: url(../assets/images/sub/Link_Btn.svg) no-repeat center;}
 .communityQABox .LikeBox .btnBox{display: flex; align-items: center; gap: 0 13px;} 
 .communityQABox .LikeBox .commentBox{display: flex; gap: 0 13px;}
-.communityQABox .LikeBox .commentBox .comment{display: block; width: 26px; height: 26px; background: url(../images/sub/Comments_Icon.svg)no-repeat center;}
+.communityQABox .LikeBox .commentBox .comment{display: block; width: 26px; height: 26px; background: url(../assets/images/sub/Comments_Icon.svg)no-repeat center;}
 .communityQABox .LikeBox em{ color: #000;}
 .communityQABox .declarationBtn{position: absolute; top:40px; right:0; color: #6C7072; font-weight: 500;}
 

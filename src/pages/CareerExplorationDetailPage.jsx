@@ -4,7 +4,7 @@ import Main from "../components/layout/Main";
 import { Link } from "react-router-dom";
 import Career_Img01 from "../assets/images/sub/Career_Img01.jpg";
 import Story_Img from "../assets/images/sub/Story_Img.png";
-import style from "./CareerDetailPage.module.css";
+import style from "./CareerExplorationDetailPage.module.css";
 
 export default function CareerExplorationDetailPage() {
 
