@@ -11,10 +11,26 @@ export default function ChatRoomDetailPage() {
 
   const { user } = useContext(UserContext);
 
+  const [addPopupShowPopup, setAddPopupShowPopup] = useState(false); // 팝업 상태 관리
+  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
+
   const { roomId } = useParams(); // URL에서 roomId를 가져옴
   const [chatRoom, setChatRoom] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
+
+  function openAddPopup() {
+    setAddPopupShowPopup(true)
+  };
+
+  function openWritePopup() {
+    setShowPopup(true);
+  }
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setAddPopupShowPopup(false)
+  };
 
   // 해당 채팅방 데이터 가져오기
   useEffect(() => {
@@ -114,10 +130,16 @@ export default function ChatRoomDetailPage() {
                   </div>
                 </div>
                 <div className="addBtnBox">
-                  <button className="addBtn">
+                  <button
+                    className="addBtn"
+                    onClick={openAddPopup}
+                  >
                     <span>채팅방 생성</span>
                   </button>
-                  <button className="addBtn communityWrite">
+                  <button
+                    className="addBtn communityWrite"
+                    onClick={openWritePopup}
+                  >
                     <span>커뮤니티 글쓰기</span>
                   </button>
                 </div>
@@ -185,6 +207,12 @@ export default function ChatRoomDetailPage() {
           </div>
         </Container>
       </div>
+      {
+        showPopup && <WritePopup closePopup={closePopup} />
+      }
+      {
+        addPopupShowPopup && <AddPopup closePopup={closePopup} />
+      }
     </Main>
   );
 }
