@@ -1,11 +1,18 @@
 #root{overflow-x: hidden;}
-.subWrap{padding: 43px 0; min-height: 600px;}
+.subWrap{margin-top: 81px;}
+.mainWrap{margin-top: 90px;}
+.subWrap{ padding: 43px 0; min-height: 600px;}
 .subWrap.bg{background-color:#FAFAFD;}
-
 .inputWrap{margin-bottom: 35px;}
 .inputBox{position: relative;}
-
 button:disabled{ cursor: auto!important; background-color: #ddd!important;}
+
+@media (max-widtH: 1199px){
+
+  .subWrap,
+  .mainWrap{margin-top: 60px;}
+
+}
 
 /* 공통-정렬 */
 .flexColumn{display: flex; flex-direction: column;}

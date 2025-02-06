@@ -1,4 +1,4 @@
-#headerBox{border-bottom: 1px solid #D9D9D9;}
+#headerBox{position: fixed; top:-100px; left:0; right:0; border-bottom: 1px solid #D9D9D9; z-index: 999; background-color: #fff; transition: all 1.5s;}
 #headerBox .navBox ul{display: flex; align-items: center;}
 #headerBox .navBox ul li a{display: block; padding: 25px 27px; color: #000; font-size: 20px; transition: all .5s;}
 #headerBox .navBox ul li a.active{color: #5A38D4;}
@@ -8,6 +8,7 @@
 #headerBox .headerContent{position: relative; display: flex; align-items: center;}
 #headerBox .mobileMenuBtn{display: none;}
 #headerBox .mobileMenuBox{display: none;}
+#headerBox.active{top:0;}
 
 .linkBox{position: absolute; top:50%; right:0; transform: translateY(-50%); display: flex; align-items: center; gap: 0 35px; z-index: 99;}
 .linkBox .searchBox{position: relative; overflow: hidden;}

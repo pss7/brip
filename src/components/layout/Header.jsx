@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
@@ -10,6 +10,7 @@ export default function Header() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [isHeaderAnimation, isSetHeaderAnimation] = useState(false);
   const [recentSearches, setRecentSearches] = useState(loadRecentSearches());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -22,7 +23,6 @@ export default function Header() {
 
 
   // const { user } = useContext(UserContext);
-
   const getActiveClass = (path) => {
     return location.pathname === path ? `${style.active}` : '';
   };
@@ -75,8 +75,14 @@ export default function Header() {
     }
   };
 
+  useEffect(() =>{
+
+    isSetHeaderAnimation(true);
+
+  },[])
+
   return (
-    <header id={style.headerBox}>
+    <header id={style.headerBox} className={isHeaderAnimation && `${style.active}`}>
       <Container>
         <div className={style.headerContent}>
 
