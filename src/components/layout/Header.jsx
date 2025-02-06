@@ -20,8 +20,7 @@ export default function Header() {
     const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   });
-
-
+  
   // const { user } = useContext(UserContext);
   const getActiveClass = (path) => {
     return location.pathname === path ? `${style.active}` : '';

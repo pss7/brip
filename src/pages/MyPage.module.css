@@ -15,6 +15,7 @@
 .snsSignInList li .snsText{display: block; font-weight: 500; color: #392A25;}
 .snsSignInList li .connectBtn{position: absolute; top: 50%; transform: translateY(-50%); right:0; width: 50px; height: 36px; border-radius: 1px; font-size: 14px; color: #313131; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);} 
 .terminationBtn{margin: 50px 0 0; width: 100%; display: block; color: #4A6CFC; text-align: center;}
+.logoutBtn{display: block; width: 100%; margin: 50px 0 0; text-align: center; font-size: 14px;}
 
 @media (max-width: 1199px){
 
