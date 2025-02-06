@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserProvider";
 import ProfileImg from "../assets/images/common/Profile_Img.svg";
 import WritePopup from "../components/WritePopup";
+import AddPopup from "../components/AddPopup";
 
 // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
 const formatDate = (dateString) => {
@@ -22,7 +23,9 @@ export default function CommunityPage() {
 
   const { user } = useContext(UserContext);
 
+  const [addPopupShowPopup, setAddPopupShowPopup] = useState(false); // 팝업 상태 관리
   const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
+
   const [chatRooms] = useState(chatRoomsData);
   const [qaList] = useState(QAData)
   const [likes, setLikes] = useState({});     // 좋아요 상태
@@ -56,12 +59,17 @@ export default function CommunityPage() {
     }));
   };
 
-  const openPopup = () => {
-    setShowPopup(true); // 팝업을 열기
+  function openAddPopup() {
+    setAddPopupShowPopup(true)
   };
 
+  function openWritePopup() {
+    setShowPopup(true); 
+  }
+
   const closePopup = () => {
-    setShowPopup(false); // 팝업을 닫기
+    setShowPopup(false); 
+    setAddPopupShowPopup(false)
   };
 
   return (
@@ -87,11 +95,14 @@ export default function CommunityPage() {
                 <div className="addBtnBox">
                   <button
                     className="addBtn"
-                    onClick={openPopup}
+                    onClick={openAddPopup}
                   >
                     <span>채팅방 생성</span>
                   </button>
-                  <button className="addBtn communityWrite">
+                  <button
+                    className="addBtn communityWrite"
+                    onClick={openWritePopup}
+                  >
                     <span>커뮤니티 글쓰기</span>
                   </button>
                 </div>
@@ -224,7 +235,10 @@ export default function CommunityPage() {
         </Container>
       </div >
       {
-        showPopup && <WritePopup closePopup={closePopup}/>
+        showPopup && <WritePopup closePopup={closePopup} />
+      }
+      {
+        addPopupShowPopup && <AddPopup closePopup={closePopup} />
       }
     </Main >
   );

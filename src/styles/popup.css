@@ -1,5 +1,5 @@
 .popupWrap{ position: fixed; top:0; left:0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.86); z-index: 99999;}
-.popupWrap .popupBox{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 40px 35px 50px; max-width: 492px; width: 90%; height: 90%; background-color: #fff; border-radius: 10px; overflow-y: auto;}
+.popupWrap .popupBox{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 40px 35px 50px; max-width: 492px; width: 90%; max-height: 90%; background-color: #fff; border-radius: 10px; overflow-y: auto;}
 .popupWrap .popupBox h3{margin-bottom: 48px; color: #090A0A; font-weight: 700; font-size: 20px;}
 .popupWrap .popupBox .popupSelect{margin-bottom: 22px; width: 100%;}
 .popupWrap .popupBox .popupTextarea{padding: 25px 20px 30px 16px ; margin-bottom: 34px; width: 100%; height: 304px;}
@@ -13,3 +13,7 @@
 .imageUpload .previewImage {display: block; width: 100%; height: 100%; }
 .closeBtn{position: absolute; top:0; right:0;}
 .popupWrap .popupBox .closeBtn{width: 20px; height: 20px; position: absolute; top:32px; right:42px; background: url(../assets/images/sub/close_btn_icon.svg)no-repeat center;}
+
+.popupWrap .box{margin-bottom: 38px;}
+.popupWrap .box .label,
+.popupWrap .box h4{display: block; margin-bottom: 12px; font-size: 16px; font-weight: 500; color: #090A0A;} 
