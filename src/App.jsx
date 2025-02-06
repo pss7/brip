@@ -31,6 +31,7 @@ import InquiryRegisterPage from './pages/InquiryRegisterPage';
 import InquiryDetailPage from './pages/InquiryDetailPage';
 import { PopupProvider } from './context/PopupProvider';
 import CareerExplorationPage from './pages/CareerExplorationPage';
+import CareerExplorationDetailPage from './pages/CareerExplorationDetailPage';
 
 function App() {
 
@@ -68,7 +69,7 @@ function App() {
               <Route path="career" element={<CareerPage />} />
               <Route path="careerdetail" element={<CareerDetailPage />} />
               <Route path="careerexploration" element={<CareerExplorationPage />} />
-              <Route path="careerexplorationdetail" element={<CareerExplorationPage />} />
+              <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
      
               {/* 커뮤니티 */}
               <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
