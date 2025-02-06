@@ -12,7 +12,7 @@ export default function Alarm({ isalarmOpen, setIsAlarmOpen }) {
         <div className={style.alarmListBox}>
           <ul className={style.alarmList}>
             <li>
-              <Link to="/" className={style.read}>
+              <Link to="/community" className={style.read}>
                 <p className={style.title}>
                   선박운영관리자로 성공한 박성시씨
                 </p>
@@ -22,7 +22,7 @@ export default function Alarm({ isalarmOpen, setIsAlarmOpen }) {
               </Link>
             </li>
             <li>
-              <Link to="/" className={style.read}>
+              <Link to="/policy" className={style.read}>
                 <p className={style.title}>
                   개인정보처리방침 개정에 따른 이용약관
                 </p>
@@ -32,7 +32,7 @@ export default function Alarm({ isalarmOpen, setIsAlarmOpen }) {
               </Link>
             </li>
             <li>
-              <Link to="/">
+              <Link to="/activity">
                 <p className={style.title}>
                   애기피부 님이 답글을 남겼습니다.
                 </p>
