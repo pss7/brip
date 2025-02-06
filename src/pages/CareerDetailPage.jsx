@@ -1,10 +1,11 @@
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import Container from "../components/Container";
 import Main from "../components/layout/Main";
-import { Link } from "react-router-dom";
 import Career_Img01 from "../assets/images/sub/Career_Img01.jpg";
-import Story_Img from "../assets/images/sub/Story_Img.png";
+import InstructorImg from "../assets/images/sub/instructor_img.png";
 import style from "./CareerDetailPage.module.css";
+import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 export default function CareerDetailPage() {
 
@@ -18,278 +19,243 @@ export default function CareerDetailPage() {
               <div className={style.imgBox}>
                 <img src={Career_Img01} alt="" />
               </div>
+              <p className={style.infoText}>
+                해양기술교육센터   |   직무/직군
+              </p>
               <h3>
-                선박엔지니어
+                선박 엔지니어 기초과정
+                <span>
+                  온라인
+                </span>
               </h3>
+              <span className={style.date}>
+                2024.01.15 ~ 2024. 02.14
+              </span>
               <ArrowPrevButton
                 customClass={style.arrowPrevBtn}
                 href="/career"
-                hiddenText="커리어탐색 화면으로 이동"
+                hiddenText="커리어교육 화면으로 이동"
               />
             </div>
 
             <div className={style.layoutBox}>
-              <ul className={style.careerDetailTab}>
-                <li>
-                  <Link to="/" className={style.active}>
-                    직무정보
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/">
-                    경력단계
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/">
-                    로드맵
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/">
-                    성공사례
-                  </Link>
-                </li>
-              </ul>
-
               <div className={style.careerDetailContent}>
-                <div className={style.box}>
+                <div className={`${style.box} ${style.procedureBox}`}>
+
                   <h4>
-                    직무 정의
-                  </h4>
-                  <ul className={style.list}>
-                    <li>
-                      선박 엔지니어는 선박의 기계 및 전기 시스템을 설계, 유지보수, 수리하며, 선박이 안전하고 효율적으로 작동하도록 관리하는 역할을 맡습니다.
-                    </li>
-                    <li>
-                      주로 해운회사, 조선소, 선박 유지보수 회사에서 근무하며, 선박 엔진, 추진 시스템, 전기 시스템 등 복잡한 설비를 다룹니다.
-                    </li>
-                  </ul>
-                </div>
-
-                <div className={style.box}>
-                  <h4>
-                    주요 역할 및 책임
-                  </h4>
-                  <h5 className={style.subTitle}>
-                    설계 및 기술 지원
-                  </h5>
-                  <ul className={style.list}>
-                    <li>
-                      선박의 기계 및 전기 시스템 설계 및 최적화
-                    </li>
-                    <li>
-                      국제 규정 및 기술 표준에 맞는 설계 작업 수행
-                    </li>
-                  </ul>
-                  <h5 className={style.subTitle}>
-                    유지보수 및 수리
-                  </h5>
-                  <ul className={style.list}>
-                    <li>
-                      선박의 정기적인 점검 및 유지보수 작업 수행
-                    </li>
-                    <li>
-                      엔진, 발전기, 냉각 시스템 등 주요 설비 문제 해결
-                    </li>
-                  </ul>
-
-                  <h5 className={style.subTitle}>
-                    안전 및 품질 관리
-                  </h5>
-                  <ul className={style.list}>
-                    <li>
-                      선박 안전 기준 준수 및 품질 관리
-                    </li>
-                    <li>
-                      해상 안전 규정(ISM Code 등) 준수 확인
-                    </li>
-                  </ul>
-
-                  <h5 className={style.subTitle}>
-                    현장 감독 및 팀 관리
-                  </h5>
-                  <ul className={style.list}>
-                    <li>
-                      유지보수 및 수리 작업 감독
-                    </li>
-                    <li>
-                      작업팀과 협력하여 프로젝트를 실행
-                    </li>
-                  </ul>
-                </div>
-
-                <div className={style.box}>
-                  <h4>
-                    필수 역량
-                  </h4>
-                  <ul className={style.list}>
-                    <li>기계 및 전기 시스템 설계 및 분석 능력</li>
-                    <li>문제 해결 및 고장 진단 능력</li>
-                    <li>협업 및 커뮤니케이션 능력</li>
-                    <li>국제 규정(IMO, SOLAS) 및 기술 표준에 대한 이해</li>
-                  </ul>
-                </div>
-
-                <div className={style.box}>
-                  <h4>
-                    평균 연봉 및 시장 전망
+                    과정소개
                   </h4>
 
-                  <h5 className={style.subTitle}>
-                    평균 연봉:
+                  <p className={style.procedureDes}>
+                    『Offshore Oil Gas Plant』은 해양플랜트의 기본적이 구성과 요소를 개념 중심으로 나열하며 선박과 해양플랜트 업종간의 차이점을 중점적으로 언급하고 있어 업무 전환자, 플랜트기자재 개발 종사자, 조선해양공학을 전공하는 학생들에게 많은 도움을 주는 강의입니다. <br /> <br />
+
+                    선박 엔지니어로서의 첫걸음을 위한 기초 과정입니다. 선박 엔진 및 전기 시스템의 기본 구조와 작동 원리를 학습합니다.
+                  </p>
+
+                  <h5>
+                    강의가 제공하는 <strong>주요 혜택</strong>
                   </h5>
 
-                  <ul className={style.list}>
-                    <li>초급: 3,000만 원~4,000만 원</li>
-                    <li>중급: 5,000만 원~6,500만 원</li>
-                    <li>고급: 7,000만 원 이상</li>
-                  </ul>
-
-                  <h5 className={style.subTitle}>
-                    시장 전망:
-                  </h5>
-
-                  <ul className={style.list}>
-                    <li>해운 산업의 디지털 전환 및 친환경 선박 기술 수요 증가로 인해 선박 엔지니어의 역할은 더욱 중요해질 전망</li>
-                    <li>탄소 중립 및 지속 가능성 프로젝트로 인해 고급 엔지니어 수요가 꾸준히 증가</li>
+                  <ul className={style.procedureList}>
+                    <li>
+                      선박 엔지니어를 준비하는 취업 준비생 및 초급 실무자
+                    </li>
+                    <li>
+                      선박 엔진의 기본 구조를 이해하고 설명 가능
+                    </li>
+                    <li>
+                      전기 시스템 기초 지식을 습득
+                    </li>
+                    <li>
+                      유지보수 실습 경험을 통해 실무 준비
+                    </li>
                   </ul>
 
                 </div>
 
-                <div className={style.box}>
+                <div className={`${style.box} ${style.instructorBox}`}>
                   <h4>
-                    경력 단계별 가이드
+                    강사소개
                   </h4>
+                  <div className={style.instructorDetailbox}>
+                    <div className={style.top}>
+                      <div className={style.textBox}>
+                        <h5>
+                          이재훈 강사
+                        </h5>
+                        <ul className={style.historyList}>
+                          <li>
+                            해양기계공학 학사 (한국해양대학교)
+                          </li>
+                          <li>
+                            선박엔지니어링 석사 (울산과학기술원, UNIST)
+                          </li>
+                        </ul>
+                      </div>
+                      <div className={style.imgBox}>
+                        <img src={InstructorImg} alt="" />
+                      </div>
+                    </div>
 
-                  <select>
-                    <option>초급단계</option>
-                  </select>
+                    <ul className={style.historyDetailList01}>
+                      <li>
+                        해양기술연구소 선임 연구원 (2010~2015)
+                        <ul className={style.historyDetailList02}>
+                          <li>
+                            선박 엔진 설계 및 효율 최적화 연구 수행.
+                          </li>
+                          <li>
+                            친환경 연료 시스템 개발 프로젝트 주도.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        글로벌 해운사 기술팀장 (2015~2022)
+                        <ul className={style.historyDetailList02}>
+                          <li>
+                            선박 유지보수 및 고장 진단 솔루션 도입.
+                          </li>
+                          <li>
+                            국제 항로에서의 선박 운영 효율 개선.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        현재:
+                        <ul className={style.historyDetailList02}>
+                          <li>
+                            해양기술교육센터 전임 강사
+                            <ul className={style.historyDetailList02}>
+                              <li>선박 엔지니어링 기초 및 친환경 기술 강의.</li>
+                              <li>취업 준비생과 실무자를 위한 커리큘럼 설계</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
 
-                  <ul className={style.guideList}>
-                    <li>
-                      <h4>
-                        필요한 역량과 스킬
-                      </h4>
-                      <ul className={style.list}>
-                        <li>기초 기계 공학 및 전기 공학 지식</li>
-                        <li>기초 설계 도구 활용 능력(AutoCAD, SolidWorks)</li>
-                        <li>문제 해결 및 데이터 분석 기초</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h4>
-                        수행업무
-                      </h4>
-                      <ul className={style.list}>
-                        <li>유지보수 작업 보조</li>
-                        <li>선박 기계 장치의 점검 및 기록</li>
-                        <li>기초 설계 및 보고서 작성</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h4>
-                        추천 교육 과정
-                      </h4>
-                      <ul className={style.list}>
-                        <li>기초 선박 공학 과정</li>
-                        <li>AutoCAD, SolidWorks 등 설계 소프트웨어 교육</li>
-                        <li> IMO 규정 및 SOLAS 기초 과정</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h4>
-                        마일스톤 목표
-                      </h4>
-                      <ul className={style.list}>
-                        <li>선박 기본 설계 프로젝트 참여</li>
-                        <li>설계 도구 자격증 취득</li>
-                        <li>정기 점검 작업에 능숙해지기</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className={style.box}>
-                  <h4>
-                    경력 로드맵과 마일스톤
-                  </h4>
-
-                  <ul className={`roadMapTab ${style.roadMapTab}`}>
-                    <li>
-                      <Link to="#" className="active">
-                        단기목표
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        중기목표
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        장기목표
-                      </Link>
-                    </li>
-                  </ul>
-
-                  <ul className={`roadmapList01 ${style.roadmapList01}`}>
-                    <li>
-                      <Link to="/">
-                        초급
-                      </Link>
-                      <ul className={`roadmapList02 ${style.roadmapList02}`}>
-                        <li>
-                          <Link to="/">
-                            기술학습
-                          </Link>
-                          <ul className={style.roadmapList03}>
-                            <li>
-                              설계 도구 자격증 취득(AutoCAD Certified User 등)
-                            </li>
-                            <li>
-                              선박 엔진과 전기 시스템 기본 구조 이해
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <Link to="/">
-                            실무경험
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <Link to="/">
-                        중급
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/">
-                        고급
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className={style.box}>
-                  <div className={style.story}>
-                    <h4>
-                      성공사례
-                    </h4>
-                    <img src={Story_Img} alt="" />
-                    <h5>
-                      선박엔지니어 김현우님의 성공이야기
-                    </h5>
-                    <p>
-                      김현우님(35)은 대학 시절 기계공학을 전공하며 막연히 자동차나 항공 분야에 진출할 것을 꿈꿨습니다. 하지만 졸업 직전, 해운 산업에 대해 배우게 되면서 선박의 기계와 전기 시스템을 설계하는 일에 흥미를 느끼게 됩니다. “친환경 선박 기술이 각광받고 있다는 걸 알게 된 게 결정적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.” <br />
-                      그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다.
-                      입사 초기, 그는 선박 유지보수 팀에 배치되어 주로 소형 화물선의 엔진 설계 보조와 정기 점검 업무를 맡았습니다. "당시엔 모든 게 새로웠고, 선박 시스템의 복잡함에 매일 놀랐죠." 현우님은 주어진 작업을 수행하며 AutoCAD와 SolidWorks 같은 설계 도구를 익히고, 유지보수 프로세스의 기초를 배웠습니다. <br />
-                      첫 프로젝트는 노후 선박의 엔진 효율 개선 작업이었습니다. 설계 보조 역할을 맡은 그는 베테랑 팀원들의 지도 아래, 효율적인 냉각 시스템 설계에 성공적으로 기여했습니다. “작은 역할이었지만, 제 아이디어가 실제로 선박 개선에 쓰이는 걸 보고 큰 자부심을 느꼈어요.” <br />
-                      이후 그는 선박 기초 설계와 유지보수 점검 업무에서 3년간 경험을 쌓으며, 기본적인 역량을 다지는 데 집중했습니다.
-                    </p>
                   </div>
                 </div>
+
+                <div className={`${style.box} ${style.curriculumBox}`}>
+                  <h4>
+                    커리큘럼
+                  </h4>
+
+                  <ul className={style.curriculumList}>
+                    <li>
+                      <span>
+                        1강
+                      </span>
+                      <h5>
+                        선박 엔진의 기본 구조와 작동 원리 이해
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        2강
+                      </span>
+                      <h5>
+                        연료 및 윤활 시스템의 역할과 유지 관리
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        3강
+                      </span>
+                      <h5>
+                        전기 시스템 및 회로의 기초 이해
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        4강
+                      </span>
+                      <h5>
+                        선박 유지보수 매뉴얼 읽기와 실습
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        5강
+                      </span>
+                      <h5>
+                        고장 진단 프로세스 및 사례 분석
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        6강
+                      </span>
+                      <h5>
+                        선박 안전 관리 및 국제 규정 기초
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        7강
+                      </span>
+                      <h5>
+                        친환경 기술 개요: LNG 및 하이브리드 시스템
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        8강
+                      </span>
+                      <h5>
+                        기본 도구 사용법 및 엔진 점검 실습
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                    <li>
+                      <span>
+                        9강
+                      </span>
+                      <h5>
+                        팀 협업과 작업 보고서 작성 실습
+                      </h5>
+                      <em className={style.time}>
+                        21:26
+                      </em>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className={style.linkBox}>
+                <Button
+                  customClass={style.button}
+                  text="강의바로가기"
+                />
+                <Link to="#" className={style.aiInfoBox}>
+                  <p>
+                    이력서를 작성하면 <br />
+                    AI가 <strong>채용공고를 추천</strong>해줘요!
+                  </p>
+                </Link>
               </div>
             </div>
           </div>

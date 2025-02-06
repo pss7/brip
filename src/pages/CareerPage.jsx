@@ -61,35 +61,36 @@ export default function CareerPage() {
 
 
         <div className="careerBoxContent">
-   
-            <div className={style.tabBox}>
-              {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => {
-                return (
-                  <button
-                    key={tab}
-                    className={`${style.button} ${activeTab === tab ? style.active : ""}`}
-                    onClick={() => handleTabClick(tab)}>
-                    {tab}
-                  </button>
-                )
-              }
-              )}
-            </div>
 
-            <div className={style.cardList}>
-              {educationData[activeTab]?.map((data, index) => (
+          <div className={style.tabBox}>
+            {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => {
+              return (
+                <button
+                  key={tab}
+                  className={`${style.button} ${activeTab === tab ? style.active : ""}`}
+                  onClick={() => handleTabClick(tab)}>
+                  {tab}
+                </button>
+              )
+            }
+            )}
+          </div>
 
-                <Card
-                  key={index}
-                  text={activeTab}
-                  title={data.title}
-                  imgSrc={data.imgSrc}
-                  subText={data.subText}
-                  className="careerCardBox"
-                />
+          <div className={style.cardList}>
+            {educationData[activeTab]?.map((data, index) => (
 
-              ))}
-            </div>
+              <Card
+                href="/careerdetail"
+                key={index}
+                text={activeTab}
+                title={data.title}
+                imgSrc={data.imgSrc}
+                subText={data.subText}
+                className="careerCardBox"
+              />
+
+            ))}
+          </div>
 
         </div>
 

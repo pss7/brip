@@ -208,7 +208,7 @@ export default function MainPage() {
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="/career">
                   <div className={style.imgBox}>
                     <img src={Book} alt="" />
                   </div>
@@ -238,7 +238,7 @@ export default function MainPage() {
                 </Link>
               </li>
               <li>
-                <Link to="#">
+                <Link to="/activity">
                   <div className={style.imgBox}>
                     <img src={Commercial} alt="" />
                   </div>
@@ -269,6 +269,7 @@ export default function MainPage() {
               <Slider className={style.guideList} ref={sliderRef01} {...settings} >
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#EDC2F6' }}
                     imgBg={{ backgroundColor: '#C6FFD0' }}
                     imgSrc={Guide01}
@@ -278,6 +279,7 @@ export default function MainPage() {
 
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#CCE7FE' }}
                     imgBg={{ backgroundColor: '#F6F0B3' }}
                     imgSrc={Guide02}
@@ -287,6 +289,7 @@ export default function MainPage() {
 
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#FFD3EB' }}
                     imgBg={{ backgroundColor: '#CCE7FE' }}
                     imgSrc={Guide03}
@@ -296,6 +299,7 @@ export default function MainPage() {
 
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#FFEEA6' }}
                     imgBg={{ backgroundColor: '#5E5C5C' }}
                     imgSrc={Guide04}
@@ -304,6 +308,7 @@ export default function MainPage() {
                 </div>
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#EDC2F6' }}
                     imgBg={{ backgroundColor: '#C6FFD0' }}
                     imgSrc={Guide01}
@@ -313,6 +318,7 @@ export default function MainPage() {
 
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#CCE7FE' }}
                     imgBg={{ backgroundColor: '#F6F0B3' }}
                     imgSrc={Guide02}
@@ -322,6 +328,7 @@ export default function MainPage() {
 
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#FFD3EB' }}
                     imgBg={{ backgroundColor: '#CCE7FE' }}
                     imgSrc={Guide03}
@@ -331,6 +338,7 @@ export default function MainPage() {
 
                 <div className={style.slide}>
                   <BgCard
+                    href="/careerexplorationdetail"
                     bg={{ backgroundColor: '#FFEEA6' }}
                     imgBg={{ backgroundColor: '#5E5C5C' }}
                     imgSrc={Guide04}
@@ -389,6 +397,7 @@ export default function MainPage() {
                 {educationData[activeTab]?.map((data, index) => (
                   <div key={index} data-aos="fade-up">
                     <Card
+                      href="/careerdetail"
                       text={activeTab}
                       title={data.title}
                       imgSrc={data.imgSrc}
@@ -434,6 +443,7 @@ export default function MainPage() {
                   return (
                     <Card
                       key={data.id}
+                      href="/employmentdetail"
                       className="cardType"
                       text={data.text}
                       imgSrc={data.imgSrc}

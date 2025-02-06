@@ -201,7 +201,7 @@ export default function CareerExplorationPage() {
                         <td>{activeTab}</td>
                         <td>{job.name}</td>
                         <td className="textLeft title">
-                          <Link to="/careerdetail">{job.description}</Link>
+                          <Link to="/careerexplorationdetail">{job.description}</Link>
                         </td>
                         <td>{job.avgSalary}</td>
                         <td>
