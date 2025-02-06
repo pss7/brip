@@ -1,6 +1,7 @@
 import style from "./SubSearch.module.css";
 
 export default function SubSearch({ onSearch }) {
+  
   const handleInputChange = (event) => {
     onSearch(event.target.value); // 검색어 상태 변경
   };

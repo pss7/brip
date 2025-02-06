@@ -160,78 +160,88 @@ export default function EmploymentPage() {
                 </div>
 
                 <div className="tabContentBox">
+
                   {activeTab === "지역별" && (
                     <div className="tabContent">
-                      <div className="regionList">
-                        {getFilterData().map((region) => (
-                          <button
-                            key={region.id}
-                            className={`button ${activeRegion === region ? "active" : ""}`}
-                            onClick={() => handleRegionClick(region)}
-                          >
-                            {region.name}
-                          </button>
-                        ))}
-                      </div>
-
-                      {activeRegion && (
-                        <div className="subRegionList">
-                          {activeRegion.subLocations.map((subRegion) => (
-                            <div key={subRegion.id} className="subRegionBox">
-                              <button
-                                className={`button ${activeSubRegions.includes(subRegion.id) ? "active" : ""}`}
-                                onClick={() => handleSubRegionSelection(subRegion.id)}
-                              >
-                                {subRegion.name}
-                              </button>
-                            </div>
+                      <div className="regionBox">
+                        <div className="regionList">
+                          {getFilterData().map((region) => (
+                            <button
+                              key={region.id}
+                              className={`button ${activeRegion === region ? "active" : ""}`}
+                              onClick={() => handleRegionClick(region)}
+                            >
+                              {region.name}
+                            </button>
                           ))}
                         </div>
-                      )}
+
+                        {activeRegion && (
+                          <div className="subRegionList">
+                            {activeRegion.subLocations.map((subRegion) => (
+                              <div key={subRegion.id} className="subRegionBox">
+                                <button
+                                  className={`button ${activeSubRegions.includes(subRegion.id) ? "active" : ""}`}
+                                  onClick={() => handleSubRegionSelection(subRegion.id)}
+                                >
+                                  {subRegion.name}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
 
                   {activeTab === "직무별" && (
                     <div className="tabContent">
-                      {getFilterData().map((jobType) => (
-                        <button
-                          key={jobType.id}
-                          className={`button ${selectedFilters.직무별.includes(jobType.id) ? "active" : ""}`}
-                          onClick={() => handleFilterSelection("직무별", jobType.id)}
-                        >
-                          {jobType.name}
-                        </button>
-                      ))}
+                      <div className="box">
+                        {getFilterData().map((jobType) => (
+                          <button
+                            key={jobType.id}
+                            className={`button ${selectedFilters.직무별.includes(jobType.id) ? "active" : ""}`}
+                            onClick={() => handleFilterSelection("직무별", jobType.id)}
+                          >
+                            {jobType.name}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 
                   {activeTab === "경력별" && (
                     <div className="tabContent">
-                      {getFilterData().map((experience) => (
-                        <button
-                          key={experience.id}
-                          className={`button ${selectedFilters.경력별.includes(experience.id) ? "active" : ""}`}
-                          onClick={() => handleFilterSelection("경력별", experience.id)}
-                        >
-                          {experience.name}
-                        </button>
-                      ))}
+                      <div className="box">
+                        {getFilterData().map((experience) => (
+                          <button
+                            key={experience.id}
+                            className={`button ${selectedFilters.경력별.includes(experience.id) ? "active" : ""}`}
+                            onClick={() => handleFilterSelection("경력별", experience.id)}
+                          >
+                            {experience.name}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 
                   {activeTab === "근무형태" && (
                     <div className="tabContent">
-                      {getFilterData().map((employmentType) => (
-                        <button
-                          key={employmentType.id}
-                          className={`button ${selectedFilters.근무형태.includes(employmentType.id) ? "active" : ""}`}
-                          onClick={() => handleFilterSelection("근무형태", employmentType.id)}
-                        >
-                          {employmentType.name}
-                        </button>
-                      ))}
+                      <div className="box">
+                        {getFilterData().map((employmentType) => (
+                          <button
+                            key={employmentType.id}
+                            className={`button ${selectedFilters.근무형태.includes(employmentType.id) ? "active" : ""}`}
+                            onClick={() => handleFilterSelection("근무형태", employmentType.id)}
+                          >
+                            {employmentType.name}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
+
                 </div>
               </div>
 

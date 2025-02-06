@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Main from "../components/layout/Main";
 import Container from "../components/Container";
@@ -5,20 +6,102 @@ import Pagination from "../components/Pagination";
 import SubSearch from "../components/SubSearch";
 import style from "./CareerPage.module.css";
 import { shippingIndustryData } from "../data/shippingIndustryData";
-import { useState } from "react";
 
 export default function CareerPage() {
-  const [activeTab, setActiveTab] = useState("해운산업"); // 활성 탭 상태 관리
+  const [activeTab, setActiveTab] = useState("해운산업");
+  const [selectedJobs, setSelectedJobs] = useState([]);
+  const [sortOption, setSortOption] = useState("가나다순");
+  const [jobsPerPage, setJobsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filteredJobs, setFilteredJobs] = useState([]);
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState(""); // 검색 키워드 상태
 
-  // 탭 클릭 시 해당 탭 활성화`
+  // 탭 클릭 시 해당 탭 활성화
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
-  // 탭 클릭 시 해당 산업의 직무 목록을 필터링
+  // 직무 선택 시 active 클래스 추가/삭제
+  const handleSelectActive = (jobId) => {
+    setSelectedJobs((prevSelectedJobs) => {
+      if (prevSelectedJobs.includes(jobId)) {
+        return prevSelectedJobs.filter((id) => id !== jobId);
+      }
+      return [...prevSelectedJobs, jobId];
+    });
+  };
+
+  // 선택된 산업의 데이터 찾기
   const selectedIndustryData = shippingIndustryData.find(
     (industry) => industry.id === activeTab
   );
+
+  // 선택 초기화
+  const handleResetSelection = () => {
+    setSelectedJobs([]);
+  };
+
+  // 정렬 옵션 변경 시 처리
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  // 페이지 수 조정 시 처리
+  const handleJobsPerPageChange = (e) => {
+    setJobsPerPage(Number(e.target.value));
+    setCurrentPage(1); // 페이지 수 변경 시 첫 페이지로 이동
+  };
+
+  // 페이지 변경 시 처리
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  // 검색어 상태 변경
+  const handleSearch = (keyword) => {
+    setSearchKeyword(keyword);
+    setCurrentPage(1); // 검색 시 첫 페이지로 이동
+  };
+
+  // 직무 목록 정렬
+  const sortJobs = (jobs) => {
+    let sortedJobs = [...jobs];
+    if (sortOption === "가나다순") {
+      sortedJobs.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === "연봉높은순") {
+      sortedJobs.sort((a, b) => b.avgSalary - a.avgSalary);
+    } else if (sortOption === "연봉낮은순") {
+      sortedJobs.sort((a, b) => a.avgSalary - b.avgSalary);
+    }
+    return sortedJobs;
+  };
+
+  // 직무 데이터 필터링 및 정렬
+  useEffect(() => {
+    if (selectedIndustryData) {
+      let jobs = selectedIndustryData.jobs;
+
+      // 검색어로 필터링
+      if (searchKeyword.trim() !== "") {
+        jobs = jobs.filter((job) =>
+          job.name.toLowerCase().includes(searchKeyword.toLowerCase())
+        );
+      }
+
+      // 필터링 후 정렬
+      jobs = sortJobs(jobs);
+
+      setFilteredJobs(jobs);
+      setTotalJobs(jobs.length);
+    }
+  }, [activeTab, selectedIndustryData, sortOption, searchKeyword]);
+
+  // 페이지네이션 처리
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
   return (
     <Main className="subWrap">
@@ -30,71 +113,35 @@ export default function CareerPage() {
 
         <Container className="container">
           <div className="careerBoxContent">
-            <SubSearch />
+            {/* 검색 입력 필드 */}
+            <SubSearch onSearch={handleSearch} />
 
             {/* 탭 메뉴 */}
             <div className="tabContainer">
               <div className="tabBox">
-                {
-                  shippingIndustryData.map((tab) => {
-                    return (
-                      <div className="box" key={tab.id}>
-                        <button
-                          className={`tabBtn ${activeTab === tab.id ? "active" : ""}`}
-                          onClick={() => handleTabClick(tab.id)} // 탭 클릭 시 활성화
-                        >
-                          {tab.id}
-                        </button>
-                      </div>
-                    )
-                  })
-                }
+                {shippingIndustryData.map((tab) => (
+                  <div className="box" key={tab.id}>
+                    <button
+                      className={`tabBtn ${activeTab === tab.id ? "active" : ""}`}
+                      onClick={() => handleTabClick(tab.id)}
+                    >
+                      {tab.id}
+                    </button>
+                  </div>
+                ))}
               </div>
 
               {/* 탭 콘텐츠 */}
               <div className="tabContentBox">
-                {activeTab === "해운산업" && (
+                {selectedIndustryData && (
                   <div className="tabContent">
                     <div className="box">
-                      {/* 선택된 산업의 직무 리스트만 출력 */}
-                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
-                        <button key={job.id} className="button">
-                          {job.name} {/* 직무 이름 */}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {activeTab === "항만산업" && (
-                  <div className="tabContent">
-                    <div className="box">
-                      {/* 선택된 산업의 직무 리스트만 출력 */}
-                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
-                        <button key={job.id} className="button">
-                          {job.name} {/* 직무 이름 */}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {activeTab === "항만연관산업" && (
-                  <div className="tabContent">
-                    <div className="box">
-                      {/* 선택된 산업의 직무 리스트만 출력 */}
-                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
-                        <button key={job.id} className="button">
-                          {job.name} {/* 직무 이름 */}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {activeTab === "물류산업" && (
-                  <div className="tabContent">
-                    <div className="box">
-                      {/* 선택된 산업의 직무 리스트만 출력 */}
-                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
-                        <button key={job.id} className="button">
+                      {selectedIndustryData.jobs.map((job) => (
+                        <button
+                          key={job.id}
+                          className={`button ${selectedJobs.includes(job.id) ? "active" : ""}`}
+                          onClick={() => handleSelectActive(job.id)}
+                        >
                           {job.name} {/* 직무 이름 */}
                         </button>
                       ))}
@@ -102,117 +149,125 @@ export default function CareerPage() {
                   </div>
                 )}
               </div>
-
             </div>
 
+            {/* 선택 초기화 버튼 */}
+            <div className="resetBtnBox">
+              <button className="resetBtn" onClick={handleResetSelection}>
+                <span>선택 초기화</span>
+              </button>
+            </div>
 
+            {/* 리스트 건수 표시 */}
             <div className={style.selectBox}>
-              <span className={style.length}>총 3,452건</span>
+              <span className={style.length}>총 {totalJobs}건</span>
               <label htmlFor="select" className="blind">
-                선택
+                정렬
               </label>
-              <select id="select" className={style.select}>
-                <option>가나다순</option>
+              <select id="select" className={style.select} onChange={handleSortChange} value={sortOption}>
+                <option value="가나다순">가나다순</option>
+                <option value="연봉높은순">연봉 높은 순</option>
+                <option value="연봉낮은순">연봉 낮은 순</option>
               </select>
             </div>
 
-            <div className={style.tableBox}>
-              <table className={style.table}>
-                <caption className="blind">직무정보</caption>
-                <colgroup>
-                  <col style={{ width: "70px" }} />
-                  <col style={{ width: "90px" }} />
-                  <col style={{ width: "180px" }} />
-                  <col style={{ width: "auto" }} />
-                  <col style={{ width: "100px" }} />
-                  <col style={{ width: "100px" }} />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>NO</th>
-                    <th>산업</th>
-                    <th>직무명</th>
-                    <th>직무정보</th>
-                    <th>평균연봉</th>
-                    <th>시장전망</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>7</td>
-                    <td>해운산업</td>
-                    <td>선박운항관리자</td>
-                    <td className="textLeft title">
-                      <Link to="/careerdetail">선박의 안전한 운항을 계획하고 관리하며 항로와 일정 조율을 담당</Link>
-                    </td>
-                    <td>4000만원</td>
-                    <td>
-                      <span className="veryGood">매우좋음</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>항만산업</td>
-                    <td>하역전문가</td>
-                    <td className="textLeft title">
-                      <Link to="/careerdetail">화물의 적재와 하역 작업을 안전하고 효율적으로 수행하고 감독</Link>
-                    </td>
-                    <td>4000만원</td>
-                    <td>
-                      <span className="veryGood">매우좋음</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>항만연관산업</td>
-                    <td>선용품공급업</td>
-                    <td className="textLeft title">
-                      <Link to="/careerdetail">선박에 필요한 연료, 자재, 장비 등을 공급하며 품질과 물류를 관리</Link>
-                    </td>
-                    <td>4000만원</td>
-                    <td>
-                      <span className="good">좋음</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>물류산업</td>
-                    <td>SCM(공급망 관리) 전문가</td>
-                    <td className="textLeft title">
-                      <Link to="/careerdetail">공급망의 모든 흐름을 계획하고 최적화하여 물류 비용과 시간을 효율화</Link>
-                    </td>
-                    <td>4000만원</td>
-                    <td>
-                      <span className="good">좋음</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>해운산업</td>
-                    <td>해상화물운송관리자</td>
-                    <td className="textLeft title">
-                      <Link to="/careerdetail">해상 화물의 운송 일정, 경로, 안전을 조율하며 운송 계약을 관리</Link>
-                    </td>
-                    <td>4000만원</td>
-                    <td>
-                      <span className="commonly">보통</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            {/* 직무 정보 테이블 */}
+            {
+              filteredJobs.length > 0 ? (<div className={style.tableBox}>
+                <table className={style.table}>
+                  <caption className="blind">직무정보</caption>
+                  <colgroup>
+                    <col style={{ width: "70px" }} />
+                    <col style={{ width: "90px" }} />
+                    <col style={{ width: "180px" }} />
+                    <col style={{ width: "auto" }} />
+                    <col style={{ width: "100px" }} />
+                    <col style={{ width: "100px" }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>NO</th>
+                      <th>산업</th>
+                      <th>직무명</th>
+                      <th>직무정보</th>
+                      <th>평균연봉</th>
+                      <th>시장전망</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentJobs.map((job, index) => (
+                      <tr key={job.id}>
+                        <td>{index + 1}</td>
+                        <td>{activeTab}</td>
+                        <td>{job.name}</td>
+                        <td className="textLeft title">
+                          <Link to="/careerdetail">{job.description}</Link>
+                        </td>
+                        <td>{job.avgSalary}</td>
+                        <td>
+                          <span className={job.marketOutlook === "매우좋음" ? "veryGood" : job.marketOutlook === "좋음" ? "good" : "commonly"}>
+                            {job.marketOutlook}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>) : (
+                <div className={style.tableBox}>
+                  <table className={style.table}>
+                    <caption className="blind">직무정보</caption>
+                    <colgroup>
+                      <col style={{ width: "70px" }} />
+                      <col style={{ width: "90px" }} />
+                      <col style={{ width: "180px" }} />
+                      <col style={{ width: "auto" }} />
+                      <col style={{ width: "100px" }} />
+                      <col style={{ width: "100px" }} />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>NO</th>
+                        <th>산업</th>
+                        <th>직무명</th>
+                        <th>직무정보</th>
+                        <th>평균연봉</th>
+                        <th>시장전망</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colSpan={6}>
+                          검색결과가 없습니다
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )
+            }
 
+
+            {/* 페이지 수 조정 드롭다운 */}
             <div className={style.pageSelectBox}>
               <label htmlFor="pageSelect" className="blind">
                 페이지수 조정
               </label>
-              <select id="pageSelect" className={style.pageSelect}>
-                <option>10</option>
+              <select id="pageSelect" className={style.pageSelect} onChange={handleJobsPerPageChange} value={jobsPerPage}>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
               </select>
             </div>
-
           </div>
-          <Pagination />
+
+          {/* 페이지네이션 */}
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
         </Container>
       </div>
     </Main>

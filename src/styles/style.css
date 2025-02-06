@@ -34,27 +34,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
-/* 공통-탭메뉴 
-.comTabMenu .list{ display: flex; justify-content: center; border-radius: 20px;}
-.comTabMenu .list li{width: 25%;}
-.comTabMenu .list li a{padding: 0 5px; margin-right: -1px; background-color: #FAFAFC;}
-.comTabMenu .list li a{display: flex; align-items: center; justify-content: center; height: 73px; border: 1px solid #D9D9D9; text-align: center; font-weight: 600; font-size: 20px; color: #969696;}
-.comTabMenu .list li:first-child a{border-radius: 20px 0 0 0;}
-.comTabMenu .list li:last-child a{border-radius: 0 20px 0 0;}
-.comTabMenu .list li a.active{background-color: #000; color: #fff; border: 0;}
-
-@media (max-width: 1199px){
-
-  .comTabMenu .list li a{height: 60px; font-size: 16px;}
-  .comTabMenu .list li:first-child a{border-radius: 15px 0 0 0;}
-  .comTabMenu .list li:last-child a{border-radius: 0 15px 0 0;}
-
-}
-*/
-
-
-
-
+/* 공통-탭메뉴 */
 .tabContainer{border-radius: 20px; border: 1px solid #D9D9D9; overflow: hidden;}
 .tabBox{display: flex; justify-content: center; }
 .tabBox .box{width: 25%;  border: 1px solid #D9D9D9; border-width: 0 1px 1px 0;}
@@ -62,27 +42,25 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .tabBox .box .tabBtn{width: 100%; padding: 0 5px; display: flex; align-items: center; justify-content: center; height: 73px;  text-align: center; font-weight: 600; font-size: 20px; color: #969696;  background-color: #FAFAFC;}
 .tabBox .box .tabBtn.active{background-color: #000; color: #fff; border: 0;}
 .tabContentBox{margin-top: -1px; }
-.tabContentBox .tabContent{padding: 12px 10px 0 0; display: flex; align-items: flex-start; position: relative; height: 308px; }
-.tabContentBox .regionList{flex-shrink: 0; margin-top: -12px; padding-top: 12px; width: 25%; height: 100%; overflow-y: auto;}
-.tabContentBox .regionList .button{width: 100%;}
-.tabContentBox .subRegionList{display: flex; flex-wrap: wrap; padding: 0 20px 12px 0;}
-.tabContentBox .subRegionList .subRegionBox{width: 33.33%;}
+.tabContentBox .tabContent{height: 308px; }
+.tabContentBox .tabContent .box{padding: 12px 10px 0 0; display: flex; flex-wrap: wrap;}
 .tabContentBox .button{padding: 12px 10px 12px 36px; display: block; color: #343330; font-weight: 500; line-height: 1.8; text-align: left;}
 .tabContentBox .button.active{font-weight: 600; color: #4334E0;}
 
 @media (max-width: 1199px){
 
+  .tabContainer{border-radius: 10px;}
   .tabBox .box .tabBtn{height: 50px; font-size: 16px;}
-  .tabContentBox .tabContent{padding: 15px 10px;}
-  .tabContentBox .tabContent{flex-wrap: wrap;}
-  .tabContentBox .button{padding: 10px 10px 10px 30px;}
-  .tabContentBox .subRegionList{width: 75%;}
-  
+  .tabContentBox .tabContent .box{padding: 0;}
+  .tabContentBox .tabContent{flex-wrap: wrap; padding: 15px 20px!important;}
+  .tabContentBox .button{padding: 10px;}
+
 }
 
 @media (max-width: 767px){
 
-    .tabContentBox .button{padding: 10px 10px 10px 20px; font-size: 14px;}
+    .tabContentBox .button{font-size: 14px;}
+    .tabBox .box .tabBtn{font-size: 14px;}
 
 }
 
@@ -228,24 +206,38 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .employmentBox{margin-top: -43px;}
 .employmentBox .container{max-width: 1036px;}
 .employmentBox .employmentInfoList{ position: relative; margin-bottom: 65px;} 
-.comTabContent{height: 308px; display: flex; margin-top: -1px; border-radius: 0 0 20px 20px; border: 1px solid #D9D9D9; overflow-y: auto;}
-.comTabContent::-webkit-scrollbar { width: 10px; }
-.comTabContent::-webkit-scrollbar-thumb { background-color: #d5d5d5; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
-.comTabContent::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
-.comTabContent .list{ width: 25%; padding: 24px 0; overflow-y: auto;}
-.comTabContent .list li a{padding: 10px 10px 10px 37px; display: block; font-weight: 500; color: #343330; line-height: 1.7;}
-.comTabContent .list::-webkit-scrollbar { width: 10px; }
-.comTabContent .list::-webkit-scrollbar-thumb { background-color: #d5d5d5; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent;}
-.comTabContent .list::-webkit-scrollbar-track {background-color: #FAFAFC; border-radius: 10px;}
-.comTabContent .list li a.active{font-weight: 600; color: #4334E0;}
-.comTabContent .list02{display: flex; flex-wrap: wrap; width: 75%; align-self: flex-start;}
-.comTabContent .list02 li {width: 33.33%;}
+.tabContentBox .regionBox{height: 308px; display: flex; align-items: flex-start;}
+.tabContentBox .regionList{flex-shrink: 0; padding-top: 12px; width: 25%; height: 100%; overflow-y: auto;}
+.tabContentBox .regionList .button{width: 100%;}
+.tabContentBox .subRegionList{display: flex; flex-wrap: wrap; padding: 12px 0;}
+.tabContentBox .subRegionList .subRegionBox{width: 33.33%;}
 
-@media (max-width: 414px){
+@media (max-widtH: 1199px){
 
-  .comTabContent .list li a{padding: 5px 10px; font-size: 12px;}
+  .tabContentBox .regionList{padding: 12px 0;}
+  .tabContentBox .regionBox{margin: -15px -20px 0;}
+  .tabContentBox .subRegionBox .button{width: 100%; text-align: center;}
+  .tabContentBox .subRegionList{width: 75%;}
+  .tabContentBox .regionList .button{text-align: center;}
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* 이전버튼 위치 */
 .linkBox{position: absolute; top:28px; left:34px;}
@@ -445,14 +437,16 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 /* 커리어 */
 .careerBox{margin-top: -43px;}
 .careerBox .container{max-width: 1036px;}
-.careerBox .tabContainer{margin-bottom: 40px;}
+.careerBox .tabContainer{margin-bottom: 25px;}
 .careerBox .tabContentBox .tabContent{padding: 24px 0; display: block;}
-.careerBox .tabContentBox .tabContent .box{display: flex; flex-wrap: wrap;}
+.careerBox .tabContentBox .tabContent .box{padding: 0;}
 .careerBox .tabContentBox .tabContent .box .button{width: 25%;}
 
+@media (max-width: 1199px){
 
-
-
+  .careerBox .tabContentBox .tabContent .box .button{width: auto; text-align: center;}
+  
+}
 
 /* 초기화버튼 */
 .resetBtnBox{margin: 25px 0; display: flex; justify-content: flex-end;}
