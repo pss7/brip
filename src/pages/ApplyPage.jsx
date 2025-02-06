@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CalendarIcon from "../assets/images/sub/Calendar_Icon.svg";

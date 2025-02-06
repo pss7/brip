@@ -26,7 +26,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "aos/dist/aos.css";
 import Card from "../components/Card";
 
-import "../assets/css/style.css";
+import "../styles/style.css";
 import BgCard from "../components/BgCard";
 
 export default function MainPage() {

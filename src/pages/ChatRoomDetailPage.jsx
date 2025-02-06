@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { chatRoomsData } from "../data/chatRoomsData";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import Container from "../components/Container";
 import Message from "../components/Message";
 import { UserContext } from "../context/UserProvider";

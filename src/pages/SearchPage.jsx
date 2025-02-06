@@ -1,8 +1,8 @@
 import Card from "../components/Card";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import style from "./SearchPage.module.css";
-import "../assets/css/style.css";
+import "../styles/style.css";
 import Guide02 from "../assets/images/main/Guide_Icon02.svg";
 import Guide03 from "../assets/images/main/Guide_Icon03.svg";
 import Guide04 from "../assets/images/main/Guide_Icon04.svg";

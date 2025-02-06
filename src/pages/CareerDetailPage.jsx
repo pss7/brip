@@ -1,6 +1,6 @@
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import { Link } from "react-router-dom";
 import Career_Img01 from "../assets/images/sub/Career_Img01.jpg";
 import Story_Img from "../assets/images/sub/Story_Img.png";

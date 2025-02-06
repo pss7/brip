@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import Card from "../components/Card";
 import { announcementData } from "../data/announcementData";
 import { useState } from "react";

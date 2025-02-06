@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import Button from "../components/Button";
 import style from "./InquiryRegisterPage.module.css";
 import Select from "../components/Select";

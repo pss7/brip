@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import { chatRoomsData } from "../data/chatRoomsData";
 import { QAData } from "../data/QAData";
 import { Link } from "react-router-dom";

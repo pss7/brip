@@ -34,7 +34,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
-/* 공통-탭메뉴 */
+/* 공통-탭메뉴 
 .comTabMenu .list{ display: flex; justify-content: center; border-radius: 20px;}
 .comTabMenu .list li{width: 25%;}
 .comTabMenu .list li a{padding: 0 5px; margin-right: -1px; background-color: #FAFAFC;}
@@ -50,14 +50,61 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
   .comTabMenu .list li:last-child a{border-radius: 0 15px 0 0;}
 
 }
+*/
 
-@media (max-width: 767px){
 
-  .comTabMenu .list li a{height: 45px; font-size: 14px;}
-  .comTabMenu .list li:first-child a{border-radius: 10px 0 0 0;}
-  .comTabMenu .list li:last-child a{border-radius: 0 10px 0 0;}
 
-}
+
+.tabContainer{border-radius: 20px; border: 1px solid #D9D9D9; overflow: hidden;}
+.tabBox{display: flex; justify-content: center; }
+.tabBox .box{width: 25%;  border: 1px solid #D9D9D9; border-width: 0 1px 1px 0;}
+.tabBox .box:last-child{border-right: 0;}
+.tabBox .box .tabBtn{width: 100%; padding: 0 5px; display: flex; align-items: center; justify-content: center; height: 73px;  text-align: center; font-weight: 600; font-size: 20px; color: #969696;  background-color: #FAFAFC;}
+.tabBox .box .tabBtn.active{background-color: #000; color: #fff; border: 0;}
+.tabContentBox{margin-top: -1px; }
+.tabContentBox .tabContent{padding: 12px 10px 0 0; display: flex;  align-items: flex-start; position: relative; height: 308px; }
+.tabContentBox .regionList{flex-shrink: 0; margin-top: -12px; padding-top: 12px; width: 25%; height: 100%; overflow-y: auto;}
+.tabContentBox .subRegionList{display: flex; flex-wrap: wrap; padding: 0 20px 12px 0;}
+.tabContentBox .subRegionList .subRegionBox{width: 33.33%;}
+.tabContentBox .button{padding: 12px 10px 12px 36px; display: block; color: #343330; font-weight: 500; line-height: 1.8; text-align: left;}
+.tabContentBox .button.active{font-weight: 600; color: #4334E0;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.employmentList > li{padding: 42px 0 42px 0; position: relative; display: flex; align-items: center; border: 1px solid #D9D9D9; border-width: 1px 0; margin-bottom: -1px;}
+.employmentList > li .companyBox{min-width: 210px; display: flex; flex-shrink: 0; margin-right: 79px;}
+.employmentList > li .titleBox{ display: flex; flex-direction: column; gap: 17px 0;}
+.employmentList > li .titleBox h4{font-size: 20px; color: #000; font-weight: 600;}
+.employmentList .infoList{display: flex; gap: 0 30px;}
+.employmentList .infoList li{ position: relative; color: #5f616d;}
+.employmentList .infoList li::after{content: ''; position: absolute; top: 5px;
+  right: -16px; width: 1px; height: 17px; background-color: #5F616D; }
+.employmentList .infoList li:last-child::after{display: none;}
+
+
+
+
+
+
+
+
 
 /* 로드맵 */
 .roadMapBox .roadMapContent{position: relative; padding: 50px 70px 55px; max-width: 583px; min-height: 800px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
@@ -374,27 +421,20 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 /* 커리어 */
 .careerBox{margin-top: -43px;}
 .careerBox .container{max-width: 1036px;}
-.careerBox .comTabContent{position: relative;}
-.careerBox .comTabContent .list{display: flex; flex-wrap: wrap; width: 100%;}
-.careerBox .comTabContent .list li{width: 25%;}
-.careerBox .tabBox{margin-bottom: 65px; position: relative;}
+.careerBox .tabContainer{margin-bottom: 40px;}
+.careerBox .tabContentBox .tabContent{padding: 24px 0; display: block;}
+.careerBox .tabContentBox .tabContent .box{display: flex; flex-wrap: wrap;}
+.careerBox .tabContentBox .tabContent .box .button{width: 25%;}
 
-@media (max-width:767px){
 
-  .careerBox .comTabContent .list li{width: 33.33%;}
 
-}
 
-@media (max-width: 414px){
-
-  .careerBox .comTabContent .list li{width: 50%;}
-
-}
 
 /* 초기화버튼 */
-.resetBtn{position: absolute; right: 0; bottom: -30px; line-height: 1;}
+.resetBtnBox{margin: 25px 0; display: flex; justify-content: flex-end;}
+.resetBtn{line-height: 1;}
 .resetBtn span{position: relative; padding-left: 35px; color: #7E7D7D;}
-.resetBtn span::before{content: ''; width: 17px; height: 17px; position: absolute; top: 3px; left:0; background: url(../images/sub/Reset_Icon.svg)no-repeat center; background-size: cover;}
+.resetBtn span::before{content: ''; width: 17px; height: 17px; position: absolute; top: 3px; left:0; background: url(../assets/images/sub/Reset_Icon.svg)no-repeat center; background-size: cover;}
 
 @media (max-width: 1199px){
 

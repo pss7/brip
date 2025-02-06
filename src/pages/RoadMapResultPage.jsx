@@ -1,6 +1,6 @@
 import Container from "../components/Container";
-import Main from "../components/section/Main";
-import "../assets/css/style.css"
+import Main from "../components/layout/Main";
+import "../styles/style.css";
 import Button from "../components/Button";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import ResultImg from "../assets/images/sub/Result_Img.png";

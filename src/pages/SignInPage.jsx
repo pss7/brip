@@ -1,6 +1,6 @@
 import Container from "../components/Container";
-import Main from "../components/section/Main";
-import "../assets/css/login.css";
+import Main from "../components/layout/Main";
+import "../styles/login.css";
 import LoginImg from "../assets/images/login/Login_Img.svg";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";

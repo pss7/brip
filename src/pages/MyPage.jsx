@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import kakao from "../assets/images/login/Kakao_Img.svg";
 import naver from "../assets/images/login/Naver_Img.svg";
 import style from "./MyPage.module.css";

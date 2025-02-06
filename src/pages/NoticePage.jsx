@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import Table from "../components/Table";
 import { noticeData } from "../data/noticeData";
 import { useState } from "react";

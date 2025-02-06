@@ -1,6 +1,6 @@
 import Container from "../components/Container";
-import Main from "../components/section/Main";
-import "../assets/css/login.css";
+import Main from "../components/layout/Main";
+import "../styles/login.css";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import Button from "../components/Button";
 import style from "./PwFindPage.module.css";

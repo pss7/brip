@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import Button from "../components/Button";
 import { noticeData } from "../data/noticeData";
 import style from "./NoticeDetailPage.module.css";

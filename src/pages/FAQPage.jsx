@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import { faqData } from "../data/faqData";
 import { useState } from "react";
 import style from "./FAQPage.module.css";
@@ -111,7 +111,7 @@ export default function FAQPage() {
 
                 <div className={style.faqContentBox}>
                   {
-                    filteredData.length === 0 ? "검색결과가 없습니다." : (
+                    Object.keys(filteredData).length === 0 ? "검색결과가 없습니다." : (
                       Object.keys(filteredData).map((category) => (
                         <div key={category}>
                           <h3 className={style.categoryTitle}>{category}</h3>

@@ -6,7 +6,7 @@ import style from "./InquiryPage.module.css";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import ConfirmPopup from "../components/ConfirmPopup";
 
 export default function InquiryPage() {

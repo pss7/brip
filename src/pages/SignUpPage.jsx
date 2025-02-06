@@ -1,5 +1,5 @@
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowPrevButton from "../components/ArrowPrevButton";
 import Button from "../components/Button";

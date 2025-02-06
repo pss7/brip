@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";  // useState와 useEffect를 임포트
 import Container from "../components/Container";
-import Main from "../components/section/Main";
+import Main from "../components/layout/Main";
 import { QAData } from "../data/QAData";
 import Message from "../components/Message";
 import { UserContext } from "../context/UserProvider";

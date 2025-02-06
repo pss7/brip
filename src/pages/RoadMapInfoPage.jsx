@@ -1,6 +1,6 @@
 import Container from "../components/Container";
-import Main from "../components/section/Main";
-import "../assets/css/style.css"
+import Main from "../components/layout/Main";
+import "../styles/style.css";
 import Button from "../components/Button";
 import RoadMapImg from "../assets/images/sub/RoadMap_Img.png";
 import ArrowPrevButton from "../components/ArrowPrevButton";
