@@ -62,14 +62,29 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .tabBox .box .tabBtn{width: 100%; padding: 0 5px; display: flex; align-items: center; justify-content: center; height: 73px;  text-align: center; font-weight: 600; font-size: 20px; color: #969696;  background-color: #FAFAFC;}
 .tabBox .box .tabBtn.active{background-color: #000; color: #fff; border: 0;}
 .tabContentBox{margin-top: -1px; }
-.tabContentBox .tabContent{padding: 12px 10px 0 0; display: flex;  align-items: flex-start; position: relative; height: 308px; }
+.tabContentBox .tabContent{padding: 12px 10px 0 0; display: flex; align-items: flex-start; position: relative; height: 308px; }
 .tabContentBox .regionList{flex-shrink: 0; margin-top: -12px; padding-top: 12px; width: 25%; height: 100%; overflow-y: auto;}
+.tabContentBox .regionList .button{width: 100%;}
 .tabContentBox .subRegionList{display: flex; flex-wrap: wrap; padding: 0 20px 12px 0;}
 .tabContentBox .subRegionList .subRegionBox{width: 33.33%;}
 .tabContentBox .button{padding: 12px 10px 12px 36px; display: block; color: #343330; font-weight: 500; line-height: 1.8; text-align: left;}
 .tabContentBox .button.active{font-weight: 600; color: #4334E0;}
 
+@media (max-width: 1199px){
 
+  .tabBox .box .tabBtn{height: 50px; font-size: 16px;}
+  .tabContentBox .tabContent{padding: 15px 10px;}
+  .tabContentBox .tabContent{flex-wrap: wrap;}
+  .tabContentBox .button{padding: 10px 10px 10px 30px;}
+  .tabContentBox .subRegionList{width: 75%;}
+  
+}
+
+@media (max-width: 767px){
+
+    .tabContentBox .button{padding: 10px 10px 10px 20px; font-size: 14px;}
+
+}
 
 
 
@@ -97,6 +112,15 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .employmentList .infoList li::after{content: ''; position: absolute; top: 5px;
   right: -16px; width: 1px; height: 17px; background-color: #5F616D; }
 .employmentList .infoList li:last-child::after{display: none;}
+
+@media(max-width: 1199px){
+
+  .employmentList > li{flex-direction: column; gap: 10px 0;}
+  .employmentList > li .companyBox{min-width: auto; margin: 0;}
+  .employmentList > li .titleBox h4{text-align: center;}
+  .employmentList .infoList{flex-wrap: wrap;}
+
+}
 
 
 

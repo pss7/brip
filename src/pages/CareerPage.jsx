@@ -15,10 +15,10 @@ export default function CareerPage() {
     setActiveTab(tab);
   };
 
- // 탭 클릭 시 해당 산업의 직무 목록을 필터링
- const selectedIndustryData = shippingIndustryData.find(
-  (industry) => industry.id === activeTab
-);
+  // 탭 클릭 시 해당 산업의 직무 목록을 필터링
+  const selectedIndustryData = shippingIndustryData.find(
+    (industry) => industry.id === activeTab
+  );
 
   return (
     <Main className="subWrap">
@@ -66,43 +66,40 @@ export default function CareerPage() {
                   </div>
                 )}
                 {activeTab === "항만산업" && (
-                  <ul className="list">
-                    <li>
-                      <Link to="/careerdetail">하역 전문가</Link>
-                    </li>
-                    <li>
-                      <Link to="/careerdetail">항만 운영 관리자</Link>
-                    </li>
-                    <li>
-                      <Link to="/careerdetail">선박 정비 전문가</Link>
-                    </li>
-                  </ul>
+                  <div className="tabContent">
+                    <div className="box">
+                      {/* 선택된 산업의 직무 리스트만 출력 */}
+                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
+                        <button key={job.id} className="button">
+                          {job.name} {/* 직무 이름 */}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
                 {activeTab === "항만연관산업" && (
-                  <ul className="list">
-                    <li>
-                      <Link to="/careerdetail">선용품 공급업</Link>
-                    </li>
-                    <li>
-                      <Link to="/careerdetail">물류 계획 전문가</Link>
-                    </li>
-                    <li>
-                      <Link to="/careerdetail">항만 보안 전문가</Link>
-                    </li>
-                  </ul>
+                  <div className="tabContent">
+                    <div className="box">
+                      {/* 선택된 산업의 직무 리스트만 출력 */}
+                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
+                        <button key={job.id} className="button">
+                          {job.name} {/* 직무 이름 */}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
                 {activeTab === "물류산업" && (
-                  <ul className="list">
-                    <li>
-                      <Link to="/careerdetail">SCM(공급망 관리) 전문가</Link>
-                    </li>
-                    <li>
-                      <Link to="/careerdetail">물류 경로 최적화 전문가</Link>
-                    </li>
-                    <li>
-                      <Link to="/careerdetail">물류 IT 시스템 전문가</Link>
-                    </li>
-                  </ul>
+                  <div className="tabContent">
+                    <div className="box">
+                      {/* 선택된 산업의 직무 리스트만 출력 */}
+                      {selectedIndustryData && selectedIndustryData.jobs.map((job) => (
+                        <button key={job.id} className="button">
+                          {job.name} {/* 직무 이름 */}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
 
