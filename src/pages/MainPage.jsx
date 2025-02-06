@@ -33,7 +33,6 @@ export default function MainPage() {
 
   const [user, setUser] = useState(null);
   const [announcements, setAnnouncements] = useState(announcementData);
-  const [educations, serEducations] = useState(educationData);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -179,7 +178,7 @@ export default function MainPage() {
           <div className={style.linkContent}>
             <ul className={style.linkList}>
               <li>
-                <Link to="/career">
+                <Link to="/careerexploration">
                   <div className={style.imgBox}>
                     <img src={JobSeeker} alt="" />
                   </div>
@@ -387,7 +386,7 @@ export default function MainPage() {
 
             <div className={style.cardList}>
               <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                {educations[activeTab]?.map((data, index) => (
+                {educationData[activeTab]?.map((data, index) => (
                   <div key={index} data-aos="fade-up">
                     <Card
                       text={activeTab}

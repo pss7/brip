@@ -1,11 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import Container from "../Container"
 import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import Alarm from "../Alarm";
-import { UserContext } from "../../context/UserProvider";
 
 export default function Header() {
 

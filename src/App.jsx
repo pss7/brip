@@ -30,6 +30,7 @@ import InquiryPage from './pages/InquiryPage';
 import InquiryRegisterPage from './pages/InquiryRegisterPage';
 import InquiryDetailPage from './pages/InquiryDetailPage';
 import { PopupProvider } from './context/PopupProvider';
+import CareerExplorationPage from './pages/CareerExplorationPage';
 
 function App() {
 
@@ -66,7 +67,8 @@ function App() {
               {/* 커리어 */}
               <Route path="career" element={<CareerPage />} />
               <Route path="careerdetail" element={<CareerDetailPage />} />
-
+              <Route path="careerexploration" element={<CareerExplorationPage />} />
+     
               {/* 커뮤니티 */}
               <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
               <Route path="/qa/:qaId" element={<QADetailPage />} />
