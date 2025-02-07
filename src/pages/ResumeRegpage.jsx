@@ -1,4 +1,3 @@
-// ResumeRegpage.js
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -10,7 +9,7 @@ import Input from "../components/Input";
 import FileImg from "../assets/images/sub/file_img.svg";
 import PlusIcon from "../assets/images/sub/plus_icon02.svg";
 import ArrowPrevButton from "../components/ArrowPrevButton";
-import { useResume } from "../context/ResumeProvider";  // useResume 추가
+import { useResume } from "../context/ResumeProvider";  // Assuming this hook handles resume data
 
 const ResumeField = ({ label, value, readOnly, onChange, placeholder }) => (
   <div className={`${style.regBox} ${value ? "" : style.error}`}>
@@ -26,8 +25,8 @@ const ResumeField = ({ label, value, readOnly, onChange, placeholder }) => (
 
 export default function ResumeRegpage() {
   const { user } = useContext(UserContext);
-  const { addResume, resumeList } = useResume();  // useResume 훅에서 addResume, resumeList 가져오기
-  const { id } = useParams();  // URL에서 이력서 ID 가져오기
+  const { addResume, resumeList, setResumeList } = useResume();  // Context hook to add and manage resumes
+  const { id } = useParams();  // Get resume ID from URL
   const navigate = useNavigate();
 
   const [resumeTitle, setResumeTitle] = useState("");
@@ -111,12 +110,12 @@ export default function ResumeRegpage() {
     if (id) {
       // 수정 시, 해당 이력서 업데이트
       const updatedResumes = resumeList.map((resume) =>
-        resume.id === parseInt(id) ? newResume : resume
+        resume.id === parseInt(id) ? { ...resume, name: resumeTitle } : resume
       );
       setResumeList(updatedResumes); // 상태 업데이트
     } else {
       // 새 이력서 추가
-      addResume(newResume);
+      addResume(newResume);  // 이 함수를 통해 부모에서 이력서를 추가하거나 수정
     }
 
     alert("이력서가 저장되었습니다.");
