@@ -4,8 +4,15 @@ import { mockResumes } from '../data/mockResumes'; // mock 데이터
 
 const ResumeContext = createContext();
 
+// useResume.js (혹은 해당 hook의 파일)
 export const useResume = () => {
-  return useContext(ResumeContext);
+  const [resumeList, setResumeList] = useState([]);
+
+  const addResume = (newResume) => {
+    setResumeList((prevList) => [...prevList, newResume]);  // 새로운 이력서 추가
+  };
+
+  return { resumeList, setResumeList, addResume };
 };
 
 export const ResumeProvider = ({ children }) => {

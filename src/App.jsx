@@ -34,6 +34,7 @@ import CareerExplorationPage from './pages/CareerExplorationPage';
 import CareerExplorationDetailPage from './pages/CareerExplorationDetailPage';
 import ResumeRegpage from './pages/ResumeRegpage';
 import { ResumeProvider } from './context/ResumeProvider';
+import ResumeUpdatepage from './pages/ResumeUpdatepage';
 
 function App() {
 
@@ -114,9 +115,14 @@ function App() {
                     <ResumePage />
                   </PrivateRoute>
                 } />
-                <Route path="/resumereg/:resumeId" element={
+                <Route path="/resumereg" element={
                   <PrivateRoute>
                     <ResumeRegpage />
+                  </PrivateRoute>
+                } />
+                <Route path="/resumeupdate/:id" element={
+                  <PrivateRoute>
+                    <ResumeUpdatepage />
                   </PrivateRoute>
                 } />
                 <Route path="/apply" element={

@@ -1,5 +1,3 @@
-// ResumeRegpage.js
-
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -124,8 +122,6 @@ export default function ResumeRegpage() {
     navigate("/resume");
   };
 
-
-
   return (
     <Main className="subWrap bg">
       <div className="mypageBox">
@@ -157,11 +153,11 @@ export default function ResumeRegpage() {
                     id="fileInput"
                   />
                   <label htmlFor="fileInput" className={style.fileLabel}>
-                    <img src={FileImg} alt="" />
+                    <img src={FileImg} alt="파일 업로드 아이콘" />
                   </label>
                   {imagePreview && <img src={imagePreview} alt="preview" className={style.imagePreview} />}
                   {imageError && <div className={style.errorMessage}>{imageError}</div>}
-                  <img src={PlusIcon} alt="" />
+                  <img src={PlusIcon} alt="파일 추가 아이콘" />
                 </div>
 
                 <ResumeField
