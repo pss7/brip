@@ -20,11 +20,12 @@ export default function CareerPage() {
     variableWidth: true,
     dots: false,  // 페이지네이션 표시 여부
     infinite: true,  // 무한 루프 여부
-    speed: 500,  // 슬라이드 전환 속도 (ms)
     slidesToShow: 1,  // 한 번에 보여줄 슬라이드 수
     slidesToScroll: 1,  // 한 번에 스크롤할 슬라이드 수
     centerMode: true,
     centerPadding: 0,
+    autoPlay: true,  // 자동으로 슬라이드 이동
+    autoplaySpeed: 2000,  // 2초마다 슬라이드 이동
     responsive: [
       {
         breakpoint: 767, // 화면 너비가 767px 이하일 때
@@ -47,6 +48,15 @@ export default function CareerPage() {
 
         <div className={style.careerSlideBox}>
           <Slider {...settings}>
+            <Link to="#" className={style.slide}>
+              <img src={CareerImg} alt="" />
+            </Link>
+            <Link to="#" className={style.slide}>
+              <img src={CareerImg} alt="" />
+            </Link>
+            <Link to="#" className={style.slide}>
+              <img src={CareerImg} alt="" />
+            </Link>
             <Link to="#" className={style.slide}>
               <img src={CareerImg} alt="" />
             </Link>
