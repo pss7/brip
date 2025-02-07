@@ -5,10 +5,14 @@ import Main from "../components/layout/Main";
 import { QAData } from "../data/QAData";
 import Message from "../components/Message";
 import { UserContext } from "../context/UserProvider";
+import { useContext } from "react";  // useContext를 임포트
+import ProfileImg from "../assets/images/common/Profile_Img.svg";
+import WritePopup from "../components/WritePopup";
+import AddPopup from "../components/AddPopup";
 
 export default function QADetailPage() {
 
-    const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
   const formatDate = (dateString) => {
@@ -24,6 +28,9 @@ export default function QADetailPage() {
   const [qa, setQA] = useState(null);  // qa 객체를 상태로 설정
   const [reports, setReports] = useState(0); // 신고 횟수를 상태로 관리
   const [newMessage, setNewMessage] = useState("");
+
+  const [addPopupShowPopup, setAddPopupShowPopup] = useState(false); // 팝업 상태 관리
+  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
 
   // 해당 Q&A 데이터 가져오기
   useEffect(() => {
@@ -67,6 +74,20 @@ export default function QADetailPage() {
     }
   };
 
+  function openAddPopup() {
+    setAddPopupShowPopup(true)
+  };
+
+  function openWritePopup() {
+    setShowPopup(true);
+  }
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setAddPopupShowPopup(false)
+  };
+
+
   return (
     <Main className="subWrap">
       <div className="communityBox communityQABox">
@@ -76,7 +97,7 @@ export default function QADetailPage() {
               <aside>
                 <div className="infoBox">
                   <div className="imgBox">
-                    <img src={user.profileImg} alt="" />
+                    <img src={ProfileImg} alt="" />
                   </div>
                   <div className="textBox">
                     <p className="nickname">{user.nickname}</p>
@@ -84,10 +105,16 @@ export default function QADetailPage() {
                   </div>
                 </div>
                 <div className="addBtnBox">
-                  <button className="addBtn">
+                  <button
+                    className="addBtn"
+                    onClick={openAddPopup}
+                  >
                     <span>채팅방 생성</span>
                   </button>
-                  <button className="addBtn communityWrite">
+                  <button
+                    className="addBtn communityWrite"
+                    onClick={openWritePopup}
+                  >
                     <span>커뮤니티 글쓰기</span>
                   </button>
                 </div>
@@ -154,6 +181,14 @@ export default function QADetailPage() {
           </div>
         </Container>
       </div>
+
+      {
+        showPopup && <WritePopup closePopup={closePopup} />
+      }
+      {
+        addPopupShowPopup && <AddPopup closePopup={closePopup} />
+      }
+
     </Main>
   );
 }
