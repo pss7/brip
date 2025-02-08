@@ -252,10 +252,10 @@ export default function EmploymentPage() {
               </div>
 
               {/* 필터링된 채용 공고 리스트 출력 */}
-              <ul className="employmentList">
+              <div className="employmentList">
                 {jobPostingsToDisplay.length > 0 ? (
                   jobPostingsToDisplay.map((posting) => (
-                    <li key={posting.id}>
+                    <div className="box" key={posting.id}>
                       <div className="companyBox">{posting.company}</div>
                       <div className="titleBox">
                         <Link to="/employmentdetail">
@@ -276,12 +276,12 @@ export default function EmploymentPage() {
                           <button>{posting.isApplied ? "지원완료" : "즉시지원"}</button>
                         </>
                       )}
-                    </li>
+                    </div>
                   ))
                 ) : (
-                  <li>검색된 채용공고가 없습니다.</li>
+                  <p>검색된 채용공고가 없습니다.</p>
                 )}
-              </ul>
+              </div>
             </div>
           </Container>
         </div>

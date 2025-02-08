@@ -88,10 +88,10 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 
 
-.employmentList > li{padding: 42px 0 42px 0; position: relative; display: flex; align-items: center; border: 1px solid #D9D9D9; border-width: 1px 0; margin-bottom: -1px;}
-.employmentList > li .companyBox{min-width: 210px; display: flex; flex-shrink: 0; margin-right: 79px;}
-.employmentList > li .titleBox{ display: flex; flex-direction: column; gap: 17px 0;}
-.employmentList > li .titleBox h4{font-size: 20px; color: #000; font-weight: 600;}
+.employmentList .box{padding: 42px 0 42px 0; position: relative; display: flex; align-items: center; border: 1px solid #D9D9D9; border-width: 1px 0; margin-bottom: -1px;}
+.employmentList .box .companyBox{min-width: 210px; display: flex; flex-shrink: 0; margin-right: 79px;}
+.employmentList .box .titleBox{ display: flex; flex-direction: column; gap: 17px 0;}
+.employmentList .box .titleBox h4{font-size: 20px; color: #000; font-weight: 600;}
 .employmentList .infoList{display: flex; gap: 0 30px;}
 .employmentList .infoList li{ position: relative; color: #5f616d;}
 .employmentList .infoList li::after{content: ''; position: absolute; top: 5px;
@@ -100,9 +100,9 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 @media(max-width: 1199px){
 
-  .employmentList > li{flex-direction: column; gap: 10px 0;}
-  .employmentList > li .companyBox{min-width: auto; margin: 0;}
-  .employmentList > li .titleBox h4{text-align: center;}
+  .employmentList .box{flex-direction: column; gap: 10px 0;}
+  .employmentList .box .companyBox{min-width: auto; margin: 0;}
+  .employmentList .box .titleBox h4{text-align: center;}
   .employmentList .infoList{flex-wrap: wrap;}
 
 }
