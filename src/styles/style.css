@@ -71,23 +71,6 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .employmentList .box{padding: 42px 0 42px 0; position: relative; display: flex; align-items: center; border: 1px solid #D9D9D9; border-width: 1px 0; margin-bottom: -1px;}
 .employmentList .box .companyBox{min-width: 210px; display: flex; flex-shrink: 0; margin-right: 79px;}
 .employmentList .box .titleBox{ display: flex; flex-direction: column; gap: 17px 0;}
@@ -106,14 +89,6 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
   .employmentList .infoList{flex-wrap: wrap;}
 
 }
-
-
-
-
-
-
-
-
 
 /* 로드맵 */
 .roadMapBox .roadMapContent{position: relative; padding: 50px 70px 55px; max-width: 583px; min-height: 800px; margin: 0 auto; background-color: #fff; border-radius: 20px;}

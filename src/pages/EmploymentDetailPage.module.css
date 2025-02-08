@@ -41,17 +41,39 @@
 .applyBox .selectBox .select{width: 100%; padding-left: 16px; height: 48px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; font-size: 14px; -webkit-appearance:none;  -moz-appearance:none; appearance:none; background: url(../assets/images/login/Select_Arrow_Icon.svg)no-repeat 93% center; background-size: 17px 9px; cursor: pointer;}
 .applyBox .resumeList li{margin-bottom: 37px;}
 .applyBox .resumeList li:last-child{margin-bottom: 47px;}
-.applyBox .resumeList li a{position: relative; padding: 15px 10px 17px 73px; display: block; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); border-radius: 5px;}
-.applyBox .resumeList li a::before{content: ''; position: absolute; top:15px; left:21px; width: 22px; height: 22px; border-radius: 50%; border: 1px solid #CDCFD0;}
-.applyBox .resumeList li a.active::before{content: ''; position: absolute; top:15px; left:21px; width: 22px; height: 22px; background: url(../assets/images/sub/Radio_Button.svg)no-repeat center; border: 0;}
-.applyBox .resumeList li a .resumeInfoList{margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px 11px;}
-.applyBox .resumeList li a .resumeInfoList span{display: block; padding: 3px 6px; border-radius: 50px; font-size: 10px;}
-.applyBox .resumeList li a .resumeInfoList span.basic{background-color: rgba(67, 52, 224, 0.1); color: #4334E0;}
-.applyBox .resumeList li a .resumeInfoList span.certification{
+
+
+
+.applyBox .resumeList li .resumeBox{position: relative; padding: 15px 10px 17px 73px; display: block; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); border-radius: 5px;}
+
+.applyBox .resumeList li .resumeBox .resumeInfoList{display: flex; flex-wrap: wrap; gap: 6px 11px;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span{display: block; padding: 3px 6px; border-radius: 50px; font-size: 10px;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span.basic{background-color: rgba(67, 52, 224, 0.1); color: #4334E0;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span.certification{
 display: flex; align-items: center; gap: 0 2px; position: relative; background-color: rgba(39, 109, 32, 0.1); color: #276D20;}
-.applyBox .resumeList li a .resumeInfoList span.certification::after{content: ''; width: 11px; height: 11px; background: url(../assets/images/sub/Certification_Icon.svg)no-repeat center;}
-.applyBox .resumeList li a  h5{margin-bottom: 5px; color: #000; font-weight: 600; font-size: 16px;}
-.applyBox .resumeList li a .date{font-size: 12px; color: #5F616D;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span.certification::after{content: ''; width: 11px; height: 11px; background: url(../assets/images/sub/Certification_Icon.svg)no-repeat center;}
+
+
+
+.applyBox .resumeList li .resumeBox .titleBox{padding-top: 14px; margin-bottom: 5px;}
+.applyBox .resumeList li .resumeBox .titleBox h5 label{color: #000; font-weight: 600; font-size: 16px; cursor: pointer;}
+.applyBox .resumeList li .resumeBox .titleBox input + label::before{content: ''; position: absolute; top:16px; left:21px; width: 22px; height: 22px; border: 1px solid #CDCFD0; background-color: #fff; border-radius: 50px;}
+.applyBox .resumeList li .resumeBox .titleBox input:checked + label::before{background: url(../assets/images/sub/check_icon.png)no-repeat center; border: 0;}
+
+
+
+.applyBox .resumeList li .resumeBox .date{font-size: 12px; color: #5F616D;}
+.applyBox .resumeList li .resumeBox .viewBtn{position: absolute; right: 30px; top:52px; width: 39px; height: 24px; line-height: 24px; border-radius: 4px; background-color: #000; color: #fff; font-weight: 700; font-size: 12px; text-align: center;}
+
+
+
+
+
+
+
+
+
+
 .applyBox .writeBtn{display: block; margin: 0 auto 53px; max-width: 240px; width: 100%; height: 36px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); text-align: center;  border: 1px solid #E9E9E9; border-radius: 4px;}
 .applyBox .writeBtn span{display: flex; justify-content: center; align-items:center; gap: 0 9px; font-size: 14px; color: #313131;}
 .applyBox .writeBtn span::before{content: ''; width: 11px; height: 10px; background: url(../assets/images/sub/Add_Icon.svg)no-repeat center;}

@@ -67,7 +67,11 @@ export default function ResumePage() {
                           기본이력서
                         </span>
                       )}
-                      <h5>{data.name}</h5>
+                      <h5>
+                        <Link to="/resumereg">
+                          {data.name}
+                        </Link>
+                      </h5>
                       <span className={style.date}>{data.date}</span>
                       <ViewButton
                         className={`${style.viewBox}`}

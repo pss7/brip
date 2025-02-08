@@ -17,7 +17,7 @@ export default function EmploymentDetailPage() {
   return (
     <Main className="subWrap">
 
-      <div className={`employmentBox ${style.employmentDetailBox}` }>
+      <div className={`employmentBox ${style.employmentDetailBox}`}>
         <Container className="container">
           <div className="employmentContent">
 
@@ -165,36 +165,66 @@ export default function EmploymentDetailPage() {
 
                       <ul className={style.resumeList}>
                         <li>
-                          <Link to="#">
-                            <div className={style.resumeInfoList}>
-                              <span className="basic">기본이력서</span>
-                              <span className={style.certification}>경력인증</span>
-                            </div>
-
-                            <div className={style.titleBox}>
-                              <h5>홍길동의 이력서</h5>
-                            </div>
-
-                            <span className={style.date}>
-                              2024-12-12
-                            </span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#">
+                          <div className={style.resumeBox}>
                             <div className={style.resumeInfoList}>
                               <span className={style.basic}>기본이력서</span>
-                              <span className={style.certification}>경력인증</span>
+                              {/* <span className={style.certification}>경력인증</span> */}
                             </div>
 
                             <div className={style.titleBox}>
-                              <h5>홍길동의 이력서</h5>
+                              <h5>
+                                <input
+                                  type="radio"
+                                  name="resumeRadio"
+                                  id="resumeRadio01"
+                                  className="blind"
+                                />
+                                <label htmlFor="resumeRadio01">
+                                  홍길동의 이력서
+                                </label>
+                              </h5>
                             </div>
 
                             <span className={style.date}>
                               2024-12-12
                             </span>
-                          </Link>
+
+                            <Link
+                              to="/resumereg"
+                              className={style.viewBtn}>
+                              보기
+                            </Link>
+
+                          </div>
+                        </li>
+                        <li>
+                          <div className={style.resumeBox}>
+
+                            <div className={style.titleBox}>
+                              <h5>
+                                <input
+                                  type="radio"
+                                  name="resumeRadio"
+                                  id="resumeRadio02"
+                                  className="blind"
+                                />
+                                <label htmlFor="resumeRadio02">
+                                  홍길동의 이력서2
+                                </label>
+                              </h5>
+                            </div>
+
+                            <span className={style.date}>
+                              2024-12-12
+                            </span>
+
+                            <Link
+                              to="/resumereg"
+                              className={style.viewBtn}>
+                              보기
+                            </Link>
+
+                          </div>
                         </li>
                       </ul>
 
