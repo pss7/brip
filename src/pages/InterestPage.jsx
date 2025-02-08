@@ -55,7 +55,7 @@ export default function InterestPage() {
                     announcements.slice(0, 6).map((data) => {
                       return (
                         <Card
-                          href="/employment"
+                          href="/employmentdetail"
                           key={data.id}
                           className="cardType"
                           text={data.text}

@@ -19,12 +19,16 @@ export default function EmploymentPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
   const [searchTerm, setSearchTerm] = useState(""); // 직무 검색어 상태
 
-  // 탭 클릭 시 필터 변경
+  // 탭 클릭 시 필터 변경 (지역 상태 유지)
   const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    setActiveRegion(null); // 탭 변경 시 대지역 초기화
-    setActiveSubRegions([]); // 소지역 초기화
+    if (tab !== "지역별") {
+      setActiveTab(tab); // 다른 탭 선택 시 activeTab만 변경
+    } else {
+      setActiveTab(tab); // "지역별" 탭으로 돌아오면 activeTab만 변경
+      // activeRegion과 activeSubRegions는 초기화하지 않음
+    }
   };
+
 
   // 대지역 클릭 시 해당 소지역 표시
   const handleRegionClick = (region) => {
