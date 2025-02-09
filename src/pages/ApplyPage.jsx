@@ -161,7 +161,7 @@ export default function ApplyPage() {
                 <ul className={style.applyList}>
                   {filteredList.map((item, index) => (
                     <li key={index}>
-                      <Link to="#" className={style.topBox}>
+                      <Link to="/employmentdetail" className={style.topBox}>
                         <span className={style.receipt}>접수마감</span>
                         <div className={style.textBox}>
                           <em>{item.companyName}</em>
