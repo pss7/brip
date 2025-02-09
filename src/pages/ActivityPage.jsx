@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import Main from "../components/layout/Main";
 import style from "./ActivityPage.module.css";
-import ViewButton from "../components/ViewButton";
 import { activityData } from "../data/activityData";
 import { useState } from "react";
+import AddPopup from "../components/AddPopup"; // AddPopup 컴포넌트 임포트
 
 export default function ActivityPage() {
   const [activities, setActivities] = useState(activityData);
+  const [isPopupVisible, setPopupVisible] = useState(false); // 팝업 상태 관리
+  const [selectedActivity, setSelectedActivity] = useState(null); // 수정할 활동 저장
 
+  // 좋아요 클릭 시 핸들러
   function handleLikeClick(id) {
-    // Log the ID and updated activities for debugging
     console.log("Like clicked for activity ID:", id);
     setActivities((prevActivities) =>
       prevActivities.map((activity) =>
@@ -21,8 +23,8 @@ export default function ActivityPage() {
     );
   }
 
+  // 토글 버튼 클릭 시 핸들러
   function handleToggle(id) {
-    // Log the ID and toggle action
     console.log("Toggle clicked for activity ID:", id);
     setActivities((prevActivities) =>
       prevActivities.map((activity) =>
@@ -31,6 +33,28 @@ export default function ActivityPage() {
           : activity
       )
     );
+  }
+
+  // 삭제 버튼 클릭 시 핸들러
+  function handleDelete(id) {
+    console.log("Deleting activity ID:", id);
+    setActivities((prevActivities) =>
+      prevActivities.filter((activity) => activity.id !== id)
+    );
+  }
+
+  // 수정 버튼 클릭 시 팝업 띄우기
+  function handleEdit(id) {
+    console.log("Editing activity ID:", id);
+    const activityToEdit = activities.find((activity) => activity.id === id);
+    setSelectedActivity(activityToEdit); // 수정할 활동 정보 저장
+    setPopupVisible(true); // 팝업 표시
+  }
+
+  // 팝업 닫기
+  function closePopup() {
+    setPopupVisible(false); // 팝업 숨기기
+    setSelectedActivity(null); // 선택된 활동 초기화
   }
 
   return (
@@ -92,11 +116,33 @@ export default function ActivityPage() {
                         </div>
                       </div>
 
-                      <ViewButton
-                        handleToggle={handleToggle}
-                        className={style.viewBox}
-                        data={data}
-                      />
+                      <div className={style.viewBox}>
+                        <button
+                          className={style.viewBtn}
+                          onClick={() => handleToggle(data.id)} // 버튼 클릭 시 토글 실행
+                        >
+                          <span className="blind">
+                            수정, 삭제 더보기 버튼
+                          </span>
+                        </button>
+
+                        {data.isActionsVisible && (
+                          <div className={style.btnBox}>
+                            <button
+                              className={style.editBtn}
+                              onClick={() => handleEdit(data.id)} // 수정 버튼 클릭 시 팝업 띄우기
+                            >
+                              수정
+                            </button>
+                            <button
+                              className={style.delbtn}
+                              onClick={() => handleDelete(data.id)}
+                            >
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -105,6 +151,9 @@ export default function ActivityPage() {
           </div>
         </Container>
       </div>
+
+      {/* 수정 팝업 */}
+      {isPopupVisible && <AddPopup closePopup={closePopup} />}
     </Main>
   );
 }
