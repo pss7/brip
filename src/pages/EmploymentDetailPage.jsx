@@ -9,19 +9,38 @@ import DetailImg from "../assets/images/sub/Detail_Img.png";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import CompletePopup from "../components/CompletePopup";  // Import the CompletePopup component
 
 export default function EmploymentDetailPage() {
 
   const [isResumeVisible, setIsResumeVisible] = useState(false);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
 
+  // State to control the popup visibility
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  // State for the popup message and error flag
+  const [popupMessage, setPopupMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  // Function to handle the "제출하기" button click
+  const handleSubmit = () => {
+    // Set your popup message and show the popup
+    setPopupMessage("이력서 제출이 완료되었습니다.");
+    setIsError(false);  // Set error state to false if the submission is successful
+    setIsPopupOpen(true);  // Show the popup
+  };
+
+  // Function to close the popup
+  const handlePopupCancel = () => {
+    setIsPopupOpen(false);  // Hide the popup
+  };
+
   return (
     <Main className="subWrap">
-
       <div className={`employmentBox ${style.employmentDetailBox}`}>
         <Container className="container">
           <div className="employmentContent">
-
             <div className={style.employmentDetailTop}>
               <div className={style.imgBox}>
                 <img src={DetailImg} alt="" />
@@ -159,12 +178,9 @@ export default function EmploymentDetailPage() {
               </div>
 
               <div className={style.employmentDetailRight}>
-
                 {
                   isResumeVisible && (
                     <div className={style.applyBox}>
-
-
                       <h4>
                         지원하기
                       </h4>
@@ -213,7 +229,6 @@ export default function EmploymentDetailPage() {
                         </li>
                         <li>
                           <div className={style.resumeBox}>
-
                             <div className={style.titleBox}>
                               <h5>
                                 <input
@@ -253,6 +268,7 @@ export default function EmploymentDetailPage() {
                       <Button
                         text="제출하기"
                         customClass={style.btn}
+                        onClick={handleSubmit} // Trigger handleSubmit on button click
                       />
 
                       <Link className={style.link} to="/employment">
@@ -283,45 +299,13 @@ export default function EmploymentDetailPage() {
           </div>
         </Container>
 
-        <Container>
-          <h4 className={style.title}>
-            AI추천공고
-          </h4>
-          <div className="cardContainer">
-            <Card
-              className="cardType"
-              text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례 특강"
-              imgSrc={CardImg02}
-              subText="~01.15(수)"
-            />
-            <Card
-              className="cardType"
-              text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례 특강"
-              imgSrc={CardImg03}
-              subText="~01.15(수)"
-            />
-            <Card
-              className="cardType"
-              text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례 특강"
-              imgSrc={CardImg02}
-              subText="~01.15(수)"
-            />
-
-            <Card
-              className="cardType"
-              text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례 특강"
-              imgSrc={CardImg03}
-              subText="~01.15(수)"
-            >
-            </Card>
-          </div>
-        </Container>
+        <CompletePopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          error={isError}
+          onCancel={handlePopupCancel}
+        />
       </div>
-
     </Main>
   )
 }
