@@ -35,9 +35,22 @@ import CareerExplorationDetailPage from './pages/CareerExplorationDetailPage';
 import ResumeRegpage from './pages/ResumeRegpage';
 import { ResumeProvider } from './context/ResumeProvider';
 import ResumeUpdatepage from './pages/ResumeUpdatepage';
+import { useEffect, useState } from 'react';
+import Loading from './components/Loading';
 
 function App() {
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000)
+  }, [])
+
+  if (isLoading) {
+    return <Loading fullScreen />
+  }
   return (
     <>
       <BrowserRouter>
