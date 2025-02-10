@@ -13,6 +13,7 @@ import { useState } from "react";
 export default function EmploymentDetailPage() {
 
   const [isResumeVisible, setIsResumeVisible] = useState(false);
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
 
   return (
     <Main className="subWrap">
@@ -77,14 +78,27 @@ export default function EmploymentDetailPage() {
                       <span>[조직소개]</span>
                       <em>
                         CyberLogtiec은 세상의 시간과 공간을 더욱 가치있게 만들자는 슬로건을 가지고, 해운,항만 물류 분야의 세계 유명 Container Shipping Liner 에 B2B IT 솔루션을 제공하고 있습니다 <br /><br />
-
                         CyberLogtitec 에서는 Global Container Shipping Liner (해운선사) 의 모든 비즈니스 프로세스를 담고 있는 OPUS Container의 차세대 제품 프로젝트 (이름 : Chorus)를 진행하고 있습니다.
                       </em>
                     </li>
+
+                    {/* Conditionally render additional list item */}
+                    {isDetailVisible && (
+                      <li>
+                        <span>[기타]</span>
+                        <em>
+                          추가된 상세 정보
+                        </em>
+                      </li>
+                    )}
                   </ul>
 
-                  <button className={style.detailView}>
-                    상세정보 더보기
+                  {/* Toggle button to show more details */}
+                  <button
+                    className={style.detailView}
+                    onClick={() => setIsDetailVisible(!isDetailVisible)}
+                  >
+                    {isDetailVisible ? "상세정보 숨기기" : "상세정보 더보기"}
                   </button>
 
                 </div>
@@ -150,6 +164,7 @@ export default function EmploymentDetailPage() {
                   isResumeVisible && (
                     <div className={style.applyBox}>
 
+
                       <h4>
                         지원하기
                       </h4>
@@ -168,7 +183,6 @@ export default function EmploymentDetailPage() {
                           <div className={style.resumeBox}>
                             <div className={style.resumeInfoList}>
                               <span className={style.basic}>기본이력서</span>
-                              {/* <span className={style.certification}>경력인증</span> */}
                             </div>
 
                             <div className={style.titleBox}>
@@ -228,11 +242,13 @@ export default function EmploymentDetailPage() {
                         </li>
                       </ul>
 
-                      <button className={style.writeBtn}>
-                        <span>
-                          새 이력서 작성
-                        </span>
-                      </button>
+                      <Link to="/resumereg">
+                        <button className={style.writeBtn}>
+                          <span>
+                            새 이력서 작성
+                          </span>
+                        </button>
+                      </Link>
 
                       <Button
                         text="제출하기"
@@ -244,13 +260,13 @@ export default function EmploymentDetailPage() {
                       </Link>
 
                     </div>
-
                   )
                 }
 
+                {/* Button to toggle resume section visibility */}
                 {!isResumeVisible && (
                   <Button
-                    text="지원하기"
+                    text="이력서 작성"
                     customClass={style.btn}
                     onClick={() => setIsResumeVisible(true)}
                   />
@@ -275,24 +291,21 @@ export default function EmploymentDetailPage() {
             <Card
               className="cardType"
               text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례
-    특강"
+              title="해운항만물류 실무와 사례 특강"
               imgSrc={CardImg02}
               subText="~01.15(수)"
             />
             <Card
               className="cardType"
               text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례
-    특강"
+              title="해운항만물류 실무와 사례 특강"
               imgSrc={CardImg03}
               subText="~01.15(수)"
             />
             <Card
               className="cardType"
               text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례
-    특강"
+              title="해운항만물류 실무와 사례 특강"
               imgSrc={CardImg02}
               subText="~01.15(수)"
             />
@@ -300,8 +313,7 @@ export default function EmploymentDetailPage() {
             <Card
               className="cardType"
               text="씨아이지해운(주)"
-              title="해운항만물류 실무와 사례
-    특강"
+              title="해운항만물류 실무와 사례 특강"
               imgSrc={CardImg03}
               subText="~01.15(수)"
             >
@@ -310,7 +322,6 @@ export default function EmploymentDetailPage() {
         </Container>
       </div>
 
-    </Main >
+    </Main>
   )
-
 }
