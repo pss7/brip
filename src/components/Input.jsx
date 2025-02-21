@@ -1,6 +1,6 @@
 import style from "./Input.module.css";
 
-export default function Input({ title, label, id, type, placeholder, value, onChange, children, className, error }) {
+export default function Input({ title, label, id, type, placeholder, value, onChange, children, className, error, disabled }) {
 
   return (
     <>
@@ -20,6 +20,7 @@ export default function Input({ title, label, id, type, placeholder, value, onCh
         value={value}
         onChange={onChange}
         className={`${style.input} ${error ? `${style.error}` : ""}`}
+        disabled={disabled}
       />
 
       {children}

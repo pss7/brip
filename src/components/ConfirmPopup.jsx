@@ -7,7 +7,7 @@ export default function ConfirmPopup({
   confirmText,
   cancelText,
   onConfirm,
-  onCancel,
+  onClose,
   isOpen
 }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -35,7 +35,7 @@ export default function ConfirmPopup({
         </div>
         <div className={style.popupBottom}>
           <div className={style.btnBox}>
-            <button className={style.btn} onClick={onCancel}>
+            <button className={style.btn} onClick={onClose}>
               {cancelText}
             </button>
             <button
@@ -46,7 +46,7 @@ export default function ConfirmPopup({
             </button>
           </div>
         </div>
-        <button className={style.closeBtn} onClick={onCancel}>
+        <button className={style.closeBtn} onClick={onClose}>
           <span className="blind">팝업닫기</span>
         </button>
       </div>

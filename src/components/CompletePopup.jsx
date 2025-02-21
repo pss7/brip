@@ -3,7 +3,7 @@ import CompleteIcon from "../assets/images/common/CompleteIcon.svg";
 import ErrorIcon from "../assets/images/common/ErrorIcon.svg";
 import { useEffect, useState } from "react";
 
-export default function CompletePopup({ isOpen, message, error, onCancel }) {
+export default function CompletePopup({ isOpen, message, error, onClose }) {
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -38,7 +38,7 @@ export default function CompletePopup({ isOpen, message, error, onCancel }) {
           {message}
         </p>
         <div className={style.btnBox}>
-          <button className={style.btn} onClick={onCancel}>
+          <button className={style.btn} onClick={onClose}>
             확인
           </button>
         </div>

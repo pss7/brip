@@ -5,81 +5,129 @@ import kakao from "../assets/images/login/Kakao_Img.svg";
 import naver from "../assets/images/login/Naver_Img.svg";
 import style from "./MyPage.module.css";
 import Input from "../components/Input";
-import { usePopup } from "../context/PopupProvider";
-import { UserContext } from "../context/UserProvider";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { getnicknameCheck, getProfile } from "../api/user";
 import CompletePopup from "../components/CompletePopup";
+import ConfirmPopup from "../components/ConfirmPopup";
+import { useLoadingStore } from "../store/useLoadingStore";
+import Loading from "../components/Loading";
 
 export default function MyPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  // UserContext에서 user와 loading 상태 가져오기
-  const { user, loading, updateUser } = useContext(UserContext);
+  //로딩 상태 관리
+  const { isLoading, setLoading } = useLoadingStore();
 
-  const { isPopupOpen, openPopup, closePopup } = usePopup();
+  //데이터 상태 관리
+  const [profileData, setProfileData] = useState([]);
 
-  // 버튼 활성화, 비활성화 상태 관리
+  //팝업 상태 관리
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupError, setPopupError] = useState(false);
+  const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
+
+  //에러 상태 관리
+  const [error, setError] = useState("");
+
+  //버튼 활성화, 비활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
 
-  // nickname 상태 추가
-  const [nickname, setNickname] = useState(user?.nickname || "");
+  //닉네임 상태 관리
+  const [nickname, setNickname] = useState();
+  const nicknameRegex = /^[a-zA-Z0-9]{2,12}$/;
 
-  // Input의 값이 변경될 때 상태 업데이트
-  const handleNicknameChange = (e) => {
-    setNickname(e.target.value);
-    setDisabled(false); // 입력이 있으면 완료 버튼 활성화
-    setError(""); // 에러 초기화
+  //닉네임 상태 업데이트 함수
+  function handleNicknameChange(e) {
+
+    const nicknameValue = e.target.value;
+
+    setNickname(nicknameValue);
+
+    if (nicknameValue === "") {
+      setError("");
+    }
+    else if (!nicknameRegex.test(nicknameValue)) {
+      setError("2~12자, 특수문자 및 공백 불가");
+    } else {
+      setError("");
+    }
+
+    setDisabled(!nicknameRegex.test(nicknameValue));
+
+  }
+
+  //닉네임 중복 체크 함수
+  async function handleDuplicateCheck() {
+
+    try {
+
+      const response = await getnicknameCheck(nickname);
+
+      if (response && response.data.result === "success") {
+
+        setPopupMessage("사용 가능한 닉네임입니다.");
+        setError("사용 가능한 닉네임입니다.");
+        setPopupError(false);
+
+      } else if (response && response.data.result === "fail") {
+
+        setPopupMessage("이미 사용 중인 닉네임입니다.");
+        setError("이미 사용 중인 닉네임입니다.");
+        setPopupError(true);
+
+      }
+
+      setPopupOpen(true);
+
+    } catch (error) {
+      setError("error:", error);
+    }
+
+  }
+
+  // 서비스 해지 팝업 열기 함수
+  function openConfirmPopup() {
+    setConfirmPopupOpen(true);
   };
 
-  // 닉네임 완료 버튼 클릭 시 동작하는 함수
-  const handleNicknameSubmit = () => {
-    // 로컬스토리지에서 저장된 닉네임들 가져오기
-    const allNicknames = JSON.parse(localStorage.getItem("nicknames")) || [];
-
-    // 중복 체크
-    if (allNicknames.includes(nickname)) {
-      openPopup();
-      return;
-    }
-
-    // 이전 닉네임이 있다면 삭제
-    if (user?.nickname) {
-      // 이전 닉네임을 삭제
-      const updatedNicknames = allNicknames.filter((nick) => nick !== user.nickname);
-
-      // 변경된 nicknames 배열을 로컬스토리지에 저장
-      localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));
-    }
-
-    // 새로운 닉네임을 배열에 추가
-    const updatedNicknames = [...allNicknames, nickname];  // 기존 배열에 새로운 닉네임 추가
-    localStorage.setItem("nicknames", JSON.stringify(updatedNicknames));  // 변경된 배열을 로컬스토리지에 저장
-
-    // 사용자 정보 업데이트 (UserContext에 반영)
-    if (updateUser) {
-      const updatedUser = { ...user, nickname };  // 새로운 닉네임 반영한 사용자 정보
-      updateUser(updatedUser);  // UserContext의 updateUser 함수 호출하여 닉네임 업데이트
-    }
-    setDisabled(true);
-    openPopup();
+  // 서비스 해지 확인 함수
+  function handleConfirmTermination() {
+    alert("서버 요청 로직 대기");
+    setConfirmPopupOpen(false);
   };
 
-  // 사용자 정보가 없으면 로그인 페이지로 리디렉션
+  // 서비스 해지 취소 함수
+  function handleCancelTermination() {
+    setConfirmPopupOpen(false);
+  };
+
+  //데이터 불러오기
   useEffect(() => {
-    if (loading) {
-      return;  // 로딩 중이면 아무것도 하지 않음
+
+    async function fetchProfile() {
+
+      try {
+        setLoading(true);
+
+        const renponse = await getProfile();
+        setNickname(renponse.data.nickname);
+        setProfileData(renponse.data);
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    if (!user) {
-      navigate("/signin");
-    }
-  }, [user, loading, navigate]);
+    fetchProfile();
 
-  // 페이지 새로 고침 후 로컬스토리지에서 최신 값 가져오기
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user")) || {};
-    setNickname(storedUser.nickname || user?.nickname || "");
-  }, [user?.nickname]);
+  }, []);
+
+  // 로딩 중일 때 로딩 표시
+  if (isLoading) {
+    return <Loading fullScreen />;
+  }
 
   return (
     <Main className="subWrap bg">
@@ -106,9 +154,10 @@ export default function MyPage() {
                         <Input
                           id="name"
                           type="text"
-                          value={user?.name || ""}
+                          value={profileData.name}
                           label="이름"
                           className="mb-15"
+                          disabled={true}
                         />
                       </div>
                     </div>
@@ -124,17 +173,16 @@ export default function MyPage() {
                           value={nickname}
                           onChange={handleNicknameChange}
                         />
-                        {/* 완료 버튼 */}
                         <button
                           className={style.duplicateChkBtn}
                           type="button"
                           disabled={disabled}
-                          onClick={handleNicknameSubmit}
+                          onClick={handleDuplicateCheck}
                         >
                           완료
                         </button>
                       </div>
-                      {/* {error && <span className="errorMessage">{error}</span>} */}
+                      {error && <span className="errorMessage">{error}</span>}
                     </div>
 
                     <div className="inputWrap">
@@ -145,7 +193,7 @@ export default function MyPage() {
                         <Input
                           id="number"
                           type="text"
-                          value={user?.phone || ""}
+                          value={profileData.phone}
                         />
                         <button className={style.changeBtn} type="button">
                           변경
@@ -161,7 +209,7 @@ export default function MyPage() {
                         <Input
                           id="email"
                           type="text"
-                          value={user?.email || ""}
+                          value={profileData.email}
                         />
                         <button className={style.changeBtn} type="button">
                           변경
@@ -174,9 +222,10 @@ export default function MyPage() {
                         <Input
                           id="birthdate"
                           type="text"
-                          value={user?.birthdate || ""}
+                          value={profileData.birth_date}
                           label="생년월일"
                           className="mb-15"
+                          disabled={disabled}
                         />
                       </div>
                     </div>
@@ -203,7 +252,10 @@ export default function MyPage() {
                     </ul>
                   </div>
 
-                  <button className={style.terminationBtn}>
+                  <button
+                    className={style.terminationBtn}
+                    onClick={openConfirmPopup}
+                  >
                     서비스 해지
                   </button>
                 </div>
@@ -212,14 +264,23 @@ export default function MyPage() {
           </div>
         </Container>
       </div>
-      {
-        isPopupOpen &&
-        <CompletePopup
-          message="사용 가능한 닉네임입니다."
-          onCancel={() => closePopup()}
-          isOpen={isPopupOpen}
-        />
-      }
+
+      <ConfirmPopup
+        isOpen={confirmPopupOpen}
+        message="서비스를 해지하시겠습니까?"
+        onConfirm={handleConfirmTermination}
+        onClose={handleCancelTermination}
+        confirmText="확인"
+        cancelText="취소"
+      />
+
+      <CompletePopup
+        isOpen={popupOpen}
+        message={popupMessage}
+        error={popupError}
+        onClose={() => setPopupOpen(false)}
+      />
+
     </Main>
   );
 }

@@ -15,6 +15,9 @@ export const useAuthStore = create((set) => ({
       nickname: data.nickname,
       cuid: data.cuid
     });
+
+    // localStorage에 토큰 저장
+    localStorage.setItem('token', data.token);
   },
 
   // 로그인 상태 삭제 함수

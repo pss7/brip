@@ -1,22 +1,41 @@
 import { Link } from "react-router-dom";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import Table from "../components/Table";
-import { noticeData } from "../data/noticeData";
-import { useState } from "react";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import Table from "../../components/Table";
+import { useEffect, useState } from "react";
 import style from "./NoticePage.module.css";
+import { getNotice } from "../../api/support/notice";
 
 export default function NoticePage() {
 
-  const [data] = useState(noticeData);
+  //공지사항 데이터 상태 관리
+  const [noticeData, setNoticeData] = useState([]);
+
   const [sortOrder, setSortOrder] = useState("최신순");
+
   const [searchKeyword, setSearchKeyword] = useState("");
+
+  useEffect(() => {
+
+    async function fetchNotice() {
+      try {
+
+        const response = await getNotice();
+        setNoticeData(response.data);
+
+      } catch (error) {
+        console.error('error :', error)
+      }
+    }
+
+    fetchNotice();
+  }, [])
 
   const handleSearchChange = (e) => {
     setSearchKeyword(e.target.value);
   };
 
-  const filteredData = data.filter((filterData) => {
+  const filteredData = noticeData.filter((filterData) => {
     const titleMatches = filterData.title
       .toLowerCase()
       .includes(searchKeyword.toLowerCase());
@@ -114,6 +133,7 @@ export default function NoticePage() {
                     )}
                   />
                 )}
+
               </div>
             </div>
           </div>

@@ -7,8 +7,7 @@ import style from "./SignUpPage.module.css";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import { useState, useEffect } from "react";
-import { checkNickname } from "../../api/auth";
-import MailForm from "../../components/MailForm";
+import { checkNickname, signUp } from "../../api/auth";
 
 export default function SignUpPage() {
 
@@ -19,9 +18,9 @@ export default function SignUpPage() {
 
   //닉네임 상태관리
   const [nickname, setNickname] = useState("");
-  const [nicknameError, setNicknameError] = useState(""); // 닉네임 오류 메시지
-  const [nicknameCheckMessage, setNicknameCheckMessage] = useState(""); // 중복 확인 메시지 상태
-  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false); // 닉네임 사용 가능 여부
+  const [nicknameError, setNicknameError] = useState("");
+  const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
+  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
   //닉네임 검사
   const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
@@ -40,9 +39,6 @@ export default function SignUpPage() {
   //비밀번호 확인 상태 관리
   const [passwordCheck, setPasswordCheck] = useState("");
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
-
-  // 폼 유효성
-  const [isFormValid, setIsFormValid] = useState(false);
 
   // 닉네임 입력 처리
   function handleNicknameChange(e) {
@@ -108,79 +104,23 @@ export default function SignUpPage() {
     }
   }
 
-  // 동의 항목을 객체로 관리
-  const [agreements, setAgreements] = useState({
-    agreeAll: false,
-    agreeAge: false,
-    agreeTerms: false,
-    agreePrivacy: false,
-    agreeMarketing: false,
-  });
-
-  // 개별 동의 항목 상태 변경 함수
-  const handleAgreementChange = (e, type) => {
-    const { checked } = e.target;
-    setAgreements((prev) => ({
-      ...prev,
-      [type]: checked,
-    }));
-  };
-
-  // "모두 동의" 체크 상태 업데이트 함수
-  const handleAgreeAllChange = (e) => {
-    const isChecked = e.target.checked;
-    setAgreements({
-      agreeAll: isChecked,
-      agreeAge: isChecked,
-      agreeTerms: isChecked,
-      agreePrivacy: isChecked,
-      agreeMarketing: isChecked,
-    });
-  };
-
-  // "모두 동의" 체크 상태 업데이트 (필수 항목들이 모두 체크되어야만)
-  useEffect(() => {
-    const { agreeAge, agreeTerms, agreePrivacy } = agreements;
-    setAgreements((prev) => ({
-      ...prev,
-      agreeAll: agreeAge && agreeTerms && agreePrivacy,
-    }));
-  }, [agreements.agreeAge, agreements.agreeTerms, agreements.agreePrivacy]);
-
-  // 입력값 검증 함수
-  function validateForm() {
-    // 각 필드가 모두 유효한지 체크
-    const isValid =
-      name !== "" &&
-      nickname !== "" &&
-      !nicknameError &&
-      email !== "" &&
-      emailDomain !== "" &&
-      password !== "" &&
-      !passwordError &&
-      isPasswordMatch &&
-      (agreements.agreeAge && agreements.agreeTerms && agreements.agreePrivacy);
-
-    setIsFormValid(isValid);  // 유효성에 맞게 버튼 활성화 여부 업데이트
-  }
-
-  useEffect(() => {
-    // 폼 변경시마다 유효성 검사
-    validateForm();
-  }, [name, nickname, email, emailDomain, password, passwordCheck, nicknameError, passwordError, isPasswordMatch, agreements]);
-
-  // 회원가입 처리 시 닉네임을 로컬 스토리지에 추가
+  // 회원가입
   async function handleSignUp(e) {
     e.preventDefault();
 
-    try {
-      const response = await signUp({ name, nickname, email, password })
-      navigate("/");
+    // 이메일 주소 합치기
+    const fullEmail = `${email}@${emailDomain}`;
 
+    try {
+      const response = await signUp({ name, nickname, email: fullEmail, password });
+      if (response) {
+        navigate("/");  // 성공적으로 회원가입되면 홈으로 이동
+      } else {
+        console.error("회원가입 실패");
+      }
     } catch (error) {
       console.error("회원가입 실패:", error);
     }
-
   }
 
   return (
@@ -190,7 +130,7 @@ export default function SignUpPage() {
           <div className={`signinContent ${style.signinContent}`}>
             <h3 className={style.title}>회원가입</h3>
             <div className="container">
-              <form>
+              <form onSubmit={handleSignUp}>
                 {/* 이름 입력 */}
                 <div className="inputWrap">
                   <div className="inputBox">
@@ -248,13 +188,13 @@ export default function SignUpPage() {
                         onChange={(e) => setEmailDomain(e.target.value)}
                       />
                     </div>
-                    <Select
+                    {/* <Select
                       className={style.select}
                       id="emailSelect"
                       options={["gmail.com", "naver.com", "daum.net"]}
                       onChange={(e) => setEmailDomain(e.target.value)}
                       hiddenText="이메일 선택"
-                    />
+                    /> */}
                   </div>
                 </div>
 
@@ -290,8 +230,7 @@ export default function SignUpPage() {
                   {!isPasswordMatch && <p className="errorMessage">비밀번호가 일치하지 않습니다.</p>}
                 </div>
 
-                {/* 약관 동의 */}
-                <div className={style.agreeChkBox}>
+                {/* <div className={style.agreeChkBox}>
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk01"
@@ -345,12 +284,12 @@ export default function SignUpPage() {
                     <label htmlFor="agreeChk05">마케팅 정보 수진 동의 (선택)</label>
                     <Link to="/terms">약관보기</Link>
                   </div>
-                </div>
+                </div> */}
 
                 <Button
                   text="회원가입"
                   onClick={handleSignUp}
-                  disabled={!isFormValid}
+                // disabled={!isFormValid}
                 />
 
               </form>
@@ -362,7 +301,7 @@ export default function SignUpPage() {
           </div>
         </Container>
       </div>
-      <MailForm/>
+
     </Main>
   );
 }

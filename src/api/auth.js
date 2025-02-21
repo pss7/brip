@@ -1,42 +1,48 @@
 import axios from 'axios';
+import { BASE_URL } from './apiConfig';
 
-const client = axios.create({
-  baseURL: 'https://light-dolls-repair.loca.lt/api/user',
-  headers: { 'Content-Type': 'application/json' },
-});
-
-//로그인 api
+// 로그인 API
 export async function login(email, password) {
   try {
-    const response = await client.post('/login', { email, password });
+    const response = await axios.post(`${BASE_URL}/user/login`, { email, password },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
     localStorage.setItem('token', response.data.token);
-
     return response.data;
   } catch (error) {
-    console.error('로그인 실패:', error);
+    console.error('error:', error);
+    return false;
   }
 }
 
-//닉네임체크 api
+// 닉네임 체크 API
 export async function checkNickname(nickname) {
   try {
-    const response = await client.post('/check-nickname', { nickname });
-    return response.data.exists;
+    const response = await axios.post(
+      `${BASE_URL}/user/check-nickname`,
+      { nickname },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    return response;
   } catch (error) {
-    console.error('닉네임 중복 확인 실패:', error);
+    console.error('error:', error);
     return false;
   }
 }
 
-//회원가입 api
-export async function signUp(name, nickname, email, password) {
+// 회원가입 API
+export async function signUp({ name, nickname, email, password }) {
   try {
-    const response = await client.post('/register', { name, nickname, email, password});
-    localStorage.setItem('token', response.data.token);
-
-    return response.data;
+    const response = await axios.post(
+      `${BASE_URL}/user/register`,
+      { name, nickname, email, password },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    localStorage.setItem('token', response.token);
+    return response;
   } catch (error) {
-    console.error('회원가입 실패:', error);
+    console.error('error:', error);
     return false;
   }
 }
+

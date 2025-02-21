@@ -1,15 +1,54 @@
 import { Link, useParams } from "react-router-dom";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import Button from "../components/Button";
-import { noticeData } from "../data/noticeData";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import Button from "../../components/Button";
 import style from "./NoticeDetailPage.module.css";
+import { getDetailNotice } from "../../api/support/notice";
+import { useEffect, useState } from "react";
+import { useLoadingStore } from "../../store/useLoadingStore";
+import Loading from "../../components/Loading";
 
 export default function NoticeDetailPage() {
 
+  //로딩 상태 관리
+  const { isLoading, setLoading } = useLoadingStore();
+
   const { id } = useParams();
 
+  /*
   const notice = noticeData.find((data) => { return (data.id === parseInt(id)) })
+*/
+
+  const [noticeData, setNoticeData] = useState();
+
+  //데이터 불러오기
+  useEffect(() => {
+
+    async function fetchDetailNotice() {
+
+      setLoading(true);
+
+      try {
+
+        const response = await getDetailNotice(id);
+        setNoticeData(response);
+
+      } catch (error) {
+        console.log("error", error);
+      } finally {
+        setLoading(false);
+      }
+
+    }
+
+    fetchDetailNotice();
+
+  }, [id])
+
+  // 로딩 중일 때 로딩 표시
+  if (isLoading) {
+    return <Loading fullScreen />;
+  }
 
   return (
     <Main className="subWrap bg">
@@ -33,20 +72,20 @@ export default function NoticeDetailPage() {
               <div className="content flexColumn">
                 <div className={`topBox ${style.topBox}`}>
                   <h4>
-                    {notice.title}
+                    {noticeData.title}
                   </h4>
                   <div className={style.layoutBox}>
                     <span className={style.category}>
-                      {notice.category}
+                      {noticeData.category}
                     </span>
                     <span className={style.data}>
-                      {notice.date}
+                      {noticeData.date}
                     </span>
                   </div>
                 </div>
 
                 <p className={style.infoText}>
-                  {notice.content}
+                  {noticeData.content}
                 </p>
 
                 <Button

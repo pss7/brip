@@ -10,7 +10,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 export default function Header() {
 
   //유저정보 불러오기
-  const { token, email, nickname, cuid } = useAuthStore((state) => {
+  const { token } = useAuthStore((state) => {
     return (
       state
     )
@@ -197,9 +197,9 @@ export default function Header() {
               {token ? (
                 <Link to="/mypage">
                   <img src={ProfileImg} alt="프로필이미지" />
-                </Link>  // 사용자 정보가 있으면 마이페이지 링크
+                </Link>  
               ) : (
-                <Link to="/signin" className={style.loginBtn}>로그인</Link>  // 없으면 로그인 버튼
+                <Link to="/signin" className={style.loginBtn}>로그인</Link>  
               )}
             </div>
 

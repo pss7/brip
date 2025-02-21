@@ -1,42 +1,89 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../components/Container";
 import Main from "../components/layout/Main";
 import { chatRoomsData } from "../data/chatRoomsData";
 import { QAData } from "../data/QAData";
 import { Link } from "react-router-dom";
-import { UserContext } from "../context/UserProvider";
 import ProfileImg from "../assets/images/common/Profile_Img.svg";
-import WritePopup from "../components/WritePopup";
-import AddPopup from "../components/AddPopup";
+// import WritePopup from "../components/WritePopup";
+// import AddPopup from "../components/AddPopup";
+import { getKnowhow } from "../api/community/knowhow";
+import Loading from "../components/Loading";
+import { useLoadingStore } from "../store/useLoadingStore";
 
 // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const month = String(date.getMonth() + 1).padStart(2, '0');  // 01~12
-  const day = String(date.getDate()).padStart(2, '0');        // 01~31
-  const hours = String(date.getHours()).padStart(2, '0');      // 00~23
-  const minutes = String(date.getMinutes()).padStart(2, '0');  // 00~59
-  return `${month}/${day} ${hours}:${minutes}`;
-};
+// const formatDate = (dateString) => {
+//   const date = new Date(dateString);
+//   const month = String(date.getMonth() + 1).padStart(2, '0');  // 01~12
+//   const day = String(date.getDate()).padStart(2, '0');        // 01~31
+//   const hours = String(date.getHours()).padStart(2, '0');      // 00~23
+//   const minutes = String(date.getMinutes()).padStart(2, '0');  // 00~59
+//   return `${month}/${day} ${hours}:${minutes}`;
+// };
 
 export default function CommunityPage() {
 
-  const { user } = useContext(UserContext);
+  //로딩 상태 관리
+  const { isLoading, setLoading } = useLoadingStore();
 
-  const [addPopupShowPopup, setAddPopupShowPopup] = useState(false); // 팝업 상태 관리
-  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
+  //데이터 상태 관리
+  const [knowhowData, setKnowhowData] = useState();
 
-  const [chatRooms] = useState(chatRoomsData);
-  const [qaList] = useState(QAData)
-  const [likes, setLikes] = useState({});     // 좋아요 상태
-  const [comments, setComments] = useState({}); // 댓글 상태
-  const [activeTab, setActiveTab] = useState("qa");
-  const [reports, setReports] = useState({});  // 신고 상태
+  useEffect(() => {
+    async function fetchKnowhow() {
+      try {
+        const data = await getKnowhow();
+        if (data) {
+          setKnowhowData(data.data);  // ✅ "data" 배열만 저장
+        }
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // user가 null일 때는 로딩 중 메시지 출력
-  if (!user) {
-    return <p></p>;  // 유저 정보가 없으면 로딩 중 메시지
+    fetchKnowhow();
+  }, []);
+
+
+  // 로딩 중일 때 로딩 표시
+  if (isLoading) {
+    return <Loading fullScreen />;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const [addPopupShowPopup, setAddPopupShowPopup] = useState(false); // 팝업 상태 관리
+  // const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
+
+  // const [chatRooms] = useState(chatRoomsData);
+  // const [qaList] = useState(QAData)
+  // const [likes, setLikes] = useState({});     // 좋아요 상태
+  // const [comments, setComments] = useState({}); // 댓글 상태
+  // const [activeTab, setActiveTab] = useState("qa");
+  // const [reports, setReports] = useState({});  // 신고 상태
+
 
   // 탭 클릭 시 활성화된 탭 상태 변경
   const handleTabClick = (tabName) => {
@@ -44,33 +91,33 @@ export default function CommunityPage() {
   };
 
   // 좋아요 증가 핸들러
-  const handleLike = (id) => {
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [id]: (prevLikes[id] || 0) + 1,
-    }));
-  };
+  // const handleLike = (id) => {
+  //   setLikes((prevLikes) => ({
+  //     ...prevLikes,
+  //     [id]: (prevLikes[id] || 0) + 1,
+  //   }));
+  // };
 
   // 신고 증가 핸들러
-  const handleReport = (id) => {
-    setReports((prevReports) => ({
-      ...prevReports,
-      [id]: (prevReports[id] || 0) + 1,
-    }));
-  };
+  // const handleReport = (id) => {
+  //   setReports((prevReports) => ({
+  //     ...prevReports,
+  //     [id]: (prevReports[id] || 0) + 1,
+  //   }));
+  // };
 
   function openAddPopup() {
     setAddPopupShowPopup(true)
   };
 
   function openWritePopup() {
-    setShowPopup(true); 
+    setShowPopup(true);
   }
 
-  const closePopup = () => {
-    setShowPopup(false); 
-    setAddPopupShowPopup(false)
-  };
+  // const closePopup = () => {
+  //   setShowPopup(false);
+  //   setAddPopupShowPopup(false)
+  // };
 
   return (
     <Main className="subWrap">
@@ -85,10 +132,10 @@ export default function CommunityPage() {
                   </div>
                   <div className="textBox">
                     <p className="nickname">
-                      {user.nickname}
+                      {knowhowData.author_nickname}
                     </p>
                     <span className="name">
-                      {user.name}
+                      {knowhowData.author_nickname}
                     </span>
                   </div>
                 </div>
@@ -145,7 +192,7 @@ export default function CommunityPage() {
                   </li>
                 </ul>
 
-                {activeTab === "qa" && (
+                {/* {activeTab === "qa" && (
                   <div className="qaContentBox">
                     <div className="shareBox">
                       <div className="imgBox">
@@ -227,19 +274,19 @@ export default function CommunityPage() {
                   <div className="infoShareContentBox">
                     <p className="infoText">현재 페이지 제작중입니다.</p>
                   </div>
-                )}
+                )} */}
 
               </div>
             </div>
           </div>
         </Container>
       </div >
-      {
+      {/* {
         showPopup && <WritePopup closePopup={closePopup} />
       }
       {
         addPopupShowPopup && <AddPopup closePopup={closePopup} />
-      }
+      } */}
     </Main >
   );
 }
