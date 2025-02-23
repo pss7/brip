@@ -39,23 +39,21 @@ export default function MyPage() {
 
   //닉네임 상태 업데이트 함수
   function handleNicknameChange(e) {
-
     const nicknameValue = e.target.value;
-
     setNickname(nicknameValue);
-
+  
     if (nicknameValue === "") {
       setError("");
-    }
-    else if (!nicknameRegex.test(nicknameValue)) {
-      setError("2~12자, 특수문자 및 공백 불가");
+    } else if (!nicknameRegex.test(nicknameValue)) {
+      // setError("2~12자, 특수문자 및 공백 불가"); 
+      setError(""); 
     } else {
-      setError("");
+      setError(""); 
     }
-
-    setDisabled(!nicknameRegex.test(nicknameValue));
-
+  
+    setDisabled(false);
   }
+  
 
   //닉네임 중복 체크 함수
   async function handleDuplicateCheck() {

@@ -1,4 +1,4 @@
-.inquiryQuestionWrap{margin-top: 40px;}
+.inquiryQuestionWrap{margin: 40px 0;}
 .inquiryQuestionBox .topBox{position: relative; padding:0 332px 20px 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #D9D9D9;} 
 .inquiryQuestionBox .topBox .box{display: flex; position: absolute; right:34px;}
 .inquiryQuestionBox .topBox .title{font-size: 20px; font-weight: 600; color: #000;}
@@ -7,7 +7,6 @@
 .inquiryQuestionBox .topBox .status{color: #5088FF;}
 .inquiryQuestionBox .inquiryQuestionContent{padding: 30px 20px 50px 10px;}
 .inquiryQuestionBox .inquiryQuestionContent p{color: #000; font-weight: 500;}
-
 .inquiryAnswerBox{border-top: 1px solid #B3B3B3;}
 .inquiryAnswerBox .topBox{padding: 18px 18px 10px 0; display: flex; align-items: center; justify-content: space-between;}
 .inquiryAnswerBox .topBox .title{font-weight: 600; color: #000; font-size: 20px;}

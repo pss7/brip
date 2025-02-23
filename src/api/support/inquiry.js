@@ -18,34 +18,50 @@ export async function getInquiry() {
 
     return response.data.data;
   } catch (error) {
-    console.error('erro:', error);
+    console.error('error:', error);
     return false;
   }
 }
 
+//문의사항 상세 API
+export async function getInquiryDetail(id) {
+
+  const token = localStorage.getItem("token");
+
+  try {
+
+    const response = await axios.get(`${BASE_URL}/board/inquiry/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+
+    return response.data.data;
+  } catch (error) {
+    console.error('error:', error);
+    return false;
+  }
+}
 
 // 문의사항 등록 API
-export async function createInquiry(selectedCategory, title, content) {
+export async function createInquiry(formData) {
   const token = localStorage.getItem("token");
 
   try {
     const response = await axios.post(
       `${BASE_URL}/board/inquiry/create`,
-      {
-        category: selectedCategory,
-        title: title,
-        content: content
-      },
+      formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`, 
         }
       }
     );
     return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('error:', error);
     return false;
   }
 }

@@ -1,10 +1,10 @@
-import ArrowPrevButton from "../components/ArrowPrevButton";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import Career_Img01 from "../assets/images/sub/Career_Img01.jpg";
-import InstructorImg from "../assets/images/sub/instructor_img.png";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import Career_Img01 from "../../assets/images/sub/Career_Img01.jpg";
+import InstructorImg from "../../assets/images/sub/instructor_img.png";
 import style from "./CareerDetailPage.module.css";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 
 export default function CareerDetailPage() {

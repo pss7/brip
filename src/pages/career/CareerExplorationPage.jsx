@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Main from "../components/layout/Main";
-import Container from "../components/Container";
-import Pagination from "../components/Pagination";
-import SubSearch from "../components/SubSearch";
+import Main from "../../components/layout/Main";
+import Container from "../../components/Container";
+import Pagination from "../../components/Pagination";
+import SubSearch from "../../components/SubSearch";
 import style from "./CareerExplorationPage.module.css";
-import { shippingIndustryData } from "../data/shippingIndustryData";
+import { shippingIndustryData } from "../../data/shippingIndustryData";
 
 export default function CareerExplorationPage() {
   const [activeTab, setActiveTab] = useState("해운산업");

@@ -18,28 +18,26 @@ import Guide04 from "../assets/images/main/Guide_Icon04.svg";
 import MainImg from "../assets/images/main/Main_Img01.png";
 import { announcementData } from "../data/announcementData";
 import { educationData } from "../data/educationData";
-
 import Slider from 'react-slick';
 import AOS from "aos";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "aos/dist/aos.css";
 import Card from "../components/Card";
-
 import "../styles/style.css";
 import BgCard from "../components/BgCard";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function MainPage() {
 
-  const [user, setUser] = useState(null);
-  const [announcements, setAnnouncements] = useState(announcementData);
+  //유저정보 불러오기
+  const { token } = useAuthStore((state) => {
+    return (
+      state
+    )
+  });
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
+  const [announcements, setAnnouncements] = useState(announcementData);
 
   useEffect(() => {
     AOS.init({
@@ -158,7 +156,7 @@ export default function MainPage() {
       </div>
 
       {
-        user ? (
+        token ? (
           <> </>
         ) : (
           <div id={style.loginLinkBox} data-aos="fade-up">

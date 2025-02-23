@@ -1,12 +1,12 @@
-import Main from "../components/layout/Main";
-import Container from "../components/Container";
+import Main from "../../components/layout/Main";
+import Container from "../../components/Container";
 import style from "./CareerPage.module.css";
 import Slider from "react-slick";
-import CareerImg from "../assets/images/sub/career_img.png";
-import { educationData } from "../data/educationData";
+import CareerImg from "../../assets/images/sub/career_img.png";
+import { educationData } from "../../data/educationData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Card from "../components/Card";
+import Card from "../../components/Card";
 
 export default function CareerPage() {
 

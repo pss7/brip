@@ -8,9 +8,17 @@ import Main from "../../components/layout/Main";
 import { useLoadingStore } from "../../store/useLoadingStore";
 import Loading from "../../components/Loading";
 import { getInquiry } from "../../api/support/inquiry";
+import { useAuthStore } from "../../store/useAuthStore";
 // import ConfirmPopup from "../../components/ConfirmPopup";
 
 export default function InquiryPage() {
+
+  //유저정보 불러오기
+  const { token } = useAuthStore((state) => {
+    return (
+      state
+    )
+  });
 
   //데이터 상태 관리
   const [inquiryData, setInquiryData] = useState([]);
@@ -59,8 +67,8 @@ export default function InquiryPage() {
   //   }
   // }, [user]);
 
-  const sortedData = data.sort((a, b) => {
-    return new Date(b.date) - new Date(a.date); // 최신순 정렬
+  const sortedData = inquiryData.sort((a, b) => {
+    return new Date(b.inquiryData) - new Date(a.inquiryData); // 최신순 정렬
   });
 
   return (
@@ -106,13 +114,13 @@ export default function InquiryPage() {
                   />
                 )}
 
-                {/* {user && (
+                {token && (
                   <Button
                     href="/inquiryreg"
                     text="1:1문의 등록"
-                    customClass={style.btn}
                   />
-                )} */}
+                )}
+
               </div>
             </div>
           </div>

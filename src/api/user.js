@@ -36,3 +36,16 @@ export async function getnicknameCheck(nickname) {
 
 }
 
+//인증코드드 API
+export async function sendVerificationCode(email) {
+  try {
+    const response = await axios.post(`${BASE_URL}/user/verify-code`, { email });
+    return response; 
+  } catch (error) {
+    console.error('error', error);
+    return false;
+  }
+}
+
+
+

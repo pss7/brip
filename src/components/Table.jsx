@@ -26,7 +26,7 @@ export default function Table({
   // 데이터 추가 로딩 함수
   const loadMoreData = useCallback(() => {
     if (loading || visibleData.length >= filteredData.length) return;
-    
+
     setLoading(true);
     setTimeout(() => {
       setVisibleData((prevData) => [
@@ -46,6 +46,15 @@ export default function Table({
     setScrollTop(e.target.scrollTop); // 스크롤 위치 업데이트
   }, [loadMoreData]);
 
+  // 날짜 형식화 함수
+  const formatDate = (dateString) => {
+    const date = new Date(dateString); // 'created_at'을 Date 객체로 변환
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1을 해줘야 함
+    const day = String(date.getDate()).padStart(2, "0"); // 날짜 두 자리로 맞추기
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <div className={`${className} ${style.tableBox}`} onScroll={handleScroll}>
       <table className={style.table}>
@@ -63,10 +72,10 @@ export default function Table({
           {visibleData.map((data, index) => {
             return (
               <tr key={index}>
-                <td>{data.id}</td>
+                <td>{data.inquiry_id}</td>
                 <td>{data.category}</td>
                 <td>
-                  <Link to={`${href}/${data.id}`} className={textClassName}>
+                  <Link to={`${href}/${data.inquiry_id}`} className={textClassName}>
                     {data.title}
                   </Link>
                 </td>
@@ -79,7 +88,7 @@ export default function Table({
                     </span>
                   </td>
                 )}
-                <td>{data.date}</td>
+                <td>{formatDate(data.created_at)}</td> {/* 날짜 형식화 적용 */}
               </tr>
             );
           })}
