@@ -188,13 +188,13 @@ export default function SignUpPage() {
                         onChange={(e) => setEmailDomain(e.target.value)}
                       />
                     </div>
-                    {/* <Select
+                    <Select
                       className={style.select}
                       id="emailSelect"
                       options={["gmail.com", "naver.com", "daum.net"]}
                       onChange={(e) => setEmailDomain(e.target.value)}
                       hiddenText="이메일 선택"
-                    /> */}
+                    />
                   </div>
                 </div>
 

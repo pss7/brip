@@ -1,4 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { useAuthStore } from './store/useAuthStore';
+import { useEffect } from 'react';
+
 import Home from './pages/Home';
 import SearchPage from './pages/SearchPage';
 import RoadMapInfoPage from './pages/RoadMapInfoPage';

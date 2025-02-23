@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Table from "../../components/Table";
 import style from "./InquiryPage.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
@@ -13,12 +13,10 @@ import { useAuthStore } from "../../store/useAuthStore";
 
 export default function InquiryPage() {
 
-  //유저정보 불러오기
-  const { token } = useAuthStore((state) => {
-    return (
-      state
-    )
-  });
+  const navigate = useNavigate();
+
+  //토큰 불러오기
+  const { token } = useAuthStore();
 
   //데이터 상태 관리
   const [inquiryData, setInquiryData] = useState([]);
@@ -49,9 +47,12 @@ export default function InquiryPage() {
 
   }, []);
 
-  // 로딩 중일 때 로딩 표시
   if (isLoading) {
     return <Loading fullScreen />;
+  }
+
+  if (!token) {
+    navigate("/signin");
   }
 
   // const { isPopupOpen, openPopup, closePopup } = usePopup();

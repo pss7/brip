@@ -4,11 +4,17 @@ import Main from "../components/layout/Main";
 import { getKnowhow } from "../api/community/knowhow";
 import Loading from "../components/Loading";
 import { useLoadingStore } from "../store/useLoadingStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProfileImg from "../assets/images/common/Profile_Img.svg";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function CommunityPage() {
-  
+
+  const navigate = useNavigate();
+
+  //토큰 불러오기
+  const { token } = useAuthStore();
+
   // 로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
@@ -17,6 +23,7 @@ export default function CommunityPage() {
 
   useEffect(() => {
     async function fetchKnowhow() {
+      
       setLoading(true);
 
       try {
@@ -36,6 +43,10 @@ export default function CommunityPage() {
 
   if (isLoading) {
     return <Loading fullScreen />;
+  }
+
+  if (!token) {
+    navigate("/signin");
   }
 
   return (

@@ -1,12 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import Table from "../../components/Table";
 import { useEffect, useState } from "react";
 import style from "./NoticePage.module.css";
 import { getNotice } from "../../api/support/notice";
+import { useAuthStore } from "../../store/useAuthStore";
+import Loading from "../../components/Loading";
+import { useLoadingStore } from "../../store/useLoadingStore";
 
 export default function NoticePage() {
+
+  const navigate = useNavigate();
+
+  //토큰 불러오기
+  const { token } = useAuthStore();
+
+  // 로딩 상태 관리
+  const { isLoading, setLoading } = useLoadingStore();
 
   //공지사항 데이터 상태 관리
   const [noticeData, setNoticeData] = useState([]);
@@ -18,14 +29,23 @@ export default function NoticePage() {
   useEffect(() => {
 
     async function fetchNotice() {
+
+      setLoading(true);
+
       try {
 
         const response = await getNotice();
+
         setNoticeData(response.data);
 
       } catch (error) {
+
         console.error('error :', error)
+
+      } finally {
+        setLoading(false);
       }
+
     }
 
     fetchNotice();
@@ -57,6 +77,14 @@ export default function NoticePage() {
       return new Date(a.date) - new Date(b.date);
     }
   });
+
+  if (isLoading) {
+    return <Loading fullScreen />;
+  }
+
+  if (!token) {
+    navigate("/signin");
+  }
 
   return (
     <Main className="subWrap bg">
