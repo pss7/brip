@@ -42,6 +42,7 @@ import TermsPage from './pages/support/TermsPage';
 
 //유저페이지
 import MyPage from './pages/MyPage';
+import NotificationDetail from './pages/NotificationDetail';
 
 function App() {
 
@@ -80,6 +81,7 @@ function App() {
         <Route path="/resumeupdate/:id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/activity" element={<ActivityPage />} />
+        <Route path="/notification/:notificationId" component={<NotificationDetail />} />
       </Routes>
     </BrowserRouter>
   )
