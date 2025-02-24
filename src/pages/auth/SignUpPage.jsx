@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,39 +7,45 @@ import Button from "../../components/Button";
 import style from "./SignUpPage.module.css";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
-import { useState, useEffect } from "react";
 import { checkNickname, signUp } from "../../api/auth";
 
 export default function SignUpPage() {
-
   const navigate = useNavigate();
 
-  //이름 상태관리
+  // 이름 상태 관리
   const [name, setName] = useState("");
 
-  //닉네임 상태관리
+  // 닉네임 상태 관리
   const [nickname, setNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
-  const [nicknameCheckMessage, setNicknameCheckMessage] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
-  //닉네임 검사
-  const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
-
-  //이메일 상태 관리
+  // 이메일 상태 관리
   const [email, setEmail] = useState("");
   const [emailDomain, setEmailDomain] = useState("");
 
-  //비밀번호 상태 관리
+  // 비밀번호 상태 관리
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  //비밀번호 검사
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,14}$/;
-
-  //비밀번호 확인 상태 관리
+  // 비밀번호 확인 상태 관리
   const [passwordCheck, setPasswordCheck] = useState("");
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
+
+  // 약관 동의 상태 관리
+  const [agreements, setAgreements] = useState({
+    agreeAll: false,
+    agreeAge: false,
+    agreeTerms: false,
+    agreePrivacy: false,
+    agreeMarketing: false,
+  });
+
+  // 닉네임 검사 정규식
+  const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
+
+  // 비밀번호 검사 정규식
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,14}$/;
 
   // 닉네임 입력 처리
   function handleNicknameChange(e) {
@@ -46,7 +53,7 @@ export default function SignUpPage() {
     setNickname(nicknameValue);
 
     if (!nicknameValue) {
-      setNicknameError("닉네임을 입력해주세요.")
+      setNicknameError("닉네임을 입력해주세요.");
       return;
     } else if (!nicknameRegex.test(nicknameValue)) {
       setNicknameError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
@@ -59,7 +66,7 @@ export default function SignUpPage() {
   // 중복 확인 버튼 클릭 시
   async function handleNicknameCheck() {
     if (!nickname) {
-      setNicknameError("닉네임을 입력해주세요.")
+      setNicknameError("닉네임을 입력해주세요.");
       return;
     } else if (!nicknameRegex.test(nickname)) {
       setNicknameError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
@@ -104,7 +111,35 @@ export default function SignUpPage() {
     }
   }
 
-  // 회원가입
+  // 전체 동의 체크박스 클릭 시
+  function handleAgreeAllChange(e) {
+    const checked = e.target.checked;
+    setAgreements({
+      agreeAll: checked,
+      agreeAge: checked,
+      agreeTerms: checked,
+      agreePrivacy: checked,
+      agreeMarketing: checked,
+    });
+  }
+
+  // 개별 약관 체크박스 클릭 시
+  function handleAgreementChange(e, agreement) {
+    const { checked } = e.target;
+    setAgreements((prev) => {
+      const newAgreements = { ...prev, [agreement]: checked };
+
+      // 필수 항목이 모두 체크되었을 때만 "전체 동의" 체크
+      const allRequiredChecked =
+        newAgreements.agreeAge && newAgreements.agreeTerms && newAgreements.agreePrivacy;
+      return {
+        ...newAgreements,
+        agreeAll: allRequiredChecked, // 필수 항목이 모두 체크되면 "전체 동의"도 체크
+      };
+    });
+  }
+
+  // 회원가입 처리
   async function handleSignUp(e) {
     e.preventDefault();
 
@@ -164,9 +199,6 @@ export default function SignUpPage() {
                     </button>
                   </div>
                   {nicknameError && <p className="errorMessage">{nicknameError}</p>}
-                  {/* {nicknameCheckMessage && (
-                    <p className="infoMessage">{nicknameCheckMessage}</p>
-                  )} */}
                 </div>
 
                 {/* 이메일 입력 */}
@@ -230,7 +262,9 @@ export default function SignUpPage() {
                   {!isPasswordMatch && <p className="errorMessage">비밀번호가 일치하지 않습니다.</p>}
                 </div>
 
-                {/* <div className={style.agreeChkBox}>
+                {/* 약관 동의 */}
+                <div className={style.agreeChkBox}>
+                  {/* 전체 동의 */}
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk01"
@@ -241,6 +275,8 @@ export default function SignUpPage() {
                     />
                     <label htmlFor="agreeChk01" className="allChk">모두 동의</label>
                   </div>
+
+                  {/* 개별 동의 항목 */}
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk02"
@@ -251,6 +287,7 @@ export default function SignUpPage() {
                     />
                     <label htmlFor="agreeChk02">만 14세 이상 가입 동의 (필수)</label>
                   </div>
+
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk03"
@@ -262,6 +299,7 @@ export default function SignUpPage() {
                     <label htmlFor="agreeChk03">서비스 이용약관 동의 (필수)</label>
                     <Link to="/terms">약관보기</Link>
                   </div>
+
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk04"
@@ -273,6 +311,7 @@ export default function SignUpPage() {
                     <label htmlFor="agreeChk04">개인정보처리방침 동의 (필수)</label>
                     <Link to="/policy">약관보기</Link>
                   </div>
+
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk05"
@@ -284,14 +323,12 @@ export default function SignUpPage() {
                     <label htmlFor="agreeChk05">마케팅 정보 수진 동의 (선택)</label>
                     <Link to="/terms">약관보기</Link>
                   </div>
-                </div> */}
+                </div>
 
                 <Button
                   text="회원가입"
                   onClick={handleSignUp}
-                // disabled={!isFormValid}
                 />
-
               </form>
             </div>
 
@@ -301,7 +338,6 @@ export default function SignUpPage() {
           </div>
         </Container>
       </div>
-
     </Main>
   );
 }
