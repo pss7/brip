@@ -42,7 +42,7 @@ export default function MyPage() {
     const nicknameValue = e.target.value;
     setNickname(nicknameValue);
   
-    if (nicknameValue === "") {
+    if (!nicknameValue) {
       setError("");
     } else if (!nicknameRegex.test(nicknameValue)) {
       // setError("2~12자, 특수문자 및 공백 불가"); 

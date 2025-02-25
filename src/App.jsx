@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //홈
 import Home from './pages/Home';
@@ -50,6 +50,7 @@ import ResumePage from './pages/user/ResumePage';
 import ResumeRegpage from './pages/user/ResumeRegpage';
 import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
 import NotificationDetail from './pages/user/NotificationDetail';
+import PasswordReset from './pages/auth/PasswordReset';
 
 function App() {
 
@@ -57,10 +58,20 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
+
         <Route path='/search' element={<SearchPage />} />
+
+        {/* 인증 */}
         <Route path='/signin' element={<SignInPage />} />
         <Route path='/passwordfind' element={<PwFindPage />} />
+        <Route path='/password-reset' element={<PasswordReset />} />
         <Route path='/signup' element={<SignUpPage />} />
+
+
+
+
+
+
         <Route path='/employment' element={<EmploymentPage />} />
         <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
         <Route path="/notice" element={<NoticePage />} />

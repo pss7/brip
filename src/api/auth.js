@@ -57,7 +57,7 @@ export async function sendVerificationCode(email) {
   }
 }
 
-// 인증코드 확인
+// 인증코드 확인 API
 export async function verifyResetCode(email, code) {
   try {
     const response = await axios.post(`${BASE_URL}/user/verify-code`, { email, code });
@@ -68,13 +68,78 @@ export async function verifyResetCode(email, code) {
   }
 }
 
-// 비밀번호 재설정
-export async function resetPassword(email, code, newPassword) {
+// 비밀번호 재설정 API
+export async function resetPassword(email, password) {
   try {
-    const response = await axios.post(`${BASE_URL}/user/reset-password`, { email, code, newPassword });
+    const response = await axios.post(`${BASE_URL}/user/reset-password`, { email, password });
     return response;
   } catch (error) {
-    console.error("erroe:", error);
+    console.error("error:", error);
+    return false;
+  }
+}
+
+// 카카오 로그인 URL 생성 함수
+export function getKakaoAuthUrl() {
+  const KAKAO_CLIENT_ID = 'b8f42e7ca7621dd36afb2846a53293bf';
+  const REDIRECT_URI = 'https://light-dolls-repair.loca.lt/api/user/kakao-login'; // 백엔드에서 토큰 교환 및 로그인 처리할 URI
+  return `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+}
+
+// 카카오 로그인 API
+export async function kakaoLogin(code) {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/user/kakao-login`,
+      { code },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    // 성공 시 반환받은 토큰 저장 (백엔드의 응답 구조에 따라 수정)
+    localStorage.setItem('token', response.data.token);
+    return response.data;
+  } catch (error) {
+    console.error('kakaoLogin error:', error);
+    return false;
+  }
+}
+
+// 구글 로그인 관련 함수
+export function getGoogleAuthUrl() {
+  const clientId = '591838263861-khs699q1690jec198bd2aost4rnlljl4.apps.googleusercontent.com';
+  const redirectUri = 'http://127.0.0.1:8080/api/user/google-login';
+  const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+  // 필요한 스코프 설정 (이메일, 프로필 등)
+  const scope = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid';
+
+  const params = {
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    scope: scope,
+    access_type: 'offline',
+    include_granted_scopes: 'true',
+    prompt: 'select_account consent'
+  };
+
+  const queryString = Object.keys(params)
+    .map(key => `${key}=${encodeURIComponent(params[key])}`)
+    .join('&');
+
+  return `${googleAuthUrl}?${queryString}`;
+}
+
+export async function googleLogin(code) {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/user/google-login`,
+      { code },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    localStorage.setItem('token', response.data.token);
+    return response.data;
+  } catch (error) {
+    console.error('googleLogin error:', error);
     return false;
   }
 }

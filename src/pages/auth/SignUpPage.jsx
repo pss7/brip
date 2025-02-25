@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
-import { Link, useNavigate } from "react-router-dom";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Button from "../../components/Button";
 import style from "./SignUpPage.module.css";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import { checkNickname, signUp } from "../../api/auth";
+import axios from "axios"; // API 호출 시 필요하다면 추가
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -47,20 +48,19 @@ export default function SignUpPage() {
   // 닉네임 검사 정규식
   const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
 
-  // 비밀번호 검사 정규식
+  // 비밀번호 검사 정규식 (영문+숫자+특수문자 6~14자, 대문자 사용 불가)
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,14}$/;
 
   // 닉네임 입력 처리
   function handleNicknameChange(e) {
     const nicknameValue = e.target.value;
     setNickname(nicknameValue);
-
+    setIsNicknameAvailable(false);
+    
     if (!nicknameValue) {
       setNicknameError("닉네임을 입력해주세요.");
-      return;
     } else if (!nicknameRegex.test(nicknameValue)) {
       setNicknameError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
-      return;
     } else {
       setNicknameError("");
     }
@@ -68,21 +68,19 @@ export default function SignUpPage() {
 
   // 중복 확인 버튼 클릭 시
   async function handleNicknameCheck() {
-    if (!nickname) {
-      setNicknameError("닉네임을 입력해주세요.");
-      return;
-    } else if (!nicknameRegex.test(nickname)) {
-      setNicknameError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
+    if (!nickname || nicknameError) {
+      setNicknameError("유효한 닉네임을 입력해주세요.");
       return;
     }
 
-    // 중복 확인을 API로 요청
-    const isNicknameTaken = await checkNickname(nickname);
-
-    if (!isNicknameTaken) {
-      setNicknameError("이미 존재하는 닉네임입니다.");
+    // 중복 확인 API 요청
+    const isAvailable = await checkNickname(nickname);
+    if (isAvailable) {
+      setNicknameError("사용 가능한 닉네임입니다.");
+      setIsNicknameAvailable(true);
     } else {
-      setNicknameError("사용가능한 닉네임입니다.");
+      setNicknameError("이미 존재하는 닉네임입니다.");
+      setIsNicknameAvailable(false);
     }
   }
 
@@ -93,25 +91,19 @@ export default function SignUpPage() {
 
     if (!passwordValue) {
       setPasswordError("비밀번호를 입력해주세요");
-      return;
     } else if (!passwordRegex.test(passwordValue)) {
       setPasswordError("영문+숫자+특수문자 혼합 6~14자 입력 (대문자 사용불가)");
-      return;
     } else {
       setPasswordError("");
     }
   }
 
-  // 비밀번호 확인
+  // 비밀번호 확인 처리
   function handlePasswordCheck(e) {
     const passwordCheckValue = e.target.value;
     setPasswordCheck(passwordCheckValue);
 
-    if (password !== passwordCheckValue) {
-      setIsPasswordMatch(false);
-    } else {
-      setIsPasswordMatch(true);
-    }
+    setIsPasswordMatch(password === passwordCheckValue);
   }
 
   // 전체 동의 체크박스 클릭 시
@@ -131,14 +123,10 @@ export default function SignUpPage() {
     const { checked } = e.target;
     setAgreements((prev) => {
       const newAgreements = { ...prev, [agreement]: checked };
-
-      // 필수 항목이 모두 체크되었을 때만 "전체 동의" 체크
+      // 필수 항목이 모두 체크되었을 때 전체 동의도 체크
       const allRequiredChecked =
         newAgreements.agreeAge && newAgreements.agreeTerms && newAgreements.agreePrivacy;
-      return {
-        ...newAgreements,
-        agreeAll: allRequiredChecked, // 필수 항목이 모두 체크되면 "전체 동의"도 체크
-      };
+      return { ...newAgreements, agreeAll: allRequiredChecked };
     });
   }
 
@@ -146,18 +134,31 @@ export default function SignUpPage() {
   async function handleSignUp(e) {
     e.preventDefault();
 
+    // 기본 입력값 검증
+    if (!name || !nickname || !email || !emailDomain || !password || !passwordCheck) {
+      alert("모든 필수 입력값을 확인해주세요.");
+      return;
+    }
+    if (nicknameError || passwordError || !isPasswordMatch || !isNicknameAvailable) {
+      alert("입력값을 다시 확인해주세요.");
+      return;
+    }
     // 이메일 주소 합치기
     const fullEmail = `${email}@${emailDomain}`;
 
     try {
       const response = await signUp({ name, nickname, email: fullEmail, password });
-      if (response) {
-        navigate("/");  // 성공적으로 회원가입되면 홈으로 이동
+      // signUp API 응답에서 token 값은 response.data.token 형태일 가능성이 있으므로, API 스펙에 맞게 수정
+      if (response && response.data) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/"); // 성공적으로 회원가입 시 홈으로 이동
       } else {
         console.error("회원가입 실패");
+        alert("회원가입에 실패하였습니다.");
       }
     } catch (error) {
       console.error("회원가입 실패:", error);
+      alert("회원가입 중 오류가 발생하였습니다.");
     }
   }
 
@@ -177,6 +178,7 @@ export default function SignUpPage() {
                       label="이름"
                       placeholder="이름 입력"
                       className="mb-15"
+                      value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
@@ -185,7 +187,7 @@ export default function SignUpPage() {
                 {/* 닉네임 입력 */}
                 <div className="inputWrap">
                   <label className="mb-15">닉네임</label>
-                  <div className={`${style.inputNicknameBox}`}>
+                  <div className={style.inputNicknameBox}>
                     <Input
                       type="text"
                       placeholder="닉네임 입력"
@@ -196,7 +198,7 @@ export default function SignUpPage() {
                       className={style.duplicateChkBtn}
                       type="button"
                       onClick={handleNicknameCheck}
-                      disabled={!nickname || nicknameError}
+                      disabled={!nickname || !!nicknameError}
                     >
                       중복확인
                     </button>
@@ -228,7 +230,7 @@ export default function SignUpPage() {
                       id="emailSelect"
                       options={presetEmailDomains}
                       onChange={(value) => {
-                        // 프리셋 옵션이 "직접 입력"이 아니라면 상태를 업데이트
+                        // 프리셋 옵션이 "직접 입력"이 아니면 상태 업데이트
                         if (value !== "직접 입력") {
                           setEmailDomain(value);
                         }
@@ -240,7 +242,9 @@ export default function SignUpPage() {
 
                 {/* 비밀번호 입력 */}
                 <div className="inputWrap">
-                  <label htmlFor="password" className="mb-15">비밀번호</label>
+                  <label htmlFor="password" className="mb-15">
+                    비밀번호
+                  </label>
                   <div className="inputBox">
                     <Input
                       id="password"
@@ -256,7 +260,9 @@ export default function SignUpPage() {
 
                 {/* 비밀번호 확인 */}
                 <div className="inputWrap">
-                  <label htmlFor="passwordCheck" className="mb-15">비밀번호 확인</label>
+                  <label htmlFor="passwordCheck" className="mb-15">
+                    비밀번호 확인
+                  </label>
                   <div className="inputBox">
                     <Input
                       id="passwordCheck"
@@ -267,7 +273,9 @@ export default function SignUpPage() {
                       error={!isPasswordMatch}
                     />
                   </div>
-                  {!isPasswordMatch && <p className="errorMessage">비밀번호가 일치하지 않습니다.</p>}
+                  {!isPasswordMatch && (
+                    <p className="errorMessage">비밀번호가 일치하지 않습니다.</p>
+                  )}
                 </div>
 
                 {/* 약관 동의 */}
@@ -281,7 +289,9 @@ export default function SignUpPage() {
                       onChange={handleAgreeAllChange}
                       className="blind"
                     />
-                    <label htmlFor="agreeChk01" className="allChk">모두 동의</label>
+                    <label htmlFor="agreeChk01" className="allChk">
+                      모두 동의
+                    </label>
                   </div>
 
                   {/* 개별 동의 항목 */}
@@ -293,7 +303,9 @@ export default function SignUpPage() {
                       onChange={(e) => handleAgreementChange(e, "agreeAge")}
                       className="blind"
                     />
-                    <label htmlFor="agreeChk02">만 14세 이상 가입 동의 (필수)</label>
+                    <label htmlFor="agreeChk02">
+                      만 14세 이상 가입 동의 (필수)
+                    </label>
                   </div>
 
                   <div className={style.inputChkBox}>
@@ -304,7 +316,9 @@ export default function SignUpPage() {
                       onChange={(e) => handleAgreementChange(e, "agreeTerms")}
                       className="blind"
                     />
-                    <label htmlFor="agreeChk03">서비스 이용약관 동의 (필수)</label>
+                    <label htmlFor="agreeChk03">
+                      서비스 이용약관 동의 (필수)
+                    </label>
                     <Link to="/terms">약관보기</Link>
                   </div>
 
@@ -316,7 +330,9 @@ export default function SignUpPage() {
                       onChange={(e) => handleAgreementChange(e, "agreePrivacy")}
                       className="blind"
                     />
-                    <label htmlFor="agreeChk04">개인정보처리방침 동의 (필수)</label>
+                    <label htmlFor="agreeChk04">
+                      개인정보처리방침 동의 (필수)
+                    </label>
                     <Link to="/policy">약관보기</Link>
                   </div>
 
@@ -328,15 +344,14 @@ export default function SignUpPage() {
                       onChange={(e) => handleAgreementChange(e, "agreeMarketing")}
                       className="blind"
                     />
-                    <label htmlFor="agreeChk05">마케팅 정보 수진 동의 (선택)</label>
+                    <label htmlFor="agreeChk05">
+                      마케팅 정보 수신 동의 (선택)
+                    </label>
                     <Link to="/terms">약관보기</Link>
                   </div>
                 </div>
 
-                <Button
-                  text="회원가입"
-                  onClick={handleSignUp}
-                />
+                <Button text="회원가입" type="submit" />
               </form>
             </div>
 

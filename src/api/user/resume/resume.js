@@ -60,7 +60,7 @@ export async function updateResume(resumeId, formData) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; // 수정 성공 시 응답 데이터
+    return response.data; 
   } catch (error) {
     console.error("error:", error);
     return false;

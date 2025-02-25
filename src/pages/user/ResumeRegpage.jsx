@@ -31,8 +31,6 @@ export default function ResumeRegpage() {
 
   const navigate = useNavigate();
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024;
-
   //데이터 상태 관리
   const [resumeData, setResumeData] = useState({
     resumeTitle: "",
@@ -147,12 +145,7 @@ export default function ResumeRegpage() {
   function handleResumePhotoChange(e) {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > MAX_FILE_SIZE) {
-        alert("이력서 사진 파일이 너무 큽니다. 5MB 이하의 파일을 선택해주세요.");
-        return;
-      }
       setResumePhotoFile(file);
-      // 파일 이름 대신 미리보기 URL
       const imageURL = URL.createObjectURL(file);
       setResumeData((prev) => ({ ...prev, resumePhoto: imageURL }));
     }
@@ -162,10 +155,6 @@ export default function ResumeRegpage() {
   function handlePortfolioFileChange(e) {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > MAX_FILE_SIZE) {
-        alert("포트폴리오 파일이 너무 큽니다. 5MB 이하의 파일을 선택해주세요.");
-        return;
-      }
       setPortfolioFile(file);
       setResumeData((prev) => {
         const updatedPortfolio = [...prev.portfolio];
@@ -174,6 +163,7 @@ export default function ResumeRegpage() {
       });
     }
   }
+
 
   function handlePortfolioFileDelete() {
     setPortfolioFile(null);
