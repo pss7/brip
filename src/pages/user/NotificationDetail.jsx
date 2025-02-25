@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getNotifications } from "../api/notifications/get";
+import { getNotifications } from "../../api/notifications/get";
 import style from "./NotificationDetail.module.css";
 
 export default function NotificationDetail() {

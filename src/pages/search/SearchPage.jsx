@@ -1,16 +1,16 @@
-import Card from "../components/Card";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
+import Card from "../../components/Card";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
 import style from "./SearchPage.module.css";
-import "../styles/style.css";
-import Guide02 from "../assets/images/main/Guide_Icon02.svg";
-import Guide03 from "../assets/images/main/Guide_Icon03.svg";
-import Guide04 from "../assets/images/main/Guide_Icon04.svg";
-import CardImg02 from "../assets/images/main/Card_Img02.png";
-import CardImg03 from "../assets/images/main/Card_Img03.png";
-import CardImg06 from "../assets/images/main/Card_Img06.png";
-import CardImg07 from "../assets/images/main/Card_Img07.png";
-import BgCard from "../components/BgCard";
+import "../../styles/style.css";
+import Guide02 from "../../assets/images/main/Guide_Icon02.svg";
+import Guide03 from "../../assets/images/main/Guide_Icon03.svg";
+import Guide04 from "../../assets/images/main/Guide_Icon04.svg";
+import CardImg02 from "../../assets/images/main/Card_Img02.png";
+import CardImg03 from "../../assets/images/main/Card_Img03.png";
+import CardImg06 from "../../assets/images/main/Card_Img06.png";
+import CardImg07 from "../../assets/images/main/Card_Img07.png";
+import BgCard from "../../components/BgCard";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 

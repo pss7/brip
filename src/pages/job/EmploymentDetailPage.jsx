@@ -1,15 +1,15 @@
-import ArrowPrevButton from "../components/ArrowPrevButton";
-import Card from "../components/Card";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
+import Card from "../../components/Card";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
 import style from "./EmploymentDetailPage.module.css";
-import CardImg02 from "../assets/images/main/Card_Img02.png";
-import CardImg03 from "../assets/images/main/Card_Img03.png";
-import DetailImg from "../assets/images/sub/Detail_Img.png";
-import Button from "../components/Button";
+import CardImg02 from "../../assets/images/main/Card_Img02.png";
+import CardImg03 from "../../assets/images/main/Card_Img03.png";
+import DetailImg from "../../assets/images/sub/Detail_Img.png";
+import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import CompletePopup from "../components/CompletePopup";  // Import the CompletePopup component
+import CompletePopup from "../../components/CompletePopup";  // Import the CompletePopup component
 
 export default function EmploymentDetailPage() {
 

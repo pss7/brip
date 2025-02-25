@@ -1,9 +1,9 @@
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import "../styles/style.css";
-import Button from "../components/Button";
-import RoadMapImg from "../assets/images/sub/RoadMap_Img.png";
-import ArrowPrevButton from "../components/ArrowPrevButton";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import "../../styles/style.css";
+import Button from "../../components/Button";
+import RoadMapImg from "../../assets/images/sub/RoadMap_Img.png";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
 import style from "./RoadMapInfoPage.module.css";
 
 export default function RoadMapInfoPage() {

@@ -1,0 +1,44 @@
+.content{position: relative; padding: 42px 114px 50px 192px!important;}
+.inputBox{margin-bottom: 20px;}
+.inputBox label{display: block; margin-bottom: 15px; color: #090A0A; font-weight: 500;}
+.userGreeting{margin-bottom: 46px;}
+.btn{margin-top: auto;}
+.imgBox{margin: 0 auto;}
+.subTitle{margin: 30px 0; color: #000; font-weight: 600; font-size: 20px;}
+.accordionSection{margin-bottom: 100px;}
+.accordionSection .accordionItem{margin: 45px 0 30px;}
+.accordionSection .button{position: relative; display: block; margin-bottom: 20px; color: #000; width: 100%; text-align: left; font-weight: 700; font-size: 20px;}
+.accordionSection .button::after{width: 17px; height: 9px; content: ''; position: absolute; top: 50%; transform: translateY(-50%); right:0; background: url(../assets/images/sub/arrow_icon07.svg)no-repeat center;}
+.accordionSection .button.active::after{transform: translateY(-50%) rotate(-180deg);}
+.imgFileBox{position: relative; width: 68px; height: 68px; margin: 0 auto 55px; cursor: pointer;}
+.imgFileBox img{position: absolute; right: 0; bottom: 0; display: block;}
+.fileLabel{margin-bottom: 30px; cursor: pointer;}
+.arrowPrevBtn{position: absolute; top:48px; left:57px;}
+
+.title{margin: 20px 0 35px; font-size: 20px; font-weight: 600;}
+
+.resumeRegBox label{margin-bottom: 15px;}
+.resumeRegBox .accordionBtn{display: block; width: 100%; text-align: left;}
+.resumeRegBox .selectBox{margin-bottom: 20px;}
+.resumeRegBox .selectBox  label{margin-bottom: 15px;}
+.resumeRegBox .selectBox .select{display: block; width: 100%; padding: 0 0 0 16px;
+  height: 48px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; cursor: pointer;}
+.resumeRegBox .selectBox .layoutBox{display: flex; gap: 0 18px;}
+.resumeRegBox .selectBox .layoutBox .box{display: flex; align-items: center; gap: 0 9px;}
+.resumeRegBox .selectBox .layoutBox .box span{font-size: 14px; color: #000;}
+.resumeRegBox .selectBox .layoutBox .box{width: 100%;}
+.resumeRegBox .regDateBox{margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 0 14px;}
+.resumeRegBox .regDateBox .inputBox{margin-bottom: 0; width: 100%;}
+.resumeRegBox .regBox label{margin-bottom: 15px;}
+.resumeRegBox .regBox textarea{padding: 20px 20px 20px 30px; width: 100%; height: 250px;}
+.resumeRegBox .fileWrap{display: flex; align-items: flex-start;}
+.resumeRegBox .fileUploadLeft {width: 95px; height: 92px; display: flex;
+  justify-content: center; align-items: center;  cursor: pointer;
+background: #F3F3F3 url(../../assets/images/sub/plus_btn.svg)no-repeat center;}
+.resumeRegBox .fileUploadLeft .plusIcon { font-size: 30px; color: #007BFF;}
+.resumeRegBox .fileUploadRight {display: flex; align-items: center; margin-left: 20px;}
+.resumeRegBox .fileName{ margin-right: 10px; color: #4334E0;}
+.resumeRegBox .deleteBtn {margin-top: 5px; width: 18px; height: 18px; cursor: pointer; background: url(../../assets/images/common/delete_icon.svg)no-repeat center;} 
+.resumeRegBox .fileLabel {cursor: pointer;}
+
+.profileImg{display: block; width: 100%;}

@@ -1,16 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import kakao from "../assets/images/login/Kakao_Img.svg";
-import naver from "../assets/images/login/Naver_Img.svg";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import kakao from "../../assets/images/login/Kakao_Img.svg";
+import naver from "../../assets/images/login/Naver_Img.svg";
 import style from "./MyPage.module.css";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import { useEffect, useState } from "react";
-import { getnicknameCheck, getProfile } from "../api/user";
-import CompletePopup from "../components/CompletePopup";
-import ConfirmPopup from "../components/ConfirmPopup";
-import { useLoadingStore } from "../store/useLoadingStore";
-import Loading from "../components/Loading";
+import { getnicknameCheck, getProfile } from "../../api/user";
+import CompletePopup from "../../components/CompletePopup";
+import ConfirmPopup from "../../components/ConfirmPopup";
+import { useLoadingStore } from "../../store/useLoadingStore";
+import Loading from "../../components/Loading";
 
 export default function MyPage() {
   // const navigate = useNavigate();
@@ -54,7 +54,6 @@ export default function MyPage() {
     setDisabled(false);
   }
   
-
   //닉네임 중복 체크 함수
   async function handleDuplicateCheck() {
 

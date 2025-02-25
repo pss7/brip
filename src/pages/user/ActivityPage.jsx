@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
 import style from "./ActivityPage.module.css";
-import { activityData } from "../data/activityData";
+import { activityData } from "../../data/activityData";
 import { useState } from "react";
-import AddPopup from "../components/AddPopup"; // AddPopup 컴포넌트 임포트
+import AddPopup from "../../components/AddPopup"; // AddPopup 컴포넌트 임포트
 
 export default function ActivityPage() {
   const [activities, setActivities] = useState(activityData);

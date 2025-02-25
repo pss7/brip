@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import { getKnowhow } from "../api/community/knowhow";
-import Loading from "../components/Loading";
-import { useLoadingStore } from "../store/useLoadingStore";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import { getKnowhow } from "../../api/community/knowhow";
+import Loading from "../../components/Loading";
+import { useLoadingStore } from "../../store/useLoadingStore";
 import { Link, useNavigate } from "react-router-dom";
-import ProfileImg from "../assets/images/common/Profile_Img.svg";
-import { useAuthStore } from "../store/useAuthStore";
+import ProfileImg from "../../assets/images/common/Profile_Img.svg";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function CommunityPage() {
 

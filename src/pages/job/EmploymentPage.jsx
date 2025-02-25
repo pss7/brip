@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
 import { useState } from "react";
-import SubSearch from "../components/SubSearch";
-import { employmentTabData } from "../data/employmentTabData";
-import { jobPostingsData } from "../data/jobPostingsData";
+import SubSearch from "../../components/SubSearch";
+import { employmentTabData } from "../../data/employmentTabData";
+import { jobPostingsData } from "../../data/jobPostingsData";
 
 export default function EmploymentPage() {
   const [activeTab, setActiveTab] = useState("지역별");

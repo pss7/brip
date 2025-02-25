@@ -1,14 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";  // useState와 useEffect를 임포트
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import { QAData } from "../data/QAData";
-import Message from "../components/Message";
-import { UserContext } from "../context/UserProvider";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import { QAData } from "../../data/QAData";
+import Message from "../../components/Message";
+import { UserContext } from "../../context/UserProvider";
 import { useContext } from "react";  // useContext를 임포트
-import ProfileImg from "../assets/images/common/Profile_Img.svg";
-import WritePopup from "../components/WritePopup";
-import AddPopup from "../components/AddPopup";
+import ProfileImg from "../../assets/images/common/Profile_Img.svg";
+import WritePopup from "../../components/WritePopup";
+import AddPopup from "../../components/AddPopup";
 
 export default function QADetailPage() {
 

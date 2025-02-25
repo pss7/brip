@@ -1,8 +1,8 @@
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import "../styles/style.css";
-import Button from "../components/Button";
-import ArrowPrevButton from "../components/ArrowPrevButton";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import "../../styles/style.css";
+import Button from "../../components/Button";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
 import { useState } from "react";
 import style from "./RoadMapDesignPage.module.css";
 

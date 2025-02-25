@@ -5,7 +5,7 @@ export default function ViewButton({ handleToggle, data, className, onEdit, dele
     <div className={`${className} ${style.viewBox}`}>
       <button
         className={style.viewBtn}
-        onClick={() => handleToggle(data.id)} // 보기 버튼 클릭 시, 상태 토글
+        onClick={() => handleToggle(data.resume_id)}
       >
         <span className="blind">
           수정, 삭제 더보기 버튼
@@ -14,10 +14,10 @@ export default function ViewButton({ handleToggle, data, className, onEdit, dele
 
       {data.isActionsVisible && (
         <div className={style.btnBox}>
-          <button className={style.editBtn} onClick={() => onEdit(data.id)}>
+          <button className={style.editBtn} onClick={() => onEdit(data.resume_id)}>
             수정
           </button>
-          <button className={style.delbtn} onClick={() => deleteResume(data.id)}>
+          <button className={style.delbtn} onClick={() => deleteResume(data.resume_id)}>
             삭제
           </button>
         </div>

@@ -1,37 +1,37 @@
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import { useAuthStore } from './store/useAuthStore';
-import { useEffect } from 'react';
 
+//홈
 import Home from './pages/Home';
-import SearchPage from './pages/SearchPage';
-import RoadMapInfoPage from './pages/RoadMapInfoPage';
-import RoadMapDesignPage from './pages/RoadMapDesignPage';
-import RoadMapResultPage from './pages/RoadMapResultPage';
-import EmploymentPage from './pages/EmploymentPage';
-import EmploymentDetailPage from './pages/EmploymentDetailPage';
-import InterestPage from './pages/InterestPage';
-import ResumePage from './pages/ResumePage';
-import ApplyPage from './pages/ApplyPage';
-import ActivityPage from './pages/ActivityPage';
-import ResumeRegpage from './pages/ResumeRegpage';
-import ResumeUpdatepage from './pages/ResumeUpdatepage';
-import FAQPage from './pages/FAQPage';
-import CommunityPage from './pages/CommunityPage';
-import ChatRoomDetailPage from './pages/ChatRoomDetailPage';
-import QADetailPage from './pages/QADetailPage';
 
-//인증페이지
+//검색
+import SearchPage from './pages/search/SearchPage';
+
+//로드맵
+import RoadMapInfoPage from './pages/roadmap/RoadMapInfoPage';
+import RoadMapDesignPage from './pages/roadmap/RoadMapDesignPage';
+import RoadMapResultPage from './pages/roadmap/RoadMapResultPage';
+
+//커뮤니티
+import CommunityPage from './pages/community/CommunityPage';
+import ChatRoomDetailPage from './pages/community/ChatRoomDetailPage';
+import QADetailPage from './pages/community/QADetailPage';
+
+//채용
+import EmploymentPage from './pages/job/EmploymentPage';
+import EmploymentDetailPage from './pages/job/EmploymentDetailPage';
+
+//인증
 import SignInPage from './pages/auth/SignInPage';
 import PwFindPage from './pages/auth/PwFindPage';
 import SignUpPage from './pages/auth/SignUpPage';
 
-//커리어 페이지
+//커리어
 import CareerPage from './pages/career/CareerPage';
 import CareerDetailPage from './pages//career/CareerDetailPage';
 import CareerExplorationPage from './pages/career/CareerExplorationPage';
 import CareerExplorationDetailPage from './pages/career/CareerExplorationDetailPage';
 
-//고객지원 페이지
+//고객지원
 import InquiryPage from './pages/support/InquiryPage';
 import InquiryRegisterPage from './pages/support/InquiryRegisterPage';
 import InquiryDetailPage from './pages/support/InquiryDetailPage';
@@ -39,10 +39,17 @@ import NoticePage from './pages/support/NoticePage';
 import NoticeDetailPage from './pages/support/NoticeDetailPage';
 import PolicyPage from './pages/support/PolicyPage';
 import TermsPage from './pages/support/TermsPage';
+import FAQPage from './pages/support/FAQPage';
 
-//유저페이지
-import MyPage from './pages/MyPage';
-import NotificationDetail from './pages/NotificationDetail';
+//유저
+import MyPage from './pages/user/MyPage';
+import ActivityPage from './pages/user/ActivityPage';
+import InterestPage from './pages/user/InterestPage';
+import ApplyPage from './pages/user/ApplyPage';
+import ResumePage from './pages/user/ResumePage';
+import ResumeRegpage from './pages/user/ResumeRegpage';
+import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
+import NotificationDetail from './pages/user/NotificationDetail';
 
 function App() {
 

@@ -24,6 +24,9 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [emailDomain, setEmailDomain] = useState("");
 
+  // 프리셋 이메일 도메인 옵션 (첫 번째 항목은 '직접 입력'을 의미)
+  const presetEmailDomains = ["직접 입력", "gmail.com", "naver.com", "daum.net"];
+
   // 비밀번호 상태 관리
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -223,8 +226,13 @@ export default function SignUpPage() {
                     <Select
                       className={style.select}
                       id="emailSelect"
-                      options={["gmail.com", "naver.com", "daum.net"]}
-                      onChange={(e) => setEmailDomain(e.target.value)}
+                      options={presetEmailDomains}
+                      onChange={(value) => {
+                        // 프리셋 옵션이 "직접 입력"이 아니라면 상태를 업데이트
+                        if (value !== "직접 입력") {
+                          setEmailDomain(value);
+                        }
+                      }}
                       hiddenText="이메일 선택"
                     />
                   </div>

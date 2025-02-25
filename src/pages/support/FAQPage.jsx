@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import { faqData } from "../data/faqData";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import { faqData } from "../../data/faqData";
 import { useState } from "react";
 import style from "./FAQPage.module.css";
 

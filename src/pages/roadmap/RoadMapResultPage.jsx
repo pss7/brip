@@ -1,13 +1,13 @@
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import "../styles/style.css";
-import Button from "../components/Button";
-import ArrowPrevButton from "../components/ArrowPrevButton";
-import ResultImg from "../assets/images/sub/Result_Img.png";
-import Chart_Img from "../assets/images/sub/Chart_Img.png";
-import Result_Img01 from "../assets/images/sub/Result_Img01.png";
-import Result_Img02 from "../assets/images/sub/Result_Img02.png";
-import Result_Img03 from "../assets/images/sub/Result_Img03.png";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import "../../styles/style.css";
+import Button from "../../components/Button";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
+import ResultImg from "../../assets/images/sub/Result_Img.png";
+import Chart_Img from "../../assets/images/sub/Chart_Img.png";
+import Result_Img01 from "../../assets/images/sub/Result_Img01.png";
+import Result_Img02 from "../../assets/images/sub/Result_Img02.png";
+import Result_Img03 from "../../assets/images/sub/Result_Img03.png";
 import style from "./RoadMapResultPage.module.css";
 
 import { Link } from "react-router-dom";
