@@ -4,39 +4,34 @@ import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Button from "../../components/Button";
-import style from "./SignUpPage.module.css";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
+import CompletePopup from "../../components/CompletePopup"; // ✅ 모달 컴포넌트 (수정 X)
+import style from "./SignUpPage.module.css";
 import { checkNickname, signUp } from "../../api/auth";
-import axios from "axios"; // API 호출 시 필요하다면 추가
 
 export default function SignUpPage() {
   const navigate = useNavigate();
 
-  // 이름 상태 관리
+  // 기본 상태
   const [name, setName] = useState("");
-
-  // 닉네임 상태 관리
   const [nickname, setNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
-  // 이메일 상태 관리
+  // 이메일 관련
   const [email, setEmail] = useState("");
   const [emailDomain, setEmailDomain] = useState("");
-
-  // 프리셋 이메일 도메인 옵션 (첫 번째 항목은 '직접 입력'을 의미)
+  const [isCustomEmail, setIsCustomEmail] = useState(false);
   const presetEmailDomains = ["직접 입력", "gmail.com", "naver.com", "daum.net"];
 
-  // 비밀번호 상태 관리
+  // 비밀번호 관련
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
-  // 비밀번호 확인 상태 관리
   const [passwordCheck, setPasswordCheck] = useState("");
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
 
-  // 약관 동의 상태 관리
+  // 약관 동의
   const [agreements, setAgreements] = useState({
     agreeAll: false,
     agreeAge: false,
@@ -45,68 +40,111 @@ export default function SignUpPage() {
     agreeMarketing: false,
   });
 
-  // 닉네임 검사 정규식
-  const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
+  // 모달 상태
+  const [popupMessage, setPopupMessage] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupError, setIsPopupError] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  // 비밀번호 검사 정규식 (영문+숫자+특수문자 6~14자, 대문자 사용 불가)
+  // 닉네임 & 비밀번호 정규식
+  const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,14}$/;
 
-  // 닉네임 입력 처리
+  // 모달 닫기 => 회원가입 성공 시 /signin 이동
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    if (registrationSuccess) {
+      navigate("/signin"); // ✅ 로그인 페이지 이동
+    }
+  };
+
+  // 이메일 도메인 Select 변경
+  function handleEmailDomainChange(value) {
+    if (value === "직접 입력") {
+      setIsCustomEmail(true);
+      setEmailDomain("");
+    } else {
+      setIsCustomEmail(false);
+      setEmailDomain(value);
+    }
+  }
+
+  // 닉네임 입력
   function handleNicknameChange(e) {
-    const nicknameValue = e.target.value;
-    setNickname(nicknameValue);
+    const newVal = e.target.value;
+    setNickname(newVal);
     setIsNicknameAvailable(false);
-    
-    if (!nicknameValue) {
+
+    if (!newVal) {
       setNicknameError("닉네임을 입력해주세요.");
-    } else if (!nicknameRegex.test(nicknameValue)) {
+    } else if (!nicknameRegex.test(newVal)) {
       setNicknameError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
     } else {
       setNicknameError("");
     }
   }
 
-  // 중복 확인 버튼 클릭 시
+  // 닉네임 중복확인
   async function handleNicknameCheck() {
+
     if (!nickname || nicknameError) {
-      setNicknameError("유효한 닉네임을 입력해주세요.");
+
+      setPopupMessage("유효한 닉네임을 입력해주세요.");
+      setIsPopupError(true);
+      setIsPopupOpen(true);
       return;
+
     }
 
-    // 중복 확인 API 요청
-    const isAvailable = await checkNickname(nickname);
-    if (isAvailable) {
-      setNicknameError("사용 가능한 닉네임입니다.");
-      setIsNicknameAvailable(true);
-    } else {
-      setNicknameError("이미 존재하는 닉네임입니다.");
-      setIsNicknameAvailable(false);
+    try {
+
+      const response = await checkNickname(nickname);
+
+      if (response.data.result === "fail") {
+        // 이미 존재하는 닉네임
+        setNicknameError(response.data.message); // "이미 존재하는 닉네임입니다."
+        setIsNicknameAvailable(false);
+        setPopupMessage(response.data.message);
+        setIsPopupError(true);  // => ErrorIcon
+        setIsPopupOpen(true);
+      } else {
+        // 사용 가능한 닉네임
+        setNicknameError("");
+        setIsNicknameAvailable(true);
+        setPopupMessage(response.data.message || "사용 가능한 닉네임입니다.");
+        setIsPopupError(false); // => CompleteIcon
+        setIsPopupOpen(true);
+      }
+    } catch (error) {
+      console.error("닉네임 중복확인 오류:", err);
+      setPopupMessage("닉네임 중복 확인 중 오류가 발생하였습니다.");
+      setIsPopupError(true);
+      setIsPopupOpen(true);
     }
   }
 
-  // 비밀번호 유효성 검사
+  // 비밀번호 입력
   function handlePasswordChange(e) {
-    const passwordValue = e.target.value;
-    setPassword(passwordValue);
+    const newVal = e.target.value;
+    setPassword(newVal);
 
-    if (!passwordValue) {
+    if (!newVal) {
       setPasswordError("비밀번호를 입력해주세요");
-    } else if (!passwordRegex.test(passwordValue)) {
+    } else if (!passwordRegex.test(newVal)) {
       setPasswordError("영문+숫자+특수문자 혼합 6~14자 입력 (대문자 사용불가)");
     } else {
       setPasswordError("");
     }
   }
 
-  // 비밀번호 확인 처리
+  // 비밀번호 확인
   function handlePasswordCheck(e) {
-    const passwordCheckValue = e.target.value;
-    setPasswordCheck(passwordCheckValue);
-
-    setIsPasswordMatch(password === passwordCheckValue);
+    const newVal = e.target.value;
+    setPasswordCheck(newVal);
+    setIsPasswordMatch(password === newVal);
   }
 
-  // 전체 동의 체크박스 클릭 시
+  // 전체동의
   function handleAgreeAllChange(e) {
     const checked = e.target.checked;
     setAgreements({
@@ -118,15 +156,14 @@ export default function SignUpPage() {
     });
   }
 
-  // 개별 약관 체크박스 클릭 시
+  // 개별동의
   function handleAgreementChange(e, agreement) {
     const { checked } = e.target;
     setAgreements((prev) => {
-      const newAgreements = { ...prev, [agreement]: checked };
-      // 필수 항목이 모두 체크되었을 때 전체 동의도 체크
+      const newVal = { ...prev, [agreement]: checked };
       const allRequiredChecked =
-        newAgreements.agreeAge && newAgreements.agreeTerms && newAgreements.agreePrivacy;
-      return { ...newAgreements, agreeAll: allRequiredChecked };
+        newVal.agreeAge && newVal.agreeTerms && newVal.agreePrivacy;
+      return { ...newVal, agreeAll: allRequiredChecked };
     });
   }
 
@@ -134,31 +171,52 @@ export default function SignUpPage() {
   async function handleSignUp(e) {
     e.preventDefault();
 
-    // 기본 입력값 검증
+    // 필수 입력값
     if (!name || !nickname || !email || !emailDomain || !password || !passwordCheck) {
-      alert("모든 필수 입력값을 확인해주세요.");
+      setPopupMessage("모든 필수 입력값을 확인해주세요.");
+      setIsPopupError(true);
+      setIsPopupOpen(true);
       return;
     }
-    if (nicknameError || passwordError || !isPasswordMatch || !isNicknameAvailable) {
-      alert("입력값을 다시 확인해주세요.");
+
+    // 필수 약관
+    if (!agreements.agreeAge || !agreements.agreeTerms || !agreements.agreePrivacy) {
+      setPopupMessage("필수 약관(만 14세 이상, 서비스 이용약관, 개인정보처리방침)에 모두 동의해주세요.");
+      setIsPopupError(true);
+      setIsPopupOpen(true);
       return;
     }
-    // 이메일 주소 합치기
+
+    // 이메일 합치기
     const fullEmail = `${email}@${emailDomain}`;
 
     try {
-      const response = await signUp({ name, nickname, email: fullEmail, password });
-      // signUp API 응답에서 token 값은 response.data.token 형태일 가능성이 있으므로, API 스펙에 맞게 수정
+      // 회원가입 API
+      const response = await signUp({
+        name,
+        nickname,
+        email: fullEmail,
+        password,
+      });
+      // 성공
       if (response && response.data) {
-        localStorage.setItem("token", response.data.token);
-        navigate("/"); // 성공적으로 회원가입 시 홈으로 이동
+        setPopupMessage("회원가입이 완료되었습니다.");
+        setIsPopupError(false);      // ✅ 성공 => CompleteIcon
+        setRegistrationSuccess(true);
+        setIsPopupOpen(true);
       } else {
-        console.error("회원가입 실패");
-        alert("회원가입에 실패하였습니다.");
+        // 실패
+        const failMsg = response?.data?.message || "회원가입에 실패하였습니다.";
+        setPopupMessage(failMsg);
+        setIsPopupError(true);       // => ErrorIcon
+        setIsPopupOpen(true);
       }
     } catch (error) {
       console.error("회원가입 실패:", error);
-      alert("회원가입 중 오류가 발생하였습니다.");
+      const errMsg = error?.response?.data?.message || "회원가입 중 오류가 발생하였습니다.";
+      setPopupMessage(errMsg);
+      setIsPopupError(true); // => ErrorIcon
+      setIsPopupOpen(true);
     }
   }
 
@@ -170,7 +228,8 @@ export default function SignUpPage() {
             <h3 className={style.title}>회원가입</h3>
             <div className="container">
               <form onSubmit={handleSignUp}>
-                {/* 이름 입력 */}
+
+                {/* 이름 */}
                 <div className="inputWrap">
                   <div className="inputBox">
                     <Input
@@ -184,7 +243,7 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
-                {/* 닉네임 입력 */}
+                {/* 닉네임 */}
                 <div className="inputWrap">
                   <label className="mb-15">닉네임</label>
                   <div className={style.inputNicknameBox}>
@@ -203,10 +262,9 @@ export default function SignUpPage() {
                       중복확인
                     </button>
                   </div>
-                  {nicknameError && <p className="errorMessage">{nicknameError}</p>}
                 </div>
 
-                {/* 이메일 입력 */}
+                {/* 이메일 */}
                 <div className="inputWrap">
                   <label className="mb-15">이메일</label>
                   <div className={style.layoutBox}>
@@ -223,24 +281,20 @@ export default function SignUpPage() {
                         type="text"
                         value={emailDomain}
                         onChange={(e) => setEmailDomain(e.target.value)}
+                        disabled={!isCustomEmail}
                       />
                     </div>
                     <Select
                       className={style.select}
                       id="emailSelect"
                       options={presetEmailDomains}
-                      onChange={(value) => {
-                        // 프리셋 옵션이 "직접 입력"이 아니면 상태 업데이트
-                        if (value !== "직접 입력") {
-                          setEmailDomain(value);
-                        }
-                      }}
+                      onChange={handleEmailDomainChange}
                       hiddenText="이메일 선택"
                     />
                   </div>
                 </div>
 
-                {/* 비밀번호 입력 */}
+                {/* 비밀번호 */}
                 <div className="inputWrap">
                   <label htmlFor="password" className="mb-15">
                     비밀번호
@@ -280,7 +334,6 @@ export default function SignUpPage() {
 
                 {/* 약관 동의 */}
                 <div className={style.agreeChkBox}>
-                  {/* 전체 동의 */}
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk01"
@@ -293,8 +346,6 @@ export default function SignUpPage() {
                       모두 동의
                     </label>
                   </div>
-
-                  {/* 개별 동의 항목 */}
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk02"
@@ -307,7 +358,6 @@ export default function SignUpPage() {
                       만 14세 이상 가입 동의 (필수)
                     </label>
                   </div>
-
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk03"
@@ -321,7 +371,6 @@ export default function SignUpPage() {
                     </label>
                     <Link to="/terms">약관보기</Link>
                   </div>
-
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk04"
@@ -335,7 +384,6 @@ export default function SignUpPage() {
                     </label>
                     <Link to="/policy">약관보기</Link>
                   </div>
-
                   <div className={style.inputChkBox}>
                     <input
                       id="agreeChk05"
@@ -354,13 +402,20 @@ export default function SignUpPage() {
                 <Button text="회원가입" type="submit" />
               </form>
             </div>
-
             <div className="linkBox">
               <ArrowPrevButton href="/signin" hiddenText="로그인 화면으로 이동" />
             </div>
           </div>
         </Container>
       </div>
+
+      {/* ✅ CompletePopup (수정 X) */}
+      <CompletePopup
+        isOpen={isPopupOpen}
+        message={popupMessage}
+        error={isPopupError}
+        onClose={closePopup}
+      />
     </Main>
   );
 }

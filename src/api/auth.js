@@ -38,7 +38,7 @@ export async function signUp({ name, nickname, email, password }) {
       { name, nickname, email, password },
       { headers: { 'Content-Type': 'application/json' } }
     );
-    localStorage.setItem('token', response.token);
+    // localStorage.setItem('token', response.token);
     return response;
   } catch (error) {
     console.error('error:', error);
