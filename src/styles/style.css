@@ -426,7 +426,6 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
   
 }
 
-
 /* 초기화버튼 */
 .resetBtnBox{margin: 25px 0; display: flex; justify-content: flex-end;}
 .resetBtn{line-height: 1;}

@@ -11,11 +11,11 @@
 .snsListBox .snsList li button::after{content: ''; position: absolute; top:54%; left: 50%; transform:translate(-50%, -50%);}
 .snsListBox .snsList li button.naverLogin,
 .snsListBox .snsList li button.kakaoLogin{width: 54px; height: 54px;}
-.snsListBox .snsList li button.naverLogin::after{width: 54px; height: 54px; background: url(../../assets/images/login/naver_img.svg)no-repeat center; background-size: 100% auto;}
+.snsListBox .snsList li button.naverLogin::after{width: 54px; height: 54px; background: url(/src/assets/images/login/Naver_Img.svg)no-repeat center; background-size: 100% auto;}
 .snsListBox .snsList li button.kakaoLogin{margin-right: 10px;}
-.snsListBox .snsList li button.kakaoLogin::after{width: 54px; height: 54px; background: url(../../assets/images/login/kakao_img.svg)no-repeat center; background-size: 100% auto;}
+.snsListBox .snsList li button.kakaoLogin::after{width: 54px; height: 54px; background: url(/src/assets/images/login/Kakao_Img.svg)no-repeat center; background-size: 100% auto;}
 .snsListBox .snsList li button.googleLogin{width: 46px; height: 46px; box-shadow: 4px 4px 20px rgba(217, 217, 217, 1);}
-.snsListBox .snsList li button.googleLogin::after{width: 46px; height: 46px; background: url(../../assets/images/login/google_img.svg)no-repeat center;}
+.snsListBox .snsList li button.googleLogin::after{width: 46px; height: 46px; background: url(/src/assets/images/login/Google_Img.svg)no-repeat center;}
 .signupLinkBox{display: flex; gap: 0 6px; justify-content: center;}
 .signupLinkBox span{color: #000;}
 .signupLinkBox a{color: #000; font-weight: 600; text-decoration: underline;}
