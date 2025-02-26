@@ -54,7 +54,7 @@ export default function SignUpPage() {
   const closePopup = () => {
     setIsPopupOpen(false);
     if (registrationSuccess) {
-      navigate("/signin"); // ✅ 로그인 페이지 이동
+      navigate("/signin");
     }
   };
 
@@ -101,30 +101,37 @@ export default function SignUpPage() {
       const response = await checkNickname(nickname);
 
       if (response.data.result === "fail") {
+
         // 이미 존재하는 닉네임
-        setNicknameError(response.data.message); // "이미 존재하는 닉네임입니다."
+        setNicknameError(response.data.message);
         setIsNicknameAvailable(false);
         setPopupMessage(response.data.message);
-        setIsPopupError(true);  // => ErrorIcon
+        setIsPopupError(true);
         setIsPopupOpen(true);
+
       } else {
+
         // 사용 가능한 닉네임
         setNicknameError("");
         setIsNicknameAvailable(true);
         setPopupMessage(response.data.message || "사용 가능한 닉네임입니다.");
-        setIsPopupError(false); // => CompleteIcon
+        setIsPopupError(false);
         setIsPopupOpen(true);
+
       }
     } catch (error) {
+
       console.error("닉네임 중복확인 오류:", err);
       setPopupMessage("닉네임 중복 확인 중 오류가 발생하였습니다.");
       setIsPopupError(true);
       setIsPopupOpen(true);
+
     }
   }
 
   // 비밀번호 입력
   function handlePasswordChange(e) {
+
     const newVal = e.target.value;
     setPassword(newVal);
 
@@ -135,6 +142,7 @@ export default function SignUpPage() {
     } else {
       setPasswordError("");
     }
+
   }
 
   // 비밀번호 확인
@@ -198,24 +206,27 @@ export default function SignUpPage() {
         email: fullEmail,
         password,
       });
+
       // 성공
+
       if (response && response.data) {
         setPopupMessage("회원가입이 완료되었습니다.");
-        setIsPopupError(false);      // ✅ 성공 => CompleteIcon
+        setIsPopupError(false);
         setRegistrationSuccess(true);
         setIsPopupOpen(true);
       } else {
+
         // 실패
         const failMsg = response?.data?.message || "회원가입에 실패하였습니다.";
         setPopupMessage(failMsg);
-        setIsPopupError(true);       // => ErrorIcon
+        setIsPopupError(true);
         setIsPopupOpen(true);
       }
     } catch (error) {
       console.error("회원가입 실패:", error);
       const errMsg = error?.response?.data?.message || "회원가입 중 오류가 발생하였습니다.";
       setPopupMessage(errMsg);
-      setIsPopupError(true); // => ErrorIcon
+      setIsPopupError(true);
       setIsPopupOpen(true);
     }
   }
