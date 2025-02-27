@@ -19,7 +19,7 @@ export default function NoticeDetailPage() {
   const notice = noticeData.find((data) => { return (data.id === parseInt(id)) })
 */
 
-  const [noticeData, setNoticeData] = useState();
+  const [noticeData, setNoticeData] = useState([]);
 
   //데이터 불러오기
   useEffect(() => {

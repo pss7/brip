@@ -72,10 +72,10 @@ export default function Table({
           {visibleData.map((data, index) => {
             return (
               <tr key={index}>
-                <td>{data.inquiry_id} {data.notice_id}</td>
-                <td>공지사항</td>
+                <td>{data.notice_id ? data.notice_id : data.inquiry_id}</td>
+                <td>{data.notice_id ? "공지사항" : "1:1 문의"}</td>
                 <td>
-                  <Link to={`${href}/${data.inquiry_id}`} className={textClassName}>
+                  <Link to={`${href}/${data.notice_id || data.inquiry_id}`} className={textClassName}>
                     {data.title}
                   </Link>
                 </td>
