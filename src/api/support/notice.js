@@ -2,21 +2,25 @@ import axios from 'axios';
 import { BASE_URL } from '../apiConfig';
 
 //공지사항 목록 API
-export async function getNotice() {
+export async function getNotice({ page = 0, size = 10, sort = "oldest", search = "" } = {}) {
 
   const token = localStorage.getItem("token");
 
   try {
 
-    const response = await axios.get(`${BASE_URL}/board/notice/list?search=g&sort=latest`,
+    const response = await axios.get(`${BASE_URL}/board/notice/list`,
       {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
+        },
+        params: {
+          page,
+          size,
+          sort,
+          search
         }
       });
-
-    // const response = await axios.get(`${BASE_URL}/board/notice/list?search=${searchTerm}&sort=${sortOrder}`);
 
     return response.data;
   } catch (error) {

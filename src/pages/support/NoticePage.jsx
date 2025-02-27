@@ -1,3 +1,4 @@
+// NoticePage.jsx
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
@@ -10,22 +11,23 @@ import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
 
 export default function NoticePage() {
-
   const navigate = useNavigate();
-
-  //토큰 불러오기
   const { token } = useAuthStore();
 
-  // 로딩 상태 관리
+  //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
-  //공지사항 데이터 상태 관리
+  //데이터 상태관리
   const [noticeData, setNoticeData] = useState([]);
+  console.log(noticeData);
 
+  //정렬 상태 관리
   const [sortOrder, setSortOrder] = useState("최신순");
 
+  //검색 상태 관리
   const [searchKeyword, setSearchKeyword] = useState("");
 
+  //데이터 불러오기
   useEffect(() => {
 
     async function fetchNotice() {
@@ -34,47 +36,62 @@ export default function NoticePage() {
 
       try {
 
-        const response = await getNotice();
+        const mappedSort = sortOrder === "최신순" ? "newest" : "oldest";
+        
+        const response = await getNotice({
+          page: 0,
+          size: 10,
+          sort: mappedSort,
+          search: searchKeyword,
+        });
 
-        setNoticeData(response.data);
+        if (response && response.result === "success") {
 
+          setNoticeData(response.data);
+
+        }
+
+        else {
+
+          console.error("공지사항 조회 실패");
+
+        }
       } catch (error) {
 
-        console.error('error :', error)
+        console.error("error :", error);
 
       } finally {
-        setLoading(false);
-      }
 
+        setLoading(false);
+
+      }
     }
 
     fetchNotice();
-  }, [])
 
+  }, [sortOrder]);
+
+  // 검색어 업데이트 함수
   const handleSearchChange = (e) => {
     setSearchKeyword(e.target.value);
   };
 
-  const filteredData = noticeData.filter((filterData) => {
-    const titleMatches = filterData.title
-      .toLowerCase()
-      .includes(searchKeyword.toLowerCase());
-    const contentMatches = filterData.content
-      .toLowerCase()
-      .includes(searchKeyword.toLowerCase());
-
-    return titleMatches || contentMatches;
-  });
-
-  const handleChange = (e) => {
+  // 정렬 선택 업데이트 함수
+  const handleSelectChange = (e) => {
     setSortOrder(e.target.value);
   };
 
+  //실시간 검색
+  const filteredData = noticeData.filter((item) =>
+    item.title.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
+
+  //최신순, 오래된 순
   const sortedData = filteredData.sort((a, b) => {
     if (sortOrder === "최신순") {
-      return new Date(b.date) - new Date(a.date);
+      return new Date(b.created_at) - new Date(a.created_at);
     } else {
-      return new Date(a.date) - new Date(b.date);
+      return new Date(a.created_at) - new Date(b.created_at);
     }
   });
 
@@ -115,9 +132,7 @@ export default function NoticePage() {
                   <h4>공지사항</h4>
                   <div className="searchBox">
                     <div className="search">
-                      <label htmlFor="search" className="blind">
-                        검색
-                      </label>
+                      <label htmlFor="search" className="blind">검색</label>
                       <input
                         id="search"
                         placeholder="키워드를 검색해주세요."
@@ -126,14 +141,12 @@ export default function NoticePage() {
                       />
                     </div>
                     <div className="selectBox">
-                      <label htmlFor="select" className="blind">
-                        최신순, 오래된 순 선택
-                      </label>
+                      <label htmlFor="select" className="blind">최신순, 오래된 순 선택</label>
                       <select
                         id="select"
                         className="select"
                         value={sortOrder}
-                        onChange={handleChange}
+                        onChange={handleSelectChange}
                       >
                         <option value="최신순">최신순</option>
                         <option value="오래된 순">오래된 순</option>
@@ -151,17 +164,16 @@ export default function NoticePage() {
                     className={`${style.tableBox}`}
                     textClassName="textLeft ellipsisText"
                     columns={["NO.", "구분", "제목", "등록일"]}
-                    colgroup={(
+                    colgroup={
                       <>
                         <col style={{ width: "90px" }} />
                         <col style={{ width: "100px" }} />
                         <col style={{ width: "auto" }} />
                         <col style={{ width: "150px" }} />
                       </>
-                    )}
+                    }
                   />
                 )}
-
               </div>
             </div>
           </div>

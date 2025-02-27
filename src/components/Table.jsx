@@ -72,8 +72,8 @@ export default function Table({
           {visibleData.map((data, index) => {
             return (
               <tr key={index}>
-                <td>{data.inquiry_id}</td>
-                <td>{data.category}</td>
+                <td>{data.inquiry_id} {data.notice_id}</td>
+                <td>공지사항</td>
                 <td>
                   <Link to={`${href}/${data.inquiry_id}`} className={textClassName}>
                     {data.title}

@@ -12,7 +12,7 @@ import { login, getKakaoAuthUrl, getGoogleAuthUrl } from "../../api/auth";
 import CompletePopup from "../../components/CompletePopup";
 
 export default function SignInPage() {
-  
+
   const navigate = useNavigate();
   const { setAuthData } = useAuthStore();
 
@@ -122,11 +122,14 @@ export default function SignInPage() {
 
       // 로그인 성공 시 메인 페이지로 이동
       navigate("/");
+
     } catch (error) {
+
       // 네트워크 에러 / 기타 예외 상황
       console.error("로그인 실패:", error);
       setErrorMessage("로그인에 실패했습니다. 잠시 후 다시 시도해주세요.");
       setIsModalOpen(true);
+
     }
   }
 
