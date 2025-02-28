@@ -10,16 +10,17 @@ import Loading from "../../components/Loading";
 
 export default function NoticeDetailPage() {
 
+  const { id } = useParams();
+
   //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
-  const { id } = useParams();
+  //공지사항 상세 데이터
+  const [noticeData, setNoticeData] = useState([]);
 
   /*
   const notice = noticeData.find((data) => { return (data.id === parseInt(id)) })
 */
-
-  const [noticeData, setNoticeData] = useState([]);
 
   //데이터 불러오기
   useEffect(() => {
@@ -31,7 +32,12 @@ export default function NoticeDetailPage() {
       try {
 
         const response = await getDetailNotice(id);
-        setNoticeData(response);
+
+        if (response) {
+
+          setNoticeData(response);;
+
+        }
 
       } catch (error) {
         console.log("error", error);

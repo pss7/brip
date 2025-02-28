@@ -45,17 +45,12 @@ export default function NoticePage() {
           search: searchKeyword,
         });
 
-        if (response && response.result === "success") {
+        if (response) {
 
           setNoticeData(response.data);
 
         }
 
-        else {
-
-          console.error("공지사항 조회 실패");
-
-        }
       } catch (error) {
 
         console.error("error :", error);
