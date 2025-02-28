@@ -402,6 +402,13 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
+@media (max-width: 480px){
+
+  .communityBox .shareBox{margin:0 0 30px;}
+  .communityBox .communityListContainer .communityInfoBox{flex-direction: column; align-items: flex-start; gap: 10px 0;}
+
+}
+
 @media (max-width: 414px){
 
   .communityBox aside .addBtnBox{flex-direction: column; gap: 10px 0;}
