@@ -9,6 +9,7 @@ import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import { getProfile } from "../../api/user";
 import { useAuthStore } from "../../store/useAuthStore";
 import { format } from "date-fns";
+import CompletePopup from "../../components/CompletePopup";
 
 export default function CommunityPage() {
 
@@ -27,6 +28,11 @@ export default function CommunityPage() {
   const { token } = useAuthStore();
 
   const { isLoading, setLoading } = useLoadingStore();
+
+  //팝업 관련 상태관리리
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupError, setPopupError] = useState(false);
 
   useEffect(() => {
     async function fetchCommunity() {
@@ -70,21 +76,35 @@ export default function CommunityPage() {
 
   }
 
+  //신고 접수 함수
   async function handleReport(post_id) {
     const reason = prompt("신고 사유를 입력하세요:");
 
     if (!reason) {
-      alert("🚨 신고 사유를 입력해야 합니다.");
+
+      setPopupMessage("신고 사유를 입력해야 합니다.");
+      setPopupError(true);
+      setPopupOpen(true);
       return;
+
     }
 
     const response = await reportPost(post_id, reason);
 
     if (response) {
-      alert("✅ 신고가 접수되었습니다.");
+
+      setPopupMessage("신고가 접수되었습니다.");
+      setPopupError(false);
+
     } else {
-      alert("❌ 신고 처리 중 오류가 발생했습니다.");
+
+      setPopupMessage("신고 처리 중 오류가 발생했습니다.");
+      setPopupError(true);
+
     }
+
+    setPopupOpen(true);
+
   }
 
   useEffect(() => {
@@ -197,13 +217,23 @@ export default function CommunityPage() {
                   ) : (
                     <p>현재 노하우 글이 없습니다.</p>
                   )}
-                  
+
                 </div>
               </div>
             </div>
           </div>
         </Container>
       </div>
+
+      {
+        popupOpen &&
+        <CompletePopup
+          isOpen={popupOpen}
+          message={popupMessage}
+          error={popupError}
+          onClose={() => setPopupOpen(false)}
+        />
+      }
     </Main>
   );
 }
