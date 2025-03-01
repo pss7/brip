@@ -7,12 +7,15 @@ import { useEffect, useState } from "react";
 import ViewButton from "../../components/ViewButton";
 import { deleteResume, getResume } from "../../api/user/resume/resume";
 import Loading from "../../components/Loading";
-
-// 추가: ConfirmPopup, CompletePopup
 import ConfirmPopup from "../../components/ConfirmPopup";
 import CompletePopup from "../../components/CompletePopup";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function ResumePage() {
+
+  //토큰
+  const { token } = useAuthStore();
+
   const navigate = useNavigate();
 
   //이력서 상태 관리
@@ -115,6 +118,10 @@ export default function ResumePage() {
         resume.resume_id === updatedResume.id ? updatedResume : resume
       )
     );
+  }
+
+  if (!token) {
+    navigate("/signin");
   }
 
   return (

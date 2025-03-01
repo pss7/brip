@@ -1,8 +1,7 @@
 import { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
-import CompletePopup from "./CompletePopup"; // ✅ 생성 완료 팝업 추가
-
+import CompletePopup from "./CompletePopup"; 
 export default function AddPopup({ closePopup }) {
   const [image, setImage] = useState(null); // 선택된 이미지 저장 상태
   const [chatType, setChatType] = useState("group"); // 기본값은 그룹 채팅

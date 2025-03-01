@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import style from "./Select.module.css";
 
 export default function Select({
@@ -7,22 +6,15 @@ export default function Select({
   hiddenText,
   options = [],
   defaultOption = "선택하세요",
-  value, // 외부에서 선택된 값 전달받을 수 있도록
-  onChange // 선택된 값이 변경될 때 부모에게 전달할 핸들러
+  value = "",
+  onChange
 }) {
-  const [selectedOption, setSelectedOption] = useState(value || ""); // 내부 상태로 관리
 
-  useEffect(() => {
-    if (value !== undefined) {
-      setSelectedOption(value); // 부모에서 전달된 값으로 동기화
-    }
-  }, [value]); // 부모의 값이 변경되면 동기화
-
+  // value를 직접 상태로 관리하지 않고, 부모가 전달하는 값만 사용
   const handleChange = (e) => {
     const newValue = e.target.value;
-    setSelectedOption(newValue);
     if (onChange) {
-      onChange(newValue); // 부모에게 값 전달
+      onChange(newValue);
     }
   };
 
@@ -34,11 +26,11 @@ export default function Select({
       <select
         className={`${className} ${style.select}`}
         id={id}
-        value={selectedOption}
+        value={value} // 🔥 상태를 내부에서 관리하지 않고 외부 값만 사용
         onChange={handleChange}
       >
         <option value="" disabled>
-          {defaultOption} {/* 기본 선택 안내 */}
+          {defaultOption}
         </option>
         {options.map((option, index) => (
           <option key={index} value={option}>

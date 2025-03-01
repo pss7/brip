@@ -1,96 +1,168 @@
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";  // useState와 useEffect를 임포트
+import { useState, useEffect } from "react";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
-import { QAData } from "../../data/QAData";
 import Message from "../../components/Message";
-import { UserContext } from "../../context/UserProvider";
-import { useContext } from "react";  // useContext를 임포트
+import { format } from "date-fns";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import WritePopup from "../../components/WritePopup";
 import AddPopup from "../../components/AddPopup";
+import { getCommentList, getCommunityDetail, postComment, reportCommunity, toggleLike } from "../../api/community/community";
+import { useAuthStore } from "../../store/useAuthStore";
+import Loading from "../../components/Loading";
+import { useLoadingStore } from "../../store/useLoadingStore";
+import { getProfile } from "../../api/user";
+import CompletePopup from "../../components/CompletePopup";
+
 
 export default function QADetailPage() {
 
-  const { user } = useContext(UserContext);
+  const { community_Id } = useParams();
+  const communityId = Number(community_Id);
 
-  // 날짜를 "MM/DD HH:mm" 형식으로 변환하는 함수
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const month = String(date.getMonth() + 1).padStart(2, '0');  // 01~12
-    const day = String(date.getDate()).padStart(2, '0');        // 01~31
-    const hours = String(date.getHours()).padStart(2, '0');      // 00~23
-    const minutes = String(date.getMinutes()).padStart(2, '0');  // 00~59
-    return `${month}/${day} ${hours}:${minutes}`;
-  };
+  //토큰
+  const { token } = useAuthStore();
+  const [communityDetail, setCommunityDetail] = useState({});
 
-  const { qaId } = useParams(); // URL에서 qaId를 가져옴
-  const [qa, setQA] = useState(null);  // qa 객체를 상태로 설정
-  const [reports, setReports] = useState(0); // 신고 횟수를 상태로 관리
-  const [newMessage, setNewMessage] = useState("");
+  //댓글 상태 관리
+  const [commnet, setComment] = useState({});
 
-  const [addPopupShowPopup, setAddPopupShowPopup] = useState(false); // 팝업 상태 관리
-  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
+  //팝업 상태 관리
+  const [communityPopupOpen, setCommunityPopupOpen] = useState(false);
 
-  // 해당 Q&A 데이터 가져오기
+  const [completePopupOpen, setCompletePopupOpen] = useState(false);
+  const [completePopupMessage, setCompletePopupMessage] = useState("");
+  const [completePopupError, setCompletePopupError] = useState(false);
+
+  //팝업 상태 관리
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupError, setPopupError] = useState(false);
+
+  //프로필 데이터 상태 관리
+  const [profileData, setProfileData] = useState({});
+
+  //로딩 상태 관리
+  const { isLoading, setLoading } = useLoadingStore();
+
+  // 좋아요 버튼 클릭 시 실행할 함수
+  async function handleLike(post_id) {
+    const response = await toggleLike(post_id);
+
+    if (response) {
+      setCommunityDetail((prevData) => ({
+        ...prevData,
+        heart_count: prevData.isLiked ? prevData.heart_count - 1 : prevData.heart_count + 1,
+        isLiked: !prevData.isLiked,
+      }));
+    }
+  }
+
+  //신고 접수 함수
+  async function handleReport(post_id) {
+
+    const reason = prompt("신고 사유를 입력하세요:");
+
+    if (!reason) {
+      setPopupMessage("신고 사유를 입력해야 합니다.");
+      setPopupError(true);
+      setPopupOpen(true);
+      return;
+    }
+    const response = await reportCommunity(post_id, reason);
+    if (response) {
+      setPopupMessage("신고가 접수되었습니다.");
+      setPopupError(false);
+    } else {
+      setPopupMessage("신고 처리 중 오류가 발생했습니다.");
+      setPopupError(true);
+    }
+    setPopupOpen(true);
+
+  }
+
+  //댓글 등록 함수
+  async function handleComment(post_id) {
+
+    try {
+      const response = await postComment(post_id, commnet);
+      if (response) {
+        console.log("댓글 등록 완료");
+      }
+    } catch (error) {
+      console.error("error:", error);
+    }
+
+  }
+
+  //프로필 데이터 불러오기
   useEffect(() => {
-    const selectedQA = QAData.find((qa) => qa.id === parseInt(qaId));
-    if (selectedQA) {
-      setQA(selectedQA);  // 찾은 Q&A 항목을 상태에 설정
+    async function fetchProfile() {
+      try {
+        setLoading(true);
+        const response = await getProfile();
+        setProfileData(response.data);
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [qaId]); // qaId가 바뀔 때마다 실행
+    fetchProfile();
+  }, []);
 
-  // qa 데이터가 로딩되지 않았다면 로딩 중 메시지를 표시
-  if (!qa) {
-    return <p></p>;
+  //커뮤니티 상세 데이터 불러오기
+  useEffect(() => {
+
+    async function fetchCommunityDetail() {
+      setLoading(true);
+      try {
+        const response = await getCommunityDetail(communityId);
+        if (response) {
+          setCommunityDetail(response.data);
+        }
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCommunityDetail();
+
+  }, [communityId])
+
+  //댓글 목록 데이터 불러오기
+  useEffect(() => {
+
+    async function fetchComment() {
+
+      try {
+        const response = await getCommentList(0, 10, communityDetail.category);
+        if (response) {
+          setComment(response);
+        }
+      } catch (error) {
+        console.error("error:", error);
+      }
+
+    }
+
+    fetchComment();
+
+  }, [communityDetail.category])
+
+  if (isLoading) {
+    return <Loading fullScreen />;
   }
 
-  // 신고 증가 핸들러
-  const handleReport = () => {
-    setReports((prevReports) => prevReports + 1);  // 신고 횟수 증가
-  };
-
-  // 메시지 전송 처리
-  const handleSendMessage = () => {
-    if (newMessage.trim() === "") return;
-
-    const newMsg = {
-      id: messages.length + 1,
-      user: user.nickname, // 현재 사용자 닉네임
-      text: newMessage,
-      timestamp: new Date().toISOString(),
-      thumbnailImg: user.profileImg, // 프로필 이미지 추가
-    };
-
-    setMessages([...messages, newMsg]); // 메시지 배열에 새로운 메시지 추가
-    setNewMessage(""); // 입력 필드 초기화
-  };
-
-  // 엔터키로 메시지 전송
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {  // shift + enter는 줄바꿈, 그냥 enter는 전송
-      e.preventDefault();  // 기본 엔터키 동작 방지
-      handleSendMessage();
-    }
-  };
-
-  function openAddPopup() {
-    setAddPopupShowPopup(true)
-  };
-
-  function openWritePopup() {
-    setShowPopup(true);
+  if (!token) {
+    navigate("/signin");
   }
-
-  const closePopup = () => {
-    setShowPopup(false);
-    setAddPopupShowPopup(false)
-  };
-
 
   return (
     <Main className="subWrap">
-      <div className="communityBox communityQABox">
+      <div className="communityBox communityDetailBox">
         <Container className="lnbContainer">
           <div className="communityContent">
             <div className="lnbLayoutBox">
@@ -100,20 +172,20 @@ export default function QADetailPage() {
                     <img src={ProfileImg} alt="" />
                   </div>
                   <div className="textBox">
-                    <p className="nickname">{user.nickname}</p>
-                    <span className="name">{user.name}</span>
+                    <p className="nickname">{profileData.nickname}</p>
+                    <span className="name">{profileData.name}</span>
                   </div>
                 </div>
                 <div className="addBtnBox">
                   <button
                     className="addBtn"
-                    onClick={openAddPopup}
+                  // onClick={openAddPopup}
                   >
                     <span>채팅방 생성</span>
                   </button>
                   <button
                     className="addBtn communityWrite"
-                    onClick={openWritePopup}
+                    onClick={() => setCommunityPopupOpen(true)}
                   >
                     <span>커뮤니티 글쓰기</span>
                   </button>
@@ -121,59 +193,97 @@ export default function QADetailPage() {
               </aside>
 
               <div className="content flexColumn">
-                <div className="header">
-                  <Link to="/community" className="link">
-                    <span className="blind">
-                      노하우Q&A리스트 화면으로 이동
-                    </span>
-                  </Link>
-                  <h4>노하우 Q&A</h4>
-                </div>
-                <div className="qaContentList">
-                  <div className="top">
-                    <span className="name">{qa.nickname}</span>
-                    <span className="date">{formatDate(qa.timestamp)}</span>
+                <div className="communityListContainer">
+                  <div className="communityTopBox">
+                    <Link to="/community" className="link">
+                      <span className="blind">
+                        노하우Q&A리스트 화면으로 이동
+                      </span>
+                    </Link>
+                    <h4>노하우 Q&A</h4>
+                  </div>
+                  <div className="communityListBox">
+                    <div className="communityInfoBox">
+                      <span className="nickname">{communityDetail?.author_nickname || "작성자 없음"}</span>
+                      <span className="date">
+                        {communityDetail?.created_at
+                          ? format(new Date(communityDetail.created_at), "MM/dd HH:mm")
+                          : "날짜 없음"}
+                      </span>
+                    </div>
+
+                    <div className="communityContentBox">
+                      <p className="contentText">{communityDetail.content}</p>
+                    </div>
+
+                    <div className="communityCommentBox">
+                      <div className="communityLikeBox">
+                        <dlv className="btnBox">
+                          <button
+                            className={`likeBtn ${communityDetail.isLiked ? "active" : ""}`}
+                            onClick={() => handleLike(communityDetail.post_id)}
+                          >
+                            <span className="blind">좋아요 버튼</span>
+                          </button>
+                          <span>{communityDetail.heart_count}</span>
+                        </dlv>
+                      </div>
+                      <span className="commentText">{communityDetail.comment_count}</span>
+                    </div>
+
+                    <button
+                      className="declarationBtn"
+                      onClick={() => handleReport(communityDetail.post_id)}
+                    >
+                      신고
+                    </button>
+
                   </div>
 
-                  <p className="qaContent">{qa.content}</p>
+                  <div className="commentBox">
+                    <span className="commentNumber">
+                      댓글 4
+                    </span>
 
-                  <div className="LikeBox">
-                    <dlv className="btnBox">
-                      <button className="likeBtn" onClick={() => handleLike(qa.id)}>
-                        <span className="blind">좋아요</span>
-                      </button>
-                      <em>
-                        {qa.likes}
-                      </em>
-                    </dlv>
-                    <div className="commentBox">
-                      <span className="comment">
-                        <span className="blind">
-                          댓글
-                        </span>
+                    <div className="commentAuthor">
+                      <span className="commentName">
+                        홍길동
                       </span>
-                      <em>
-                        {qa.comments}
-                      </em>
+                      <span className="commentDay">
+                        4일 전
+                      </span>
+                    </div>
+
+                    <p className="commentContent">
+                      안녕하세요! 저도 물류관리사 시험 준비할 때 물류 및 유통관리 과목이 어려웠어요.
+                    </p>
+
+                    <div className="replyBox">
+                      <div className="likeBox">
+                        <button className="likeBtn">
+                          <span className="blind">
+                            좋아요버튼
+                          </span>
+                        </button>
+                        <span>
+                          1
+                        </span>
+                      </div>
+
+                      <button className="replyBtn">
+                        답글쓰기
+                      </button>
                     </div>
                   </div>
-
-                  {/* 신고 버튼 추가 */}
-                  <button className="declarationBtn" onClick={handleReport}>
-                    신고 {reports > 0 && `(${reports})`} {/* 신고 횟수 표시 */}
-                  </button>
-
                 </div>
 
                 <Message
                   id="message"
                   hiddenText="댓글입력"
-                  newMessage={newMessage}
-                  setNewMessage={setNewMessage}
-                  handleKeyDown={handleKeyDown}
-                  handleSendMessage={handleSendMessage}
+                  onChange={(e) => setComment(e.target.value)}
                   placeholder="댓글을 남겨주세요."
-                  user={user}
+                  onClick={() => { handleComment(communityDetail.post_id) }}
+                  onEnter={() => handleComment(communityDetail.post_id)}
                 />
 
               </div>
@@ -182,11 +292,25 @@ export default function QADetailPage() {
         </Container>
       </div>
 
-      {
-        showPopup && <WritePopup closePopup={closePopup} />
-      }
-      {
+      {communityPopupOpen && (
+        <WritePopup
+          isOpen={communityPopupOpen}
+          closePopup={() => setCommunityPopupOpen(false)}
+        />
+      )}
+
+      {/* {
         addPopupShowPopup && <AddPopup closePopup={closePopup} />
+      } */}
+
+      {
+        popupOpen &&
+        <CompletePopup
+          isOpen={popupOpen}
+          message={popupMessage}
+          error={popupError}
+          onClose={() => setPopupOpen(false)}
+        />
       }
 
     </Main>

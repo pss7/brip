@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://light-dolls-repair.loca.lt/api';
+export const BASE_URL = 'http://54.180.118.210:8080/api';

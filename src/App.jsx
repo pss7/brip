@@ -67,7 +67,9 @@ function App() {
         <Route path='/password-reset' element={<PasswordReset />} />
         <Route path='/signup' element={<SignUpPage />} />
 
-
+        {/* 커뮤니티 */}
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/qa/:community_Id" element={<QADetailPage />} />
 
 
 
@@ -87,13 +89,23 @@ function App() {
         <Route path="careerexploration" element={<CareerExplorationPage />} />
         <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
         <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
-        <Route path="/qa/:qaId" element={<QADetailPage />} />
+
+
+
+
+
+
+
+
+
+
+
         <Route path="/roadmapinfo" element={<RoadMapInfoPage />} />
         <Route path="/roadmapdesign" element={<RoadMapDesignPage />} />
         <Route path="/roadmapresult" element={<RoadMapResultPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/interest" element={<InterestPage />} />
-        <Route path="/community" element={<CommunityPage />} />
+
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/resumereg" element={<ResumeRegpage />} />
         <Route path="/resumeupdate/:id" element={<ResumeUpdatepage />} />

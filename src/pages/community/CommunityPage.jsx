@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
-import { getCommunity, reportPost, toggleLike } from "../../api/community/community"; // 좋아요 API 임포트
+import { getCommunityList, reportCommunity, toggleLike } from "../../api/community/community";
 import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import { getProfile } from "../../api/user";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -13,47 +13,32 @@ import CompletePopup from "../../components/CompletePopup";
 
 export default function CommunityPage() {
 
+  //경로
   const navigate = useNavigate();
 
-  const categories = ["노하우&Q&A", "실시간채팅", "업종별/연차별", "정보공유"];
-
-  const [category, setCategory] = useState("노하우&Q&A");
-
-  const [communityData, setCommunityData] = useState([]);
-
-  const [selectedCategory, setSelectedCategory] = useState("노하우&Q&A");
-
-  const [profileData, setProfileData] = useState([]);
-
+  //토큰
   const { token } = useAuthStore();
 
+  const categories = ["노하우&Q&A", "실시간채팅", "업종별/연차별", "정보공유"];
+  const [category, setCategory] = useState("노하우&Q&A");
+  const [selectedCategory, setSelectedCategory] = useState("노하우&Q&A");
+
+  //커뮤니티 데이터 상태 관리
+  const [communityData, setCommunityData] = useState([]);
+
+  //프로필 데이터 상태 관리
+  const [profileData, setProfileData] = useState([]);
+
+  //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
-  //팝업 관련 상태관리리
+  //팝업 상태 관리
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupError, setPopupError] = useState(false);
 
-  useEffect(() => {
-    async function fetchCommunity() {
-      setLoading(true);
-      try {
-        const response = await getCommunity({
-          page: 0,
-          size: 10,
-        });
-        if (response) {
-          setCommunityData(response.data);
-        }
-      } catch (error) {
-        console.error("error", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCommunity();
-  }, [category]);
+  //데이터 필터
+  const filteredData = communityData.filter((data) => data.category === selectedCategory);
 
   // 좋아요 버튼 클릭 시 실행할 함수
   async function handleLike(post_id) {
@@ -89,7 +74,7 @@ export default function CommunityPage() {
 
     }
 
-    const response = await reportPost(post_id, reason);
+    const response = await reportCommunity(post_id, reason);
 
     if (response) {
 
@@ -107,6 +92,30 @@ export default function CommunityPage() {
 
   }
 
+  //커뮤니티 데이터 불러오기
+  useEffect(() => {
+    async function fetchCommunity() {
+      setLoading(true);
+      try {
+        const response = await getCommunityList({
+          page: 0,
+          size: 10,
+          category: selectedCategory,
+        });
+        if (response) {
+          setCommunityData(response.data);
+        }
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCommunity();
+  }, [selectedCategory]);
+
+  //프로필 데이터 불러오기
   useEffect(() => {
     async function fetchProfile() {
       try {
@@ -132,7 +141,8 @@ export default function CommunityPage() {
 
   return (
     <Main className="subWrap">
-      <div className="communityBox communityQABox">
+      <div className="communityBox">
+       
         <Container className="lnbContainer">
           <div className="communityContent">
             <div className="lnbLayoutBox">
@@ -178,22 +188,21 @@ export default function CommunityPage() {
                 </div>
 
                 <div className="communityListContainer">
-                  {communityData && communityData.length > 0 ? (
-                    communityData.map((data) => (
+
+                  {filteredData.length > 0 ? (
+                    filteredData.map((data) => (
                       <div key={data.post_id} className="communityListBox">
                         <div className="communityInfoBox">
                           <span className="nickname">{data.author_nickname}</span>
-                          <span className="date">
-                            {format(new Date(data.created_at), "MM/dd HH:mm")}
-                          </span>
+                          <span className="date">{format(new Date(data.created_at), "MM/dd HH:mm")}</span>
                         </div>
 
                         <div className="communityContentBox">
-                          <p className="contentText">{data.content}</p>
+                          <Link to={`/qa/${data.post_id}`} className="contentText">{data.content}</Link>
                         </div>
 
                         <div className="communityCommentBox">
-                          <div className="likeBox">
+                          <div className="communityLikeBox">
                             <button
                               className={`likeBtn ${data.isLiked ? "active" : ""}`}
                               onClick={() => handleLike(data.post_id)}
@@ -211,11 +220,11 @@ export default function CommunityPage() {
                         >
                           신고
                         </button>
-                      </div>
 
+                      </div>
                     ))
                   ) : (
-                    <p>현재 노하우 글이 없습니다.</p>
+                    <p>현재 "{selectedCategory}" 게시물이 없습니다.</p>
                   )}
 
                 </div>
@@ -234,6 +243,7 @@ export default function CommunityPage() {
           onClose={() => setPopupOpen(false)}
         />
       }
+
     </Main>
   );
 }

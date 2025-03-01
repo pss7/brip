@@ -286,7 +286,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 .communityBox .header{position: relative;}
 .communityBox .header h4{font-size: 20px; font-weight: 400; color: #000;}
-.communityBox .header .link{position: absolute; top: 50%; transform: translateY(-50%); left:0; width: 9px; height: 14px; background: url(../assets/images/sub/Arrow_Icon05.svg)no-repeat center;}
+
 .communityBox .lnbLayoutBox .content{padding: 42px 39px 50px 48px;}
 .communityBox aside{padding: 33px 30px 27px; width: 340px; height: 200px; background-color: #FAFAFC; border-radius: 10px; box-shadow: none;}
 .communityBox aside .infoBox{margin-bottom: 24px; display: flex; gap: 0 32px;}
@@ -321,7 +321,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 
 
-.communityBox .shareBox{margin:0 0 50px; padding: 33px 0; display: flex; align-items: center; gap: 0 40px; border-bottom: 1px solid #D9D9D9;}
+.communityBox .shareBox{padding: 33px 0; display: flex; align-items: center; gap: 0 40px; border-bottom: 1px solid #D9D9D9;}
 .communityBox .shareBox .imgBox{flex-shrink: 0; /*width: 55px; height: 55px;*/}
 .communityBox .shareBox .imgBox img{display: block; width: 100%; height: 100%; object-fit: cover;}
 .communityBox .shareBox p{color: #6C7072; font-size: 20px;}
@@ -332,7 +332,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 
 
-.communityBox .communityListContainer .communityListBox{position: relative; margin-bottom: 40px; padding: 0 0 40px; border-bottom: 1px solid #EAEAEA;}
+.communityBox .communityListContainer .communityListBox{margin-top: 50px; position: relative; padding: 0 0 40px; border-bottom: 1px solid #EAEAEA;}
 .communityBox .communityListContainer .communityListBox .declarationBtn{position: absolute; top:0; right:0; color: #6C7072; font-weight: 500;}
 
 
@@ -344,15 +344,15 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .communityBox .communityListContainer .communityInfoBox .nickname{color: #000; font-weight: 600; font-size: 20px; }
 .communityBox .communityListContainer .communityInfoBox .date{font-weight: 500; color: #6C7072;}
 .communityBox .communityListContainer .communityContentBox{margin-bottom: 40px;}
-.communityBox .communityListContainer .communityContentBox .contentText{color: #000; font-size: 20px; text-align: left;}
+.communityBox .communityListContainer .communityContentBox .contentText{display: block; color: #000; font-size: 20px; text-align: left;}
 .communityBox .communityListContainer .communityCommentBox{display: flex; gap: 0 30px;}
-.communityBox .communityListContainer .communityCommentBox .likeBox{display: flex; align-items: center; gap: 0 10px;}
-.communityBox .communityListContainer .communityCommentBox .likeBox .likeBtn{width: 28px; height: 24px; background: url(../assets/images/sub/like_btn.svg)no-repeat center;}
-.communityBox .communityListContainer .communityCommentBox .likeBox .likeBtn.active{
+.communityBox .communityListContainer .communityLikeBox{display: flex; align-items: center; gap: 0 10px;}
+.communityBox .communityListContainer .communityLikeBox .likeBtn{width: 28px; height: 24px; background: url(../assets/images/sub/like_btn.svg)no-repeat center;}
+.communityBox .communityListContainer .communityLikeBox .likeBtn.active{
   background: url(../assets/images/sub/like_active_Icon.svg)no-repeat center;}
-.communityBox .communityListContainer .communityCommentBox span{color: #000;}
-.communityBox .communityListContainer .communityCommentBox .commentText{display: flex; align-items: center; gap: 0 10px;}
-.communityBox .communityListContainer .communityCommentBox .commentText::before{content: ''; width: 26px; height: 26px; background: url(../assets/images/sub/comment_icon.svg)no-repeat center;}
+.communityBox .communityListContainer span{color: #000;}
+.communityBox .communityListContainer .commentText{display: flex; align-items: center; gap: 0 10px;}
+.communityBox .communityListContainer .commentText::before{content: ''; width: 26px; height: 26px; background: url(../assets/images/sub/comment_icon.svg)no-repeat center;}
 
 
 
@@ -447,37 +447,62 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
-/* 커뮤니티-노하우 */
-.communityQABox .qaContentBox .shareBox{margin-bottom: 0;}
-.communityQABox .top{margin-bottom: 18px; display: flex; gap: 0 33px; align-items: center;}
-.communityQABox .top .name{color: #000; font-weight: 600; font-size: 20px;}
-.communityQABox .top .date{color: #6C7072; font-weight: 500;}
-.communityQABox .qaContent{display: block; margin-bottom: 41px; font-size: 20px; color: #000; line-height: 1.4;}
-.communityQABox .qaContentList{position: relative; padding:  40px 30px 40px 0; border-bottom: 1px solid #EAEAEA;}
-.communityQABox .LikeBox{display: flex; align-items: center; gap: 0 17px;}
-.communityQABox .LikeBox .likeBtn{width: 28px; height: 24px; background: url(../assets/images/sub/Link_Btn.svg) no-repeat center;}
-.communityQABox .LikeBox .btnBox{display: flex; align-items: center; gap: 0 13px;} 
-.communityQABox .LikeBox .commentBox{display: flex; gap: 0 13px;}
-.communityQABox .LikeBox .commentBox .comment{display: block; width: 26px; height: 26px; background: url(../assets/images/sub/Comments_Icon.svg)no-repeat center;}
-.communityQABox .LikeBox em{ color: #000;}
-.communityQABox .declarationBtn{position: absolute; top:40px; right:0; color: #6C7072; font-weight: 500;}
+/* 커뮤니티 목록 */
+.communityBox .qaContentBox .shareBox{margin-bottom: 0;}
+/* .communityBox .top{margin-bottom: 18px; display: flex; gap: 0 33px; align-items: center;}
+.communityBox .top .name{color: #000; font-weight: 600; font-size: 20px;}
+.communityBox .top .date{color: #6C7072; font-weight: 500;}
+.communityBox .qaContent{display: block; margin-bottom: 41px; font-size: 20px; color: #000; line-height: 1.4;}
+.communityBox .qaContentList{position: relative; padding:  40px 30px 40px 0; border-bottom: 1px solid #EAEAEA;} */
+.communityBox .communityLikeBox{display: flex; align-items: center; gap: 0 17px;}
+.communityBox .communityLikeBox .likeBtn{width: 28px; height: 24px; background: url(../assets/images/sub/like_btn.svg) no-repeat center;}
+.communityBox .communityLikeBox .btnBox{display: flex; align-items: center; gap: 0 13px;} 
+.communityBox .communityLikeBox .commentBox{display: flex; gap: 0 13px;}
+.communityBox .communityLikeBox .commentBox .comment{display: block; width: 26px; height: 26px; background: url(../assets/images/sub/Comments_Icon.svg)no-repeat center;}
+.communityBox .communityLikeBox em{ color: #000;}
+.communityBox .declarationBtn{position: absolute; top:40px; right:0; color: #6C7072; font-weight: 500;}
 
 @media (max-width: 1199px){
 
-  .communityQABox .qaContent{font-size: 18px;}
+  .communityBox .qaContent{font-size: 18px;}
 
 }
 
 @media (max-width: 767px){
 
-  .communityQABox .qaContent{font-size: 16px;}
-  .communityQABox .qaContentList{padding: 25px 30px 25px 0;}
+  .communityBox .qaContent{font-size: 16px;}
+  .communityBox .qaContentList{padding: 25px 30px 25px 0;}
 
 }
 
-/* 커뮤니티 노하우 상세 */
-.communityQABox .header{margin-bottom: 41px; display: flex
-; align-items: center; justify-content: center; height: 48px; font-weight: 400!important;}
+/* 커뮤니티 상세 */
+.communityDetailBox .communityTopBox{position: relative; display: flex; align-items: center; justify-content: center; height: 48px; margin-bottom: 30px; font-weight: 400!important;}
+.communityDetailBox .communityTopBox .link{position: absolute; top: 50%; transform: translateY(-50%); left:0; width: 9px; height: 14px; background: url(../assets/images/sub/Arrow_Icon05.svg)no-repeat center;}
+.communityDetailBox .communityInfoBox{margin-bottom: 30px;}
+.communityDetailBox .commentBox{padding: 18px 0 20px;}
+.communityDetailBox .commentBox .commentNumber{display: block; margin-bottom: 32px; font-weight: 600; color: #B3BEC6;}
+.communityDetailBox .commentBox .commentAuthor{margin-bottom: 4px; display: flex; gap: 0 20px; }
+.communityDetailBox .commentBox .commentAuthor .commentName{position: relative;}
+.communityDetailBox .commentBox .commentAuthor .commentName::after{content: ''; width: 4px; height: 4px; position: absolute; top:12px; right:-12px; border-radius: 50%; background-color: #7E7E7E;}
+.communityDetailBox .commentBox .commentAuthor .commentName,
+.communityDetailBox .commentBox .commentAuthor .commentDay{color: #7E7E7E; font-weight: 500;}
+.communityDetailBox .commentBox .commentContent{margin-bottom: 8px; color: #000;}
+.communityDetailBox .commentBox .replyBox{display: flex; gap: 0 10px;}
+.communityDetailBox .commentBox .replyBox .likeBox{display: flex; align-items: center; gap: 0 5px; line-height: 1;}
+.communityDetailBox .commentBox .replyBox .likeBox .likeBtn{width: 13px; height: 11px; background: url(../assets/images/sub/like_btn02.svg)no-repeat center;}
+.communityDetailBox .commentBox .replyBox .likeBox span{font-size: 14px; color: #94A0B5;}
+.communityDetailBox .commentBox .replyBox .replyBtn{display: flex; align-items: flex-end; gap: 0 5px; color: #94A0B5; font-size: 14px; line-height: 1;}
+.communityDetailBox .commentBox .replyBox .replyBtn::before{content: ''; width: 3px; height: 3px; border-radius: 50%; background-color: #94A0B5;}
+
+
+
+
+
+
+
+
+
+
 
 /* 커리어 */
 .careerBox{margin-top: -43px;}
