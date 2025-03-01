@@ -71,8 +71,15 @@ export async function verifyResetCode(email, code) {
 // 비밀번호 재설정 API
 export async function resetPassword(email, password) {
   try {
-    const response = await axios.post(`${BASE_URL}/user/reset-password`, { email, password });
-    return response;
+    const response = await axios.post(`${BASE_URL}/user/reset-password`, {
+      email,
+      password
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("error:", error);
     return false;
@@ -143,3 +150,30 @@ export async function googleLogin(code) {
     return false;
   }
 }
+
+// 네이버 로그인 URL 생성 함수
+export function getNaverAuthUrl() {
+  const NAVER_CLIENT_ID = 'UZgFqw43EZdedZq0USWx';
+  const REDIRECT_URI = 'http://127.0.0.1:8080/api/user/naver-login';
+
+  // 로컬스토리지에 state 값이 없으면 새로 생성해서 저장 (CSRF 방지 용도)
+  let state = localStorage.getItem('naverOAuthState');
+  if (!state) {
+    state = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem('naverOAuthState', state);
+  }
+
+  // URL 인코딩 적용
+  return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`;
+}
+
+
+
+
+
+
+
+
+
+
+

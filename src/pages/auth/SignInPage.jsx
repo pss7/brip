@@ -8,7 +8,12 @@ import style from "./SignInPage.module.css";
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/useAuthStore";
-import { login, getKakaoAuthUrl, getGoogleAuthUrl } from "../../api/auth";
+import {
+  login,
+  getKakaoAuthUrl,
+  getGoogleAuthUrl,
+  getNaverAuthUrl
+} from "../../api/auth";
 import CompletePopup from "../../components/CompletePopup";
 
 export default function SignInPage() {
@@ -31,16 +36,22 @@ export default function SignInPage() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // 카카오 로그인 처리
-  const handleKakaoLogin = () => {
+  function handleKakaoLogin() {
     const authUrl = getKakaoAuthUrl();
     window.location.href = authUrl;
-  };
+  }
 
   // 구글 로그인 처리
-  const handleGoogleLogin = () => {
+  function handleGoogleLogin() {
     const authUrl = getGoogleAuthUrl();
     window.location.href = authUrl;
-  };
+  }
+
+  // 네이버 로그인 처리
+  function handleNaverLogin() {
+    const authUrl = getNaverAuthUrl();
+    window.location.href = authUrl;
+  }
 
   function handleEmailChange(e) {
     const emailValue = e.target.value;
@@ -79,7 +90,7 @@ export default function SignInPage() {
     }
   }, []);
 
-  // 유효성 검사 후 버튼 활성화 결정
+  // 유효성 검사후 버튼 활성화 결정
   useEffect(() => {
     if (emailRegex.test(email) && password && !emailError && !passwordError) {
       setDisabled(false);
@@ -98,14 +109,14 @@ export default function SignInPage() {
        * 서버에서 {"result":"fail","message":"이메일 또는 비밀번호가 올바르지 않습니다."}
        * 같은 형태로 반환한다고 가정할 경우.
        */
+
       if (response.result === "fail") {
         // 로그인 실패 -> 모달 출력, 페이지 이동 X
         setErrorMessage(response.message);
         setIsModalOpen(true);
-        return; // 여기서 함수 종료
+        return; // 함수 종료
       }
 
-      // result === "success" 라고 가정
       if (isRemembered) {
         localStorage.setItem("savedEmail", email);
       } else {
@@ -114,7 +125,7 @@ export default function SignInPage() {
 
       // 스토어에 인증 정보 저장
       setAuthData({
-        token: response.token, // 응답 구조에 맞게 수정
+        token: response.token,
         email: response.email,
         nickname: response.nickname,
         cuid: response.cuid
@@ -124,12 +135,9 @@ export default function SignInPage() {
       navigate("/");
 
     } catch (error) {
-
-      // 네트워크 에러 / 기타 예외 상황
       console.error("로그인 실패:", error);
       setErrorMessage("로그인에 실패했습니다. 잠시 후 다시 시도해주세요.");
       setIsModalOpen(true);
-
     }
   }
 
@@ -180,7 +188,7 @@ export default function SignInPage() {
                   />
                   <label htmlFor="loginIdSave">아이디저장</label>
                 </div>
-                <Link to="/passwordfind" className={style.pwFindLink}>
+                <Link to="/password-find" className={style.pwFindLink}>
                   비밀번호를 잊어버리셨나요?
                 </Link>
               </div>
@@ -191,7 +199,11 @@ export default function SignInPage() {
             <div className={style.snsListBox}>
               <ul className={style.snsList}>
                 <li>
-                  <button className={style.naverLogin}>
+                  <button
+                    type="button"
+                    className={style.naverLogin}
+                    onClick={handleNaverLogin}
+                  >
                     <span className="blind">네이버 로그인</span>
                   </button>
                 </li>
@@ -224,7 +236,6 @@ export default function SignInPage() {
         </Container>
       </div>
 
-      {/* 로그인 실패 모달 */}
       <CompletePopup
         isOpen={isModalOpen}
         message={errorMessage}

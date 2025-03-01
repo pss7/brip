@@ -13,8 +13,9 @@ import RoadMapResultPage from './pages/roadmap/RoadMapResultPage';
 
 //커뮤니티
 import CommunityPage from './pages/community/CommunityPage';
+import CommunityDetailPage from './pages/community/CommunityDetailPage';
 import ChatRoomDetailPage from './pages/community/ChatRoomDetailPage';
-import QADetailPage from './pages/community/QADetailPage';
+
 
 //채용
 import EmploymentPage from './pages/job/EmploymentPage';
@@ -22,7 +23,8 @@ import EmploymentDetailPage from './pages/job/EmploymentDetailPage';
 
 //인증
 import SignInPage from './pages/auth/SignInPage';
-import PwFindPage from './pages/auth/PwFindPage';
+import PasswordFindPage from './pages/auth/PasswordFindPage';
+import PasswordResetPage from './pages/auth/PasswordResetPage';
 import SignUpPage from './pages/auth/SignUpPage';
 
 //커리어
@@ -50,7 +52,7 @@ import ResumePage from './pages/user/ResumePage';
 import ResumeRegpage from './pages/user/ResumeRegpage';
 import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
 import NotificationDetail from './pages/user/NotificationDetail';
-import PasswordReset from './pages/auth/PasswordReset';
+
 
 function App() {
 
@@ -63,13 +65,13 @@ function App() {
 
         {/* 인증 */}
         <Route path='/signin' element={<SignInPage />} />
-        <Route path='/passwordfind' element={<PwFindPage />} />
-        <Route path='/password-reset' element={<PasswordReset />} />
+        <Route path='/password-find' element={<PasswordFindPage />} />
+        <Route path='/password-reset' element={<PasswordResetPage />} />
         <Route path='/signup' element={<SignUpPage />} />
 
         {/* 커뮤니티 */}
         <Route path="/community" element={<CommunityPage />} />
-        <Route path="/qa/:community_Id" element={<QADetailPage />} />
+        <Route path="/community-detail/:community_Id" element={<CommunityDetailPage />} />
 
 
 

@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import CompletePopup from "../../components/CompletePopup";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
-import style from "./PasswordReset.module.css";
+import style from "./PasswordResetPage.module.css";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { resetPassword } from "../../api/auth";
-import { getProfile } from "../../api/user";
 
-export default function PasswordReset() {
+export default function PasswordResetPage() {
+  const [searchParams] = useSearchParams();
+  const [email, setEmail] = useState(""); 
+
+  useEffect(() => {
+    const emailFromURL = searchParams.get("email");
+    if (emailFromURL) {
+      setEmail(emailFromURL); 
+    }
+  }, [searchParams]);
+
   const [message, setMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [error, serError] = useState(false);
+  const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(true);
-
-  //불러온 유저 이메일 상태 관리
-  const [email, setEmail] = useState();
-  console.log(email);
 
   // 비밀번호 상태 관리
   const [password, setPassword] = useState("");
@@ -27,61 +33,61 @@ export default function PasswordReset() {
   const [passwordCheckError, setPasswordCheckError] = useState("");
 
   // 비밀번호 검사 정규식 (영문+숫자+특수문자 6~14자, 대문자 사용 불가)
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,14}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{6,14}$/;
 
   // 비밀번호 유효성 검사
   function handlePassword(e) {
     const passwordValue = e.target.value;
     setPassword(passwordValue);
+
     if (!passwordValue) {
       setPasswordError("비밀번호를 입력해주세요.");
-      setDisabled(true);
     } else if (!passwordRegex.test(passwordValue)) {
       setPasswordError("영문+숫자+특수문자 혼합 6~14자 입력 (대문자 사용불가)");
-      setDisabled(true);
     } else {
       setPasswordError("");
     }
+
+    validateForm(passwordValue, passwordCheck);
   }
 
   // 비밀번호 확인 유효성 검사
   function handlePasswordCheck(e) {
     const passwordCheckValue = e.target.value;
     setPasswordCheck(passwordCheckValue);
+
     if (password !== passwordCheckValue) {
       setPasswordCheckError("비밀번호가 일치하지 않습니다.");
-      setDisabled(true);
     } else {
       setPasswordCheckError("");
-      // 두 입력 모두 정상일 때만 버튼 활성화
-      if (password && passwordRegex.test(password)) {
-        setDisabled(false);
-      }
+    }
+
+    validateForm(password, passwordCheckValue);
+  }
+
+  // 폼 유효성 검사 (버튼 활성화 체크)
+  function validateForm(passwordValue, passwordCheckValue) {
+    if (
+      passwordValue &&
+      passwordCheckValue &&
+      passwordRegex.test(passwordValue) &&
+      passwordValue === passwordCheckValue
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
   }
 
   // 팝업 닫기 시 처리 (성공 시 로그인 화면으로 이동)
   function handleClosePopup() {
     setIsPopupOpen(false);
-    if (error) {
-      // 비밀번호 재설정 성공 후 로그인 페이지로 이동 (원하는 경로로 변경)
+    if (!error) {
       window.location.href = "/login";
     }
   }
 
-  // 프로필 데이터에서 이메일 가져오기
-  useEffect(() => {
-    async function fetchProfile() {
-      const response = await getProfile();
-      if (response && response.data) {
-
-        setEmail(response.data.email);
-      }
-    }
-    fetchProfile();
-  }, []);
-
-  // 비밀번호 재설정 API 호출 (이메일은 상황에 따라 전달, 여기서는 예시로 사용)
+  // 비밀번호 재설정 API 호출
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -89,15 +95,30 @@ export default function PasswordReset() {
       return;
     }
 
-    const response = await resetPassword(email, password);
+    console.log("비밀번호 재설정 요청:", { email, password }); // ✅ 디버깅 로그 추가
 
-    if (response) {
-      setMessage("비밀번호가 성공적으로 변경되었습니다.");
-      serError(true);
+    if (!email) {
+      setMessage("잘못된 접근입니다. 다시 시도해주세요.");
+      setError(true);
       setIsPopupOpen(true);
-    } else {
-      setMessage("비밀번호 변경에 실패하였습니다. 다시 시도해주세요.");
-      serError(false);
+      return;
+    }
+
+    try {
+      const response = await resetPassword(email, password);
+
+      if (response) {
+        setMessage("비밀번호가 성공적으로 변경되었습니다.");
+        setError(false);
+      } else {
+        setMessage("비밀번호 변경에 실패하였습니다. 다시 시도해주세요.");
+        setError(true);
+      }
+      setIsPopupOpen(true);
+    } catch (error) {
+      console.error("비밀번호 변경 오류:", error);
+      setMessage("서버 오류로 인해 변경에 실패했습니다.");
+      setError(true);
       setIsPopupOpen(true);
     }
   }
@@ -153,11 +174,9 @@ export default function PasswordReset() {
       <CompletePopup
         isOpen={isPopupOpen}
         message={message}
-        error={!error}
+        error={error}
         onClose={handleClosePopup}
       />
-
     </Main>
   );
 }
-

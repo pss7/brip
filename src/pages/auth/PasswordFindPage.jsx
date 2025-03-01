@@ -4,18 +4,18 @@ import Main from "../../components/layout/Main";
 import "../../styles/login.css";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Button from "../../components/Button";
-import style from "./PwFindPage.module.css";
+import style from "./PasswordFindPage.module.css";
 import Input from "../../components/Input";
-import { sendVerificationCode, verifyResetCode } from "../../api/auth"; // 수정된 API 함수 임포트
-import CompletePopup from "../../components/CompletePopup"; // CompletePopup 컴포넌트 임포트
+import { sendVerificationCode, verifyResetCode } from "../../api/auth";
+import CompletePopup from "../../components/CompletePopup";
 import { useNavigate } from "react-router-dom";
 
-export default function PwFindPage() {
+export default function PasswordFindPage() {
 
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState(""); // 인증코드 상태 추가
+  const [code, setVerificationCode] = useState(""); // 인증코드 상태 추가
   const [sentCode, setSentCode] = useState(""); // 발송된 코드 저장
   const [isCodeSent, setIsCodeSent] = useState(false); // 인증코드 발송 상태
   const [message, setMessage] = useState(""); // 메시지 상태
@@ -84,14 +84,13 @@ export default function PwFindPage() {
   // 인증코드 검증 처리
   const handleVerifyCode = async () => {
     try {
-      const response = await verifyResetCode(email, verificationCode); // 서버 검증 요청
+      const response = await verifyResetCode(email, code);
 
       if (response && response.status === 200) {
         setMessage("인증코드가 확인되었습니다.");
         setError(false);
-        setIsPopupOpen(true); // ✅ 팝업을 먼저 열고
+        setIsPopupOpen(true);
 
-        // ✅ 팝업의 확인 버튼을 눌렀을 때 이동하도록 설정
       } else {
         setMessage("인증코드가 올바르지 않습니다.");
         setError(true);
@@ -105,15 +104,14 @@ export default function PwFindPage() {
     }
   };
 
-  // 팝업의 확인 버튼을 눌렀을 때 실행될 함수
   const handleClosePopup = () => {
     setIsPopupOpen(false);
 
-    // ✅ 인증 성공 후 팝업을 닫을 때만 이동하도록 처리
     if (!error && message === "인증코드가 확인되었습니다.") {
-      navigate("/reset-password", { state: { email } });
+      navigate(`/password-reset?email=${encodeURIComponent(email)}`);
     }
   };
+
   return (
     <Main className="subWrap bg">
       <div className="signinBox">
@@ -142,7 +140,7 @@ export default function PwFindPage() {
                     <div className={style.inputWrap}>
                       <div className="inputBox">
                         <Input
-                          value={verificationCode}
+                          value={code}
                           onChange={handleVerificationCodeChange}
                           type="text"
                           className="mb-15"

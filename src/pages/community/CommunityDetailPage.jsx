@@ -15,7 +15,7 @@ import { getProfile } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
 
 
-export default function QADetailPage() {
+export default function CommunityDetailPage() {
 
   const { community_Id } = useParams();
   const communityId = Number(community_Id);
