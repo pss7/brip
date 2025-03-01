@@ -1,9 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
+
+
 import kakao from "../../assets/images/login/Kakao_Img.svg";
 import naver from "../../assets/images/login/Naver_Img.svg";
+import google from "../../assets/images/login/Google_Img.svg";
+
+
+
 import style from "./MyPage.module.css";
+
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
 import { getnicknameCheck, getProfile } from "../../api/user";
@@ -35,25 +42,24 @@ export default function MyPage() {
 
   //닉네임 상태 관리
   const [nickname, setNickname] = useState();
-  const nicknameRegex = /^[a-zA-Z0-9]{2,12}$/;
+  const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
 
   //닉네임 상태 업데이트 함수
   function handleNicknameChange(e) {
     const nicknameValue = e.target.value;
     setNickname(nicknameValue);
-  
+
     if (!nicknameValue) {
-      setError("");
+      setError("닉네임을 입력해주세요.");
     } else if (!nicknameRegex.test(nicknameValue)) {
-      // setError("2~12자, 특수문자 및 공백 불가"); 
-      setError(""); 
+      setError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
     } else {
-      setError(""); 
+      setError("");
     }
-  
+
     setDisabled(false);
   }
-  
+
   //닉네임 중복 체크 함수
   async function handleDuplicateCheck() {
 
@@ -64,13 +70,13 @@ export default function MyPage() {
       if (response && response.data.result === "success") {
 
         setPopupMessage("사용 가능한 닉네임입니다.");
-        setError("사용 가능한 닉네임입니다.");
+        // setError("사용 가능한 닉네임입니다.");
         setPopupError(false);
 
       } else if (response && response.data.result === "fail") {
 
         setPopupMessage("이미 사용 중인 닉네임입니다.");
-        setError("이미 사용 중인 닉네임입니다.");
+        // setError("이미 사용 중인 닉네임입니다.");
         setPopupError(true);
 
       }
@@ -226,24 +232,33 @@ export default function MyPage() {
                         />
                       </div>
                     </div>
-
                   </form>
 
                   <div className={style.snsSignInBox}>
                     <h5>SNS 로그인 연결</h5>
                     <ul className={style.snsSignInList}>
-                      <li>
+
+                      <li className={style.naver}>
                         <div className={style.imgBox}>
                           <img src={naver} alt="네이버로그인" />
                         </div>
                         <span className={style.snsText}>네이버 로그인</span>
                         <button className={style.connectBtn}>연결</button>
                       </li>
+
                       <li className={style.kakao}>
                         <div className={style.imgBox}>
                           <img src={kakao} alt="카카오로그인" />
                         </div>
                         <span className={style.snsText}>카카오 로그인</span>
+                        <button className={style.connectBtn}>연결</button>
+                      </li>
+
+                      <li className={style.google}>
+                        <div className={style.imgBox}>
+                          <img src={google} alt="구글" />
+                        </div>
+                        <span className={style.snsText}>구글 로그인</span>
                         <button className={style.connectBtn}>연결</button>
                       </li>
                     </ul>

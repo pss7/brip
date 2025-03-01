@@ -1,61 +1,76 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import style from "./ActivityPage.module.css";
 import { activityData } from "../../data/activityData";
-import { useState } from "react";
-import AddPopup from "../../components/AddPopup"; // AddPopup 컴포넌트 임포트
+import { useEffect, useState } from "react";
+import AddPopup from "../../components/AddPopup"; 
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function ActivityPage() {
-  const [activities, setActivities] = useState(activityData);
-  const [isPopupVisible, setPopupVisible] = useState(false); // 팝업 상태 관리
-  const [selectedActivity, setSelectedActivity] = useState(null); // 수정할 활동 저장
+
+  const navigate = useNavigate();
+  const { token } = useAuthStore();
+
+  // const [activities, setActivities] = useState(activityData);
+  // const [isPopupVisible, setPopupVisible] = useState(false); 
+  // const [selectedActivity, setSelectedActivity] = useState(null); 
 
   // 좋아요 클릭 시 핸들러
-  function handleLikeClick(id) {
-    console.log("Like clicked for activity ID:", id);
-    setActivities((prevActivities) =>
-      prevActivities.map((activity) =>
-        activity.id === id
-          ? { ...activity, likes: activity.likes + 1 }
-          : activity
-      )
-    );
-  }
+  // function handleLikeClick(id) {
+  //   console.log("Like clicked for activity ID:", id);
+  //   setActivities((prevActivities) =>
+  //     prevActivities.map((activity) =>
+  //       activity.id === id
+  //         ? { ...activity, likes: activity.likes + 1 }
+  //         : activity
+  //     )
+  //   );
+  // }
 
   // 토글 버튼 클릭 시 핸들러
-  function handleToggle(id) {
-    console.log("Toggle clicked for activity ID:", id);
-    setActivities((prevActivities) =>
-      prevActivities.map((activity) =>
-        activity.id === id
-          ? { ...activity, isActionsVisible: !activity.isActionsVisible }
-          : activity
-      )
-    );
-  }
+  // function handleToggle(id) {
+  //   console.log("Toggle clicked for activity ID:", id);
+  //   setActivities((prevActivities) =>
+  //     prevActivities.map((activity) =>
+  //       activity.id === id
+  //         ? { ...activity, isActionsVisible: !activity.isActionsVisible }
+  //         : activity
+  //     )
+  //   );
+  // }
 
   // 삭제 버튼 클릭 시 핸들러
-  function handleDelete(id) {
-    console.log("Deleting activity ID:", id);
-    setActivities((prevActivities) =>
-      prevActivities.filter((activity) => activity.id !== id)
-    );
-  }
+  // function handleDelete(id) {
+  //   console.log("Deleting activity ID:", id);
+  //   setActivities((prevActivities) =>
+  //     prevActivities.filter((activity) => activity.id !== id)
+  //   );
+  // }
 
   // 수정 버튼 클릭 시 팝업 띄우기
-  function handleEdit(id) {
-    console.log("Editing activity ID:", id);
-    const activityToEdit = activities.find((activity) => activity.id === id);
-    setSelectedActivity(activityToEdit); // 수정할 활동 정보 저장
-    setPopupVisible(true); // 팝업 표시
-  }
+  // function handleEdit(id) {
+  //   console.log("Editing activity ID:", id);
+  //   const activityToEdit = activities.find((activity) => activity.id === id);
+  //   setSelectedActivity(activityToEdit); // 수정할 활동 정보 저장
+  //   setPopupVisible(true); // 팝업 표시
+  // }
 
   // 팝업 닫기
-  function closePopup() {
-    setPopupVisible(false); // 팝업 숨기기
-    setSelectedActivity(null); // 선택된 활동 초기화
-  }
+  // function closePopup() {
+  //   setPopupVisible(false); // 팝업 숨기기
+  //   setSelectedActivity(null); // 선택된 활동 초기화
+  // }
+
+
+  
+
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, []);
 
   return (
     <Main className="subWrap bg">
@@ -87,7 +102,7 @@ export default function ActivityPage() {
                   커뮤니티에서 내가 쓴 글들을 한곳에서 확인할 수 있습니다.
                 </p>
 
-                <ul className={style.activityList}>
+                {/* <ul className={style.activityList}>
                   {activities.map((data) => (
                     <li key={data.id}>
                       <div className={style.topBox}>
@@ -145,7 +160,7 @@ export default function ActivityPage() {
                       </div>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
               </div>
             </div>
           </div>
@@ -153,7 +168,8 @@ export default function ActivityPage() {
       </div>
 
       {/* 수정 팝업 */}
-      {isPopupVisible && <AddPopup closePopup={closePopup} />}
+      {/* {isPopupVisible && <AddPopup closePopup={closePopup} />} */}
+
     </Main>
   );
 }

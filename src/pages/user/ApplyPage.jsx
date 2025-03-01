@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CalendarIcon from "../../assets/images/sub/Calendar_Icon.svg";
-import { supportStatus } from "../../data/supportStatus.js";  // 데이터를 불러옵니다.
-
+import { supportStatus } from "../../data/supportStatus.js";  
 import style from "./ApplyPage.module.css";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 export default function ApplyPage() {
+
+  const navigate = useNavigate();
+  const { token } = useAuthStore();
 
   // 날짜 상태 설정 (2025.01.01 ~ 2025.02.28)
   const [startDate, setStartDate] = useState(new Date("2025-01-01"));
@@ -86,6 +89,10 @@ export default function ApplyPage() {
       setFilteredList(updatedList);
     }
   };
+
+  if (!token) {
+    navigate("/signin");
+  }
 
   return (
     <Main className="subWrap bg">

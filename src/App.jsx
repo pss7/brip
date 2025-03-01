@@ -16,7 +16,6 @@ import CommunityPage from './pages/community/CommunityPage';
 import CommunityDetailPage from './pages/community/CommunityDetailPage';
 import ChatRoomDetailPage from './pages/community/ChatRoomDetailPage';
 
-
 //채용
 import EmploymentPage from './pages/job/EmploymentPage';
 import EmploymentDetailPage from './pages/job/EmploymentDetailPage';

@@ -11,6 +11,7 @@ import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
 
 export default function NoticePage() {
+  
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
