@@ -10,6 +10,7 @@ import { getProfile } from "../../api/user";
 import { useAuthStore } from "../../store/useAuthStore";
 import { format } from "date-fns";
 import CompletePopup from "../../components/CompletePopup";
+import WritePopup from "../../components/WritePopup";
 
 export default function CommunityPage() {
 
@@ -22,6 +23,9 @@ export default function CommunityPage() {
   const categories = ["노하우&Q&A", "실시간채팅", "업종별/연차별", "정보공유"];
   const [category, setCategory] = useState("노하우&Q&A");
   const [selectedCategory, setSelectedCategory] = useState("노하우&Q&A");
+
+  //팝업 상태 관리
+  const [communityPopupOpen, setCommunityPopupOpen] = useState(false);
 
   //커뮤니티 데이터 상태 관리
   const [communityData, setCommunityData] = useState([]);
@@ -160,7 +164,10 @@ export default function CommunityPage() {
                   <button className="addBtn">
                     <span>채팅방 생성</span>
                   </button>
-                  <button className="addBtn communityWrite">
+                  <button
+                    className="addBtn communityWrite"
+                    onClick={() => setCommunityPopupOpen(true)}
+                  >
                     <span>커뮤니티 글쓰기</span>
                   </button>
                 </div>
@@ -233,6 +240,13 @@ export default function CommunityPage() {
           </div>
         </Container>
       </div>
+
+      {communityPopupOpen && (
+        <WritePopup
+          isOpen={communityPopupOpen}
+          closePopup={() => setCommunityPopupOpen(false)}
+        />
+      )}
 
       {
         popupOpen &&
