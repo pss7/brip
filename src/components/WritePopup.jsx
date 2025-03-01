@@ -69,7 +69,7 @@ export default function WritePopup({ isOpen, closePopup }) {
 
   return (
     <div className={`popupWrap ${showPopup ? "active" : ""}`}>
-      <div className="popupBox">
+      <div className="popupBox scroll">
         <h3>커뮤니티 글쓰기</h3>
 
         <Select
