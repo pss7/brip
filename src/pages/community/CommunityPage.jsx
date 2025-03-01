@@ -142,7 +142,7 @@ export default function CommunityPage() {
   return (
     <Main className="subWrap">
       <div className="communityBox">
-       
+
         <Container className="lnbContainer">
           <div className="communityContent">
             <div className="lnbLayoutBox">
@@ -224,7 +224,7 @@ export default function CommunityPage() {
                       </div>
                     ))
                   ) : (
-                    <p>현재 "{selectedCategory}" 게시물이 없습니다.</p>
+                    <p style={{ marginTop: "30px" }}>현재 "{selectedCategory}" 게시물이 없습니다.</p>
                   )}
 
                 </div>
