@@ -28,7 +28,7 @@ export async function postCommunity(category, content, imgUrl) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    console.error("error:", error);
+    console.error("error");
     return false;
   }
 
@@ -60,7 +60,7 @@ export async function toggleLike(postId) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    console.error("error:", error);
+    console.error("error");
     return false;
   }
 
@@ -123,7 +123,7 @@ export async function getCommunityDetail(communityId) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    console.error("error:", error);
+    console.error("error");
     return false;
   }
 
@@ -155,7 +155,7 @@ export async function getCommentList(page = 0, size = 10, category) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    console.error("error:", error);
+    console.error("error");
     return false;
   }
 

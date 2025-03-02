@@ -21,7 +21,7 @@ export async function logout() {
     // 로컬 스토리지에서 토큰 가져오기
     const token = localStorage.getItem('token');
     if (!token) {
-      console.error("error:", error);
+      console.error("error");
       return false;
     }
 

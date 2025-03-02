@@ -19,12 +19,18 @@ export default function Header() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const [isHeaderAnimation, isSetHeaderAnimation] = useState(false);
   const [recentSearches, setRecentSearches] = useState(loadRecentSearches());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState('');
+
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
   const [isalarmOpen, setIsAlarmOpen] = useState(false);
+  const [mobileAlarmOpen, setMobileAlarmOpen] = useState(false);
 
   //마이페이지 모달 상태 관리
   const [mypageOpen, setMypageOpen] = useState(false);
@@ -208,7 +214,10 @@ export default function Header() {
                 </span>
               </button>
 
-              <Alarm isalarmOpen={isalarmOpen} setIsAlarmOpen={setIsAlarmOpen} />
+              <Alarm
+                isalarmOpen={isalarmOpen}
+                setIsAlarmOpen={setIsAlarmOpen}
+              />
 
             </div>
 
@@ -343,7 +352,7 @@ export default function Header() {
             <Link
               to="#"
               className={style.searchBtn}
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
             >
               <span className="blind">
                 검색
@@ -352,11 +361,21 @@ export default function Header() {
           </div>
 
           <div className={style.alarmBox}>
-            <button className={style.alarmBtn}>
+            <button
+              className={style.alarmBtn}
+              onClick={() => setMobileAlarmOpen(true)}
+            >
               <span className="blind">
                 알림
               </span>
             </button>
+
+            <Alarm
+              isalarmOpen={mobileAlarmOpen}
+              setIsAlarmOpen={setMobileAlarmOpen}
+              className={style.mobileAlarmBox}
+            />
+
           </div>
 
           <div className={style.loginBox}>
@@ -373,7 +392,7 @@ export default function Header() {
             )}
           </div>
         </div>
-        <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+        <div className={`${style.searchTextBox} ${mobileSearchOpen ? `${style.active}` : ""}`}>
           <div
             className={style.searchInputBox}
           >
@@ -385,7 +404,7 @@ export default function Header() {
               type="text"
               value={searchQuery}
               onChange={handleChange}
-              onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
+              onKeyDown={handleKeyDown} 
             />
           </div>
 

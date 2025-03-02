@@ -4,16 +4,15 @@ import style from "./Alarm.module.css";
 import { getNotifications } from "../api/notifications/get";
 import { markNotificationAsRead } from "../api/notifications/markRead";
 
-export default function Alarm({ isalarmOpen, setIsAlarmOpen }) {
+export default function Alarm({ isalarmOpen, setIsAlarmOpen, className }) {
+
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
 
     async function fetchNotifications() {
-
       setIsLoading(true);
-
       const response = await getNotifications();
       if (response && response.result === "success") {
         setNotifications(response.data);
@@ -24,6 +23,7 @@ export default function Alarm({ isalarmOpen, setIsAlarmOpen }) {
     if (isalarmOpen) {
       fetchNotifications();
     }
+
   }, [isalarmOpen]);
 
   // 알림 클릭 시 읽음 처리 함수
@@ -41,7 +41,7 @@ export default function Alarm({ isalarmOpen, setIsAlarmOpen }) {
   };
 
   return (
-    <div className={`${style.alarmBox} ${isalarmOpen ? `${style.active}` : ""}`}>
+    <div className={`${className} ${style.alarmBox}  ${isalarmOpen ? `${style.active}` : ""}`}>
 
       <h3>알림</h3>
 
