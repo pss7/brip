@@ -6,6 +6,7 @@ import Logo from "../../assets/images/common/logo.svg";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import Alarm from "../Alarm";
 import { useAuthStore } from "../../store/useAuthStore";
+import { logout } from "../../api/auth";
 
 export default function Header() {
 
@@ -25,7 +26,26 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isalarmOpen, setIsAlarmOpen] = useState(false);
 
-  const getActiveClass = (path) => {
+  //마이페이지 모달 상태 관리
+  const [mypageOpen, setMypageOpen] = useState(false);
+
+  //로그아웃 함수
+  async function handleLogout() {
+    try {
+      const response = await logout();
+      if (response) {
+        console.log("로그아웃 성공");
+        // 새로고침
+        window.location.reload();
+      } else {
+        console.log("로그아웃 실패");
+      }
+    } catch (error) {
+      console.error('error:', error);
+    }
+  }
+
+  function getActiveClass(path) {
     return location.pathname === path ? `${style.active}` : '';
   };
 
@@ -35,14 +55,13 @@ export default function Header() {
   }
 
   // 최근 검색어 목록 업데이트
-  const updateRecentSearches = (newSearches) => {
+  function updateRecentSearches(newSearches) {
     localStorage.setItem('recentSearches', JSON.stringify(newSearches));
     setRecentSearches(newSearches);
   };
 
   // 검색어 추가
-  const addRecentSearch = (newSearch) => {
-    // 새로운 검색어 추가 (중복 제거)
+  function addRecentSearch(newSearch) {
     let updatedSearches = recentSearches.filter(search => search !== newSearch);
     updatedSearches.unshift(newSearch);
 
@@ -55,18 +74,18 @@ export default function Header() {
   };
 
   // 최근 검색어 삭제
-  const handleKeywordDelete = (keyword) => {
+  function handleKeywordDelete(keyword) {
     const updatedSearches = recentSearches.filter(search => search !== keyword);
     updateRecentSearches(updatedSearches);
   };
 
   // 검색어 입력 시 상태 변경
-  const handleChange = (e) => {
+  function handleChange(e) {
     setSearchQuery(e.target.value);
   };
 
   // 엔터키 입력 시 검색 실행
-  const handleKeyDown = (e) => {
+  function handleKeyDown(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
       setIsMobileMenuOpen(false);
@@ -195,14 +214,79 @@ export default function Header() {
 
             <div className={style.loginBox}>
               {token ? (
-                <Link to="/mypage">
-                  <img src={ProfileImg} alt="프로필이미지" />
-                </Link>  
-              ) : (
-                <Link to="/signin" className={style.loginBtn}>로그인</Link>  
-              )}
-            </div>
 
+                <>
+                  <button
+                    className={style.mypageBtn}
+                    onClick={() => setMypageOpen(true)}
+                  >
+                    <img src={ProfileImg} alt="프로필이미지" />
+                  </button>
+                  <div className={`${style.mypageBox} ${mypageOpen ? `${style.active}` : ""}`}>
+                    <h3>
+                      My Page
+                    </h3>
+                    <div className={style.userInfo}>
+                      <p className={style.name}>
+                        홍길동좌
+                      </p>
+                      <span className={style.email}>qwer12@naver.com</span>
+                    </div>
+
+                    <ul className={style.mypageLinkList}>
+                      <li>
+                        <Link to="/mypage">
+                          내 계정정보
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link to="/interest">
+                          관심공고
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link to="/resume">
+                          이력서 관리
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link to="/apply">
+                          지원현황
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/activity">
+                          내 활동
+                        </Link>
+                      </li>
+                    </ul>
+
+                    <button
+                      className={style.logout}
+                      onClick={handleLogout}
+                    >
+                      로그아웃
+                    </button>
+
+                    <button
+                      className={style.closeBtn}
+                      onClick={() => setMypageOpen(false)}
+                    >
+                      <span className="blind">
+                        Mypage 닫기
+                      </span>
+                    </button>
+                  </div>
+                </>
+
+              ) : (
+                <Link to="/signin" className={style.loginBtn}>로그인</Link>
+              )}
+
+            </div>
           </div>
 
           <button className={style.mobileMenuBtn} onClick={() => setIsMobileMenuOpen(true)}>
@@ -279,7 +363,7 @@ export default function Header() {
             {token ? (
               <Link to="/mypage">
                 <img src={ProfileImg} alt="프로필이미지" />
-              </Link>  // 사용자 정보가 있으면 마이페이지 링크
+              </Link>
             ) : (
               <Link
                 to="/signin"
@@ -288,9 +372,7 @@ export default function Header() {
               </Link>
             )}
           </div>
-
         </div>
-
         <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
           <div
             className={style.searchInputBox}

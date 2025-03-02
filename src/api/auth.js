@@ -15,6 +15,33 @@ export async function login(email, password) {
   }
 }
 
+//로그아웃 API
+export async function logout() {
+  try {
+    // 로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("error:", error);
+      return false;
+    }
+
+    // 로그아웃 요청
+    const response = await axios.post(`${BASE_URL}/user/logout`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    // 로그아웃 성공 시 로컬 스토리지에서 토큰 제거
+    localStorage.removeItem('token');
+    return response.data;
+  } catch (error) {
+    console.error('error:', error);
+    return false;
+  }
+}
+
 // 닉네임 체크 API
 export async function checkNickname(nickname) {
   try {

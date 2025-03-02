@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from './apiConfig';
 
-//마이페이지 API
+//프로필 API
 export async function getProfile() {
   const token = localStorage.getItem("token");
   try {
@@ -21,11 +21,11 @@ export async function getProfile() {
   }
 }
 
+
 //닉네임 중복 체크 API
 export async function getnicknameCheck(nickname) {
 
   try {
-
     const response = await axios.post(`${BASE_URL}/user/check-nickname`, { nickname })
     return response;
 
@@ -35,6 +35,24 @@ export async function getnicknameCheck(nickname) {
   }
 
 }
+
+// 프로필 업데이트 API
+export async function updateProfile({ name, nickname, phone, birthDate }) {
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/user/profile/update`,
+      { name, nickname, phone, birthDate },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('error:', error);
+    return false;
+  }
+
+}
+
 
 
 

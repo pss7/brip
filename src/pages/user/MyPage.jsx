@@ -1,16 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
-
-
 import kakao from "../../assets/images/login/Kakao_Img.svg";
 import naver from "../../assets/images/login/Naver_Img.svg";
 import google from "../../assets/images/login/Google_Img.svg";
-
-
-
 import style from "./MyPage.module.css";
-
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
 import { getnicknameCheck, getProfile } from "../../api/user";
@@ -20,7 +14,6 @@ import { useLoadingStore } from "../../store/useLoadingStore";
 import Loading from "../../components/Loading";
 
 export default function MyPage() {
-  // const navigate = useNavigate();
 
   //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
