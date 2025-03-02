@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import kakao from "../../assets/images/login/Kakao_Img.svg";
@@ -12,8 +12,32 @@ import CompletePopup from "../../components/CompletePopup";
 import ConfirmPopup from "../../components/ConfirmPopup";
 import { useLoadingStore } from "../../store/useLoadingStore";
 import Loading from "../../components/Loading";
+import { useAuthStore } from "../../store/useAuthStore";
+import { logout, withdraw } from "../../api/auth";
 
 export default function MyPage() {
+
+  const navigate = useNavigate();
+
+  const { logout: clearAuthData } = useAuthStore();
+
+  // 로그아웃 함수
+  async function handleLogout() {
+
+    try {
+      const response = await logout();
+      if (response) {
+        console.log("로그아웃 성공");
+        clearAuthData();
+        navigate("/");
+      } else {
+        console.log("로그아웃 실패");
+      }
+    } catch (error) {
+      console.error("error:", error);
+    }
+
+  }
 
   //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
@@ -88,10 +112,24 @@ export default function MyPage() {
   };
 
   // 서비스 해지 확인 함수
-  function handleConfirmTermination() {
-    alert("서버 요청 로직 대기");
+  async function handleConfirmTermination() {
+    try {
+      const response = await withdraw();
+      if (response) {
+        console.log("탈퇴 완료");
+        localStorage.removeItem("token"); 
+        clearAuthData();
+        navigate("/"); 
+      } else {
+        console.log("탈퇴 실패");
+      }
+    } catch (error) {
+      console.error("탈퇴 처리 오류:", error);
+    }
+
     setConfirmPopupOpen(false);
-  };
+  }
+
 
   // 서비스 해지 취소 함수
   function handleCancelTermination() {
@@ -258,7 +296,14 @@ export default function MyPage() {
                   </div>
 
                   <button
-                    className={style.terminationBtn}
+                    className={style.btn}
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </button>
+
+                  <button
+                    className={style.btn}
                     onClick={openConfirmPopup}
                   >
                     서비스 해지

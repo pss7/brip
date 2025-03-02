@@ -7,21 +7,21 @@ import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import Alarm from "../Alarm";
 import { useAuthStore } from "../../store/useAuthStore";
 import { logout } from "../../api/auth";
+import { getProfile } from "../../api/user";
 
 export default function Header() {
 
-  //유저정보 불러오기
-  const { token } = useAuthStore((state) => {
-    return (
-      state
-    )
-  });
+  const { token, logout } = useAuthStore();
+
+  //프로필 데이터 상태 관리
+  const [profileData, setProfileData] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isHeaderAnimation, isSetHeaderAnimation] = useState(false);
   const [recentSearches, setRecentSearches] = useState(loadRecentSearches());
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,26 +29,29 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  const [isalarmOpen, setIsAlarmOpen] = useState(false);
+  //알림 모달 상태 관리
+  const [alarmOpen, setAlarmOpen] = useState(false);
   const [mobileAlarmOpen, setMobileAlarmOpen] = useState(false);
 
   //마이페이지 모달 상태 관리
   const [mypageOpen, setMypageOpen] = useState(false);
 
-  //로그아웃 함수
+  // 로그아웃 함수
   async function handleLogout() {
+
     try {
       const response = await logout();
       if (response) {
         console.log("로그아웃 성공");
-        // 새로고침
-        window.location.reload();
+        clearAuthData();
+        navigate("/");
       } else {
         console.log("로그아웃 실패");
       }
     } catch (error) {
-      console.error('error:', error);
+      console.error("error:", error);
     }
+
   }
 
   function getActiveClass(path) {
@@ -107,6 +110,25 @@ export default function Header() {
     isSetHeaderAnimation(true);
 
   }, [])
+
+  //데이터 불러오기
+  useEffect(() => {
+
+    async function fetchProfile() {
+
+      try {
+        const renponse = await getProfile();
+        if (renponse) {
+          setProfileData(renponse.data);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    }
+
+    fetchProfile();
+
+  }, []);
 
   return (
     <header id={style.headerBox} className={isHeaderAnimation && `${style.active}`}>
@@ -206,8 +228,8 @@ export default function Header() {
 
             <div className={style.alarmBox}>
               <button
-                className={style.alarmBtn}
-                onClick={() => setIsAlarmOpen(true)}
+                className={`${style.alarmBtn} ${alarmOpen ? `${style.active}` : ""}`}
+                onClick={() => setAlarmOpen(true)}
               >
                 <span className="blind">
                   알림
@@ -215,8 +237,8 @@ export default function Header() {
               </button>
 
               <Alarm
-                isalarmOpen={isalarmOpen}
-                setIsAlarmOpen={setIsAlarmOpen}
+                alarmOpen={alarmOpen}
+                setAlarmOpen={setAlarmOpen}
               />
 
             </div>
@@ -237,9 +259,11 @@ export default function Header() {
                     </h3>
                     <div className={style.userInfo}>
                       <p className={style.name}>
-                        홍길동좌
+                        {profileData.name}
                       </p>
-                      <span className={style.email}>qwer12@naver.com</span>
+                      <span className={style.email}>
+                        {profileData.email}
+                      </span>
                     </div>
 
                     <ul className={style.mypageLinkList}>
@@ -371,8 +395,8 @@ export default function Header() {
             </button>
 
             <Alarm
-              isalarmOpen={mobileAlarmOpen}
-              setIsAlarmOpen={setMobileAlarmOpen}
+              alarmOpen={mobileAlarmOpen}
+              setAlarmOpen={setMobileAlarmOpen}
               className={style.mobileAlarmBox}
             />
 
@@ -404,11 +428,11 @@ export default function Header() {
               type="text"
               value={searchQuery}
               onChange={handleChange}
-              onKeyDown={handleKeyDown} 
+              onKeyDown={handleKeyDown}
             />
           </div>
-
         </div>
+
         <button className={style.mobileCloseBtn} onClick={() => setIsMobileMenuOpen(false)}>
           <span className="blind">
             모바일 메뉴 닫기

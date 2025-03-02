@@ -99,44 +99,34 @@ export default function SignInPage() {
     }
   }, [email, password, emailError, passwordError]);
 
+  // 폼 제출 함수
   async function handleSubmit(e) {
     e.preventDefault();
+
     try {
-      // 로그인 API 호출
       const response = await login(email, password);
 
-      /**
-       * 서버에서 {"result":"fail","message":"이메일 또는 비밀번호가 올바르지 않습니다."}
-       * 같은 형태로 반환한다고 가정할 경우.
-       */
-
-      if (response.result === "fail") {
-        // 로그인 실패 -> 모달 출력, 페이지 이동 X
-        setErrorMessage(response.message);
+      // 로그인 실패 처리
+      if (!response.success) {
+        setErrorMessage(response.message || "로그인 실패");
         setIsModalOpen(true);
-        return; // 함수 종료
+        return;
       }
 
-      if (isRemembered) {
-        localStorage.setItem("savedEmail", email);
-      } else {
-        localStorage.removeItem("savedEmail");
-      }
-
-      // 스토어에 인증 정보 저장
+      // 로그인 성공 처리
       setAuthData({
-        token: response.token,
-        email: response.email,
-        nickname: response.nickname,
-        cuid: response.cuid
+        token: response.data.token,
+        email: response.data.email,
+        nickname: response.data.nickname,
+        cuid: response.data.cuid,
       });
 
-      // 로그인 성공 시 메인 페이지로 이동
+      console.log("로그인 성공:", response.data);
       navigate("/");
 
     } catch (error) {
-      console.error("로그인 실패:", error);
-      setErrorMessage("로그인에 실패했습니다. 잠시 후 다시 시도해주세요.");
+      console.error("로그인 처리 중 오류 발생:", error.message);
+      setErrorMessage("로그인 중 문제가 발생했습니다.");
       setIsModalOpen(true);
     }
   }
@@ -193,7 +183,12 @@ export default function SignInPage() {
                 </Link>
               </div>
 
-              <Button text="로그인" customClass={style.btn} disabled={disabled} />
+              <Button
+                text="로그인"
+                customClass={style.btn}
+                disabled={disabled}
+              />
+
             </form>
 
             <div className={style.snsListBox}>

@@ -6,7 +6,7 @@ import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
-import CompletePopup from "../../components/CompletePopup"; // ✅ 모달 컴포넌트 (수정 X)
+import CompletePopup from "../../components/CompletePopup";
 import style from "./SignUpPage.module.css";
 import { checkNickname, signUp } from "../../api/auth";
 
@@ -199,6 +199,7 @@ export default function SignUpPage() {
     const fullEmail = `${email}@${emailDomain}`;
 
     try {
+
       // 회원가입 API
       const response = await signUp({
         name,
@@ -207,16 +208,19 @@ export default function SignUpPage() {
         password,
       });
 
-      // 성공
-
+      //서버 응답이 실패일 경우
+      if (response.data.result === "fail") {
+        setPopupMessage(response.data.message || "회원가입에 실패하였습니다.");
+        setIsPopupError(true);
+        setIsPopupOpen(true);
+        return;
+      }
       if (response && response.data) {
         setPopupMessage("회원가입이 완료되었습니다.");
         setIsPopupError(false);
         setRegistrationSuccess(true);
         setIsPopupOpen(true);
       } else {
-
-        // 실패
         const failMsg = response?.data?.message || "회원가입에 실패하였습니다.";
         setPopupMessage(failMsg);
         setIsPopupError(true);
@@ -410,7 +414,11 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
-                <Button text="회원가입" type="submit" />
+                <Button
+                  text="회원가입"
+                  type="submit"
+                />
+
               </form>
             </div>
             <div className="linkBox">
@@ -420,7 +428,6 @@ export default function SignUpPage() {
         </Container>
       </div>
 
-      {/* ✅ CompletePopup (수정 X) */}
       <CompletePopup
         isOpen={isPopupOpen}
         message={popupMessage}

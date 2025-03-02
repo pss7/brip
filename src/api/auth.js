@@ -4,40 +4,76 @@ import { BASE_URL } from './apiConfig';
 // 로그인 API
 export async function login(email, password) {
   try {
-    const response = await axios.post(`${BASE_URL}/user/login`, { email, password },
-      { headers: { 'Content-Type': 'application/json' } }
+    const response = await axios.post(
+      `${BASE_URL}/user/login`,
+      { email, password },
+      { headers: { "Content-Type": "application/json" } }
     );
-    localStorage.setItem('token', response.data.token);
-    return response.data;
+
+    // 로그인 실패 응답 처리
+    if (response.data?.result === "fail") {
+      return { success: false, message: response.data.message };
+    }
+
+    // 로그인 성공 시에만 토큰 저장
+    if (response.data?.token) {
+      localStorage.setItem("token", response.data.token);
+      console.log("토큰 저장 완료:", localStorage.getItem("token"));
+    }
+
+    return { success: true, message: response.data.message || "로그인 성공", data: response.data };
   } catch (error) {
-    console.error('error:', error);
-    return false;
+    console.error("로그인 요청 실패:", error.response?.data?.message || error.message);
+    return { success: false, message: error.response?.data?.message || "로그인 요청 실패" };
   }
 }
 
 //로그아웃 API
 export async function logout() {
+
   try {
-    // 로컬 스토리지에서 토큰 가져오기
     const token = localStorage.getItem('token');
     if (!token) {
       console.error("error");
       return false;
     }
-
-    // 로그아웃 요청
     const response = await axios.post(`${BASE_URL}/user/logout`, {}, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
     });
-
-    // 로그아웃 성공 시 로컬 스토리지에서 토큰 제거
     localStorage.removeItem('token');
     return response.data;
   } catch (error) {
     console.error('error:', error);
+    return false;
+  }
+
+}
+
+//탈퇴 API
+export async function withdraw() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("error");
+      return false;
+    }
+    const response = await axios.post(
+      `${BASE_URL}/user/withdraw`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("error:", error.response?.data || error.message);
     return false;
   }
 }
