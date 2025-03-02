@@ -19,8 +19,6 @@
 .linkBox .alarmBox .alarmBtn{display: block; width: 32px; height: 32px; background: url(../../assets/images/common/Alarm_Icon3.svg)no-repeat center; background-size: cover; transition: all .5s;} 
 .linkBox .loginBox{position: relative;}
 .linkBox .loginBox .mypageBtn{display: block;}
-.linkBox .alarmBox .alarmBtn:hover,
-.linkBox .searchBox .searchBtn:hover{transform: translateY(-5px);}
 .linkBox .loginBox .mypageBox{opacity: 0; position: absolute; top:52px; right:0; padding: 12px 21px 21px; width: 215px; height: 350px; border-radius: 24px; box-shadow: 2px 2px 10px rgba(9, 32, 67, 0.1); background-color: #fff; transition: all .5s; visibility: hidden;}
 .linkBox .loginBox .mypageBox.active{opacity: 1; visibility: visible;}
 .linkBox .loginBox .mypageBox h3{margin-bottom: 20px; font-size: 12px; font-weight: 600; color: #0A0A0A; text-align: center;}
@@ -45,6 +43,13 @@
 .linkBox .searchKeywordBox .keywordList li span{font-size: 12px; color: #7985EB;}
 .linkBox .searchKeywordBox .keywordList li  .keywordDelBtn{width: 10px; height: 10px; background: url(../../assets/images/common/Close_Btn.svg)no-repeat center;}
 
+@media (min-width: 1200px){
+
+  .linkBox .alarmBox .alarmBtn:hover,
+  .linkBox .searchBox .searchBtn:hover{transform: translateY(-5px);}
+
+}
+
 @media (max-width: 1199px){
   
   .linkBox{transform: none; top: auto; position: absolute; bottom: 30px; right: auto; width: 100%; justify-content: center; gap: 0 28px;}
@@ -59,7 +64,7 @@
   #headerBox .mobileMenuBtn{position: absolute; top:50%; transform: translateY(-50%); right:0; display: flex; flex-direction: column; align-items: flex-end; gap: 8px 0; width: 35px;}
   #headerBox .mobileMenuBtn em:nth-child(1){width: 70%;}
   #headerBox .mobileMenuBtn em{display: block; width: 100%; height: 2px; background-color: #000;}
-  #headerBox .mobileMenuBox .searchTextBox{margin: 15px 20px 0; position: relative; left: auto; transform: none; top: auto; z-index: 99999;}
+  #headerBox .mobileMenuBox .searchTextBox{margin: 15px 20px 0; position: relative; left: auto; transform: none; top: auto;}
   #headerBox .mobileMenuBox .searchTextBox input{width: 100%;}
   #headerBox .mobileMenuBox.active{right: 0;}
   #headerBox .mobileMenuBox{padding: 30px 0 0; display: block; position: fixed; top:0; right:-3000px; bottom: 0; max-width: 350px; width: 100%; background-color: #FAFAFD; z-index: 999999; transition: all .5s;}

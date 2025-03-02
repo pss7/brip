@@ -372,7 +372,7 @@ export default function Header() {
         </nav>
 
         <div className={style.linkBox}>
-          <div className={style.searchBox}>
+          <div className={`${style.searchBox} ${mobileSearchOpen ? `${style.active}` : ""}`}>
             <Link
               to="#"
               className={style.searchBtn}
