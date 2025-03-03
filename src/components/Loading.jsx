@@ -9,7 +9,7 @@ export default function Loading({ fullScreen = false }) {
   if (!isLoading) return null
 
   return (
-    <div className={`${style.loadingBox} ${fullScreen ? style.fullScreen : style.basicLoadingBox}`}>
+    <div className={`${style.loadingBox} ${fullScreen ? style.fullScreen : ""}`}>
       {/* <p className={style.loadingText}>
         잠시만 기다려주세요.
       </p> */}

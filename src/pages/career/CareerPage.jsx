@@ -1,42 +1,78 @@
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Main from "../../components/layout/Main";
-import Container from "../../components/Container";
-import style from "./CareerPage.module.css";
 import Slider from "react-slick";
-import CareerImg from "../../assets/images/sub/career_img.png";
-import { educationData } from "../../data/educationData";
-import { Link } from "react-router-dom";
-import { useState } from "react";
 import Card from "../../components/Card";
+import style from "./CareerPage.module.css";
+import { getCareerCourses } from "../../api/career/career";
+import Loading from "../../components/Loading";
+import CareerImg from "../../assets/images/sub/career_img.png";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function CareerPage() {
 
+  const defaultImage = "/assets/images/main/Card_Img01.png";
+  const { token } = useAuthStore();
+
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("직무/직군");
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab); // 클릭한 탭을 활성화
-  };
   // 슬릭 설정
   const settings = {
     variableWidth: true,
-    dots: false,  // 페이지네이션 표시 여부
-    infinite: true,  // 무한 루프 여부
-    slidesToShow: 1,  // 한 번에 보여줄 슬라이드 수
-    slidesToScroll: 1,  // 한 번에 스크롤할 슬라이드 수
+    dots: false,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     centerMode: true,
     centerPadding: 0,
-    autoPlay: true,  // 자동으로 슬라이드 이동
-    autoplaySpeed: 2000,  // 2초마다 슬라이드 이동
+    autoplay: true,
+    speed: 1500,
     responsive: [
       {
-        breakpoint: 767, // 화면 너비가 767px 이하일 때
+        breakpoint: 767,
         settings: {
-          variableWidth: false,  // `767px` 이하에서 가변 너비를 해제
-          centerMode: false,  // `767px` 이하에서 centerMode 해제
-          slidesToShow: 1,  // 한 번에 보여줄 슬라이드 수를 1로 설정
+          variableWidth: false,
+          centerMode: false,
+          slidesToShow: 1,
         }
       }
     ]
   };
+
+  //강의 목록 데이터 불러오기
+  useEffect(() => {
+
+    async function fetchCourses() {
+      try {
+        setLoading(true);
+        const response = await getCareerCourses({
+          page: 0,
+          size: 10,
+          category: "오프라인",
+          keyword: "",
+          jobCategory: activeTab
+        });
+        if (response.result === "success") {
+          setCourses(response.courses);
+        } else {
+          setCourses([]);
+        }
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+
+  }, [activeTab]);
+
+  if (!token) {
+    navigate("/signin");
+  }
 
   return (
     <Main className="subWrap">
@@ -69,48 +105,39 @@ export default function CareerPage() {
           </Slider>
         </div>
 
-
-        <div className="careerBoxContent">
-
-          <div className={style.tabBox}>
-            {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => {
-              return (
-                <button
-                  key={tab}
-                  className={`${style.button} ${activeTab === tab ? style.active : ""}`}
-                  onClick={() => handleTabClick(tab)}>
-                  {tab}
-                </button>
-              )
-            }
-            )}
-          </div>
-
-          <div className={style.cardList}>
-            {educationData[activeTab]?.map((data, index) => (
-
-              <Card
-                href="/careerdetail"
-                key={index}
-                text={activeTab}
-                title={data.title}
-                imgSrc={data.imgSrc}
-                subText={data.subText}
-                className="careerCardBox"
-              />
-
-            ))}
-          </div>
-
+        <div className={style.tabBox}>
+          {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => (
+            <button
+              type="button"
+              key={tab}
+              className={`${style.button} ${activeTab === tab ? style.active : ""}`}
+              onClick={() => { setActiveTab(tab) }}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
 
-
-
-
-
-
+        <div className={style.cardList}>
+          {loading ? (
+            <Loading />
+          ) : courses.length > 0 ? (
+            courses.map((course, index) => (
+              <Card
+                href={`/career-detail/${course.id}`}
+                key={index}
+                text={course.job_category}
+                title={course.title}
+                imgSrc={course.imgSrc ? course.imgSrc : defaultImage}
+                subText={course.institute_name}
+              />
+            ))
+          ) : (
+            <p className="infoText">해당 카테고리에 강의가 없습니다.</p>
+          )}
+        </div>
 
       </div>
-    </Main>
+    </Main >
   );
 }

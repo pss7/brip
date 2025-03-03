@@ -11,7 +11,7 @@ import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
 
 export default function NoticePage() {
-  
+
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
@@ -38,7 +38,7 @@ export default function NoticePage() {
       try {
 
         const mappedSort = sortOrder === "최신순" ? "newest" : "oldest";
-        
+
         const response = await getNotice({
           page: 0,
           size: 10,
@@ -58,7 +58,9 @@ export default function NoticePage() {
 
       } finally {
 
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
 
       }
     }

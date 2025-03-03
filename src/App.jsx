@@ -51,9 +51,22 @@ import ResumePage from './pages/user/ResumePage';
 import ResumeRegpage from './pages/user/ResumeRegpage';
 import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
 import NotificationDetail from './pages/user/NotificationDetail';
+import Loading from './components/Loading';
+import { useEffect, useState } from 'react';
 
 
 function App() {
+
+  //로딩 상태 관리
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
+
+  if (loading) {
+    return <Loading fullScreen />;
+  }
 
   return (
     <BrowserRouter>
@@ -72,6 +85,31 @@ function App() {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community-detail/:community_Id" element={<CommunityDetailPage />} />
 
+        {/* 커리어 */}
+        <Route path="/career" element={<CareerPage />} />
+        <Route path="/career-detail/:career_Id" element={<CareerDetailPage />} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <Route path="careerexploration" element={<CareerExplorationPage />} />
+        <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
+
+
 
 
 
@@ -85,10 +123,7 @@ function App() {
         <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
         <Route path='/terms' element={<TermsPage />} />
         <Route path='/policy' element={<PolicyPage />} />
-        <Route path="career" element={<CareerPage />} />
-        <Route path="careerdetail" element={<CareerDetailPage />} />
-        <Route path="careerexploration" element={<CareerExplorationPage />} />
-        <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
+
         <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
 
 

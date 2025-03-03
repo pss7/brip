@@ -17,7 +17,6 @@ import Guide03 from "../assets/images/main/Guide_Icon03.svg";
 import Guide04 from "../assets/images/main/Guide_Icon04.svg";
 import MainImg from "../assets/images/main/Main_Img01.png";
 import { announcementData } from "../data/announcementData";
-import { educationData } from "../data/educationData";
 import Slider from 'react-slick';
 import AOS from "aos";
 import "slick-carousel/slick/slick.css";
@@ -27,8 +26,11 @@ import Card from "../components/Card";
 import "../styles/style.css";
 import BgCard from "../components/BgCard";
 import { useAuthStore } from "../store/useAuthStore";
+import { getCareerCourses } from "../api/career/career";
 
 export default function MainPage() {
+
+  const defaultImage = "/assets/images/main/Card_Img01.png";
 
   //유저정보 불러오기
   const { token } = useAuthStore((state) => {
@@ -37,6 +39,7 @@ export default function MainPage() {
     )
   });
 
+  const [courses, setCourses] = useState([]);
   const [announcements, setAnnouncements] = useState(announcementData);
 
   useEffect(() => {
@@ -44,6 +47,7 @@ export default function MainPage() {
       duration: 2000,
     });
   }, [])
+
 
   const sliderRefMain = useRef(null);
   const sliderRef01 = useRef(null);
@@ -106,6 +110,37 @@ export default function MainPage() {
       )
     );
   };
+
+  //강의 목록 데이터 불러오기
+  useEffect(() => {
+
+    async function fetchCourses() {
+      try {
+        // setLoading(true);
+        const response = await getCareerCourses({
+          page: 0,
+          size: 10,
+          category: "오프라인",
+          keyword: "",
+          jobCategory: activeTab
+        });
+        if (response.result === "success") {
+          setCourses(response.courses);
+        } else {
+          setCourses([]);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+      //  finally {
+      //   setLoading(false);
+      // }
+    };
+
+    fetchCourses();
+
+  }, [activeTab]);
+
 
   return (
     <>
@@ -374,6 +409,15 @@ export default function MainPage() {
               </h3>
             </div>
 
+
+
+
+
+
+
+
+
+
             <div className={style.tabBox} data-aos="fade-up">
               <ul className={style.tab}>
                 {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => (
@@ -391,19 +435,23 @@ export default function MainPage() {
             </div>
 
             <div className={style.cardList}>
-              <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                {educationData[activeTab]?.map((data, index) => (
-                  <div key={index} data-aos="fade-up">
-                    <Card
-                      href="/careerdetail"
-                      text={activeTab}
-                      title={data.title}
-                      imgSrc={data.imgSrc}
-                      subText={data.subText}
-                    />
-                  </div>
-                ))}
-              </Slider>
+              {courses.length > 0 ? (
+                <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                  {courses.map((data, index) => (
+                    <div key={index} data-aos="fade-up">
+                      <Card
+                        href={`/career-detail/${data.id}`}
+                        text={data.job_category || activeTab}
+                        title={data.title}
+                        imgSrc={data.imgSrc ? data.imgSrc : defaultImage}
+                        subText={data.subText}
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                <p className="infoText">해당 카테고리에 강의가 없습니다.</p>
+              )}
             </div>
 
             <div className={style.control} data-aos="fade-up">
