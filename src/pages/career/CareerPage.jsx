@@ -12,6 +12,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 export default function CareerPage() {
 
   const defaultImage = "/assets/images/main/Card_Img01.png";
+  const navigate = useNavigate();
   const { token } = useAuthStore();
 
   const [courses, setCourses] = useState([]);

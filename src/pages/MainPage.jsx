@@ -409,15 +409,6 @@ export default function MainPage() {
               </h3>
             </div>
 
-
-
-
-
-
-
-
-
-
             <div className={style.tabBox} data-aos="fade-up">
               <ul className={style.tab}>
                 {["직무/직군", "기술/역량", "전문과정", "자격증", "워크숍"].map((tab) => (
@@ -435,22 +426,26 @@ export default function MainPage() {
             </div>
 
             <div className={style.cardList}>
-              {courses.length > 0 ? (
-                <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
-                  {courses.map((data, index) => (
-                    <div key={index} data-aos="fade-up">
-                      <Card
-                        href={`/career-detail/${data.id}`}
-                        text={data.job_category || activeTab}
-                        title={data.title}
-                        imgSrc={data.imgSrc ? data.imgSrc : defaultImage}
-                        subText={data.subText}
-                      />
-                    </div>
-                  ))}
-                </Slider>
+              {token ? (
+                courses.length > 0 ? (
+                  <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
+                    {courses.map((data, index) => (
+                      <div key={index} data-aos="fade-up">
+                        <Card
+                          href={`/career-detail/${data.id}`}
+                          text={data.job_category || activeTab}
+                          title={data.title}
+                          imgSrc={data.imgSrc ? data.imgSrc : defaultImage}
+                          subText={data.subText}
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                ) : (
+                  <p className="infoText">해당 카테고리에 강의가 없습니다.</p>
+                )
               ) : (
-                <p className="infoText">해당 카테고리에 강의가 없습니다.</p>
+                <p className="infoText">로그인 후 강의를 확인할 수 있습니다.</p>
               )}
             </div>
 
