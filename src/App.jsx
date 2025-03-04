@@ -88,24 +88,6 @@ function App() {
         {/* 커리어 */}
         <Route path="/career" element={<CareerPage />} />
         <Route path="/career-detail/:career_Id" element={<CareerDetailPage />} />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <Route path="careerexploration" element={<CareerExplorationPage />} />
         <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
 
@@ -123,30 +105,20 @@ function App() {
         <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
         <Route path='/terms' element={<TermsPage />} />
         <Route path='/policy' element={<PolicyPage />} />
-
         <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
-
-
-
-
-
-
-
-
-
-
-
         <Route path="/roadmapinfo" element={<RoadMapInfoPage />} />
         <Route path="/roadmapdesign" element={<RoadMapDesignPage />} />
         <Route path="/roadmapresult" element={<RoadMapResultPage />} />
-        <Route path="/mypage" element={<MyPage />} />
         <Route path="/interest" element={<InterestPage />} />
 
+        {/* 유저 */}
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/resumereg" element={<ResumeRegpage />} />
         <Route path="/resumeupdate/:id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/activity" element={<ActivityPage />} />
+
         <Route path="/notification/:notificationId" component={<NotificationDetail />} />
       </Routes>
     </BrowserRouter>

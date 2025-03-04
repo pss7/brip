@@ -9,31 +9,26 @@ import DetailImg from "../../assets/images/sub/Detail_Img.png";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import CompletePopup from "../../components/CompletePopup";  // Import the CompletePopup component
+import CompletePopup from "../../components/CompletePopup";
 
 export default function EmploymentDetailPage() {
 
   const [isResumeVisible, setIsResumeVisible] = useState(false);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
 
-  // State to control the popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  // State for the popup message and error flag
   const [popupMessage, setPopupMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  // Function to handle the "제출하기" button click
   const handleSubmit = () => {
-    // Set your popup message and show the popup
     setPopupMessage("이력서 제출이 완료되었습니다.");
-    setIsError(false);  // Set error state to false if the submission is successful
-    setIsPopupOpen(true);  // Show the popup
+    setIsError(false);
+    setIsPopupOpen(true);
   };
 
-  // Function to close the popup
   const handlePopupCancel = () => {
-    setIsPopupOpen(false);  // Hide the popup
+    setIsPopupOpen(false);
   };
 
   return (
@@ -101,7 +96,6 @@ export default function EmploymentDetailPage() {
                       </em>
                     </li>
 
-                    {/* Conditionally render additional list item */}
                     {isDetailVisible && (
                       <li>
                         <span>[기타]</span>
@@ -112,7 +106,6 @@ export default function EmploymentDetailPage() {
                     )}
                   </ul>
 
-                  {/* Toggle button to show more details */}
                   <button
                     className={style.detailView}
                     onClick={() => setIsDetailVisible(!isDetailVisible)}
@@ -268,7 +261,7 @@ export default function EmploymentDetailPage() {
                       <Button
                         text="제출하기"
                         customClass={style.btn}
-                        onClick={handleSubmit} // Trigger handleSubmit on button click
+                        onClick={handleSubmit}
                       />
 
                       <Link className={style.link} to="/employment">
@@ -279,7 +272,6 @@ export default function EmploymentDetailPage() {
                   )
                 }
 
-                {/* Button to toggle resume section visibility */}
                 {!isResumeVisible && (
                   <Button
                     text="이력서 작성"
@@ -303,8 +295,9 @@ export default function EmploymentDetailPage() {
           isOpen={isPopupOpen}
           message={popupMessage}
           error={isError}
-          onCancel={handlePopupCancel}
+          onClose={handlePopupCancel}
         />
+
       </div>
     </Main>
   )

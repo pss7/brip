@@ -11,6 +11,7 @@ import Loading from "../../components/Loading";
 import { createResume } from "../../api/user/resume/resume";
 import { getProfile } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
+import { useAuthStore } from "../../store/useAuthStore";
 
 // ResumeField 컴포넌트
 const ResumeField = ({ label, value, onChange, placeholder, readOnly, type = "text", step }) => (
@@ -28,6 +29,9 @@ const ResumeField = ({ label, value, onChange, placeholder, readOnly, type = "te
 );
 
 export default function ResumeRegpage() {
+
+  //토큰
+  const { token } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -193,6 +197,10 @@ export default function ResumeRegpage() {
 
   if (loading) {
     return <Loading fullScreen />;
+  }
+
+  if (!token) {
+    navigate("/signin");
   }
 
   // 모달 닫기 시 처리 (성공이면 페이지 이동 등)
