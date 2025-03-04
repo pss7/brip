@@ -48,7 +48,6 @@ export default function MainPage() {
     });
   }, [])
 
-
   const sliderRefMain = useRef(null);
   const sliderRef01 = useRef(null);
   const sliderRef02 = useRef(null);

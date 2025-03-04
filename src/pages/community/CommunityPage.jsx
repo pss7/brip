@@ -205,7 +205,7 @@ export default function CommunityPage() {
                         </div>
 
                         <div className="communityContentBox">
-                          <Link to={`/qa/${data.post_id}`} className="contentText">{data.content}</Link>
+                          <Link to={`/community-detail/${data.post_id}`} className="contentText">{data.content}</Link>
                         </div>
 
                         <div className="communityCommentBox">

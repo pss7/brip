@@ -5,7 +5,7 @@
 .popupWrap .popupBox .popupSelect{margin-bottom: 22px; width: 100%;}
 .popupWrap .popupBox .popupTextarea{padding: 25px 20px 30px 16px ; margin-bottom: 34px; width: 100%; height: 304px;}
 .imageUpload {display: flex; justify-content: space-between;  gap: 10px; margin-bottom: 30px;}
-.imageUpload .infotext{font-size: 14px; font-weight: 500; color: #6C7072;} 
+.imageUpload .imgInfoText{font-size: 14px; font-weight: 500; color: #6C7072;} 
 .imageUpload .uploadButton {display: inline-block; margin-bottom: 18px; height: 36px; border-radius: 4px; background-color: #fff;
   color: #313131;  padding: 8px 12px; border-radius: 5px; border: 1px solid #E9E9E9;
   cursor: pointer; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);

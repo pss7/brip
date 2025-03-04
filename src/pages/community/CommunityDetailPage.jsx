@@ -109,7 +109,7 @@ export default function CommunityDetailPage() {
       }
     }
     fetchProfile();
-  }, []);
+  }, [communityId]);
 
   //커뮤니티 상세 데이터 불러오기
   useEffect(() => {

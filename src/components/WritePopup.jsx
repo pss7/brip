@@ -92,7 +92,7 @@ export default function WritePopup({ isOpen, closePopup }) {
               className="blind"
             />
             <label htmlFor="upload" className="uploadButton">이미지 첨부</label>
-            <p className="infoText">
+            <p className="imgInfoText">
               운영정책에 어긋나는 <br />
               이미지 등록 시 이용이 제한 <br />
               될 수 있습니다.

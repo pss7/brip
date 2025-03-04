@@ -21,7 +21,6 @@ export async function getProfile() {
   }
 }
 
-
 //닉네임 중복 체크 API
 export async function getnicknameCheck(nickname) {
 
