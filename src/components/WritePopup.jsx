@@ -6,6 +6,7 @@ import { postCommunity } from "../api/community/community";
 import CompletePopup from "./CompletePopup";
 
 export default function WritePopup({ isOpen, closePopup }) {
+
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
@@ -122,7 +123,6 @@ export default function WritePopup({ isOpen, closePopup }) {
         </button>
       </div>
 
-      {/* 유효성 검사 & 결과 팝업 */}
       {
         completePopupOpen && (
           <CompletePopup
@@ -134,5 +134,6 @@ export default function WritePopup({ isOpen, closePopup }) {
         )
       }
     </div>
+
   );
 }

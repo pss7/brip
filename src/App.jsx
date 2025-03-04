@@ -54,7 +54,6 @@ import NotificationDetail from './pages/user/NotificationDetail';
 import Loading from './components/Loading';
 import { useEffect, useState } from 'react';
 
-
 function App() {
 
   //로딩 상태 관리
@@ -71,8 +70,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* 홈 */}
         <Route path='/' element={<Home />} />
 
+        {/* 검색 */}
         <Route path='/search' element={<SearchPage />} />
 
         {/* 인증 */}
@@ -84,6 +86,7 @@ function App() {
         {/* 커뮤니티 */}
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community-detail/:community_Id" element={<CommunityDetailPage />} />
+        <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
 
         {/* 커리어 */}
         <Route path="/career" element={<CareerPage />} />
@@ -91,25 +94,14 @@ function App() {
         <Route path="careerexploration" element={<CareerExplorationPage />} />
         <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
 
-
-
-
-
+        {/* 공고 */}
         <Route path='/employment' element={<EmploymentPage />} />
         <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
-        <Route path="/notice" element={<NoticePage />} />
-        <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
-        <Route path='/faq' element={<FAQPage />} />
-        <Route path='/inquiry' element={<InquiryPage />} />
-        <Route path='/inquiryreg' element={<InquiryRegisterPage />} />
-        <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
-        <Route path='/terms' element={<TermsPage />} />
-        <Route path='/policy' element={<PolicyPage />} />
-        <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
+
+        {/* 로드맵 */}
         <Route path="/roadmapinfo" element={<RoadMapInfoPage />} />
         <Route path="/roadmapdesign" element={<RoadMapDesignPage />} />
         <Route path="/roadmapresult" element={<RoadMapResultPage />} />
-        <Route path="/interest" element={<InterestPage />} />
 
         {/* 유저 */}
         <Route path="/mypage" element={<MyPage />} />
@@ -118,7 +110,17 @@ function App() {
         <Route path="/resumeupdate/:id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/activity" element={<ActivityPage />} />
+        <Route path="/notice" element={<NoticePage />} />
+        <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
+        <Route path='/faq' element={<FAQPage />} />
+        <Route path='/inquiry' element={<InquiryPage />} />
+        <Route path='/inquiryreg' element={<InquiryRegisterPage />} />
+        <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
+        <Route path='/terms' element={<TermsPage />} />
+        <Route path='/policy' element={<PolicyPage />} />
+        <Route path="/interest" element={<InterestPage />} />
 
+        {/* 알림 */}
         <Route path="/notification/:notificationId" component={<NotificationDetail />} />
       </Routes>
     </BrowserRouter>
