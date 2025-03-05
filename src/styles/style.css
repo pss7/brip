@@ -15,7 +15,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 }
 
 /* 공통-안내텍스트 */
-.infoText{margin: 30px 0; font-size: 20px; font-weight: 500;}
+.infoText{margin: 30px 0; font-size: 18px; font-weight: 500;}
 
 /* 공통-스크롤 */
 .scroll::-webkit-scrollbar { width: 10px; }
@@ -298,12 +298,8 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 }
 
 /* 커뮤니티 */
-
-
-
 .communityBox .header{position: relative;}
 .communityBox .header h4{font-size: 20px; font-weight: 400; color: #000;}
-
 .communityBox .lnbLayoutBox .content{padding: 42px 39px 50px 48px;}
 .communityBox aside{padding: 33px 30px 27px; width: 340px; height: 200px; background-color: #FAFAFC; border-radius: 10px; box-shadow: none;}
 .communityBox aside .infoBox{margin-bottom: 24px; display: flex; gap: 0 32px;}
@@ -315,15 +311,9 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .communityBox aside .addBtnBox .addBtn span{display: flex; align-items: center; gap: 0 9px ; color: #313131; font-size: 14px;}
 .communityBox aside .addBtnBox .addBtn span::before{content: ''; width: 11px; height: 10px; background: url(../assets/images/sub/Plus_Icon.svg)no-repeat center;}
 .communityBox aside .addBtnBox .addBtn.communityWrite{padding-left: 12px;}
-
-
-
-
 .communityBox .communityTab{margin-bottom: 33px; display: flex; flex-wrap: wrap; gap: 10px 12px;}
 .communityBox .communityTab li .tabBtn{padding: 9px 18px; border-radius: 50px; background-color: #E8EAE9; color: #5F616D; font-size: 14px; transition: all .5s;}
 .communityBox .communityTab li .tabBtn.active{background-color: #1C1B18; color: #fff;}
-
-
 
 /* .communityBox .chatRoomContentBox .chatRoomLink{position: relative; padding: 18px 135px 18px 35px; margin-bottom: 17px; display: flex; align-items: center; border-radius: 5px; background-color: #fff; box-shadow: 4px 4px 44px rgba(233, 233, 233, 0.51);}
 .communityBox .chatRoomContentBox .chatRoomLink .imgBox{margin-right: 45px; width: 55px; height: 55px;}
@@ -331,32 +321,12 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .communityBox .chatRoomContentBox .chatRoomLink h4{margin-bottom: 0; font-weight: 500; color: #000; font-size: 20px;}
 .communityBox .chatRoomContentBox .chatRoomLink .number{position: absolute; right:46px; display: block; padding: 5px 9px; border-radius: 50px; background-color: rgba(210, 166, 30, 0.1); color: #D2A61E; }
  */
-
-
-
-
-
-
-
 .communityBox .shareBox{padding: 33px 0; display: flex; align-items: center; gap: 0 40px; border-bottom: 1px solid #D9D9D9;}
 .communityBox .shareBox .imgBox{flex-shrink: 0; /*width: 55px; height: 55px;*/}
 .communityBox .shareBox .imgBox img{display: block; width: 100%; height: 100%; object-fit: cover;}
 .communityBox .shareBox p{color: #6C7072; font-size: 20px;}
-
-
-
-
-
-
-
 .communityBox .communityListContainer .communityListBox{margin-top: 50px; position: relative; padding: 0 0 40px; border-bottom: 1px solid #EAEAEA;}
 .communityBox .communityListContainer .communityListBox .declarationBtn{position: absolute; top:0; right:0; color: #6C7072; font-weight: 500;}
-
-
-
-
-
-
 .communityBox .communityListContainer .communityInfoBox{display: flex; align-items: center; gap: 0 33px; margin-bottom: 21px;}
 .communityBox .communityListContainer .communityInfoBox .nickname{color: #000; font-weight: 600; font-size: 20px; }
 .communityBox .communityListContainer .communityInfoBox .date{font-weight: 500; color: #6C7072;}
@@ -370,19 +340,6 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .communityBox .communityListContainer span{color: #000;}
 .communityBox .communityListContainer .commentText{display: flex; align-items: center; gap: 0 10px;}
 .communityBox .communityListContainer .commentText::before{content: ''; width: 26px; height: 26px; background: url(../assets/images/sub/comment_icon.svg)no-repeat center;}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @media (min-width: 1200px){
 

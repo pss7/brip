@@ -1,34 +1,142 @@
-import ArrowPrevButton from "../../components/ArrowPrevButton";
-import Card from "../../components/Card";
+import { Link, useParams } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
 import style from "./EmploymentDetailPage.module.css";
-import CardImg02 from "../../assets/images/main/Card_Img02.png";
-import CardImg03 from "../../assets/images/main/Card_Img03.png";
 import DetailImg from "../../assets/images/sub/Detail_Img.png";
 import Button from "../../components/Button";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import CompletePopup from "../../components/CompletePopup";
+import { getEmploymentDetail, getResumes, likeEmployment, applyEmployment } from "../../api/employment/employment";
+
+// 정적 지원분야 옵션 (추후 API 연동 가능)
+const applicationFields = [
+  { id: 1, name: "개발" },
+  { id: 2, name: "디자인" },
+  { id: 3, name: "마케팅" },
+  { id: 4, name: "영업" },
+  { id: 5, name: "운영" },
+];
 
 export default function EmploymentDetailPage() {
-
+  const { employment_Id } = useParams();
+  const [employmentData, setEmploymentData] = useState({});
+  const [skillsData, setSkillsData] = useState([]);
   const [isResumeVisible, setIsResumeVisible] = useState(false);
   const [isDetailVisible, setIsDetailVisible] = useState(false);
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
   const [popupMessage, setPopupMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const handleSubmit = () => {
-    setPopupMessage("이력서 제출이 완료되었습니다.");
-    setIsError(false);
-    setIsPopupOpen(true);
-  };
+  // 이력서 목록 데이터 및 선택된 이력서 ID
+  const [resumeData, setResumeData] = useState([]);
+  const [resumeId, setResumeId] = useState(null);
+  console.log(resumeId);
 
   const handlePopupCancel = () => {
     setIsPopupOpen(false);
+  };
+
+  // EmploymentDetail API 호출
+  useEffect(() => {
+    async function fetchEmploymentDetail() {
+      try {
+        const response = await getEmploymentDetail(employment_Id);
+        if (response.result === "success") {
+          setEmploymentData(response.employ);
+          setSkillsData(response.skills);
+        }
+      } catch (error) {
+        console.error("EmploymentDetail API 에러:", error);
+      }
+    }
+    fetchEmploymentDetail();
+  }, [employment_Id]);
+
+  // Resumes API 호출: 이력서 목록 및 기본 이력서 선택
+  useEffect(() => {
+    async function fetchResumes() {
+      try {
+        const response = await getResumes();
+        if (
+          response &&
+          response.result === "success" &&
+          response.resumes &&
+          response.resumes.length > 0
+        ) {
+          setResumeData(response.resumes);
+          const defaultResume =
+            response.resumes.find((r) => r.isDefault) || response.resumes[0];
+          setResumeId(defaultResume.id);
+        }
+      } catch (error) {
+        console.error("이력서 API 에러:", error);
+      }
+    }
+    fetchResumes();
+  }, []);
+
+  // 상세 설명 파싱: detailed_description를 줄바꿈(\n) 기준으로 두 줄씩 묶어 제목/내용 배열 생성
+  const detailItems = useMemo(() => {
+    if (!employmentData.detailed_description) return [];
+    const lines = employmentData.detailed_description
+      .split("\n")
+      .filter((line) => line.trim() !== "");
+    const items = [];
+    for (let i = 0; i < lines.length; i += 2) {
+      items.push({
+        title: lines[i],
+        content: lines[i + 1] || "",
+      });
+    }
+    return items;
+  }, [employmentData.detailed_description]);
+
+  // 제출하기 핸들러: 이력서가 없으면 모달로 안내, 있으면 applyEmployment API를 호출함
+  const handleSubmit = async (selectedResumeId) => {
+    console.log("📌 제출하기 버튼 클릭됨!");
+    console.log("📌 employmentId:", employmentData.id);
+    console.log("📌 resumeId:", selectedResumeId);
+
+    if (!selectedResumeId) {
+      setPopupMessage("지원하기 전에 등록된 이력서가 없습니다. 이력서를 작성해 주세요.");
+      setIsError(true);
+      setIsPopupOpen(true);
+      return;
+    }
+
+    try {
+
+      // ✅ API 요청 실행
+      const result = await applyEmployment(employmentData.id, selectedResumeId);
+
+      if (result && result.result === "success") {
+        setPopupMessage("이력서 제출이 완료되었습니다.");
+        setIsError(false);
+      }
+      setIsPopupOpen(true);
+    } catch (error) {
+
+      setPopupMessage("이미 지원한 채용 공고입니다.");
+      setIsError(true);
+      setIsPopupOpen(true);
+    }
+  };
+
+
+  // 좋아요 버튼 핸들러
+  const handleLike = async () => {
+    try {
+      const response = await likeEmployment(employmentData.id);
+      if (response && response.result === "success") {
+        setEmploymentData((prev) => ({
+          ...prev,
+          is_liked: !prev.is_liked,
+        }));
+      }
+    } catch (error) {
+      console.error("좋아요 API 호출 에러:", error);
+    }
   };
 
   return (
@@ -41,23 +149,21 @@ export default function EmploymentDetailPage() {
                 <img src={DetailImg} alt="" />
               </div>
               <div className={style.textBox}>
-                <span className={style.company}>
-                  (주)국토해양환경기술단
-                </span>
+                <span className={style.company}>{employmentData.company_name}</span>
                 <div className={style.titleBox}>
-                  <h3>
-                    해양생태계분야(해조류/해초류)직원채용공고
-                  </h3>
-                  <span className={style.dDAY}>
-                    D-12
-                  </span>
+                  <h3>{employmentData.title}</h3>
                 </div>
                 <p className={style.condition}>
-                  신입·경력  대졸↑  정규직  경기 수원시
+                  {employmentData.career} {employmentData.education_requirement}{" "}
+                  {employmentData.work_type} {employmentData.region_main}{" "}
+                  {employmentData.region_sub}
                 </p>
-                <button className={style.likeBtn}>
+                <button
+                  className={`${style.likeBtn} ${employmentData.is_liked ? style.active : ""}`}
+                  onClick={handleLike}
+                >
                   <span className="blind">
-                    좋아요
+                    {employmentData.is_liked ? "좋아요 취소" : "좋아요"}
                   </span>
                 </button>
               </div>
@@ -71,208 +177,137 @@ export default function EmploymentDetailPage() {
             <div className={style.employmentDetailContent}>
               <div className={style.employmentDetailLeft}>
                 <div className={style.employmentDetail}>
-                  <h4>
-                    상세요강
-                  </h4>
-
+                  <h4>상세요강</h4>
                   <ul className={style.detailContentList}>
-                    <li>
-                      <span>[교용형태]</span>
-                      <em>
-                        정규직
-                      </em>
-                    </li>
-                    <li>
-                      <span>[구분]</span>
-                      <em>
-                        관련 경력 5년 이상
-                      </em>
-                    </li>
-                    <li>
-                      <span>[조직소개]</span>
-                      <em>
-                        CyberLogtiec은 세상의 시간과 공간을 더욱 가치있게 만들자는 슬로건을 가지고, 해운,항만 물류 분야의 세계 유명 Container Shipping Liner 에 B2B IT 솔루션을 제공하고 있습니다 <br /><br />
-                        CyberLogtitec 에서는 Global Container Shipping Liner (해운선사) 의 모든 비즈니스 프로세스를 담고 있는 OPUS Container의 차세대 제품 프로젝트 (이름 : Chorus)를 진행하고 있습니다.
-                      </em>
-                    </li>
-
+                    {detailItems.map((item, index) => (
+                      <li key={index}>
+                        <span>{item.title}</span>
+                        <em>{item.content}</em>
+                      </li>
+                    ))}
                     {isDetailVisible && (
                       <li>
                         <span>[기타]</span>
-                        <em>
-                          추가된 상세 정보
-                        </em>
+                        <em>추가된 상세 정보</em>
                       </li>
                     )}
                   </ul>
-
                   <button
                     className={style.detailView}
                     onClick={() => setIsDetailVisible(!isDetailVisible)}
                   >
                     {isDetailVisible ? "상세정보 숨기기" : "상세정보 더보기"}
                   </button>
-
                 </div>
 
                 <div className={style.employmentDetail}>
-                  <h4>
-                    기술스택
-                  </h4>
-
+                  <h4>기술스택</h4>
                   <ul className={style.techStack}>
-                    <li>
-                      Github
-                    </li>
-                    <li>
-                      React
-                    </li>
-                    <li>
-                      JavaScript
-                    </li>
-                    <li>
-                      Node.js
-                    </li>
+                    {skillsData.map((data, index) => (
+                      <li key={index}>{data.skill_name}</li>
+                    ))}
                   </ul>
                 </div>
 
                 <div className={style.employmentDetail}>
-                  <h4>
-                    마감일
-                  </h4>
-                  <span className={style.deadlineText}>
-                    2024.12.22
-                  </span>
+                  <h4>마감일</h4>
+                  <span className={style.deadlineText}>{employmentData.deadline}</span>
                 </div>
 
                 <div className={style.employmentDetail}>
-                  <h4>
-                    기업정보
-                  </h4>
-
+                  <h4>기업정보</h4>
                   <div className={style.corporateInfo}>
-                    기업정보영역
+                    <div className={style.imgBox}>
+                      {/* 기업 이미지 추가 가능 */}
+                    </div>
+                    <div className={style.textBox}>
+                      <h5>{employmentData.company_name}</h5>
+                      <ul className={style.corporateInfoList}>
+                        <li>{employmentData.company_field}</li>
+                        <li>
+                          <span>사원수</span> {employmentData.employee_count}
+                        </li>
+                        <li>{employmentData.founded_year}</li>
+                        <li>{employmentData.company_type}</li>
+                        <li>{employmentData.annual_sales}</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
                 <div className={style.employmentDetail}>
-                  <h4>
-                    근무위치
-                  </h4>
-
-                  <address>
-                    경기 수원시 영통구 덕영대로 1556번길 15
-                  </address>
-
-                  <div className={style.mapBox}>
-                    지도영역
-                  </div>
+                  <h4>근무위치</h4>
+                  <address>{employmentData.work_location}</address>
+                  <div className={style.mapBox}>지도영역</div>
                 </div>
               </div>
 
               <div className={style.employmentDetailRight}>
-                {
-                  isResumeVisible && (
-                    <div className={style.applyBox}>
-                      <h4>
-                        지원하기
-                      </h4>
-
-                      <div className={style.selectBox}>
-                        <label htmlFor="select" className="blind">
-                          지원분야 선택
-                        </label>
-                        <select id="select" className={style.select}>
-                          <option value="">지원분야선택</option>
-                        </select>
-                      </div>
-
-                      <ul className={style.resumeList}>
-                        <li>
-                          <div className={style.resumeBox}>
-                            <div className={style.resumeInfoList}>
-                              <span className={style.basic}>기본이력서</span>
-                            </div>
-
-                            <div className={style.titleBox}>
-                              <h5>
-                                <input
-                                  type="radio"
-                                  name="resumeRadio"
-                                  id="resumeRadio01"
-                                  className="blind"
-                                />
-                                <label htmlFor="resumeRadio01">
-                                  홍길동의 이력서
-                                </label>
-                              </h5>
-                            </div>
-
-                            <span className={style.date}>
-                              2024-12-12
-                            </span>
-
-                            <Link
-                              to="/resumereg"
-                              className={style.viewBtn}>
-                              보기
-                            </Link>
-
-                          </div>
-                        </li>
-                        <li>
-                          <div className={style.resumeBox}>
-                            <div className={style.titleBox}>
-                              <h5>
-                                <input
-                                  type="radio"
-                                  name="resumeRadio"
-                                  id="resumeRadio02"
-                                  className="blind"
-                                />
-                                <label htmlFor="resumeRadio02">
-                                  홍길동의 이력서2
-                                </label>
-                              </h5>
-                            </div>
-
-                            <span className={style.date}>
-                              2024-12-12
-                            </span>
-
-                            <Link
-                              to="/resumereg"
-                              className={style.viewBtn}>
-                              보기
-                            </Link>
-
-                          </div>
-                        </li>
-                      </ul>
-
-                      <Link to="/resumereg">
-                        <button className={style.writeBtn}>
-                          <span>
-                            새 이력서 작성
-                          </span>
-                        </button>
-                      </Link>
-
-                      <Button
-                        text="제출하기"
-                        customClass={style.btn}
-                        onClick={handleSubmit}
-                      />
-
-                      <Link className={style.link} to="/employment">
-                        <span className="blind">채용공고 화면으로 이동</span>
-                      </Link>
-
+                {isResumeVisible ? (
+                  <div className={style.applyBox}>
+                    <h4>지원하기</h4>
+                    <div className={style.selectBox}>
+                      <label htmlFor="select" className="blind">
+                        지원분야 선택
+                      </label>
+                      <select id="select" className={style.select}>
+                        <option value="">지원분야선택</option>
+                        {applicationFields.map((field) => (
+                          <option key={field.id} value={field.id}>
+                            {field.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  )
-                }
 
-                {!isResumeVisible && (
+                    {resumeData.length > 0 ? (
+                      <ul className={style.resumeList}>
+                        {resumeData.map((resume) => (
+                          <li key={resume.id}>
+                            <div className={style.resumeBox}>
+                              <div className={style.resumeInfoList}>
+                                {resume.isDefault && <span className={style.basic}>기본이력서</span>}
+                              </div>
+                              <div className={style.titleBox}>
+                                <h5>
+                                  <input
+                                    type="radio"
+                                    name="resumeRadio"
+                                    id={`resumeRadio${resume.id}`}
+                                    className="blind"
+                                    onChange={() => setResumeId(resume.id)} // ✅ 최신 resumeId 반영
+                                    checked={resumeId === resume.id}
+                                  />
+                                  <label htmlFor={`resumeRadio${resume.id}`}>{resume.title}</label>
+                                </h5>
+                              </div>
+                              <span className={style.date}>{resume.createdAt.slice(0, 10)}</span>
+                              <Link to="/resumereg" className={style.viewBtn}>보기</Link>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="infoText">등록된 이력서가 없습니다.</p>
+                    )}
+
+                    <Link to="/resumereg">
+                      <button className={style.writeBtn}>
+                        <span>새 이력서 작성</span>
+                      </button>
+                    </Link>
+
+                    <Button
+                      text="제출하기"
+                      customClass={style.btn}
+                      onClick={() => handleSubmit(resumeId)}
+                    />
+
+                    <Link className={style.link} to="/employment">
+                      <span className="blind">채용공고 화면으로 이동</span>
+                    </Link>
+                  </div>
+                ) : (
                   <Button
                     text="이력서 작성"
                     customClass={style.btn}
@@ -290,15 +325,14 @@ export default function EmploymentDetailPage() {
             </div>
           </div>
         </Container>
-
-        <CompletePopup
-          isOpen={isPopupOpen}
-          message={popupMessage}
-          error={isError}
-          onClose={handlePopupCancel}
-        />
-
       </div>
+
+      <CompletePopup
+        isOpen={isPopupOpen}
+        onClose={handlePopupCancel}
+        message={popupMessage}
+        error={isError}
+      />
     </Main>
-  )
+  );
 }

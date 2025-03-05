@@ -96,7 +96,7 @@ function App() {
 
         {/* 공고 */}
         <Route path='/employment' element={<EmploymentPage />} />
-        <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
+        <Route path='/employment-detail/:employment_Id' element={<EmploymentDetailPage />} />
 
         {/* 로드맵 */}
         <Route path="/roadmapinfo" element={<RoadMapInfoPage />} />

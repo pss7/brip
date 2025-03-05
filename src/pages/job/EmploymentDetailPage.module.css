@@ -9,7 +9,7 @@
 .employmentDetailTop .textBox .titleBox h3{font-size: 20px; color: #000; font-weight: 600;}
 .employmentDetailTop .textBox .titleBox span{display: flex; align-items: center; justify-content: center; width: 48px; height: 24px; background-color: rgba(202, 56, 58, 0.1); border-radius: 50px; color: #9D1C1D; font-size: 14px; font-weight: 400;}
 .employmentDetailTop .textBox .condition{color: #5F616D;}
-.employmentDetailTop .textBox .likeBtn{position: absolute; top:28px; right:22px; width: 28px; height: 24px; background: url(../src/assets/images/sub/Link_Btn.svg)no-repeat;}
+.employmentDetailTop .textBox .likeBtn{position: absolute; top:28px; right:22px; width: 28px; height: 24px; background: url(../src/assets/images/sub/like_btn.svg)no-repeat;}
 .employmentDetailTop .textBox .likeBtn.active{background: url(../src/assets/images/sub/Like_Active_Icon.svg)no-repeat;}
 .employmentDetailTop .imgBox{border-radius: 10px;}
 .employmentDetailTop .imgBox img{display: block; width: 100%;}
@@ -17,6 +17,13 @@
 .employmentDetailLeft{flex-shrink: 0; width: 55.2%;} 
 .employmentDetail h4{margin-bottom: 44px; font-size: 20px; font-weight: 600; color: #000; line-height: 1;}
 .employmentDetail{margin-bottom: 56px;}
+.employmentDetail .corporateInfo{padding: 32px 32px 32px 24px; min-height: 212px; display: flex; gap: 0 8px; align-items: center; background-color: #fff; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); border-radius: 5px;}
+.employmentDetail .corporateInfo .imgBox{width: 125px; flex-shrink: 0;}
+.employmentDetail .corporateInfo .imgBox img{display: block; margin: 0 auto;}
+.employmentDetail .corporateInfo h5{margin-bottom: 12px; color: #000; font-weight: 600; font-size: 20px;}
+.employmentDetail .corporateInfo .corporateInfoList{display: flex; flex-wrap: wrap; gap: 16px 42px;}
+.employmentDetail .corporateInfo .corporateInfoList li{width: 140px; color: #5F616D;}
+.employmentDetail .corporateInfo .corporateInfoList li span{display: inline-block; margin-right:5px;}
 .employmentDetail .detailContentList li{margin-bottom: 28px;}
 .employmentDetail .detailContentList li:last-child{margin-bottom: 45px;}
 .employmentDetail .detailContentList li span,
@@ -77,6 +84,11 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
   .employmentDetailRight{margin-bottom: 50px; width: 100%;}
   .employmentDetail h4{margin-bottom: 25px;}
   .applyBox .resumeList li .resumeBox .viewBtn{position: static; display: block; margin-top: 10px;}
+  
+  .employmentDetail .corporateInfo{display: block;}
+
+  .employmentDetail .corporateInfo h5{font-size: 18px;}
+  .employmentDetail .corporateInfo .imgBox{height: 200px;}
 
 }
 
