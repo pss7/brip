@@ -106,8 +106,8 @@ function App() {
         {/* 유저 */}
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/resume" element={<ResumePage />} />
-        <Route path="/resumereg" element={<ResumeRegpage />} />
-        <Route path="/resumeupdate/:id" element={<ResumeUpdatepage />} />
+        <Route path="/resume-registration" element={<ResumeRegpage />} />
+        <Route path="/resume-update/:resumeup_id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/activity" element={<ActivityPage />} />
         <Route path="/notice" element={<NoticePage />} />

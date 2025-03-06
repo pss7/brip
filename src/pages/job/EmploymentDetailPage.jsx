@@ -280,7 +280,7 @@ export default function EmploymentDetailPage() {
                                 </h5>
                               </div>
                               <span className={style.date}>{resume.createdAt.slice(0, 10)}</span>
-                              <Link to="/resumereg" className={style.viewBtn}>보기</Link>
+                              <Link to="/resume-registration" className={style.viewBtn}>보기</Link>
                             </div>
                           </li>
                         ))}
@@ -289,7 +289,7 @@ export default function EmploymentDetailPage() {
                       <p className="infoText">등록된 이력서가 없습니다.</p>
                     )}
 
-                    <Link to="/resumereg">
+                    <Link to="/resume-registration">
                       <button className={style.writeBtn}>
                         <span>새 이력서 작성</span>
                       </button>

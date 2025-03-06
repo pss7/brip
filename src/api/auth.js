@@ -112,7 +112,12 @@ export async function signUp({ name, nickname, email, password }) {
 // 인증코드 전송 API
 export async function sendVerificationCode(email) {
   try {
-    const response = await axios.post(`${BASE_URL}/user/send-verification`, { email });
+    const response = await axios.post(`${BASE_URL}/user/send-verification`, { email }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    );
     return response;
   } catch (error) {
     console.error('error:', error);
@@ -123,7 +128,11 @@ export async function sendVerificationCode(email) {
 // 인증코드 확인 API
 export async function verifyResetCode(email, code) {
   try {
-    const response = await axios.post(`${BASE_URL}/user/verify-code`, { email, code });
+    const response = await axios.post(`${BASE_URL}/user/verify-code`, { email, code }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     return response;
   } catch (error) {
     console.error("error:", error);
@@ -230,10 +239,32 @@ export function getNaverAuthUrl() {
   return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`;
 }
 
-
-
-
-
+export async function disconnectSNS(provider) {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("토큰이 없습니다.");
+      return { result: "fail", message: "토큰이 없습니다." };
+    }
+    const response = await axios.post(
+      `${BASE_URL}/user/disconnect-sns`,
+      { provider },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("disconnectSNS error:", error);
+    return {
+      result: "fail",
+      message: error.response?.data?.message || error.message,
+    };
+  }
+}
 
 
 

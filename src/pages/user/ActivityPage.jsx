@@ -1,76 +1,65 @@
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import style from "./ActivityPage.module.css";
-import { activityData } from "../../data/activityData";
-import { useEffect, useState } from "react";
-import AddPopup from "../../components/AddPopup"; 
+import { getCommunityList } from "../../api/community/community";
 import { useAuthStore } from "../../store/useAuthStore";
+import { getProfile } from "../../api/user";
+import Loading from "../../components/Loading";
 
 export default function ActivityPage() {
-
   const navigate = useNavigate();
-  const { token } = useAuthStore();
+  const { token } = useAuthStore(); // 현재 로그인한 유저 정보 가져오기
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [profileData, setProfileData] = useState(null);
 
-  // const [activities, setActivities] = useState(activityData);
-  // const [isPopupVisible, setPopupVisible] = useState(false); 
-  // const [selectedActivity, setSelectedActivity] = useState(null); 
-
-  // 좋아요 클릭 시 핸들러
-  // function handleLikeClick(id) {
-  //   console.log("Like clicked for activity ID:", id);
-  //   setActivities((prevActivities) =>
-  //     prevActivities.map((activity) =>
-  //       activity.id === id
-  //         ? { ...activity, likes: activity.likes + 1 }
-  //         : activity
-  //     )
-  //   );
-  // }
-
-  // 토글 버튼 클릭 시 핸들러
-  // function handleToggle(id) {
-  //   console.log("Toggle clicked for activity ID:", id);
-  //   setActivities((prevActivities) =>
-  //     prevActivities.map((activity) =>
-  //       activity.id === id
-  //         ? { ...activity, isActionsVisible: !activity.isActionsVisible }
-  //         : activity
-  //     )
-  //   );
-  // }
-
-  // 삭제 버튼 클릭 시 핸들러
-  // function handleDelete(id) {
-  //   console.log("Deleting activity ID:", id);
-  //   setActivities((prevActivities) =>
-  //     prevActivities.filter((activity) => activity.id !== id)
-  //   );
-  // }
-
-  // 수정 버튼 클릭 시 팝업 띄우기
-  // function handleEdit(id) {
-  //   console.log("Editing activity ID:", id);
-  //   const activityToEdit = activities.find((activity) => activity.id === id);
-  //   setSelectedActivity(activityToEdit); // 수정할 활동 정보 저장
-  //   setPopupVisible(true); // 팝업 표시
-  // }
-
-  // 팝업 닫기
-  // function closePopup() {
-  //   setPopupVisible(false); // 팝업 숨기기
-  //   setSelectedActivity(null); // 선택된 활동 초기화
-  // }
-
-
-  
-
-
+  // ✅ 로그인 확인 후 프로필 & 활동 데이터 가져오기
   useEffect(() => {
     if (!token) {
       navigate("/signin");
+    } else {
+      fetchProfileAndPosts(); // 프로필 데이터를 먼저 가져온 후 활동 데이터 가져오기
     }
-  }, []);
+  }, [token]);
+
+  // ✅ 프로필을 가져온 후 활동 데이터 로드
+  const fetchProfileAndPosts = async () => {
+    setLoading(true);
+    try {
+      const profileResponse = await getProfile();
+      setProfileData(profileResponse.data);
+
+      // 🔹 프로필이 성공적으로 로드된 후에만 활동 데이터를 가져옴
+      if (profileResponse.data?.nickname) {
+        fetchMyCommunityPosts(profileResponse.data.nickname);
+      }
+    } catch (error) {
+      console.error("❌ 프로필 데이터 가져오기 오류:", error);
+      setLoading(false);
+    }
+  };
+
+  // ✅ 내가 쓴 글만 필터링하여 가져오기
+  const fetchMyCommunityPosts = async (nickname) => {
+    try {
+      const response = await getCommunityList({
+        page: 1,
+        pageSize: 10,
+      });
+
+      if (response?.data) {
+        // 🔹 프로필에서 가져온 닉네임과 일치하는 글만 필터링
+        const myPosts = response.data.filter((post) => post.author_nickname === nickname);
+        setActivities(myPosts);
+      }
+    } catch (error) {
+      console.error("❌ 내 활동 목록 가져오기 오류:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Main className="subWrap bg">
@@ -98,78 +87,47 @@ export default function ActivityPage() {
 
               <div className="content">
                 <h4 className="title">내 활동</h4>
-                <p className="subTitle">
-                  커뮤니티에서 내가 쓴 글들을 한곳에서 확인할 수 있습니다.
-                </p>
+                <p className="subTitle">내가 작성한 게시물을 확인할 수 있습니다.</p>
 
-                {/* <ul className={style.activityList}>
-                  {activities.map((data) => (
-                    <li key={data.id}>
-                      <div className={style.topBox}>
-                        <span className={style.name}>{data.nickname}</span>
-                        <span className={style.date}>{data.date}</span>
-                      </div>
-
-                      <p className={style.content}>{data.content}</p>
-
-                      <div className={style.btnWrap}>
-                        <div className={style.btnBox}>
-                          <button
-                            className={style.likeBtn}
-                            onClick={() => handleLikeClick(data.id)}
-                          >
-                            <span className="blind">좋아요</span>
-                          </button>
-                          <span className={style.number}>{data.likes}</span>
+                {loading ? (
+                  <Loading />
+                ) : activities.length === 0 ? (
+                  <p className={style.noData}>내 활동 내역이 없습니다.</p>
+                ) : (
+                  <ul className={style.activityList}>
+                    {activities.map((post) => (
+                      <li key={post.post_id}>
+                        <div className={style.topBox}>
+                          <span className={style.name}>{post.author_nickname}</span>
+                          <span className={style.date}>{new Date(post.created_at).toLocaleDateString()}</span>
                         </div>
 
-                        <div className={style.btnBox}>
-                          <em className={style.comment}>
-                            <span className="blind">댓글</span>
-                          </em>
-                          <span className={style.number}>{data.comments}</span>
-                        </div>
-                      </div>
+                        <p className={style.content}>{post.content}</p>
 
-                      <div className={style.viewBox}>
-                        <button
-                          className={style.viewBtn}
-                          onClick={() => handleToggle(data.id)} // 버튼 클릭 시 토글 실행
-                        >
-                          <span className="blind">
-                            수정, 삭제 더보기 버튼
-                          </span>
-                        </button>
-
-                        {data.isActionsVisible && (
+                        <div className={style.btnWrap}>
                           <div className={style.btnBox}>
-                            <button
-                              className={style.editBtn}
-                              onClick={() => handleEdit(data.id)} // 수정 버튼 클릭 시 팝업 띄우기
-                            >
-                              수정
-                            </button>
-                            <button
-                              className={style.delbtn}
-                              onClick={() => handleDelete(data.id)}
-                            >
-                              삭제
-                            </button>
+                            <p className={style.likeText}>
+                              <span className="blind">좋아요</span>
+                            </p>
+                            <span className={style.number}>{post.heart_count}</span>
                           </div>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul> */}
+
+                          <div className={style.btnBox}>
+                            <p className={style.commentText}>
+                              <span className="blind">댓글</span>
+                            </p>
+                            <span className={style.number}>{post.comment_count}</span>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
         </Container>
       </div>
-
-      {/* 수정 팝업 */}
-      {/* {isPopupVisible && <AddPopup closePopup={closePopup} />} */}
-
     </Main>
   );
 }

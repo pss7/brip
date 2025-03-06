@@ -14,16 +14,20 @@ import { useLoadingStore } from "../../store/useLoadingStore";
 import Loading from "../../components/Loading";
 import { useAuthStore } from "../../store/useAuthStore";
 import { logout, withdraw } from "../../api/auth";
+// SNS 관련 API 함수 import (연결 URL, 해제 API)
+import {
+  getKakaoAuthUrl,
+  getGoogleAuthUrl,
+  getNaverAuthUrl,
+  disconnectSNS,
+} from "../../api/auth.js";
 
 export default function MyPage() {
-
   const navigate = useNavigate();
-
   const { logout: clearAuthData } = useAuthStore();
 
   // 로그아웃 함수
   async function handleLogout() {
-
     try {
       const response = await logout();
       if (response) {
@@ -36,32 +40,38 @@ export default function MyPage() {
     } catch (error) {
       console.error("error:", error);
     }
-
   }
 
-  //로딩 상태 관리
+  // 로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
-  //데이터 상태 관리
+  // 데이터 상태 관리
   const [profileData, setProfileData] = useState([]);
 
-  //팝업 상태 관리
+  // 팝업 상태 관리
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupError, setPopupError] = useState(false);
   const [confirmPopupOpen, setConfirmPopupOpen] = useState(false);
 
-  //에러 상태 관리
+  // 에러 상태 관리
   const [error, setError] = useState("");
 
-  //버튼 활성화, 비활성화 상태 관리
+  // 버튼 활성화/비활성화 상태 관리
   const [disabled, setDisabled] = useState(true);
 
-  //닉네임 상태 관리
+  // 닉네임 상태 관리
   const [nickname, setNickname] = useState();
   const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,12}$/;
 
-  //닉네임 상태 업데이트 함수
+  // SNS 연동 상태 관리 (서버에서 받은 정보로 업데이트할 수 있음)
+  const [snsStatus, setSnsStatus] = useState({
+    naver: false,
+    kakao: false,
+    google: false,
+  });
+
+  // 닉네임 상태 업데이트 함수
   function handleNicknameChange(e) {
     const nicknameValue = e.target.value;
     setNickname(nicknameValue);
@@ -77,39 +87,28 @@ export default function MyPage() {
     setDisabled(false);
   }
 
-  //닉네임 중복 체크 함수
+  // 닉네임 중복 체크 함수
   async function handleDuplicateCheck() {
-
     try {
-
       const response = await getnicknameCheck(nickname);
 
       if (response && response.data.result === "success") {
-
         setPopupMessage("사용 가능한 닉네임입니다.");
-        // setError("사용 가능한 닉네임입니다.");
         setPopupError(false);
-
       } else if (response && response.data.result === "fail") {
-
         setPopupMessage("이미 사용 중인 닉네임입니다.");
-        // setError("이미 사용 중인 닉네임입니다.");
         setPopupError(true);
-
       }
-
       setPopupOpen(true);
-
     } catch (error) {
       setError("error:", error);
     }
-
   }
 
   // 서비스 해지 팝업 열기 함수
   function openConfirmPopup() {
     setConfirmPopupOpen(true);
-  };
+  }
 
   // 서비스 해지 확인 함수
   async function handleConfirmTermination() {
@@ -117,45 +116,74 @@ export default function MyPage() {
       const response = await withdraw();
       if (response) {
         console.log("탈퇴 완료");
-        localStorage.removeItem("token"); 
+        localStorage.removeItem("token");
         clearAuthData();
-        navigate("/"); 
+        navigate("/");
       } else {
         console.log("탈퇴 실패");
       }
     } catch (error) {
       console.error("탈퇴 처리 오류:", error);
     }
-
     setConfirmPopupOpen(false);
   }
-
 
   // 서비스 해지 취소 함수
   function handleCancelTermination() {
     setConfirmPopupOpen(false);
-  };
+  }
 
-  //데이터 불러오기
+  // SNS 연결 함수 (연결 버튼 클릭 시 해당 SNS 로그인 URL로 리다이렉트)
+  function handleConnectSNS(provider) {
+    if (provider === "naver") {
+      window.location.href = getNaverAuthUrl();
+    } else if (provider === "kakao") {
+      window.location.href = getKakaoAuthUrl();
+    } else if (provider === "google") {
+      window.location.href = getGoogleAuthUrl();
+    }
+  }
+
+  // SNS 해제 함수 (해제 버튼 클릭 시 서버에 해제 요청)
+  async function handleDisconnectSNS(provider) {
+    try {
+      const response = await disconnectSNS(provider);
+      if (response && response.result === "success") {
+        setPopupMessage(`${provider} 연동 해제 완료`);
+        // 해제 성공 시 상태 업데이트
+        setSnsStatus(prev => ({ ...prev, [provider]: false }));
+      } else {
+        setPopupMessage(`${provider} 연동 해제 실패`);
+      }
+      setPopupError(!(response && response.result === "success"));
+      setPopupOpen(true);
+    } catch (error) {
+      console.error("SNS 해제 오류:", error);
+      setPopupMessage(`${provider} 연동 해제 중 오류 발생`);
+      setPopupError(true);
+      setPopupOpen(true);
+    }
+  }
+
+  // 데이터 불러오기
   useEffect(() => {
-
     async function fetchProfile() {
-
       try {
         setLoading(true);
-
-        const renponse = await getProfile();
-        setNickname(renponse.data.nickname);
-        setProfileData(renponse.data);
+        const response = await getProfile();
+        setNickname(response.data.nickname);
+        setProfileData(response.data);
+        // 서버에서 SNS 연동 상태 정보(snsStatus)를 받았다면 업데이트 (예시)
+        if (response.data.snsStatus) {
+          setSnsStatus(response.data.snsStatus);
+        }
       } catch (error) {
         console.error("error", error);
       } finally {
         setLoading(false);
       }
     }
-
     fetchProfile();
-
   }, []);
 
   // 로딩 중일 때 로딩 표시
@@ -259,7 +287,7 @@ export default function MyPage() {
                           value={profileData.birth_date}
                           label="생년월일"
                           className="mb-15"
-                          disabled={disabled}
+                          disabled={true}
                         />
                       </div>
                     </div>
@@ -268,13 +296,26 @@ export default function MyPage() {
                   <div className={style.snsSignInBox}>
                     <h5>SNS 로그인 연결</h5>
                     <ul className={style.snsSignInList}>
-
                       <li className={style.naver}>
                         <div className={style.imgBox}>
                           <img src={naver} alt="네이버로그인" />
                         </div>
                         <span className={style.snsText}>네이버 로그인</span>
-                        <button className={style.connectBtn}>연결</button>
+                        {snsStatus.naver ? (
+                          <button
+                            className={style.disconnectBtn}
+                            onClick={() => handleDisconnectSNS("naver")}
+                          >
+                            해제
+                          </button>
+                        ) : (
+                          <button
+                            className={style.connectBtn}
+                            onClick={() => handleConnectSNS("naver")}
+                          >
+                            연결
+                          </button>
+                        )}
                       </li>
 
                       <li className={style.kakao}>
@@ -282,30 +323,52 @@ export default function MyPage() {
                           <img src={kakao} alt="카카오로그인" />
                         </div>
                         <span className={style.snsText}>카카오 로그인</span>
-                        <button className={style.connectBtn}>연결</button>
+                        {snsStatus.kakao ? (
+                          <button
+                            className={style.disconnectBtn}
+                            onClick={() => handleDisconnectSNS("kakao")}
+                          >
+                            해제
+                          </button>
+                        ) : (
+                          <button
+                            className={style.connectBtn}
+                            onClick={() => handleConnectSNS("kakao")}
+                          >
+                            연결
+                          </button>
+                        )}
                       </li>
 
                       <li className={style.google}>
                         <div className={style.imgBox}>
-                          <img src={google} alt="구글" />
+                          <img src={google} alt="구글로그인" />
                         </div>
                         <span className={style.snsText}>구글 로그인</span>
-                        <button className={style.connectBtn}>연결</button>
+                        {snsStatus.google ? (
+                          <button
+                            className={style.disconnectBtn}
+                            onClick={() => handleDisconnectSNS("google")}
+                          >
+                            해제
+                          </button>
+                        ) : (
+                          <button
+                            className={style.connectBtn}
+                            onClick={() => handleConnectSNS("google")}
+                          >
+                            연결
+                          </button>
+                        )}
                       </li>
                     </ul>
                   </div>
 
-                  <button
-                    className={style.btn}
-                    onClick={handleLogout}
-                  >
+                  <button className={style.btn} onClick={handleLogout}>
                     로그아웃
                   </button>
 
-                  <button
-                    className={style.btn}
-                    onClick={openConfirmPopup}
-                  >
+                  <button className={style.btn} onClick={openConfirmPopup}>
                     서비스 해지
                   </button>
                 </div>
@@ -330,7 +393,6 @@ export default function MyPage() {
         error={popupError}
         onClose={() => setPopupOpen(false)}
       />
-
     </Main>
   );
 }

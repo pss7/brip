@@ -59,7 +59,7 @@ display: flex; align-items: center; gap: 0 2px; position: relative; background-c
 .applyBox .resumeList li .resumeBox .titleBox input + label::before{content: ''; position: absolute; top:16px; left:21px; width: 22px; height: 22px; border: 1px solid #CDCFD0; background-color: #fff; border-radius: 50px;}
 .applyBox .resumeList li .resumeBox .titleBox input:checked + label::before{background: url(../src/assets/images/sub/check_icon.png)no-repeat center; border: 0;}
 .applyBox .resumeList li .resumeBox .date{font-size: 12px; color: #5F616D;}
-.applyBox .resumeList li .resumeBox .viewBtn{position: absolute; right: 30px; top:52px; width: 39px; height: 24px; line-height: 24px; border-radius: 4px; background-color: #000; color: #fff; font-weight: 700; font-size: 12px; text-align: center;}
+.applyBox .resumeList li .resumeBox .viewBtn{display: block; margin-top: 15px; width: 39px; height: 24px; line-height: 24px; border-radius: 4px; background-color: #000; color: #fff; font-weight: 700; font-size: 12px; text-align: center;}
 .applyBox .writeBtn{display: block; margin: 0 auto 53px; max-width: 240px; width: 100%; height: 36px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); text-align: center;  border: 1px solid #E9E9E9; border-radius: 4px;}
 .applyBox .writeBtn span{display: flex; justify-content: center; align-items:center; gap: 0 9px; font-size: 14px; color: #313131;}
 .applyBox .writeBtn span::before{content: ''; width: 11px; height: 10px; background: url(../src/assets/images/sub/Add_Icon.svg)no-repeat center;}

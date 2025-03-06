@@ -13,7 +13,6 @@ import { useLoadingStore } from "../../store/useLoadingStore";
 import { getProfile } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
 import Message from "../../components/Message";
-import { use } from "react";
 
 export default function CommunityDetailPage() {
 

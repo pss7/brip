@@ -146,35 +146,46 @@ export default function ResumePage() {
                   효율적인 이력서 관리로 커리어 목표를 달성하세요
                 </p>
 
-                <ul className={style.resumeList}>
-                  {resumeList.map((resumeData) => (
-                    <li key={resumeData.resume_id}>
-                      {resumeData.is_default && (
-                        <span className={style.basicResume}>기본이력서</span>
-                      )}
-                      <h5>
-                        <Link to="/resumereg">{resumeData.resume_title}</Link>
-                      </h5>
-                      <span className={style.date}>
-                        {formatDate(resumeData.created_at)}
-                      </span>
-                      <ViewButton
-                        className={`${style.viewBox}`}
-                        handleToggle={handleToggle}
-                        data={resumeData}
-                        onEdit={(id) => {
-                          navigate(`/resumeupdate/${id}`);
-                        }}
-                        deleteResume={(id) => handleOpenDeleteConfirm(id)}
-                        updateResume={updateResume}
-                      />
-                    </li>
-                  ))}
-                </ul>
+                <div className={style.resumeList}>
+                  {
+                    resumeList.length > 0 ? (
+                      resumeList.map((resumeData) => (
+                        <div className={style.resumeBox} key={resumeData.resume_id}>
+                          {resumeData.is_default && (
+                            <span className={style.basicResume}>기본이력서</span>
+                          )}
+                          <h5>
+                            <Link to="/resume-registration">{resumeData.resume_title}</Link>
+                          </h5>
+                          <span className={style.date}>
+                            {formatDate(resumeData.created_at)}
+                          </span>
+                          <ViewButton
+                            className={`${style.viewBox}`}
+                            handleToggle={handleToggle}
+                            data={resumeData}
+                            onEdit={(id) => {
+                              navigate(`/resume-update/${id}`);
+                            }}
+                            deleteResume={(id) => handleOpenDeleteConfirm(id)}
+                            updateResume={updateResume}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <p className="infoText">
+                          등록된 이력서가 없습니다.
+                        </p>
+                      </>
+                    )
+                  }
+
+                </div>
 
                 <Button
                   text="이력서작성"
-                  href={`/resumereg`}
+                  href={`/resume-registration`}
                   customClass={style.btn}
                 />
               </div>
