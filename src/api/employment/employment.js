@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../apiConfig";
 
-// 채용 공고 목록 API
+//채용 공고 목록 API
 export async function getEmploymentList(
   page = 1,
   pageSize = 10,
@@ -53,7 +53,7 @@ export async function getEmploymentDetail(employId) {
   }
 }
 
-// 좋아요 API
+//좋아요 API
 export async function likeEmployment(employId) {
   const token = localStorage.getItem("token");
   try {
@@ -74,14 +74,14 @@ export async function likeEmployment(employId) {
   }
 }
 
-// 즉시지원 API
+//즉시지원 API
 export async function applyEmployment(employId, resumeId) {
   const token = localStorage.getItem("token");
 
   try {
     const response = await axios.post(
-      `${BASE_URL}/employ/${employId}/apply?resumeId=${resumeId}`, // ✅ 쿼리 파라미터로 전달
-      {},  // POST 요청 본문을 비움
+      `${BASE_URL}/employ/${employId}/apply?resumeId=${resumeId}`, //쿼리 파라미터로 전달
+      {},  //POST 요청 본문을 비움
       {
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export async function applyEmployment(employId, resumeId) {
 }
 
 
-// 이력서 목록 API
+//이력서 목록 API
 export async function getResumes() {
   const token = localStorage.getItem("token");
   try {

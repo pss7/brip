@@ -94,9 +94,6 @@ export default function EmploymentDetailPage() {
 
   // 제출하기 핸들러: 이력서가 없으면 모달로 안내, 있으면 applyEmployment API를 호출함
   const handleSubmit = async (selectedResumeId) => {
-    console.log("📌 제출하기 버튼 클릭됨!");
-    console.log("📌 employmentId:", employmentData.id);
-    console.log("📌 resumeId:", selectedResumeId);
 
     if (!selectedResumeId) {
       setPopupMessage("지원하기 전에 등록된 이력서가 없습니다. 이력서를 작성해 주세요.");
