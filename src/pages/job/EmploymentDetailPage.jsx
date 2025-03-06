@@ -30,6 +30,7 @@ export default function EmploymentDetailPage() {
 
   // 이력서 목록 데이터 및 선택된 이력서 ID
   const [resumeData, setResumeData] = useState([]);
+  console.log(resumeData);
   const [resumeId, setResumeId] = useState(null);
   console.log(resumeId);
 

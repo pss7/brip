@@ -1,38 +1,133 @@
+import { useState, useEffect } from "react";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import "../../styles/style.css";
 import Button from "../../components/Button";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
-import { useState } from "react";
 import style from "./RoadMapDesignPage.module.css";
+import { fetchRoadmapQuestions, submitRoadmapAnswers } from "../../api/roadmap/roadmap.js";
+import CompletePopup from "../../components/CompletePopup.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function RoadMapDesignPage() {
 
-  const options1 = [
-    "현재 재학 중입니다.",
-    "졸업을 준비하고 있습니다.",
-    "졸업 후 첫 직장을 찾고 있습니다.",
-    "현재 경력을 쌓고 있는 중입니다.",
-    "이직을 준비하고 있습니다.",
-  ];
+  const navigate = useNavigate();
 
-  const options2 = [
-    "해운",
-    "항만",
-    "물류",
-    "창고",
-    "기타",
-  ];
+  // 팝업 상태
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
-  const allOptions = [...options1, ...options2];
-  const [selectState, setSelectState] = useState(new Array(allOptions.length).fill(false));
+  // 질문 목록, 사용자 답변
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
 
-  const handleSelect = (index) => {
-    setSelectState((prevState) => {
-      const newState = [...prevState];
-      newState[index] = !newState[index];
-      return newState;
+  // 질문 불러오기
+  useEffect(() => {
+    async function loadQuestions() {
+      try {
+        const response = await fetchRoadmapQuestions();
+        if (response?.result === "success") {
+          setQuestions(response.questions);
+        }
+      } catch (error) {
+        console.error("로드맵 질문 로딩 에러:", error);
+      }
+    }
+    loadQuestions();
+  }, []);
+
+  // RADIO 선택
+  const handleRadioChange = (questionId, optionId) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: [optionId],
+    }));
+  };
+
+  // CHECKBOX 선택
+  const handleCheckboxChange = (questionId, optionId) => {
+    setAnswers((prev) => {
+      const existing = prev[questionId] || [];
+      if (existing.includes(optionId)) {
+        return {
+          ...prev,
+          [questionId]: existing.filter((id) => id !== optionId),
+        };
+      } else {
+        return {
+          ...prev,
+          [questionId]: [...existing, optionId],
+        };
+      }
     });
+  };
+
+  const handleComplete = async () => {
+    // 1) 모든 질문이 답변되었는지 확인
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      const ans = answers[q.id];
+      // 미답변이면 팝업 표시 후 리턴
+      if (!ans || ans.length === 0) {
+        setPopupMessage(`답변하지 않은 항목이 있습니다. 선택해주세요.`);
+        setPopupOpen(true);
+        return;
+      }
+    }
+
+    // 2) 모두 답변 -> 서버 전송
+    try {
+      const response = await submitRoadmapAnswers(answers);
+      if (response?.result === "success") {
+        setPopupMessage("답변이 저장되었습니다.");
+        setPopupOpen(true);
+        navigate("/roadmapresult")
+      } else {
+        setPopupMessage("답변 저장 실패했습니다.");
+        setPopupOpen(true);
+      }
+    } catch (error) {
+      console.error("답변 저장 중 오류:", error);
+      setPopupMessage("답변 저장 도중 문제가 발생했습니다.");
+      setPopupOpen(true);
+    }
+  };
+
+  // 질문 렌더링
+  const renderQuestionBox = (question) => {
+    const { id, mainTitle, subTitle, responseType, answerOptions = [] } = question;
+    const selectedOptionIds = answers[id] || [];
+
+    return (
+      <div key={id} className={style.selectBox}>
+        {/* 제목/설명 */}
+        {mainTitle && <p className={style.selectText}>{mainTitle}</p>}
+        {subTitle && <p className={style.selectText}>{subTitle}</p>}
+
+        <ul className={style.selectList}>
+          {answerOptions.map((option) => {
+            const isSelected = selectedOptionIds.includes(option.id);
+            const btnClass = `${style.selectBtn} ${isSelected ? style.active : ""}`;
+
+            const handleClick = () => {
+              if (responseType === "RADIO") {
+                handleRadioChange(id, option.id);
+              } else {
+                handleCheckboxChange(id, option.id);
+              }
+            };
+
+            return (
+              <li key={option.id}>
+                <button className={btnClass} onClick={handleClick}>
+                  {option.optionText}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
   };
 
   return (
@@ -44,56 +139,25 @@ export default function RoadMapDesignPage() {
               <h3>나만의 커리어 로드맵 설계</h3>
             </div>
 
-            <div className={style.selectBox}>
-              <p className={style.selectText}>
-                안녕하세요! 홍길동님 <br />
-                현재 상태를 선택해주세요.
-              </p>
+            {/* 모든 질문 표시 */}
+            {questions.map(renderQuestionBox)}
 
-              <ul className={style.selectList}>
-                {options1.map((option, index) => (
-                  <li key={index}>
-                    <button
-                      className={`${style.selectBtn} ${selectState[index] ? `${style.active}` : ""}`}
-                      onClick={() => handleSelect(index)}
-                    >
-                      {option}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className={style.selectBox}>
-              <p className={style.selectText}>어떤 직무 분야에 관심이 있나요?</p>
-
-              <ul className={style.selectList}>
-                {options2.map((option, index) => (
-                  <li key={index}>
-                    <button
-                      className={`${style.selectBtn} ${selectState[index + options1.length] ? `${style.active}`  : ""}`}
-                      onClick={() => handleSelect(index + options1.length)}
-                    >
-                      {option}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <Button
-              text="완료"
-              href="/roadmapresult"
-            />
+            {/* 완료 버튼 */}
+            <Button text="완료" onClick={handleComplete} />
 
             <div className="linkBox">
-              <ArrowPrevButton
-                href="/roadmapinfo"
-                hiddenText="로드맵안내화면으로 이동" />
+              <ArrowPrevButton href="/roadmapinfo" hiddenText="로드맵안내화면으로 이동" />
             </div>
           </div>
         </Container>
       </div>
+
+      {/* 팝업 */}
+      <CompletePopup
+        isOpen={popupOpen}
+        message={popupMessage}
+        onClose={() => setPopupOpen(false)}
+      />
     </Main>
   );
 }

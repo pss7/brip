@@ -1,5 +1,5 @@
-.popupWrap{opacity: 0; position: fixed; top:0; left:0; width: 100%; height: 100%; background-color: rgba(0,0,0,.5); display: flex; justify-content: center; align-items: center; transition: all .5s; visibility: hidden;}
-.popupWrap.active{opacity: 1; visibility: visible; z-index: 999;}
+.popupWrap{opacity: 0; position: fixed; top:0; left:0; width: 100%; height: 100%; background-color: rgba(0,0,0,.5); display: flex; justify-content: center; align-items: center; transition: all .5s; visibility: hidden;  z-index: 999;}
+.popupWrap.active{opacity: 1; visibility: visible;}
 .popupContent{position: relative; max-width: 520px; width: 100%; background-color: #fff; border-radius: 12px; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05); z-index: 99; overflow: hidden; transition: transform .3s ease-in-out;}
 .popupContent .popupTop{padding: 24px 40px 40px 40px;}
 .popupContent .popupTop .title{font-size: 20px; font-weight: 700; color: #232325; line-height: 1.4;}
