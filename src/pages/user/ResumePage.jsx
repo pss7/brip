@@ -164,6 +164,7 @@ export default function ResumePage() {
                             className={`${style.viewBox}`}
                             handleToggle={handleToggle}
                             data={resumeData}
+                            idKey="resume_id"
                             onEdit={(id) => {
                               navigate(`/resume-update/${id}`);
                             }}
@@ -188,6 +189,7 @@ export default function ResumePage() {
                   href={`/resume-registration`}
                   customClass={style.btn}
                 />
+                
               </div>
             </div>
           </div>

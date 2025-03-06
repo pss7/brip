@@ -281,3 +281,29 @@ export async function postReply({ postId, parentId, content }) {
   }
 }
 
+// ✅ 커뮤니티 게시글 삭제 API
+export async function deleteCommunityPost(postId) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("❌ 토큰이 없습니다.");
+    return false;
+  }
+
+  try {
+    const response = await axios.delete(`${BASE_URL}/post/delete`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      data: { postId }, // DELETE 요청에서 Body를 통해 전달
+    });
+
+    return response.data; // { result: "success" }
+  } catch (error) {
+    console.error("❌ 게시글 삭제 API 에러:", error);
+    return false;
+  }
+}
+
+
