@@ -13,7 +13,7 @@
 .imageUpload .imagePreview {display: flex; align-items: center; gap: 20px; margin-top: 20px; width: 138px; height: 131px; border-radius: 5px; overflow: hidden;}
 .imageUpload .previewImage {display: block; width: 100%; height: 100%; }
 .closeBtn{position: absolute; top:0; right:0;}
-.popupWrap .popupBox .closeBtn{width: 20px; height: 20px; position: absolute; top:32px; right:42px; background: url(../src/assets/images/sub/close_btn_icon.svg)no-repeat center;}
+.popupWrap .popupBox .closeBtn{width: 20px; height: 20px; position: absolute; top:32px; right:42px; background: url(/src/assets/images/sub/close_btn_icon.svg)no-repeat center;}
 .popupWrap .box{margin-bottom: 38px;}
 .popupWrap .box .label,
 .popupWrap .box h4{display: block; margin-bottom: 12px; font-size: 16px; font-weight: 500; color: #090A0A;} 

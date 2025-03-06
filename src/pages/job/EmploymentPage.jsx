@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import { useState, useEffect } from "react";
@@ -12,8 +12,18 @@ import {
 import { employmentTabData } from "../../data/employmentTabData";
 import ConfirmPopup from "../../components/ConfirmPopup";
 import CompletePopup from "../../components/CompletePopup";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function EmploymentPage() {
+
+  const navigate = useNavigate();
+  const { token } = useAuthStore();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, []);
 
   // 활성 탭 상태 ("지역별", "직무별", "경력별", "근무형태")
   const [activeTab, setActiveTab] = useState("지역별");

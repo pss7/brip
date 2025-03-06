@@ -81,7 +81,7 @@ export default function RoadMapDesignPage() {
       if (response?.result === "success") {
         setPopupMessage("답변이 저장되었습니다.");
         setPopupOpen(true);
-        navigate("/roadmapresult")
+        navigate("/roadmap-result")
       } else {
         setPopupMessage("답변 저장 실패했습니다.");
         setPopupOpen(true);
@@ -146,7 +146,7 @@ export default function RoadMapDesignPage() {
             <Button text="완료" onClick={handleComplete} />
 
             <div className="linkBox">
-              <ArrowPrevButton href="/roadmapinfo" hiddenText="로드맵안내화면으로 이동" />
+              <ArrowPrevButton href="/roadmap-info" hiddenText="로드맵안내화면으로 이동" />
             </div>
           </div>
         </Container>

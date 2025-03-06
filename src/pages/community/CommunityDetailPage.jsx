@@ -1,74 +1,83 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
-import Message from "../../components/Message";
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import WritePopup from "../../components/WritePopup";
-import AddPopup from "../../components/AddPopup";
-import { getCommentList, getCommunityDetail, postComment, reportCommunity, toggleLike } from "../../api/community/community";
+import { getCommentList, getCommunityDetail, getReplyList, postComment, postCommentLike, postReply, reportCommunity, toggleLike } from "../../api/community/community";
 import { useAuthStore } from "../../store/useAuthStore";
 import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
 import { getProfile } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
-
+import Message from "../../components/Message";
+import { use } from "react";
 
 export default function CommunityDetailPage() {
+
+  const navigate = useNavigate();
 
   const { community_Id } = useParams();
   const communityId = Number(community_Id);
 
-  //토큰
+
+  //강제 리렌더링 트리거
+  const [forceRender, setForceRender] = useState(false);
+
+  // 토큰
   const { token } = useAuthStore();
+  if (!token) {
+    navigate("/signin");
+  }
+
+  const [replyList, setReplyList] = useState({});
+  const [replyInput, setReplyInput] = useState({});
+  const [openReplies, setOpenReplies] = useState({});
+
+  // 게시글 상세 + 댓글 상태
   const [communityDetail, setCommunityDetail] = useState({});
+  const [commentList, setCommentList] = useState([]);
 
-  //댓글 상태 관리
-  const [commnet, setComment] = useState({});
+  // 작성 중인 댓글 내용
+  const [commentInput, setCommentInput] = useState("");
 
-  //팝업 상태 관리
+  // 팝업 상태
   const [communityPopupOpen, setCommunityPopupOpen] = useState(false);
-
-  const [completePopupOpen, setCompletePopupOpen] = useState(false);
-  const [completePopupMessage, setCompletePopupMessage] = useState("");
-  const [completePopupError, setCompletePopupError] = useState(false);
-
-  //팝업 상태 관리
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupError, setPopupError] = useState(false);
 
-  //프로필 데이터 상태 관리
+  // 프로필
   const [profileData, setProfileData] = useState({});
 
-  //로딩 상태 관리
+  // 로딩
   const { isLoading, setLoading } = useLoadingStore();
 
-  // 좋아요 버튼 클릭 시 실행할 함수
+  // 1) 좋아요 (메인 게시글)
   async function handleLike(post_id) {
     const response = await toggleLike(post_id);
-
     if (response) {
-      setCommunityDetail((prevData) => ({
-        ...prevData,
-        heart_count: prevData.isLiked ? prevData.heart_count - 1 : prevData.heart_count + 1,
-        isLiked: !prevData.isLiked,
+      // isLiked 토글 + heart_count 증감
+      setCommunityDetail((prev) => ({
+        ...prev,
+        heart_count: prev.isLiked ? prev.heart_count - 1 : prev.heart_count + 1,
+        isLiked: !prev.isLiked,
       }));
     }
   }
 
-  //신고 접수 함수
+  // 2) 신고
   async function handleReport(post_id) {
-
     const reason = prompt("신고 사유를 입력하세요:");
-
     if (!reason) {
       setPopupMessage("신고 사유를 입력해야 합니다.");
       setPopupError(true);
       setPopupOpen(true);
       return;
     }
+
     const response = await reportCommunity(post_id, reason);
     if (response) {
       setPopupMessage("신고가 접수되었습니다.");
@@ -78,86 +87,177 @@ export default function CommunityDetailPage() {
       setPopupError(true);
     }
     setPopupOpen(true);
-
   }
 
-  //댓글 등록 함수
+  // 3) 댓글 작성
   async function handleComment(post_id) {
-
     try {
-      const response = await postComment(post_id, commnet);
-      if (response) {
-        console.log("댓글 등록 완료");
+      const response = await postComment(post_id, commentInput);
+      if (response?.result === "success") {
+        // 댓글 등록 후, 댓글 목록 재조회
+        fetchCommentList();
+        // 입력창 비우기
+        setCommentInput("");
       }
     } catch (error) {
-      console.error("error:", error);
+      console.error("댓글 등록 오류:", error);
     }
-
   }
 
-  //프로필 데이터 불러오기
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        setLoading(true);
-        const response = await getProfile();
-        setProfileData(response.data);
-      } catch (error) {
-        console.error("error", error);
-      } finally {
-        setLoading(false);
+  // 4) 댓글 목록 API 호출
+  async function fetchCommentList() {
+    if (!communityDetail?.post_id) return;
+    try {
+      const response = await getCommentList(
+        0,            // page
+        10,           // size
+        communityDetail.category,   // category
+        communityDetail.post_id     // post_id
+      );
+      if (response?.result === "success") {
+        setCommentList(response.data);
       }
+    } catch (error) {
+      console.error("댓글 목록 불러오기 오류:", error);
     }
+  }
+
+  // 5) 프로필, 게시글, 댓글 목록 로드
+  async function fetchProfile() {
+    try {
+      setLoading(true);
+      const response = await getProfile();
+      setProfileData(response.data);
+    } catch (error) {
+      console.error("error", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function fetchCommunityDetail() {
+    setLoading(true);
+    try {
+      const response = await getCommunityDetail(communityId);
+      if (response) {
+        setCommunityDetail(response.data);
+      }
+    } catch (error) {
+      console.error("error", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //댓글 좋아요 함수
+  async function handleCommentLike(commentId) {
+    try {
+      const response = await postCommentLike(commentId);
+
+      if (response.result === "success") {
+        console.log("댓글 좋아요");
+
+        //1) 즉시 UI 업데이트
+        setCommentList((prevComments) =>
+          prevComments.map((comment) =>
+            comment.comment_id === commentId
+              ? {
+                ...comment,
+                likes_count: comment.isLiked
+                  ? comment.likes_count - 1
+                  : comment.likes_count + 1,
+                isLiked: !comment.isLiked,
+              }
+              : comment
+          )
+        );
+
+        //2) 강제 리렌더링 트리거
+        setForceRender((prev) => !prev);
+      }
+    } catch (error) {
+      console.error("좋아요 처리 오류:", error);
+    }
+  }
+
+  //강제 리렌더링 시 최신 데이터 반영
+  useEffect(() => {
+    fetchCommentList();
+  }, [forceRender]);
+
+  useEffect(() => {
     fetchProfile();
   }, [communityId]);
 
-  //커뮤니티 상세 데이터 불러오기
   useEffect(() => {
-
-    async function fetchCommunityDetail() {
-      setLoading(true);
-      try {
-        const response = await getCommunityDetail(communityId);
-        if (response) {
-          setCommunityDetail(response.data);
-        }
-      } catch (error) {
-        console.error("error", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchCommunityDetail();
+  }, [communityId]);
 
-  }, [communityId])
-
-  //댓글 목록 데이터 불러오기
   useEffect(() => {
+    fetchCommentList();
+  }, [communityDetail.category, communityDetail.post_id]);
 
-    async function fetchComment() {
+  // ✅ 대댓글 등록 API 호출
+  async function handleReplySubmit(commentId) {
+    const content = replyInput[commentId];
 
-      try {
-        const response = await getCommentList(0, 10, communityDetail.category);
-        if (response) {
-          setComment(response);
-        }
-      } catch (error) {
-        console.error("error:", error);
-      }
-
+    if (!content) {
+      console.error("❌ 대댓글 내용이 비어 있습니다.");
+      return;
     }
 
-    fetchComment();
+    try {
+      const response = await postReply({
+        postId: communityId,  // ✅ 현재 게시글 ID 전달
+        parentId: commentId,  // ✅ 부모 댓글 ID 전달
+        content: content,     // ✅ 입력된 대댓글 내용 전달
+      });
 
-  }, [communityDetail.category])
+      if (response?.result === "success") {
+        console.log("✅ 대댓글 등록 성공!");
+
+        // 대댓글 목록 다시 불러오기
+        fetchReplyList(commentId);
+
+        // 입력창 초기화
+        setReplyInput((prev) => ({ ...prev, [commentId]: "" }));
+      } else {
+        console.error("❌ 대댓글 등록 실패:", response);
+      }
+    } catch (error) {
+      console.error("❌ 대댓글 등록 중 오류 발생:", error);
+    }
+  }
+
+
+  // ✅ 대댓글 목록 불러오기
+  async function fetchReplyList(commentId) {
+    try {
+      const response = await getReplyList(commentId);
+      if (response?.result === "success") {
+        setReplyList((prev) => ({ ...prev, [commentId]: response.data }));
+      }
+    } catch (error) {
+      console.error("대댓글 목록 불러오기 오류:", error);
+    }
+  }
+
+
+  // ✅ 답글 버튼 클릭 시 대댓글 조회
+  function toggleReplyBox(commentId) {
+    setOpenReplies((prev) => ({ ...prev, [commentId]: !prev[commentId] }));
+    if (!openReplies[commentId]) {
+      fetchReplyList(commentId);
+    }
+  }
+
+  useEffect(() => {
+    fetchProfile();
+    fetchCommunityDetail();
+    fetchCommentList();
+  }, [communityId, forceRender]);
 
   if (isLoading) {
     return <Loading fullScreen />;
-  }
-
-  if (!token) {
-    navigate("/signin");
   }
 
   return (
@@ -169,7 +269,7 @@ export default function CommunityDetailPage() {
               <aside>
                 <div className="infoBox">
                   <div className="imgBox">
-                    <img src={ProfileImg} alt="" />
+                    <img src={ProfileImg} alt="프로필이미지" />
                   </div>
                   <div className="textBox">
                     <p className="nickname">{profileData.nickname}</p>
@@ -177,10 +277,7 @@ export default function CommunityDetailPage() {
                   </div>
                 </div>
                 <div className="addBtnBox">
-                  <button
-                    className="addBtn"
-                  // onClick={openAddPopup}
-                  >
+                  <button className="addBtn">
                     <span>채팅방 생성</span>
                   </button>
                   <button
@@ -200,14 +297,23 @@ export default function CommunityDetailPage() {
                         노하우Q&A리스트 화면으로 이동
                       </span>
                     </Link>
-                    <h4>노하우 Q&A</h4>
+                    <h4>{communityDetail.category || "노하우 Q&A"}</h4>
                   </div>
+
+                  {/* 메인 게시글 박스 */}
                   <div className="communityListBox">
                     <div className="communityInfoBox">
-                      <span className="nickname">{communityDetail?.author_nickname || "작성자 없음"}</span>
+                      <span className="nickname">
+                        {communityDetail?.author_nickname || "작성자 없음"}
+                      </span>
+
+                      {/* 날짜: 상대 시간으로 (like '4일 전') */}
                       <span className="date">
                         {communityDetail?.created_at
-                          ? format(new Date(communityDetail.created_at), "MM/dd HH:mm")
+                          ? formatDistanceToNow(new Date(communityDetail.created_at), {
+                            addSuffix: true,
+                            locale: ko,
+                          })
                           : "날짜 없음"}
                       </span>
                     </div>
@@ -218,7 +324,7 @@ export default function CommunityDetailPage() {
 
                     <div className="communityCommentBox">
                       <div className="communityLikeBox">
-                        <dlv className="btnBox">
+                        <div className="btnBox">
                           <button
                             className={`likeBtn ${communityDetail.isLiked ? "active" : ""}`}
                             onClick={() => handleLike(communityDetail.post_id)}
@@ -226,7 +332,7 @@ export default function CommunityDetailPage() {
                             <span className="blind">좋아요 버튼</span>
                           </button>
                           <span>{communityDetail.heart_count}</span>
-                        </dlv>
+                        </div>
                       </div>
                       <span className="commentText">{communityDetail.comment_count}</span>
                     </div>
@@ -237,52 +343,91 @@ export default function CommunityDetailPage() {
                     >
                       신고
                     </button>
-
                   </div>
 
-                  <div className="commentBox">
-                    <span className="commentNumber">
-                      댓글 4
-                    </span>
+                  {/* 댓글 목록 */}
+                  <div className="commentWrap">
+                    {commentList.length > 0 ? (
+                      commentList.map((item, index) => {
+                        const commentTimeAgo = formatDistanceToNow(new Date(item.created_at), {
+                          addSuffix: true,
+                          locale: ko,
+                        });
 
-                    <div className="commentAuthor">
-                      <span className="commentName">
-                        홍길동
-                      </span>
-                      <span className="commentDay">
-                        4일 전
-                      </span>
-                    </div>
+                        return (
+                          <div className="commentBox" key={index}>
+                            <span className="commentNumber">댓글 {item.reply_count}</span>
 
-                    <p className="commentContent">
-                      안녕하세요! 저도 물류관리사 시험 준비할 때 물류 및 유통관리 과목이 어려웠어요.
-                    </p>
+                            <div className="commentAuthor">
+                              <span className="commentName">{item.user_name}</span>
+                              <span className="commentDay">{commentTimeAgo}</span>
+                            </div>
 
-                    <div className="replyBox">
-                      <div className="likeBox">
-                        <button className="likeBtn">
-                          <span className="blind">
-                            좋아요버튼
-                          </span>
-                        </button>
-                        <span>
-                          1
-                        </span>
-                      </div>
+                            <p className="commentContent">{item.content}</p>
 
-                      <button className="replyBtn">
-                        답글쓰기
-                      </button>
-                    </div>
+                            <div className="replyBox">
+                              <div className="likeBox">
+                                <button className="likeBtn" onClick={() => handleCommentLike(item.comment_id)}>
+                                  <span className="blind">좋아요버튼</span>
+                                </button>
+                                <span>{item.likes_count}</span>
+                              </div>
+
+                              <button className="replyBtn" onClick={() => toggleReplyBox(item.comment_id)}>
+                                {openReplies[item.comment_id] ? "답글 숨기기" : "답글쓰기"}
+                              </button>
+                            </div>
+
+                            {/* ✅ 대댓글 입력창 */}
+                            {openReplies[item.comment_id] && (
+                              <div className="replyInputBox">
+                                <input
+                                  type="text"
+                                  placeholder="답글을 입력하세요."
+                                  value={replyInput[item.comment_id] || ""}
+                                  onChange={(e) => setReplyInput((prev) => ({ ...prev, [item.comment_id]: e.target.value }))}
+                                />
+                                <button className="submitReplyBtn" onClick={() => handleReplySubmit(item.comment_id)}>
+                                  등록
+                                </button>
+                              </div>
+                            )}
+
+                            {/* ✅ 대댓글 목록 표시 */}
+                            {openReplies[item.comment_id] && replyList[item.comment_id] && (
+                              <div className="replyList">
+                                {replyList[item.comment_id].map((reply) => (
+                                  <div key={reply.comment_id} className="replyItem">
+                                    <span className="replyName">{reply.user_name}</span>
+                                    <span className="replyTime">
+                                      {formatDistanceToNow(new Date(reply.created_at), {
+                                        addSuffix: true,
+                                        locale: ko,
+                                      })}
+                                    </span>
+                                    <p className="replyContent">{reply.content}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p className="infoText">댓글을 남겨주세요.</p>
+                    )}
                   </div>
+
                 </div>
 
+                {/* 댓글 작성 input */}
                 <Message
                   id="message"
                   hiddenText="댓글입력"
-                  onChange={(e) => setComment(e.target.value)}
+                  value={commentInput}
+                  onChange={(e) => setCommentInput(e.target.value)}
                   placeholder="댓글을 남겨주세요."
-                  onClick={() => { handleComment(communityDetail.post_id) }}
+                  onClick={() => handleComment(communityDetail.post_id)}
                   onEnter={() => handleComment(communityDetail.post_id)}
                 />
 
@@ -292,6 +437,7 @@ export default function CommunityDetailPage() {
         </Container>
       </div>
 
+      {/* 글쓰기 팝업 */}
       {communityPopupOpen && (
         <WritePopup
           isOpen={communityPopupOpen}
@@ -299,20 +445,15 @@ export default function CommunityDetailPage() {
         />
       )}
 
-      {/* {
-        addPopupShowPopup && <AddPopup closePopup={closePopup} />
-      } */}
-
-      {
-        popupOpen &&
+      {/* 신고/완료 팝업 */}
+      {popupOpen && (
         <CompletePopup
           isOpen={popupOpen}
           message={popupMessage}
           error={popupError}
           onClose={() => setPopupOpen(false)}
         />
-      }
-
+      )}
     </Main>
   );
 }

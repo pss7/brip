@@ -6,24 +6,30 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CalendarIcon from "../../assets/images/sub/Calendar_Icon.svg";
 import style from "./ApplyPage.module.css";
-
-// ✅ API 함수들 import
 import { applyStatus, cancelApplication, deleteApplication } from "../../api/user/applystatus/applyStatus.js";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 export default function ApplyPage() {
-  // (예시) 로그인 체크가 필요하면 useNavigate 사용
-  const navigate = useNavigate();
 
-  // 📌 오늘 날짜 & 한 달 전 날짜
+  const navigate = useNavigate();
+  const { token } = useAuthStore();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, []);
+
+  //오늘 날짜 & 한 달 전 날짜
   const today = new Date();
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(today.getMonth() - 1);
 
-  // ⏰ 날짜 상태
+  //날짜 상태
   const [startDate, setStartDate] = useState(() => new Date(oneMonthAgo));
   const [endDate, setEndDate] = useState(() => new Date(today));
 
-  // 🔎 지원 내역 & 상태
+  //지원 내역 & 상태
   const [filteredList, setFilteredList] = useState([]);
   console.log(filteredList);
   const [stats, setStats] = useState({
@@ -33,7 +39,7 @@ export default function ApplyPage() {
     canceled: 0,
   });
 
-  // ✅ 지원 내역 가져오기
+  //지원 내역 가져오기
   const fetchApplications = async () => {
     try {
       // API 호출 (startDate, endDate 전달)
@@ -53,7 +59,7 @@ export default function ApplyPage() {
     }
   };
 
-  // 📌 날짜 변경 시마다 API 재호출
+  //날짜 변경 시마다 API 재호출
   useEffect(() => {
     fetchApplications();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +75,7 @@ export default function ApplyPage() {
     }
   };
 
-  // ✅ 지원 삭제
+  //지원 삭제
   const handleDelete = async (applicationId) => {
     try {
       await deleteApplication(applicationId);

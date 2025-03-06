@@ -168,7 +168,7 @@ export default function MyPage() {
       <div className="mypageBox">
         <Container className="lnbContainer">
           <div className="mypageContent">
-            <div className={`lnbLayoutBox ${style.lnbLayoutBox}`}>
+            <div className="lnbLayoutBox">
               <aside>
                 <Link to="/mypage" className="active">
                   <span>프로필</span>

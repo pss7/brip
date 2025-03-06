@@ -5,8 +5,20 @@ import Button from "../../components/Button";
 import RoadMapImg from "../../assets/images/sub/RoadMap_Img.png";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import style from "./RoadMapInfoPage.module.css";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function RoadMapInfoPage() {
+
+  const navigate = useNavigate();
+  const { token } = useAuthStore();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, []);
 
   return (
     <Main className="subWrap bg">
@@ -50,7 +62,7 @@ export default function RoadMapInfoPage() {
 
             <Button
               text="로드맵 설계 시작하기"
-              href="/roadmapdesign"
+              href="/roadmap-design"
             />
 
             <div className="linkBox">

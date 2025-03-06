@@ -99,9 +99,9 @@ function App() {
         <Route path='/employment-detail/:employment_Id' element={<EmploymentDetailPage />} />
 
         {/* 로드맵 */}
-        <Route path="/roadmapinfo" element={<RoadMapInfoPage />} />
-        <Route path="/roadmapdesign" element={<RoadMapDesignPage />} />
-        <Route path="/roadmapresult" element={<RoadMapResultPage />} />
+        <Route path="/roadmap-info" element={<RoadMapInfoPage />} />
+        <Route path="/roadmap-design" element={<RoadMapDesignPage />} />
+        <Route path="/roadmap-result" element={<RoadMapResultPage />} />
 
         {/* 유저 */}
         <Route path="/mypage" element={<MyPage />} />
