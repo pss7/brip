@@ -442,7 +442,7 @@ export default function MainPage() {
                         title={job.title || "공고 제목 미등록"}
                         date={`마감일: ${job.deadline || "미정"}`}
                         isLiked={job.is_liked === 1}
-                        handleLikeToggle={() => handleLikeToggle(job.id)}
+                        // handleLikeToggle={() => handleLikeToggle(job.id)}
                       />
                     ))
                   ) : (
