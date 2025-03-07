@@ -98,7 +98,7 @@ export default function InquiryPage() {
                 ) : (
                   <Table
                     caption="1:1문의하기"
-                    href="/inquirydetail"
+                    href="/inquiry-detail"
                     filteredData={sortedData}
                     className="textLeft ellipsisText"
                     showStatus={true}
@@ -117,7 +117,7 @@ export default function InquiryPage() {
 
                 {token && (
                   <Button
-                    href="/inquiryreg"
+                    href="/inquiry-registration"
                     text="1:1문의 등록"
                   />
                 )}

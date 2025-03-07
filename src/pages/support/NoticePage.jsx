@@ -58,9 +58,7 @@ export default function NoticePage() {
 
       } finally {
 
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
+        setLoading(false);
 
       }
     }

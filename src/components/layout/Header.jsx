@@ -246,7 +246,7 @@ export default function Header() {
                 </div>
               </>
             }
-            
+
             <div className={style.loginBox}>
               {token ? (
 

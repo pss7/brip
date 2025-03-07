@@ -114,8 +114,8 @@ function App() {
         <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
         <Route path='/faq' element={<FAQPage />} />
         <Route path='/inquiry' element={<InquiryPage />} />
-        <Route path='/inquiryreg' element={<InquiryRegisterPage />} />
-        <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
+        <Route path='/inquiry-registration' element={<InquiryRegisterPage />} />
+        <Route path='/inquiry-detail/:id' element={<InquiryDetailPage />} />
         <Route path='/terms' element={<TermsPage />} />
         <Route path='/policy' element={<PolicyPage />} />
         <Route path="/interest" element={<InterestPage />} />

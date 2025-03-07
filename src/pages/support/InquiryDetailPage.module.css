@@ -6,6 +6,8 @@
 .inquiryQuestionBox .topBox .date{display: block; margin-right:47px; color: #343330;}
 .inquiryQuestionBox .topBox .status{color: #5088FF;}
 .inquiryQuestionBox .inquiryQuestionContent{padding: 30px 20px 50px 10px;}
+.inquiryQuestionBox .inquiryQuestionContent .imgBox{margin-top: 30px; max-width: 350px; max-height: 350px;}
+.inquiryQuestionBox .inquiryQuestionContent .imgBox img{display: block; width: 100%; height: 100%; object-fit: cover;}
 .inquiryQuestionBox .inquiryQuestionContent p{color: #000; font-weight: 500;}
 .inquiryAnswerBox{border-top: 1px solid #B3B3B3;}
 .inquiryAnswerBox .topBox{padding: 18px 18px 10px 0; display: flex; align-items: center; justify-content: space-between;}
@@ -24,6 +26,7 @@
   .inquiryQuestionBox .topBox .title,
   .inquiryAnswerBox .topBox .title{font-size: 18px;}
   .inquiryAnswerBox .topBox .date{font-size: 14px;}
+  .inquiryQuestionBox .inquiryQuestionContent .imgBox{margin-top: 10px;}
 
 }
 
@@ -33,5 +36,11 @@
   .inquiryAnswerBox .topBox .date{margin-top: 15px;}
   .inquiryQuestionBox .topBox{display: block; padding: 0 10px 10px 0;}
   .inquiryQuestionBox .topBox .box{position: static;}
+
+}
+
+@media (max-width: 375px){
+
+  .inquiryQuestionBox .topBox .box{flex-direction: column; gap: 5px 0;}
 
 }
