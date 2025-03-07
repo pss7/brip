@@ -174,75 +174,79 @@ export default function Header() {
           </nav>
 
           <div className={style.linkBox}>
-            <div className={`${style.searchBox} ${isSearchOpen ? `${style.active}` : ""}`}>
-              <Link className={style.searchBtn} onClick={() => setIsSearchOpen(!isSearchOpen)}>
-                <span className="blind">
-                  검색
-                </span>
-              </Link>
-              <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
-                <div
-                  className={style.searchInputBox}
-                >
-                  <label htmlFor="search" className="blind">
-                    검색
-                  </label>
-                  <input
-                    id="search"
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
-                  />
+            {token &&
+              <>
+                <div className={`${style.searchBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+                  <Link className={style.searchBtn} onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                    <span className="blind">
+                      검색
+                    </span>
+                  </Link>
+                  <div className={`${style.searchTextBox} ${isSearchOpen ? `${style.active}` : ""}`}>
+                    <div
+                      className={style.searchInputBox}
+                    >
+                      <label htmlFor="search" className="blind">
+                        검색
+                      </label>
+                      <input
+                        id="search"
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 검색 실행
+                      />
 
-                  <button
-                    className={`${style.searchTextDel} 
+                      <button
+                        className={`${style.searchTextDel} 
                     ${searchQuery.length > 0 ? `${style.active}` : ""}`}
-                    type="button"
-                    onClick={() => { setSearchQuery('') }}
+                        type="button"
+                        onClick={() => { setSearchQuery('') }}
+                      >
+                        <span className="blind">
+                          입력삭제
+                        </span>
+                      </button>
+                    </div>
+
+                    <div className={style.searchKeywordBox}>
+                      <span className={style.keywordText}>최근 검색 키워드</span>
+                      <ul className={style.keywordList}>
+                        {loadRecentSearches().map((keyword, index) => (
+                          <li key={index}>
+                            <span>{keyword}</span>
+                            <button
+                              className={style.keywordDelBtn}
+                              onClick={() => handleKeywordDelete(keyword)}
+                            >
+                              <span className="blind">키워드삭제</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={style.alarmBox}>
+                  <button
+                    className={`${style.alarmBtn} ${alarmOpen ? `${style.active}` : ""}`}
+                    onClick={() => setAlarmOpen(true)}
                   >
                     <span className="blind">
-                      입력삭제
+                      알림
                     </span>
                   </button>
+
+                  <Alarm
+                    alarmOpen={alarmOpen}
+                    setAlarmOpen={setAlarmOpen}
+                  />
+
                 </div>
-
-                <div className={style.searchKeywordBox}>
-                  <span className={style.keywordText}>최근 검색 키워드</span>
-                  <ul className={style.keywordList}>
-                    {loadRecentSearches().map((keyword, index) => (
-                      <li key={index}>
-                        <span>{keyword}</span>
-                        <button
-                          className={style.keywordDelBtn}
-                          onClick={() => handleKeywordDelete(keyword)}
-                        >
-                          <span className="blind">키워드삭제</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className={style.alarmBox}>
-              <button
-                className={`${style.alarmBtn} ${alarmOpen ? `${style.active}` : ""}`}
-                onClick={() => setAlarmOpen(true)}
-              >
-                <span className="blind">
-                  알림
-                </span>
-              </button>
-
-              <Alarm
-                alarmOpen={alarmOpen}
-                setAlarmOpen={setAlarmOpen}
-              />
-
-            </div>
-
+              </>
+            }
+            
             <div className={style.loginBox}>
               {token ? (
 
@@ -372,35 +376,40 @@ export default function Header() {
         </nav>
 
         <div className={style.linkBox}>
-          <div className={`${style.searchBox} ${mobileSearchOpen ? `${style.active}` : ""}`}>
-            <Link
-              to="#"
-              className={style.searchBtn}
-              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-            >
-              <span className="blind">
-                검색
-              </span>
-            </Link>
-          </div>
+          {
+            token &&
+            <>
+              <div className={`${style.searchBox} ${mobileSearchOpen ? `${style.active}` : ""}`}>
+                <Link
+                  to="#"
+                  className={style.searchBtn}
+                  onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                >
+                  <span className="blind">
+                    검색
+                  </span>
+                </Link>
+              </div>
 
-          <div className={style.alarmBox}>
-            <button
-              className={style.alarmBtn}
-              onClick={() => setMobileAlarmOpen(true)}
-            >
-              <span className="blind">
-                알림
-              </span>
-            </button>
+              <div className={style.alarmBox}>
+                <button
+                  className={style.alarmBtn}
+                  onClick={() => setMobileAlarmOpen(true)}
+                >
+                  <span className="blind">
+                    알림
+                  </span>
+                </button>
 
-            <Alarm
-              alarmOpen={mobileAlarmOpen}
-              setAlarmOpen={setMobileAlarmOpen}
-              className={style.mobileAlarmBox}
-            />
+                <Alarm
+                  alarmOpen={mobileAlarmOpen}
+                  setAlarmOpen={setMobileAlarmOpen}
+                  className={style.mobileAlarmBox}
+                />
 
-          </div>
+              </div>
+            </>
+          }
 
           <div className={style.loginBox}>
             {token ? (
