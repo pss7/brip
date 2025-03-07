@@ -51,7 +51,7 @@ export default function ResumeDetail() {
 
   return (
     <Main className="subWrap bg">
-      <div className="mypageBox">
+      <div className="mypageBox resumePageBox">
         <Container className="lnbContainer">
           <div className="mypageContent">
             <div className="lnbLayoutBox">
@@ -192,7 +192,7 @@ export default function ResumeDetail() {
                 )}
 
                 <Button href="/resume" text="목록으로" />
-                {/* <ArrowPrevButton customClass={style.arrowPrevBtn} href="/resume" hiddenText="이력서 목록으로 이동" /> */}
+                <ArrowPrevButton customClass={style.arrowPrevBtn} href="/resume" hiddenText="이력서 목록으로 이동" />
               </div>
             </div>
           </div>

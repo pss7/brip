@@ -352,7 +352,7 @@ export default function ResumeRegpage() {
 
   return (
     <Main className="subWrap bg">
-      <div className="mypageBox">
+      <div className="mypageBox resumePageBox">
         <Container className="lnbContainer">
           <div className="mypageContent">
             <div className="lnbLayoutBox">

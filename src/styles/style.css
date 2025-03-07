@@ -589,3 +589,10 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
+
+
+@media (max-width: 767px){
+
+  .resumePageBox .lnbLayoutBox .content{padding: 85px 20px 30px!important;}
+  
+}
