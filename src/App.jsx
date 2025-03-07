@@ -53,6 +53,7 @@ import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
 import NotificationDetail from './pages/user/NotificationDetail';
 import Loading from './components/Loading';
 import { useEffect, useState } from 'react';
+import ResumeDetail from './pages/user/ResumeDetail';
 
 function App() {
 
@@ -106,6 +107,7 @@ function App() {
         {/* 유저 */}
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/resume" element={<ResumePage />} />
+        <Route path="/resume-detail/:resume_Id" element={<ResumeDetail />} />
         <Route path="/resume-registration" element={<ResumeRegpage />} />
         <Route path="/resume-update/:resumeup_id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />

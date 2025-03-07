@@ -155,7 +155,7 @@ export default function ResumePage() {
                             <span className={style.basicResume}>기본이력서</span>
                           )}
                           <h5>
-                            <Link to="/resume-registration">{resumeData.resume_title}</Link>
+                            <Link to={`/resume-detail/${resumeData.resume_id}`}>{resumeData.resume_title}</Link>
                           </h5>
                           <span className={style.date}>
                             {formatDate(resumeData.created_at)}

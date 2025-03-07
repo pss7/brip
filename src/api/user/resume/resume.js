@@ -60,25 +60,25 @@ export async function updateResume(resumeId, formData) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error("error:", error);
     return false;
   }
 }
 
-// 이력서 상세 API
+//이력서 상세 조회 API
 export async function getResumeDetail(resumeId) {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(`${BASE_URL}/resume/${resumeId}`, {
+    const response = await axios.get(`${BASE_URL}/resume/detail/${resumeId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.data; 
+    return response.data.data; // ✅ 서버에서 `data` 안에 정보를 감싸서 반환하는 경우
   } catch (error) {
-    console.error("error:", error);
+    console.error("이력서 상세 조회 오류:", error);
     return null;
   }
 }
