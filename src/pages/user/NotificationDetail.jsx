@@ -1,24 +1,33 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getNotifications } from "../../api/notifications/get";
 import style from "./NotificationDetail.module.css";
+import { getNotifications } from "../../api/notifications/notifications";
 
 export default function NotificationDetail() {
+
   const { notificationId } = useParams();
   const [notification, setNotification] = useState(null);
-  console.log(notification)
+
   useEffect(() => {
+
     async function fetchNotificationDetail() {
-      const response = await getNotifications();
-      if (response && response.result === "success") {
-        const notificationDetail = response.data.find(
-          (notif) => notif.notification_id === parseInt(notificationId)
-        );
-        setNotification(notificationDetail);
+
+      try {
+        const response = await getNotifications();
+
+        if (response && response.result === "success") {
+          const notificationDetail = response.data.find(
+            (notif) => notif.notification_id === parseInt(notificationId)
+          );
+          setNotification(notificationDetail);
+        }
+      } catch (error) {
+        console.error("error", error);
       }
     }
 
     fetchNotificationDetail();
+    
   }, [notificationId]);
 
   if (!notification) {

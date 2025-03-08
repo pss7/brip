@@ -8,16 +8,19 @@ import Alarm from "../Alarm";
 import { useAuthStore } from "../../store/useAuthStore";
 import { logout } from "../../api/auth";
 import { getProfile } from "../../api/user";
+import { getNotifications } from "../../api/notifications/notifications";
 
 export default function Header() {
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const { token, logout } = useAuthStore();
 
   //프로필 데이터 상태 관리
   const [profileData, setProfileData] = useState([]);
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  // 읽지 않은 알림 개수 상태 추가
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const [isHeaderAnimation, isSetHeaderAnimation] = useState(false);
   const [recentSearches, setRecentSearches] = useState(loadRecentSearches());
@@ -130,6 +133,23 @@ export default function Header() {
 
   }, []);
 
+  // 알림 데이터 불러오기 및 읽지 않은 알림 개수 확인
+  useEffect(() => {
+    async function fetchNotifications() {
+      try {
+        const notifications = await getNotifications();
+        if (notifications) {
+          // 예시: 알림 객체에 read 속성이 있다고 가정 (read: true/false)
+          const unread = notifications.filter(item => !item.read);
+          setUnreadCount(unread.length);
+        }
+      } catch (error) {
+        console.error("알림 데이터 조회 실패:", error);
+      }
+    }
+    fetchNotifications();
+  }, []);
+
   return (
     <header id={style.headerBox} className={isHeaderAnimation && `${style.active}`}>
       <Container>
@@ -230,7 +250,7 @@ export default function Header() {
 
                 <div className={style.alarmBox}>
                   <button
-                    className={`${style.alarmBtn} ${alarmOpen ? `${style.active}` : ""}`}
+                    className={`${style.alarmBtn} ${alarmOpen ? `${style.active}` : ""} ${unreadCount ? `${style.unreadDot}` : ""}`}
                     onClick={() => setAlarmOpen(true)}
                   >
                     <span className="blind">
@@ -393,7 +413,7 @@ export default function Header() {
 
               <div className={style.alarmBox}>
                 <button
-                  className={style.alarmBtn}
+                  className={`${style.alarmBtn} ${unreadCount ? `${style.unreadDot}` : ""}`}
                   onClick={() => setMobileAlarmOpen(true)}
                 >
                   <span className="blind">

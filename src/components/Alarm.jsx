@@ -1,33 +1,38 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import style from "./Alarm.module.css";
-import { getNotifications } from "../api/notifications/get";
-import { markNotificationAsRead } from "../api/notifications/markRead";
+import { getNotifications, markAllNotificationsAsRead, markNotificationAsRead } from "../api/notifications/notifications";
 
 export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
 
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  //알림 데이터 불러오기
   useEffect(() => {
 
     async function fetchNotifications() {
       setIsLoading(true);
-      const response = await getNotifications();
-      if (response && response.result === "success") {
-        setNotifications(response.data);
+      try {
+        const response = await getNotifications();
+        if (response && response.result === "success") {
+          setNotifications(response.data);
+        }
       }
-      setIsLoading(false);
+      catch (error) {
+        console.error("error:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
-    if (alarmOpen) {
-      fetchNotifications();
-    }
-    
+    fetchNotifications();
+
   }, [alarmOpen]);
 
   // 알림 클릭 시 읽음 처리 함수
   const handleMarkAsRead = async (notificationId) => {
+
     const response = await markNotificationAsRead(notificationId);
     if (response && response.result === "success") {
       setNotifications((prevNotifications) =>
@@ -38,6 +43,22 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
         )
       );
     }
+
+  };
+
+  // "모두 읽음" 버튼 클릭 시 전체 알림 읽음 처리
+  const handleMarkAllAsRead = async () => {
+
+    const response = await markAllNotificationsAsRead();
+    if (response && response.result === "success") {
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) => ({
+          ...notification,
+          is_read: true,
+        }))
+      );
+    }
+
   };
 
   return (
@@ -68,7 +89,7 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
         </ul>
       </div>
 
-      <button className={style.alarmChk}>
+      <button className={style.alarmChk} onClick={handleMarkAllAsRead}>
         <span>모두 읽음</span>
       </button>
 

@@ -28,6 +28,7 @@ import { getCareerCourses } from "../api/career/career";
 import { getEmploymentList } from "../api/employment/employment";
 
 export default function MainPage() {
+  
   const defaultImage = "/assets/images/main/Card_Img01.png";
 
   // 유저정보
@@ -42,7 +43,7 @@ export default function MainPage() {
   // 탭 상태
   const [activeTab, setActiveTab] = useState("직무/직군");
 
-  // 슬라이더 레퍼런스
+  // 슬라이더
   const sliderRefMain = useRef(null);
   const sliderRef01 = useRef(null);
   const sliderRef02 = useRef(null);
@@ -114,7 +115,7 @@ export default function MainPage() {
     );
   };
 
-  // 1) 교육과정 목록 로드
+  //커리어 교육 데이터 불러오기
   useEffect(() => {
     async function fetchCourses() {
       try {
@@ -137,7 +138,7 @@ export default function MainPage() {
     fetchCourses();
   }, [activeTab]);
 
-  // 2) 채용공고 목록 로드
+  //채용공고 데이터 불러오기
   useEffect(() => {
     async function fetchEmploymentData() {
       try {
