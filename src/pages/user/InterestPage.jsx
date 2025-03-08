@@ -22,9 +22,6 @@ export default function InterestPage() {
     );
   };
 
-
-
-
   // 데이터 불러오기
   useEffect(() => {
 
@@ -45,16 +42,6 @@ export default function InterestPage() {
     fetchEmployments();
 
   }, []);
-
-
-
-
-
-
-
-
-
-
   
   return (
     <Main className="subWrap bg">
