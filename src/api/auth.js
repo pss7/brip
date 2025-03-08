@@ -18,12 +18,11 @@ export async function login(email, password) {
     // 로그인 성공 시에만 토큰 저장
     if (response.data?.token) {
       localStorage.setItem("token", response.data.token);
-      console.log("토큰 저장 완료:", localStorage.getItem("token"));
     }
 
     return { success: true, message: response.data.message || "로그인 성공", data: response.data };
   } catch (error) {
-    console.error("로그인 요청 실패:", error.response?.data?.message || error.message);
+    console.error("로그인 요청 실패:", error);
     return { success: false, message: error.response?.data?.message || "로그인 요청 실패" };
   }
 }

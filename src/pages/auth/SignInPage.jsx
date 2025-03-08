@@ -120,8 +120,6 @@ export default function SignInPage() {
         nickname: response.data.nickname,
         cuid: response.data.cuid,
       });
-
-      console.log("로그인 성공:", response.data);
       navigate("/");
 
     } catch (error) {

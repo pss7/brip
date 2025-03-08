@@ -137,10 +137,10 @@ export default function Header() {
   useEffect(() => {
     async function fetchNotifications() {
       try {
-        const notifications = await getNotifications();
-        if (notifications) {
+        const response = await getNotifications();
+        if (response && response.result === "success") {
           // 예시: 알림 객체에 read 속성이 있다고 가정 (read: true/false)
-          const unread = notifications.filter(item => !item.read);
+          const unread = response.data.filter(item => !item.is_read);
           setUnreadCount(unread.length);
         }
       } catch (error) {

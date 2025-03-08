@@ -22,25 +22,40 @@ export default function InterestPage() {
     );
   };
 
+
+
+
   // 데이터 불러오기
   useEffect(() => {
 
     async function fetchEmployments() {
       try {
-        const response = await getEmploymentList();
-        if (response.result === "success") {
-          // 좋아요가 눌린 항목만 필터링하여 저장
+        const response = await getEmploymentList({}); // 빈 객체 전달하여 기본값 적용
+        if (response && response.result === "success" && Array.isArray(response.employs)) {
           const likedEmployments = response.employs.filter(emp => emp.is_liked === 1);
           setEmploymentData(likedEmployments);
+        } else {
+          console.error("API 응답 형식이 예상과 다릅니다.", response);
         }
       } catch (error) {
         console.error("error", error);
       }
     }
+    
     fetchEmployments();
 
   }, []);
 
+
+
+
+
+
+
+
+
+
+  
   return (
     <Main className="subWrap bg">
 

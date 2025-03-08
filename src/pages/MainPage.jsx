@@ -28,7 +28,7 @@ import { getCareerCourses } from "../api/career/career";
 import { getEmploymentList } from "../api/employment/employment";
 
 export default function MainPage() {
-  
+
   const defaultImage = "/assets/images/main/Card_Img01.png";
 
   // 유저정보
@@ -121,8 +121,8 @@ export default function MainPage() {
       try {
         const response = await getCareerCourses({
           page: 0,
-          size: 10,
-          category: "오프라인",
+          size: 12,
+          category: "",
           keyword: "",
           jobCategory: activeTab,
         });
@@ -142,13 +142,15 @@ export default function MainPage() {
   useEffect(() => {
     async function fetchEmploymentData() {
       try {
-        // page=1, pageSize=6 등 원하는 파라미터
-        const result = await getEmploymentList(1, 6);
-        if (result?.result === "success" && result.employs) {
-          setEmploymentData(result.employs);
-        } else {
-          setEmploymentData([]);
+
+        const response = await getEmploymentList({
+          page: 1,
+          pageSize: 8,
+        });
+        if (response.result === "success") {
+          setEmploymentData(response.employs);
         }
+
       } catch (error) {
         console.error("채용공고 목록 불러오기 에러:", error);
       }
@@ -443,7 +445,7 @@ export default function MainPage() {
                         title={job.title || "공고 제목 미등록"}
                         date={`마감일: ${job.deadline || "미정"}`}
                         isLiked={job.is_liked === 1}
-                        // handleLikeToggle={() => handleLikeToggle(job.id)}
+                      // handleLikeToggle={() => handleLikeToggle(job.id)}
                       />
                     ))
                   ) : (
@@ -471,8 +473,8 @@ export default function MainPage() {
               <span className={style.text}>성공사례</span>
               <p className={style.title}>선박 운영 관리자로 성공한 김현수님의 이야기</p>
               <p className={style.content}>
-              김현우님(35)은 대학 시절 기계공학을 전공하며 막연히 자동차나 항공 분야에 진출할 것을 꿈꿨습니다. 하지만 졸업 직전, 해운 산업에 대해 배우게 되면서 선박의 기계와 전기 시스템을 설계하는 일에 흥미를 느끼게 됩니다. “친환경 선박 기술이 각광받고 있다는 걸 알게 된 게 결정적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.” <br />
-              그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.”그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다.그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.”그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다 ...
+                김현우님(35)은 대학 시절 기계공학을 전공하며 막연히 자동차나 항공 분야에 진출할 것을 꿈꿨습니다. 하지만 졸업 직전, 해운 산업에 대해 배우게 되면서 선박의 기계와 전기 시스템을 설계하는 일에 흥미를 느끼게 됩니다. “친환경 선박 기술이 각광받고 있다는 걸 알게 된 게 결정적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.” <br />
+                그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.”그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다.그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다적이었어요. 앞으로 중요한 산업이 될 거라고 확신했습니다.”그는 졸업 후 국내 조선소에 신입 엔지니어로 입사하며 해운업계에 첫발을 내딛습니다 ...
               </p>
             </div>
           </div>

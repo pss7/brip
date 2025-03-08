@@ -4,9 +4,9 @@ import { BASE_URL } from '../apiConfig';
 //강의 목록 조회 API
 export async function getCareerCourses(
   {
-    page = 0,
-    size = 10,
-    category = '오프라인',
+    page = '',
+    size = '',
+    category = '',
     keyword = '',
     jobCategory = ''
   }

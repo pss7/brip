@@ -2,15 +2,17 @@ import axios from "axios";
 import { BASE_URL } from "../apiConfig";
 
 //채용 공고 목록 API
-export async function getEmploymentList(
-  page = 1,
-  pageSize = 10,
-  keyword = "",
-  regions = [],
-  skills = "",
-  careers = "",
-  workTypes = ""
-) {
+export async function getEmploymentList(params = {}) {
+  const {
+    page = 1,
+    pageSize = 10,
+    keyword = "",
+    regions = [],
+    skills = "",
+    careers = "",
+    workTypes = ""
+  } = params;
+
   const token = localStorage.getItem("token");
 
   try {
