@@ -1,161 +1,131 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+//홈
 import Home from './pages/Home';
-import SignInPage from './pages/SignInPage';
-import PwFindPage from './pages/PwFindPage';
-import SignUpPage from './pages/SignUpPage';
-import SearchPage from './pages/SearchPage';
-import RoadMapInfoPage from './pages/RoadMapInfoPage';
-import RoadMapDesignPage from './pages/RoadMapDesignPage';
-import RoadMapResultPage from './pages/RoadMapResultPage';
-import EmploymentPage from './pages/EmploymentPage';
-import EmploymentDetailPage from './pages/EmploymentDetailPage';
-import NoticePage from './pages/NoticePage';
-import NoticeDetailPage from './pages/NoticeDetailPage';
-import FAQPage from './pages/FAQPage';
-import TermsPage from './pages/TermsPage';
-import PolicyPage from './pages/PolicyPage';
-import PrivateRoute from './pages/PrivateRoute';
-import CommunityPage from './pages/CommunityPage';
-import MyPage from './pages/MyPage';
-import ChatRoomDetailPage from './pages/ChatRoomDetailPage';
-import QADetailPage from './pages/QADetailPage';
-import CareerPage from './pages/CareerPage';
-import CareerDetailPage from './pages/CareerDetailPage';
-import InterestPage from './pages/InterestPage';
-import UserProvider from './context/UserProvider';
-import ResumePage from './pages/ResumePage';
-import ApplyPage from './pages/ApplyPage';
-import ActivityPage from './pages/ActivityPage';
-import InquiryPage from './pages/InquiryPage';
-import InquiryRegisterPage from './pages/InquiryRegisterPage';
-import InquiryDetailPage from './pages/InquiryDetailPage';
-import { PopupProvider } from './context/PopupProvider';
-import CareerExplorationPage from './pages/CareerExplorationPage';
-import CareerExplorationDetailPage from './pages/CareerExplorationDetailPage';
-import ResumeRegpage from './pages/ResumeRegpage';
-import { ResumeProvider } from './context/ResumeProvider';
-import ResumeUpdatepage from './pages/ResumeUpdatepage';
-import { useEffect, useState } from 'react';
+
+//검색
+import SearchPage from './pages/search/SearchPage';
+
+//로드맵
+import RoadMapInfoPage from './pages/roadmap/RoadMapInfoPage';
+import RoadMapDesignPage from './pages/roadmap/RoadMapDesignPage';
+import RoadMapResultPage from './pages/roadmap/RoadMapResultPage';
+
+//커뮤니티
+import CommunityPage from './pages/community/CommunityPage';
+import CommunityDetailPage from './pages/community/CommunityDetailPage';
+import ChatRoomDetailPage from './pages/community/ChatRoomDetailPage';
+
+//채용
+import EmploymentPage from './pages/job/EmploymentPage';
+import EmploymentDetailPage from './pages/job/EmploymentDetailPage';
+
+//인증
+import SignInPage from './pages/auth/SignInPage';
+import PasswordFindPage from './pages/auth/PasswordFindPage';
+import PasswordResetPage from './pages/auth/PasswordResetPage';
+import SignUpPage from './pages/auth/SignUpPage';
+
+//커리어
+import CareerPage from './pages/career/CareerPage';
+import CareerDetailPage from './pages//career/CareerDetailPage';
+import CareerExplorationPage from './pages/career/CareerExplorationPage';
+import CareerExplorationDetailPage from './pages/career/CareerExplorationDetailPage';
+
+//고객지원
+import InquiryPage from './pages/support/InquiryPage';
+import InquiryRegisterPage from './pages/support/InquiryRegisterPage';
+import InquiryDetailPage from './pages/support/InquiryDetailPage';
+import NoticePage from './pages/support/NoticePage';
+import NoticeDetailPage from './pages/support/NoticeDetailPage';
+import PolicyPage from './pages/support/PolicyPage';
+import TermsPage from './pages/support/TermsPage';
+import FAQPage from './pages/support/FAQPage';
+
+//유저
+import MyPage from './pages/user/MyPage';
+import ActivityPage from './pages/user/ActivityPage';
+import InterestPage from './pages/user/InterestPage';
+import ApplyPage from './pages/user/ApplyPage';
+import ResumePage from './pages/user/ResumePage';
+import ResumeRegpage from './pages/user/ResumeRegpage';
+import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
+import NotificationDetail from './pages/user/NotificationDetail';
 import Loading from './components/Loading';
+import { useEffect, useState } from 'react';
+import ResumeDetail from './pages/user/ResumeDetail';
 
 function App() {
 
-  const [isLoading, setIsLoading] = useState(true);
+  //로딩 상태 관리
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000)
-  }, [])
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
 
-  if (isLoading) {
-    return <Loading fullScreen />
+  if (loading) {
+    return <Loading fullScreen />;
   }
+
   return (
-    <>
-      <BrowserRouter>
-        <UserProvider>
-          <PopupProvider>
-            <ResumeProvider>
-              <Routes>
-                <Route path='/' element={<Home />} />
+    <BrowserRouter>
+      <Routes>
 
-                {/* 검색페이지 */}
-                <Route path='/search' element={<SearchPage />} />
+        {/* 홈 */}
+        <Route path='/' element={<Home />} />
 
-                {/* 로그인, 비밀번호 찾기, 회원가입 */}
-                <Route path='/signin' element={<SignInPage />} />
-                <Route path='/passwordfind' element={<PwFindPage />} />
-                <Route path='/signup' element={<SignUpPage />} />
+        {/* 검색 */}
+        <Route path='/search' element={<SearchPage />} />
 
-                {/* 채용 */}
-                <Route path='/employment' element={<EmploymentPage />} />
-                <Route path='/employmentdetail' element={<EmploymentDetailPage />} />
+        {/* 인증 */}
+        <Route path='/signin' element={<SignInPage />} />
+        <Route path='/password-find' element={<PasswordFindPage />} />
+        <Route path='/password-reset' element={<PasswordResetPage />} />
+        <Route path='/signup' element={<SignUpPage />} />
 
-                {/* 고객지원 */}
-                <Route path='/notice' element={<NoticePage />} />
-                <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
-                <Route path='/faq' element={<FAQPage />} />
-                <Route path='/inquiry' element={<InquiryPage />} />
-                <Route path='/inquiryreg' element={<InquiryRegisterPage />} />
-                <Route path='/inquirydetail/:id' element={<InquiryDetailPage />} />
-                <Route path='/terms' element={<TermsPage />} />
-                <Route path='/policy' element={<PolicyPage />} />
+        {/* 커뮤니티 */}
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/community-detail/:community_Id" element={<CommunityDetailPage />} />
+        <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
 
-                {/* 커리어 */}
-                <Route path="career" element={<CareerPage />} />
-                <Route path="careerdetail" element={<CareerDetailPage />} />
-                <Route path="careerexploration" element={<CareerExplorationPage />} />
-                <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
+        {/* 커리어 */}
+        <Route path="/career" element={<CareerPage />} />
+        <Route path="/career-detail/:career_Id" element={<CareerDetailPage />} />
+        <Route path="/careerexploration" element={<CareerExplorationPage />} />
+        <Route path="/careerexploration-detail:id" element={<CareerExplorationDetailPage />} />
 
-                {/* 커뮤니티 */}
-                <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
-                <Route path="/qa/:qaId" element={<QADetailPage />} />
+        {/* 공고 */}
+        <Route path='/employment' element={<EmploymentPage />} />
+        <Route path='/employment-detail/:employment_Id' element={<EmploymentDetailPage />} />
 
-                {/* 로그인 후에만 접근 가능한 페이지 */}
-                <Route path="/roadmapinfo" element={
-                  <PrivateRoute>
-                    <RoadMapInfoPage />
-                  </PrivateRoute>
-                } />
-                <Route path="/roadmapdesign" element={
-                  <PrivateRoute>
-                    <RoadMapDesignPage />
-                  </PrivateRoute>
-                } />
-                <Route path="/roadmapresult" element={
-                  <PrivateRoute>
-                    <RoadMapResultPage />
-                  </PrivateRoute>
-                } />
-                <Route path="/mypage" element={
-                  <PrivateRoute>
-                    <MyPage />
-                  </PrivateRoute>
-                } />
-                <Route path="/interest" element={
-                  <PrivateRoute>
-                    <InterestPage />
-                  </PrivateRoute>
-                } />
-                <Route path="/community" element={
-                  <PrivateRoute>
-                    <CommunityPage />
-                  </PrivateRoute>
-                } />
-                <Route path="/resume" element={
-                  <PrivateRoute>
-                    <ResumePage />
-                  </PrivateRoute>
-                } />
-                <Route path="/resumereg" element={
-                  <PrivateRoute>
-                    <ResumeRegpage />
-                  </PrivateRoute>
-                } />
-                <Route path="/resumeupdate/:id" element={
-                  <PrivateRoute>
-                    <ResumeUpdatepage />
-                  </PrivateRoute>
-                } />
-                <Route path="/apply" element={
-                  <PrivateRoute>
-                    <ApplyPage />
-                  </PrivateRoute>
-                } />
+        {/* 로드맵 */}
+        <Route path="/roadmap-info" element={<RoadMapInfoPage />} />
+        <Route path="/roadmap-design" element={<RoadMapDesignPage />} />
+        <Route path="/roadmap-result" element={<RoadMapResultPage />} />
 
-                <Route path="/activity" element={
-                  <PrivateRoute>
-                    <ActivityPage />
-                  </PrivateRoute>
-                } />
+        {/* 유저 */}
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/resume" element={<ResumePage />} />
+        <Route path="/resume-detail/:resume_Id" element={<ResumeDetail />} />
+        <Route path="/resume-registration" element={<ResumeRegpage />} />
+        <Route path="/resume-update/:resumeup_id" element={<ResumeUpdatepage />} />
+        <Route path="/apply" element={<ApplyPage />} />
+        <Route path="/activity" element={<ActivityPage />} />
+        <Route path="/notice" element={<NoticePage />} />
+        <Route path='/noticedetail/:id' element={<NoticeDetailPage />} />
+        <Route path='/faq' element={<FAQPage />} />
+        <Route path='/inquiry' element={<InquiryPage />} />
+        <Route path='/inquiry-registration' element={<InquiryRegisterPage />} />
+        <Route path='/inquiry-detail/:id' element={<InquiryDetailPage />} />
+        <Route path='/terms' element={<TermsPage />} />
+        <Route path='/policy' element={<PolicyPage />} />
+        <Route path="/interest" element={<InterestPage />} />
 
-              </Routes>
-            </ResumeProvider>
-          </PopupProvider>
-        </UserProvider>
-      </BrowserRouter>
-    </>
+        {/* 알림 */}
+        <Route path="/notification/:notificationId" component={<NotificationDetail />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -93,11 +93,11 @@ export async function checkNickname(nickname) {
 }
 
 // 회원가입 API
-export async function signUp({ name, nickname, email, password }) {
+export async function signUp({ name, nickname, email, password, phoneNumber, birthDate }) {
   try {
     const response = await axios.post(
       `${BASE_URL}/user/register`,
-      { name, nickname, email, password },
+      { name, nickname, email, password, birth_date:birthDate, phone:phoneNumber },
       { headers: { 'Content-Type': 'application/json' } }
     );
     // localStorage.setItem('token', response.token);

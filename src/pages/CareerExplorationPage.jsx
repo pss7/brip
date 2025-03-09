@@ -247,7 +247,6 @@ export default function CareerExplorationPage() {
               )
             }
 
-
             {/* 페이지 수 조정 드롭다운 */}
             <div className={style.pageSelectBox}>
               <label htmlFor="pageSelect" className="blind">

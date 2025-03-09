@@ -19,6 +19,10 @@ export default function SignUpPage() {
   const [nicknameError, setNicknameError] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
+  // 핸드폰, 생년월일 추가
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+
   // 이메일 관련
   const [email, setEmail] = useState("");
   const [emailDomain, setEmailDomain] = useState("");
@@ -86,52 +90,40 @@ export default function SignUpPage() {
 
   // 닉네임 중복확인
   async function handleNicknameCheck() {
-
     if (!nickname || nicknameError) {
-
       setPopupMessage("유효한 닉네임을 입력해주세요.");
       setIsPopupError(true);
       setIsPopupOpen(true);
       return;
-
     }
 
     try {
-
       const response = await checkNickname(nickname);
-
       if (response.data.result === "fail") {
-
         // 이미 존재하는 닉네임
         setNicknameError(response.data.message);
         setIsNicknameAvailable(false);
         setPopupMessage(response.data.message);
         setIsPopupError(true);
         setIsPopupOpen(true);
-
       } else {
-
         // 사용 가능한 닉네임
         setNicknameError("");
         setIsNicknameAvailable(true);
         setPopupMessage(response.data.message || "사용 가능한 닉네임입니다.");
         setIsPopupError(false);
         setIsPopupOpen(true);
-
       }
     } catch (error) {
-
-      console.error("닉네임 중복확인 오류:", err);
+      console.error("닉네임 중복확인 오류:", error);
       setPopupMessage("닉네임 중복 확인 중 오류가 발생하였습니다.");
       setIsPopupError(true);
       setIsPopupOpen(true);
-
     }
   }
 
   // 비밀번호 입력
   function handlePasswordChange(e) {
-
     const newVal = e.target.value;
     setPassword(newVal);
 
@@ -142,7 +134,6 @@ export default function SignUpPage() {
     } else {
       setPasswordError("");
     }
-
   }
 
   // 비밀번호 확인
@@ -180,7 +171,7 @@ export default function SignUpPage() {
     e.preventDefault();
 
     // 필수 입력값
-    if (!name || !nickname || !email || !emailDomain || !password || !passwordCheck) {
+    if (!name || !nickname || !email || !emailDomain || !password || !passwordCheck || !phoneNumber || !birthDate) {
       setPopupMessage("모든 필수 입력값을 확인해주세요.");
       setIsPopupError(true);
       setIsPopupOpen(true);
@@ -199,13 +190,14 @@ export default function SignUpPage() {
     const fullEmail = `${email}@${emailDomain}`;
 
     try {
-
       // 회원가입 API
       const response = await signUp({
         name,
         nickname,
         email: fullEmail,
         password,
+        phoneNumber,
+        birthDate,
       });
 
       //서버 응답이 실패일 경우
@@ -276,6 +268,34 @@ export default function SignUpPage() {
                     >
                       중복확인
                     </button>
+                  </div>
+                </div>
+
+                {/* 핸드폰 번호 */}
+                <div className="inputWrap">
+                  <div className="inputBox">
+                    <Input
+                      id="phoneNumber"
+                      label="핸드폰 번호"
+                      placeholder="핸드폰 번호 입력"
+                      className="mb-15"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* 생년월일 */}
+                <div className="inputWrap">
+                  <div className="inputBox">
+                    <Input
+                      id="birthDate"
+                      label="생년월일"
+                      placeholder="YYYY-MM-DD"
+                      className="mb-15"
+                      value={birthDate}
+                      onChange={(e) => setBirthDate(e.target.value)}
+                    />
                   </div>
                 </div>
 

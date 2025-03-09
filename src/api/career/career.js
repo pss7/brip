@@ -52,3 +52,57 @@ export async function getCareerDetailCourses(career_Id) {
   }
 
 }
+
+//직무 목록 조회 API
+export async function getJopList() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("인증 토큰이 없습니다. 로그인 후 다시 시도해주세요.");
+    }
+
+    const response = await axios.get(`${BASE_URL}/career/list`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("API Response Data:", response.data); // 응답 데이터 확인
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("API Error:", error.response.status, error.response.data);
+    } else {
+      console.error("API 요청 중 알 수 없는 오류 발생:", error);
+    }
+    return null; // 오류 발생 시 null 반환
+  }
+}
+
+//직무 상세 조회 API 추가
+export async function getJobDetail(jobId) {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("인증 토큰이 없습니다. 로그인 후 다시 시도해주세요.");
+    }
+
+    const response = await axios.get(`${BASE_URL}/career/${jobId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("API Error:", error.response.status, error.response.data);
+    } else {
+      console.error("API 요청 중 알 수 없는 오류 발생:", error);
+    }
+    return null;
+  }
+}
