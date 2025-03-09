@@ -24,12 +24,21 @@ import Card from "../components/Card";
 import "../styles/style.css";
 import BgCard from "../components/BgCard";
 import { useAuthStore } from "../store/useAuthStore";
-import { getCareerCourses } from "../api/career/career";
+import { getCareerCourses, getJopList } from "../api/career/career";
 import { getEmploymentList } from "../api/employment/employment";
 
 export default function MainPage() {
 
   const defaultImage = "/assets/images/main/Card_Img01.png";
+
+  const [jobList, setJobList] = useState([]);
+
+  // 4가지 Guide 이미지 배열 (순환 적용)
+  const defaultGuideImages = [Guide01, Guide02, Guide03, Guide04];
+
+  // 4가지 기본 색상 (반복 적용)
+  const defaultBgColors = ["#EDC2F6", "#CCE7FE", "#FFD3EB", "#FFEEA6"];
+  const defaultImgBgColors = ["#C6FFD0", "#F6F0B3", "#CCE7FE", "#5E5C5C"];
 
   // 유저정보
   const { token } = useAuthStore();
@@ -156,6 +165,19 @@ export default function MainPage() {
       }
     }
     fetchEmploymentData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchJobList() {
+      const data = await getJopList();
+      // API 응답 형식에 따라 조정 (예: data.careers 또는 data.result === "success" 이후 data.careers)
+      if (data && data.careers) {
+        setJobList(data.careers);
+      } else {
+        setJobList([]);
+      }
+    }
+    fetchJobList();
   }, []);
 
   return (
@@ -310,47 +332,35 @@ export default function MainPage() {
             </div>
 
             <div data-aos="fade-up">
-              <Slider className={style.guideList} ref={sliderRef01} {...settings}>
-                <div className={style.slide}>
-                  <BgCard
-                    href="/careerexplorationdetail"
-                    bg={{ backgroundColor: "#EDC2F6" }}
-                    imgBg={{ backgroundColor: "#C6FFD0" }}
-                    imgSrc={Guide01}
-                    title="해상 여객운송 관리자"
-                  />
-                </div>
 
-                <div className={style.slide}>
-                  <BgCard
-                    href="/careerexplorationdetail"
-                    bg={{ backgroundColor: "#CCE7FE" }}
-                    imgBg={{ backgroundColor: "#F6F0B3" }}
-                    imgSrc={Guide02}
-                    title="해상 여객운송 관리자"
-                  />
-                </div>
+              {token ? (
+                jobList.length > 0 ? (
+                  <Slider className={style.guideList} ref={sliderRef01} {...settings}>
+                    {
+                      jobList.map((job, index) => (
+                        <div key={job.id} className={style.slide}>
+                          <BgCard
+                            href={`/careerexploration-detail/${job.id}`}
+                            title={job.name}
+                            imgSrc={job.imgSrc || defaultGuideImages[index % defaultGuideImages.length]}
+                            bg={{
+                              backgroundColor: job.bgColor || defaultBgColors[index % defaultBgColors.length],
+                            }}
+                            imgBg={{
+                              backgroundColor: job.imgBgColor || defaultImgBgColors[index % defaultImgBgColors.length],
+                            }}
+                          />
+                        </div>
+                      ))
+                    }
+                  </Slider>
+                ) : (
+                  <p className="infoText">등록된 직무가 없습니다.</p>
+                )
+              ) : (
+                <p className="infoText">로그인 후 확인할 수 있습니다.</p>
+              )}
 
-                <div className={style.slide}>
-                  <BgCard
-                    href="/careerexplorationdetail"
-                    bg={{ backgroundColor: "#FFD3EB" }}
-                    imgBg={{ backgroundColor: "#CCE7FE" }}
-                    imgSrc={Guide03}
-                    title="해상 여객운송 관리자"
-                  />
-                </div>
-
-                <div className={style.slide}>
-                  <BgCard
-                    href="/careerexplorationdetail"
-                    bg={{ backgroundColor: "#FFEEA6" }}
-                    imgBg={{ backgroundColor: "#5E5C5C" }}
-                    imgSrc={Guide04}
-                    title="해상 여객운송 관리자"
-                  />
-                </div>
-              </Slider>
             </div>
 
             <div className={style.control} data-aos="fade-up">

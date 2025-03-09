@@ -15,7 +15,7 @@
 .careerDetailContent .box .list li{position: relative; padding-left: 18px; color: #000;}
 .careerDetailContent .box .list li::before{content: ''; position: absolute; top:10px; left:4px; width: 4px; height: 4px; border-radius: 50px; background-color: #000; line-height: 1.6;}
 .careerDetailContent .subTitle{color: #000; font-size: 16px; line-height: 1.6; font-weight: 400;}
-.careerDetailContent .box select{margin:20px 0 24px; padding-left: 16px; width: 311px; height: 48px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; background: url(../assets/images/sub/Select_Icon.svg)no-repeat 93% center; -webkit-appearance:none;  -moz-appearance:none; appearance:none; cursor: pointer;}
+.careerDetailContent .box select{margin:20px 0 24px; padding-left: 16px; width: 311px; height: 48px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; background: url(../src/assets/images/sub/Select_Icon.svg)no-repeat 93% center; -webkit-appearance:none;  -moz-appearance:none; appearance:none; cursor: pointer;}
 .careerDetailContent .box .guideList{display: flex; gap: 16px 2%; flex-wrap: wrap; margin-bottom: 62px;}
 .careerDetailContent .box .guideList > li{width: 48%; word-break: keep-all;}
 .careerDetailContent .box .guideList > li{padding: 32px 20px 20px; min-height: 200px; border-radius: 10px; background-color: #FAFAFC;}

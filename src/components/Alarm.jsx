@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import style from "./Alarm.module.css";
-import { getNotifications, markAllNotificationsAsRead, markNotificationAsRead } from "../api/notifications/notifications";
 import Loading from "./Loading";
+import { 
+  getNotifications, 
+  markAllNotificationsAsRead, 
+  markNotificationAsRead,
+  getNotificationDetail
+} from "../api/notifications/notifications";
 
 export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   // 알림 데이터 불러오기
   useEffect(() => {
@@ -23,7 +29,8 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
                     oldNotification.notification_id === newNotification.notification_id
                 )
             );
-            return [...newNotifications, ...prevNotifications]; // 새로운 알림이 위에 추가됨
+            // 새로운 알림이 위에 추가됨
+            return [...newNotifications, ...prevNotifications];
           });
         }
       } catch (error) {
@@ -32,23 +39,24 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
         setIsLoading(false);
       }
     }
-  
+
     // 최초 실행
     fetchNotifications();
-  
-    // 주기적으로 알림을 확인 (예: 10초마다)
+
+    // 주기적으로 알림 확인 (예: 10초마다)
     const interval = setInterval(() => {
       fetchNotifications();
-    }, 10000); // 10초마다 실행
-  
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 정리
-  }, []);
-  
+    }, 10000);
 
-  // 알림 클릭 시 읽음 처리 함수
-  const handleMarkAsRead = async (notificationId) => {
-    const response = await markNotificationAsRead(notificationId);
-    if (response && response.result === "success") {
+    return () => clearInterval(interval);
+  }, []);
+
+  // 알림 클릭 시 읽음 처리 및 상세 페이지로 이동
+  const handleNotificationClick = async (e, notificationId) => {
+    e.preventDefault();
+    // 알림 읽음 처리
+    const markResponse = await markNotificationAsRead(notificationId);
+    if (markResponse && markResponse.result === "success") {
       setNotifications((prevNotifications) =>
         prevNotifications.map((notification) =>
           notification.notification_id === notificationId
@@ -56,6 +64,13 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
             : notification
         )
       );
+    }
+    // 알림 상세 데이터 조회
+    const detailResponse = await getNotificationDetail(notificationId);
+    if (detailResponse && detailResponse.result === "success") {
+      setAlarmOpen(false); // 알림 모달 닫기 (옵션)
+      // 상세 데이터를 state로 전달하며 상세 페이지로 이동
+      navigate(`/notification/${notificationId}`, { state: { detail: detailResponse.data } });
     }
   };
 
@@ -87,10 +102,9 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
                 <Link
                   to={`/notification/${notification.notification_id}`}
                   className={notification.is_read ? "" : style.noRead}
-                  onClick={() => {
-                    handleMarkAsRead(notification.notification_id);
-                    setAlarmOpen(false); // 알림 클릭 후 모달 닫기 (옵션)
-                  }}
+                  onClick={(e) =>
+                    handleNotificationClick(e, notification.notification_id)
+                  }
                 >
                   <p className={style.title}>{notification.title}</p>
                   <p className={style.content}>{notification.content}</p>

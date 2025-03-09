@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 //홈
 import Home from './pages/Home';
@@ -28,7 +29,7 @@ import SignUpPage from './pages/auth/SignUpPage';
 
 //커리어
 import CareerPage from './pages/career/CareerPage';
-import CareerDetailPage from './pages//career/CareerDetailPage';
+import CareerDetailPage from './pages/career/CareerDetailPage';
 import CareerExplorationPage from './pages/career/CareerExplorationPage';
 import CareerExplorationDetailPage from './pages/career/CareerExplorationDetailPage';
 
@@ -52,8 +53,9 @@ import ResumeRegpage from './pages/user/ResumeRegpage';
 import ResumeUpdatepage from './pages/user/ResumeUpdatepage';
 import NotificationDetail from './pages/user/NotificationDetail';
 import Loading from './components/Loading';
-import { useEffect, useState } from 'react';
 import ResumeDetail from './pages/user/ResumeDetail';
+
+
 
 function App() {
 
@@ -93,7 +95,7 @@ function App() {
         <Route path="/career" element={<CareerPage />} />
         <Route path="/career-detail/:career_Id" element={<CareerDetailPage />} />
         <Route path="/careerexploration" element={<CareerExplorationPage />} />
-        <Route path="/careerexploration-detail:id" element={<CareerExplorationDetailPage />} />
+        <Route path="/careerexploration-detail/:id" element={<CareerExplorationDetailPage />} />
 
         {/* 공고 */}
         <Route path='/employment' element={<EmploymentPage />} />
@@ -109,7 +111,7 @@ function App() {
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/resume-detail/:resume_Id" element={<ResumeDetail />} />
         <Route path="/resume-registration" element={<ResumeRegpage />} />
-        <Route path="/resume-update/:resumeup_id" element={<ResumeUpdatepage />} />
+        <Route path="/resume-update/:resume_Id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/activity" element={<ActivityPage />} />
         <Route path="/notice" element={<NoticePage />} />

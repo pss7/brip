@@ -68,3 +68,27 @@ export async function markAllNotificationsAsRead() {
     return false;
   }
 }
+
+//알림 상세 API
+export async function getNotificationDetail(notificationId) {
+  const token = localStorage.getItem("token");
+  if (!notificationId) {
+    console.error('알림 ID가 유효하지 않습니다');
+    return false;
+  }
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/notification/detail/${notificationId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('알림 상세 조회 실패:', error);
+    return false;
+  }
+}

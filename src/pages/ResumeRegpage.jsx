@@ -1,5 +1,3 @@
-// ResumeRegpage.js
-
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -11,7 +9,8 @@ import Input from "../components/Input";
 import FileImg from "../assets/images/sub/file_img.svg";
 import PlusIcon from "../assets/images/sub/plus_icon02.svg";
 import ArrowPrevButton from "../components/ArrowPrevButton";
-import { useResume } from "../context/ResumeProvider";  // Assuming this hook handles resume data
+import { useResume } from "../context/ResumeProvider"; 
+import { updateResume } from "../api/user/resume/resume";
 
 const ResumeField = ({ label, value, readOnly, onChange, placeholder }) => (
   <div className={`${style.regBox} ${value ? "" : style.error}`}>
@@ -123,8 +122,6 @@ export default function ResumeRegpage() {
     alert("이력서가 저장되었습니다.");
     navigate("/resume");
   };
-
-
 
   return (
     <Main className="subWrap bg">
