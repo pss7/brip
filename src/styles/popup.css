@@ -26,6 +26,23 @@
 .popupWrap .radioOption {display: flex; align-items: center; margin-right: 20px;}
 .popupWrap .radioOption span {font-size: 14px; margin-left: 10px;}
 
+.alarmPopupWrap{opacity: 0; position: fixed; left:0; right:0; bottom: 0; top:0; background-color: rgba(0,0,0,.5); z-index: 999; transition: all .5s;}
+.alarmPopupWrap.active{opacity: 1; visibility: visible;}
+.alarmPopupBox{max-width: 500px; width: 90%;  padding:50px 20px 50px 50px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff;border-radius: 10px;}
+.alarmPopupBox h4{margin-bottom: 25px; font-size: 26px;}
+.alarmPopupBox .content{margin-bottom: 25px; font-size: 18px;}
+.alarmPopupBox .date{font-size: 18px;}
+.alarmPopupBox .closeBtn{position: absolute; top:25px; right:25px; width: 16px; height: 16px; background: url(/src/assets/images/common/Close_Icon.svg)no-repeat center; background-size: cover;}
+
+@media (max-width: 1199px){
+
+  .alarmPopupBox{padding: 35px 20px 35px 30px;}
+  .alarmPopupBox h4{font-size: 20px;}
+  .alarmPopupBox .content{margin-bottom: 20px; font-size: 16px;}
+  .alarmPopupBox .date{font-size: 16px;}
+
+}
+
 @media (max-width: 480px){
 
   .popupWrap .chatTypeOptions{flex-direction: column; gap: 20px;}
