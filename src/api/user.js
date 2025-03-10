@@ -35,21 +35,67 @@ export async function getnicknameCheck(nickname) {
 
 }
 
-// 프로필 업데이트 API
-export async function updateProfile({ name, nickname, phone, birthDate }) {
-
+// 닉네임 업데이트 API
+export async function updateNickname({ nickname }) {
+  const token = localStorage.getItem("token");
   try {
     const response = await axios.post(
-      `${BASE_URL}/user/profile/update`,
-      { name, nickname, phone, birthDate },
-      { headers: { 'Content-Type': 'application/json' } }
+      `${BASE_URL}/profile/update/nickname`,
+      { nickname },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      }
     );
     return response.data;
   } catch (error) {
-    console.error('error:', error);
+    console.error('updateNickname error:', error);
     return false;
   }
+}
 
+// 휴대폰번호 업데이트 API
+export async function updatePhone({ phone }) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/profile/update/phone`,
+      { phone },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('updatePhone error:', error);
+    return false;
+  }
+}
+
+// 이메일 업데이트 API
+export async function updateEmail({ email }) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/profile/update/email`,
+      { email },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('updateEmail error:', error);
+    return false;
+  }
 }
 
 // 프로필 이미지 업로드 API
@@ -70,27 +116,6 @@ export async function updateProfileImage(file) {
     return response.data;
   } catch (error) {
     console.error("updateProfileImage error:", error);
-    return false;
-  }
-}
-
-//이력서 수정 API
-export async function updateResume(formData) {
-  const token = localStorage.getItem("token");
-  try {
-    const response = await axios.put(
-      `${BASE_URL}/resume/update/`, // FormData 객체를 URL에 포함시키지 않습니다.
-      formData,
-      {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          // axios가 FormData인 경우 자동으로 올바른 Content-Type 헤더를 설정합니다.
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("updateResume error:", error);
     return false;
   }
 }

@@ -7,7 +7,7 @@ import google from "../../assets/images/login/Google_Img.svg";
 import style from "./MyPage.module.css";
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
-import { getnicknameCheck, getProfile } from "../../api/user";
+import { getnicknameCheck, getProfile, updateEmail, updateNickname, updatePhone } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
 import ConfirmPopup from "../../components/ConfirmPopup";
 import { useLoadingStore } from "../../store/useLoadingStore";
@@ -25,6 +25,10 @@ import {
 export default function MyPage() {
   const navigate = useNavigate();
   const { logout: clearAuthData } = useAuthStore();
+
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
 
   // 로그아웃 함수
   async function handleLogout() {
@@ -73,41 +77,77 @@ export default function MyPage() {
 
   // 닉네임 상태 업데이트 함수
   function handleNicknameChange(e) {
-    const nicknameValue = e.target.value;
-    setNickname(nicknameValue);
+    setNickname(e.target.value);
+    setIsNicknameValid(false);
+  }
 
-    if (!nicknameValue) {
-      setError("닉네임을 입력해주세요.");
-    } else if (!nicknameRegex.test(nicknameValue)) {
-      setError("닉네임은 2~12자, 특수문자 및 공백을 포함할 수 없습니다.");
-    } else {
-      setError("");
+  async function handleNicknameUpdate() {
+    if (!isNicknameValid) {
+      setPopupMessage("닉네임 중복 체크를 먼저 진행해주세요.");
+      setPopupError(true);
+      setPopupOpen(true);
+      return;
     }
 
-    setDisabled(false);
+    try {
+      const response = await updateNickname({ nickname });
+      if (response && response.result === "success") {
+        setPopupMessage("닉네임이 변경되었습니다.");
+        setPopupError(false);
+        setProfileData(prev => ({ ...prev, nickname }));
+      } else {
+        setPopupMessage("닉네임 변경에 실패했습니다.");
+        setPopupError(true);
+      }
+      setPopupOpen(true);
+    } catch (error) {
+      setPopupMessage("닉네임 변경 중 오류가 발생했습니다.");
+      setPopupError(true);
+      setPopupOpen(true);
+    }
   }
 
   // 닉네임 중복 체크 함수
   async function handleDuplicateCheck() {
     try {
       const response = await getnicknameCheck(nickname);
-
       if (response && response.data.result === "success") {
         setPopupMessage("사용 가능한 닉네임입니다.");
         setPopupError(false);
-      } else if (response && response.data.result === "fail") {
+        setIsNicknameValid(true);
+      } else {
         setPopupMessage("이미 사용 중인 닉네임입니다.");
         setPopupError(true);
       }
       setPopupOpen(true);
     } catch (error) {
-      setError("error:", error);
+      setPopupMessage("닉네임 중복 체크 중 오류가 발생했습니다.");
+      setPopupError(true);
+      setPopupOpen(true);
     }
   }
-
   // 서비스 해지 팝업 열기 함수
   function openConfirmPopup() {
     setConfirmPopupOpen(true);
+  }
+
+  async function handleEmailUpdate() {
+    try {
+      const response = await updateEmail({ email });
+      if (response && response.result === "success") {
+        setPopupMessage("이메일이 변경되었습니다.");
+        setPopupError(false);
+        setProfileData(prev => ({ ...prev, email }));
+      } else {
+        setPopupMessage("이메일 변경 실패");
+        setPopupError(true);
+      }
+      setPopupOpen(true);
+    } catch (error) {
+      setPopupMessage("이메일 변경 중 오류 발생");
+      setPopupError(true);
+      setPopupOpen(true);
+    }
   }
 
   // 서비스 해지 확인 함수
@@ -165,20 +205,40 @@ export default function MyPage() {
     }
   }
 
+  async function handlePhoneUpdate() {
+    try {
+      const response = await updatePhone({ phone });
+      if (response && response.result === "success") {
+        setPopupMessage("휴대폰 번호가 변경되었습니다.");
+        setPopupError(false);
+        setProfileData(prev => ({ ...prev, phone }));
+      } else {
+        setPopupMessage("휴대폰 번호 변경 실패");
+        setPopupError(true);
+      }
+      setPopupOpen(true);
+    } catch (error) {
+      setPopupMessage("휴대폰 번호 변경 중 오류 발생");
+      setPopupError(true);
+      setPopupOpen(true);
+    }
+  }
+
   // 데이터 불러오기
   useEffect(() => {
     async function fetchProfile() {
       try {
         setLoading(true);
         const response = await getProfile();
-        setNickname(response.data.nickname);
-        setProfileData(response.data);
-        // 서버에서 SNS 연동 상태 정보(snsStatus)를 받았다면 업데이트 (예시)
-        if (response.data.snsStatus) {
-          setSnsStatus(response.data.snsStatus);
+        if (response && response.data) {
+          setProfileData(response.data);
+          setNickname(response.data.nickname || "");
+          setPhone(response.data.phone || "");
+          setEmail(response.data.email || "");
+          if (response.data.snsStatus) setSnsStatus(response.data.snsStatus);
         }
       } catch (error) {
-        console.error("error", error);
+        console.error("프로필 데이터 불러오기 오류:", error);
       } finally {
         setLoading(false);
       }
@@ -225,55 +285,41 @@ export default function MyPage() {
                     </div>
 
                     <div className="inputWrap">
-                      <label htmlFor="nickname" className="mb-15">
-                        닉네임
-                      </label>
+                      <label htmlFor="nickname" className="mb-15"> 닉네임</label>
                       <div className={`inputBox ${style.inputNicknameBox}`}>
-                        <Input
-                          id="nickname"
-                          type="text"
-                          value={nickname}
-                          onChange={handleNicknameChange}
-                        />
-                        <button
-                          className={style.duplicateChkBtn}
-                          type="button"
-                          disabled={disabled}
-                          onClick={handleDuplicateCheck}
-                        >
-                          완료
-                        </button>
+                        <Input id="nickname" type="text" value={nickname} onChange={handleNicknameChange} />
+
+                        {
+
+                          isNicknameValid ? (
+                            <button className={style.changeBtn} type="button" onClick={handleNicknameUpdate}>
+                              변경
+                            </button>
+                          ) : (
+                            <button className={style.duplicateChkBtn} type="button" onClick={handleDuplicateCheck}>
+                              중복 체크
+                            </button>
+                          )
+
+                        }
                       </div>
-                      {error && <span className="errorMessage">{error}</span>}
                     </div>
 
                     <div className="inputWrap">
-                      <label htmlFor="number" className="mb-15">
-                        휴대폰번호
-                      </label>
+                      <label htmlFor="phone" className="mb-15">휴대폰 번호</label>
                       <div className="inputBox">
-                        <Input
-                          id="number"
-                          type="text"
-                          value={profileData.phone}
-                        />
-                        <button className={style.changeBtn} type="button">
+                        <Input id="phone" type="text" value={phone} onChange={e => setPhone(e.target.value)} />
+                        <button className={style.changeBtn} type="button" onClick={handlePhoneUpdate}>
                           변경
                         </button>
                       </div>
                     </div>
 
                     <div className="inputWrap">
-                      <label htmlFor="email" className="mb-15">
-                        이메일
-                      </label>
+                      <label htmlFor="email">이메일</label>
                       <div className="inputBox">
-                        <Input
-                          id="email"
-                          type="text"
-                          value={profileData.email}
-                        />
-                        <button className={style.changeBtn} type="button">
+                        <Input id="email" type="text" value={email} onChange={e => setEmail(e.target.value)} />
+                        <button className={style.changeBtn} type="button" onClick={handleEmailUpdate}>
                           변경
                         </button>
                       </div>
