@@ -13,6 +13,7 @@ import Loading from "../../components/Loading";
 export default function CareerDetailPage() {
 
   const { career_Id } = useParams();
+  console.log(career_Id);
   const [courseData, setCourseData] = useState(null);
   const [benefitsData, setBenefitsData] = useState([]);
   const [lecturesData, setLecturesData] = useState([]);

@@ -32,7 +32,7 @@ export default function ResumeDetail() {
         console.log("API 응답 데이터:", response);
         if (response) {
           setResumeData(response);
-          setProfileImage(response.profileImage || "");
+          setProfileImage(response.resume_photo || "");
         } else {
           navigate("/resume");
         }

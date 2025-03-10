@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
@@ -8,6 +8,9 @@ import Story_Img from "../../assets/images/sub/Story_Img.png";
 import style from "./CareerExplorationDetailPage.module.css";
 
 export default function CareerExplorationDetailPage() {
+
+  const { id } = useParams();
+console.log(id);
   const [activeTab, setActiveTab] = useState("직무정보");
   const [selectedStage, setSelectedStage] = useState("초급"); // 경력 단계 가이드 선택 (초기: 초급)
   const [targetActiveTab, setTargetActiveTab] = useState("단기목표"); // 로드맵 서브 탭 (초기: 단기목표)
@@ -58,7 +61,7 @@ export default function CareerExplorationDetailPage() {
       }
     });
     return () => observer.disconnect();
-  }, []);
+  }, [id]);
 
   return (
     <Main className="subWrap">

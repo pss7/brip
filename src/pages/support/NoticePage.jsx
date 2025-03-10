@@ -1,9 +1,8 @@
-// NoticePage.jsx
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import Table from "../../components/Table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import style from "./NoticePage.module.css";
 import { getNotice } from "../../api/support/notice";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -11,92 +10,104 @@ import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
 
 export default function NoticePage() {
-
   const navigate = useNavigate();
   const { token } = useAuthStore();
-
-  //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
-  //데이터 상태관리
+  // 데이터 상태관리
   const [noticeData, setNoticeData] = useState([]);
-  console.log(noticeData);
+  // 페이지, 사이즈, 추가 데이터 존재 여부
+  const [page, setPage] = useState(0);
+  const size = 10;
+  const [hasMore, setHasMore] = useState(true);
 
-  //정렬 상태 관리
+  // 정렬 및 검색 상태관리
   const [sortOrder, setSortOrder] = useState("최신순");
-
-  //검색 상태 관리
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  //데이터 불러오기
+  // 스크롤 감지를 위한 ref
+  const loaderRef = useRef(null);
+
+  // 로그인 체크: 토큰 없으면 signin 페이지로 이동
   useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, [token, navigate]);
 
+  // 데이터 불러오기: page, sortOrder, searchKeyword가 변경될 때마다 호출
+  useEffect(() => {
     async function fetchNotice() {
-
       setLoading(true);
-
       try {
-
         const mappedSort = sortOrder === "최신순" ? "newest" : "oldest";
-
         const response = await getNotice({
-          page: 0,
-          size: 10,
+          page,
+          size,
           sort: mappedSort,
           search: searchKeyword,
         });
 
         if (response) {
-
-          setNoticeData(response.data);
-
+          // page가 0이면 기존 데이터를 교체, 아니면 기존 데이터에 추가
+          if (page === 0) {
+            setNoticeData(response.data);
+          } else {
+            setNoticeData((prev) => [...prev, ...response.data]);
+          }
+          // 받아온 데이터 수가 size보다 작으면 더 불러올 데이터가 없다고 판단
+          if (response.data.length < size) {
+            setHasMore(false);
+          } else {
+            setHasMore(true);
+          }
         }
-
       } catch (error) {
-
         console.error("error :", error);
-
       } finally {
-
         setLoading(false);
-
       }
     }
-
     fetchNotice();
+  }, [page, sortOrder, searchKeyword, setLoading]);
 
-  }, [sortOrder]);
-
-  // 검색어 업데이트 함수
+  // 검색어 변경 시: 페이지와 데이터 초기화
   const handleSearchChange = (e) => {
     setSearchKeyword(e.target.value);
+    setPage(0);
+    setNoticeData([]);
+    setHasMore(true);
   };
 
-  // 정렬 선택 업데이트 함수
+  // 정렬 변경 시: 페이지와 데이터 초기화
   const handleSelectChange = (e) => {
     setSortOrder(e.target.value);
+    setPage(0);
+    setNoticeData([]);
+    setHasMore(true);
   };
 
-  //실시간 검색
-  const filteredData = noticeData.filter((item) =>
-    item.title.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
-
-  //최신순, 오래된 순
-  const sortedData = filteredData.sort((a, b) => {
-    if (sortOrder === "최신순") {
-      return new Date(b.created_at) - new Date(a.created_at);
-    } else {
-      return new Date(a.created_at) - new Date(b.created_at);
+  // 무한 스크롤: loader 영역이 보이면 다음 페이지 로드 (추가 데이터가 있고, 현재 로딩 중이 아닐 때)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
     }
-  });
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [hasMore, isLoading]);
 
-  if (isLoading) {
+  if (isLoading && page === 0) {
+    // 초기 로딩 시 전체 화면 로딩 스패너
     return <Loading fullScreen />;
-  }
-
-  if (!token) {
-    navigate("/signin");
   }
 
   return (
@@ -128,7 +139,9 @@ export default function NoticePage() {
                   <h4>공지사항</h4>
                   <div className="searchBox">
                     <div className="search">
-                      <label htmlFor="search" className="blind">검색</label>
+                      <label htmlFor="search" className="blind">
+                        검색
+                      </label>
                       <input
                         id="search"
                         placeholder="키워드를 검색해주세요."
@@ -137,7 +150,9 @@ export default function NoticePage() {
                       />
                     </div>
                     <div className="selectBox">
-                      <label htmlFor="select" className="blind">최신순, 오래된 순 선택</label>
+                      <label htmlFor="select" className="blind">
+                        최신순, 오래된 순 선택
+                      </label>
                       <select
                         id="select"
                         className="select"
@@ -151,12 +166,12 @@ export default function NoticePage() {
                   </div>
                 </div>
 
-                {sortedData.length === 0 ? (
+                {noticeData.length === 0 ? (
                   "검색결과가 없습니다."
                 ) : (
                   <Table
                     href="/noticedetail"
-                    filteredData={sortedData}
+                    filteredData={noticeData}
                     className={`${style.tableBox}`}
                     textClassName="textLeft ellipsisText"
                     columns={["NO.", "구분", "제목", "등록일"]}
@@ -170,6 +185,11 @@ export default function NoticePage() {
                     }
                   />
                 )}
+
+                {/* 스크롤 감지 영역: 추가 데이터가 있을 때 로딩 스패너 노출 */}
+                <div ref={loaderRef}>
+                  {hasMore && !isLoading && <Loading />}
+                </div>
               </div>
             </div>
           </div>

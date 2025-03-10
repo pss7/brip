@@ -124,6 +124,10 @@ export default function ResumePage() {
     navigate("/signin");
   }
 
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <Main className="subWrap bg">
       <div className="mypageBox">
@@ -164,13 +168,16 @@ export default function ResumePage() {
                             className={`${style.viewBox}`}
                             handleToggle={handleToggle}
                             data={resumeData}
-                            idKey="resume_id"
-                            onEdit={(id) => {
-                              navigate(`/resume-update/${id}`);
+                            onEdit={() => {
+                              console.log("📌 수정할 이력서 ID:", resumeData.resume_id); // 여기서 확인
+                              if (resumeData.resume_id) {
+                                navigate(`/resume-update/${resumeData.resume_id}`);
+                              } else {
+                                console.error("❌ 이력서 ID가 존재하지 않습니다. 데이터 구조를 확인하세요.");
+                              }
                             }}
-                            deleteResume={(id) => handleOpenDeleteConfirm(id)}
-                            updateResume={updateResume}
                           />
+
                         </div>
                       ))
                     ) : (
@@ -189,7 +196,7 @@ export default function ResumePage() {
                   href={`/resume-registration`}
                   customClass={style.btn}
                 />
-                
+
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Container from "../../components/Container";
 import Main from "../../components/layout/Main";
 import style from "./ResumeRegpage.module.css";
@@ -8,9 +8,11 @@ import Input from "../../components/Input";
 import FileImg from "../../assets/images/sub/file_img.svg";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Loading from "../../components/Loading";
-// updateResume API 함수를 import (수정 API)
+// 이력서 수정 API 함수 임포트
 import { updateResume } from "../../api/user/resume/resume";
-import { getProfile, updateProfileImage } from "../../api/user";
+// 프로필 이미지 API는 사용하지 않음
+// import { getProfile, updateProfileImage } from "../../api/user";
+import { getProfile } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
 import { useAuthStore } from "../../store/useAuthStore";
 
@@ -29,7 +31,11 @@ const ResumeField = ({ label, value, onChange, placeholder, readOnly, type = "te
   </div>
 );
 
-export default function ResumeRegpage() {
+export default function ResumeUpdatepage() {
+
+  const { resume_Id } = useParams();
+  console.log("📌 params.resume_id:", resume_Id); // 디버깅
+
   const { token } = useAuthStore();
   const navigate = useNavigate();
 
@@ -292,21 +298,15 @@ export default function ResumeRegpage() {
     }
   }
 
-  // 프로필 이미지 파일 선택 시 자동 업데이트 (파일 업로드 즉시 API 호출)
-  async function handleProfileImageChange(e) {
+  // 프로필 이미지 파일 선택 시 처리 (updateProfileImage API 호출 제거)
+  function handleProfileImageChange(e) {
     const file = e.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setProfileImageUrl(imageURL);
-      const result = await updateProfileImage(file);
-      if (result && result.success) {
-        setModalMessage("프로필 이미지 업데이트 완료");
-        setModalError(false);
-      } else {
-        setModalMessage("프로필 이미지 업데이트 실패");
-        setModalError(true);
-      }
-      setIsModalOpen(true);
+      setResumeData((prev) => ({ ...prev, resumePhoto: imageURL }));
+      // updateProfileImage 호출 없이, 향후 handleSubmit에서 파일을 함께 전송
+      setResumePhotoFile(file);
     }
   }
 
@@ -317,7 +317,7 @@ export default function ResumeRegpage() {
       const formData = new FormData();
       const dataObject = {
         resumeTitle: resumeData.resumeTitle,
-        resumePhoto: resumeData.resumePhoto, // 사진 URL 혹은 파일 업로드 후 받은 URL
+        resumePhoto: resumeData.resumePhoto, // 이미지 URL 또는 update 시 파일로 대체
         isDefault: resumeData.isDefault,
         education: resumeData.education,
         languageSkill: resumeData.languageSkill,
@@ -337,7 +337,8 @@ export default function ResumeRegpage() {
       for (let pair of formData.entries()) {
         console.log(pair[0], ":", pair[1]);
       }
-      const response = await updateResume(formData);
+      // resume_Id 값을 함께 전달
+      const response = await updateResume(resume_Id, formData);
       if (response) {
         setModalMessage("이력서 수정이 완료되었습니다");
         setModalError(false);
@@ -350,6 +351,7 @@ export default function ResumeRegpage() {
       setIsModalOpen(true);
     }
   }
+  
 
   return (
     <Main className="subWrap bg">
@@ -369,7 +371,7 @@ export default function ResumeRegpage() {
                   {profileData.name}님의 <br />이력서를 수정해주세요.
                 </h4>
 
-                {/* 프로필 이미지 업데이트 섹션 (파일 선택 시 바로 업데이트) */}
+                {/* 프로필 이미지 업데이트 섹션 */}
                 <div className={style.imgFileBox}>
                   <input
                     type="file"

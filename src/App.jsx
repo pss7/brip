@@ -93,7 +93,7 @@ function App() {
         <Route path="/career" element={<CareerPage />} />
         <Route path="/career-detail/:career_Id" element={<CareerDetailPage />} />
         <Route path="careerexploration" element={<CareerExplorationPage />} />
-        <Route path="careerexplorationdetail" element={<CareerExplorationDetailPage />} />
+        <Route path="careerexploration-detail/:detail_Id" element={<CareerExplorationDetailPage />} />
 
         {/* 공고 */}
         <Route path='/employment' element={<EmploymentPage />} />
@@ -109,7 +109,7 @@ function App() {
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/resume-detail/:resume_Id" element={<ResumeDetail />} />
         <Route path="/resume-registration" element={<ResumeRegpage />} />
-        <Route path="/resume-update/:resumeup_id" element={<ResumeUpdatepage />} />
+        <Route path="/resume-update/:resume_Id" element={<ResumeUpdatepage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/activity" element={<ActivityPage />} />
         <Route path="/notice" element={<NoticePage />} />

@@ -9,7 +9,8 @@ import FileImg from "../../assets/images/sub/file_img.svg";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Loading from "../../components/Loading";
 import { createResume } from "../../api/user/resume/resume";
-import { getProfile, updateProfileImage } from "../../api/user";
+import { getProfile } from "../../api/user";
+// updateProfileImage import 제거
 import CompletePopup from "../../components/CompletePopup";
 import { useAuthStore } from "../../store/useAuthStore";
 
@@ -194,7 +195,6 @@ export default function ResumeRegpage() {
 
   // 프로필 데이터 불러오기
   useEffect(() => {
-
     async function fetchProfile() {
       try {
         setLoading(true);
@@ -209,9 +209,7 @@ export default function ResumeRegpage() {
         setLoading(false);
       }
     }
-    
     fetchProfile();
-
   }, []);
 
   if (loading) {
@@ -292,26 +290,17 @@ export default function ResumeRegpage() {
     }
   }
 
-  // 프로필 이미지 파일 선택 시 자동 업데이트 (업로드 즉시 API 호출)
+  // 프로필 이미지 파일 선택 시 처리 (API 호출 없이 상태에만 저장)
   async function handleProfileImageChange(e) {
     const file = e.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setProfileImageUrl(imageURL);
-      // 파일 선택과 동시에 업데이트 API 호출
-      const result = await updateProfileImage(file);
-      if (result && result.success) {
-        setModalMessage("프로필 이미지 업데이트 완료");
-        setModalError(false);
-      } else {
-        setModalMessage("프로필 이미지 업데이트 실패");
-        setModalError(true);
-      }
-      setIsModalOpen(true);
+      // updateProfileImage API 호출 없이 파일 URL만 상태에 저장합니다.
     }
   }
 
-  // 이력서 등록 함수
+  // 이력서 등록 함수 (FormData에 이력서 사진 파일 포함)
   async function handleSubmit() {
     if (!validateForm()) return;
     try {
@@ -368,9 +357,8 @@ export default function ResumeRegpage() {
                   {profileData.name}님의 <br />이력서를 완성해주세요.
                 </h4>
 
-                {/* 프로필 이미지 업데이트 섹션 (파일 선택 즉시 업데이트) */}
+                {/* 프로필 이미지 업로드 */}
                 <div className={style.imgFileBox}>
-                  {/* <h5>프로필 이미지 업데이트</h5> */}
                   <input
                     type="file"
                     accept="image/*"
@@ -378,42 +366,25 @@ export default function ResumeRegpage() {
                     id="profileImageInput"
                     onChange={handleProfileImageChange}
                   />
-                  {!profileImageUrl ? (
-                    <label htmlFor="profileImageInput" className={style.fileLabel}>
-                      <img src={FileImg} alt="프로필 이미지 선택" />
-                    </label>
-                  ) : (
-                    <img
-                      src={profileImageUrl}
-                      alt="선택된 프로필 이미지"
-                      className={style.profileImg}
-                    />
-                  )}
+                  <label htmlFor="profileImageInput" className={style.fileLabel}>
+                    <img src={profileImageUrl || FileImg} alt="프로필 이미지 선택" />
+                  </label>
                 </div>
 
                 {/* 이력서 사진 업로드 */}
                 {/* <div className={style.imgFileBox}>
                   <input
                     type="file"
-                    accept="image/*,application/pdf"
+                    accept="image/*"
                     className="blind"
                     id="resumePhotoInput"
                     onChange={handleResumePhotoChange}
                   />
-                  {!resumeData.resumePhoto ? (
-                    <label htmlFor="resumePhotoInput" className={style.fileLabel}>
-                      <img src={FileImg} alt="이력서 사진 선택" />
-                    </label>
-                  ) : (
-                    <img
-                      src={resumeData.resumePhoto}
-                      alt="선택된 이력서 사진"
-                      className={style.profileImg}
-                    />
-                  )}
+                  <label htmlFor="resumePhotoInput" className={style.fileLabel}>
+                    <img src={resumeData.resumePhoto || FileImg} alt="이력서 사진 선택" />
+                  </label>
                 </div> */}
 
-                {/* 이력서 제목 */}
                 <ResumeField
                   label="이력서 제목"
                   placeholder="나를 대표할 한 줄 제목을 입력해주세요."
@@ -826,11 +797,7 @@ export default function ResumeRegpage() {
                       <div className={style.resumeRegBox}>
                         <label>파일첨부</label>
                         <div className={style.fileWrap}>
-                          <label
-                            htmlFor="portfolioFileInput"
-                            className={style.fileUploadLeft}
-                            aria-label="파일선택"
-                          >
+                          <label htmlFor="portfolioFileInput" className={style.fileUploadLeft} aria-label="파일선택">
                             <input
                               type="file"
                               id="portfolioFileInput"
@@ -854,23 +821,14 @@ export default function ResumeRegpage() {
                 </div>
 
                 <Button text="작성완료" onClick={handleSubmit} />
-                <ArrowPrevButton
-                  customClass={style.arrowPrevBtn}
-                  href="/resume"
-                  hiddenText="커리어탐색 화면으로 이동"
-                />
+                <ArrowPrevButton customClass={style.arrowPrevBtn} href="/resume" hiddenText="커리어탐색 화면으로 이동" />
               </div>
             </div>
           </div>
         </Container>
       </div>
 
-      <CompletePopup
-        isOpen={isModalOpen}
-        message={modalMessage}
-        error={modalError}
-        onClose={handleClosePopup}
-      />
+      <CompletePopup isOpen={isModalOpen} message={modalMessage} error={modalError} onClose={handleClosePopup} />
     </Main>
   );
 }
