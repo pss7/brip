@@ -35,7 +35,8 @@
 .careerDetailContent .box .story p{color: #6C7072;}
 .careerDetailContent .box .story h5{margin-bottom: 20px; font-size: 20px; color: #000;}
 .careerDetailContent .box .story img{margin: 0 0 28px;}
-
+.careerDetailContent .box .successImg{margin-bottom: 20px;}
+.description{padding: 20px; background-color: #ededed; border-radius: 7px;}
 
 @media (max-width: 1199px){
 

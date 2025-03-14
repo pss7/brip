@@ -289,29 +289,69 @@ export async function postReply({ postId, parentId, content }) {
   }
 }
 
-//커뮤니티 게시글 삭제 API
-export async function deleteCommunityPost(postId) {
+// 커뮤니티 게시글 삭제 API (POST 방식)
+export async function deleteCommunityPost({ postId }) {
   const token = localStorage.getItem("token");
-
   if (!token) {
     console.error("❌ 토큰이 없습니다.");
     return false;
   }
-
   try {
-    const response = await axios.delete(`${BASE_URL}/post/delete`, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      data: { postId }, // DELETE 요청에서 Body를 통해 전달
-    });
-
-    return response.data; // { result: "success" }
+    // POST 메서드로 삭제 요청 (DELETE 대신)
+    const response = await axios.post(
+      `${BASE_URL}/post/delete`,
+      { postId }, // 삭제할 게시글 ID를 body에 담아서 전송
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data; // 성공 시 { result: "success", ... }
   } catch (error) {
     console.error("❌ 게시글 삭제 API 에러:", error);
     return false;
   }
 }
 
+//커뮤니티 수정 API
+export async function updateCommunityPost({ postId, category, content, image }) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("❌ 토큰이 없습니다.");
+    return false;
+  }
 
+  try {
+    // FormData 생성 (업데이트 시에도 파일 업로드가 필요하면 사용)
+    const formData = new FormData();
+    formData.append("postId", postId);
+    if (category) formData.append("category", category);
+    if (content) formData.append("content", content);
+    // 이미지가 File 객체이면 전송, 없으면 생략
+    if (image instanceof File) {
+      formData.append("image", image);
+    }
+
+    // 디버깅 로그
+    console.log("업데이트 요청 데이터:", {
+      postId,
+      category,
+      content,
+      image: image instanceof File ? image.name : "No Image",
+    });
+
+    const response = await axios.post(`${BASE_URL}/post/update`, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data; // { result: "success", ... }
+  } catch (error) {
+    console.error("❌ 게시글 업데이트 API 에러:", error);
+    return null;
+  }
+}

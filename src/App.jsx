@@ -94,7 +94,7 @@ function App() {
         <Route path="/career" element={<CareerPage />} />
         <Route path="/career-detail/:career_Id" element={<CareerDetailPage />} />
         <Route path="careerexploration" element={<CareerExplorationPage />} />
-        <Route path="careerexploration-detail/:detail_Id" element={<CareerExplorationDetailPage />} />
+        <Route path="careerexploration-detail/:career_Id" element={<CareerExplorationDetailPage />} />
 
         {/* 공고 */}
         <Route path='/employment' element={<EmploymentPage />} />

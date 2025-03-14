@@ -146,41 +146,43 @@ export default function EmploymentPage() {
 
   // 소지역 클릭: "전체" 옵션 포함, 소지역 선택 시 필터에 반영
   const handleSubRegionSelection = (subId) => {
-    if (subId === "전체") {
-      const allSubIds = activeRegion?.subLocations.map((sub) => sub.id) || [];
-      if (activeSubRegions.length === allSubIds.length) {
-        // 전체 해제
-        setActiveSubRegions([]);
-        setSelectedFilters((prev) => ({
-          ...prev,
-          "지역별": [],
-        }));
-      } else {
-        // 전체 선택: 여기서는 "전체" 버튼만 active 스타일을 주고,
-        // 개별 버튼은 active 스타일을 주지 않음.
-        setActiveSubRegions(allSubIds);
-        setSelectedFilters((prev) => ({
-          ...prev,
-          "지역별": allSubIds,
-        }));
-      }
-    } else {
-      // 개별 소지역 선택/해제
-      setActiveSubRegions((prev) => {
-        let newSub;
-        if (prev.includes(subId)) {
-          newSub = prev.filter((id) => id !== subId);
+    if (!activeRegion) return; // 활성 지역이 없으면 종료
+
+    const allSubIds = activeRegion.subLocations.map((sub) => sub.id);
+
+    setActiveSubRegions((prev) => {
+      let newSubRegions;
+
+      if (subId === "전체") {
+        // "전체" 버튼이 클릭되었을 때
+        if (prev.length === allSubIds.length) {
+          // 모든 선택 해제
+          newSubRegions = [];
         } else {
-          newSub = [...prev, subId];
+          // 전체 선택
+          newSubRegions = allSubIds;
         }
-        setSelectedFilters((prevFilters) => ({
-          ...prevFilters,
-          "지역별": newSub,
-        }));
-        return newSub;
-      });
-    }
+      } else {
+        // 개별 소지역 선택/해제
+        if (prev.includes(subId)) {
+          newSubRegions = prev.filter((id) => id !== subId);
+        } else {
+          newSubRegions = [...prev, subId];
+        }
+      }
+
+      // "전체" 버튼은 모든 소지역이 선택되었을 때만 활성화
+      const isAllSelected = newSubRegions.length === allSubIds.length;
+
+      setSelectedFilters((prevFilters) => ({
+        ...prevFilters,
+        "지역별": newSubRegions,
+      }));
+
+      return newSubRegions;
+    });
   };
+
 
   // 검색어 업데이트
   const handleSearch = (term) => {
@@ -329,33 +331,48 @@ export default function EmploymentPage() {
                         ))}
                       </div>
                       {/* 소지역 버튼 (상단에 "전체" 버튼 추가) */}
+
                       {activeRegion && activeRegion.subLocations && (
                         <div className="subRegionList">
+                          {/* 전체 버튼 */}
                           <div className="subRegionBox">
                             <button
-                              className={`button ${activeSubRegions.length === activeRegion.subLocations.length ? "active" : ""}`}
+                              className={`button ${activeSubRegions.length === activeRegion.subLocations.length
+                                ? "active"
+                                : ""
+                                }`}
                               onClick={() => handleSubRegionSelection("전체")}
                             >
                               전체
                             </button>
                           </div>
-                          {activeRegion.subLocations.map((sub) => (
-                            <div key={sub.id} className="subRegionBox">
-                              <button
-                                className={`button ${
-                                  // 만약 전체가 선택되었다면 개별 버튼은 active 클래스 제거
-                                  activeSubRegions.length === activeRegion.subLocations.length
-                                    ? ""
-                                    : activeSubRegions.includes(sub.id)
-                                      ? "active"
-                                      : ""
-                                  }`}
-                                onClick={() => handleSubRegionSelection(sub.id)}
-                              >
-                                {sub.name}
-                              </button>
-                            </div>
-                          ))}
+                          {/* 개별 소지역 버튼 */}
+                          {activeRegion.subLocations.map((sub) => {
+                            const totalCount = activeRegion.subLocations.length;
+                            let btnClass = "";
+                            // 소지역이 여러 개인 경우, 전체가 선택되었다면 개별 버튼은 active 클래스를 제거
+                            if (totalCount > 1) {
+                              btnClass =
+                                activeSubRegions.length === totalCount
+                                  ? ""
+                                  : activeSubRegions.includes(sub.id)
+                                    ? "active"
+                                    : "";
+                            } else {
+                              // 소지역이 1개인 경우
+                              btnClass = activeSubRegions.includes(sub.id) ? "active" : "";
+                            }
+                            return (
+                              <div key={sub.id} className="subRegionBox">
+                                <button
+                                  className={`button ${btnClass}`}
+                                  onClick={() => handleSubRegionSelection(sub.id)}
+                                >
+                                  {sub.name}
+                                </button>
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
