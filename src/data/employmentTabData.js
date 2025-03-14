@@ -51,7 +51,6 @@ export const employmentTabData = [
           { id: '계양', name: '계양' },
           { id: '남양주', name: '남양주' },
           { id: '오송', name: '오송' },
-          { id: '용인', name: '용인' },
           { id: '평택', name: '평택' },
           { id: '하남', name: '하남' },
         ]

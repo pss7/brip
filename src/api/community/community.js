@@ -24,34 +24,42 @@ export async function getCommunityList(category, page = 0, size = 10) {
 }
 
 // 커뮤니티 게시글 등록 API
-export async function postCommunity({ category, content, file }) {
+export async function postCommunity({ category, content, image }) {
   const token = localStorage.getItem("token");
 
   try {
-    // 1) FormData 생성
+    // FormData 생성 (파일 업로드를 위한 multipart/form-data)
     const formData = new FormData();
     formData.append("category", category);
     formData.append("content", content);
 
-    // 서버가 어떤 키로 파일을 받는지 확인 (예: 'file' 이나 'imgFile' 등)
-    if (file) {
-      formData.append("file", file);
+    // 이미지 파일이 있으면 추가 (파일 객체 확인)
+    if (image instanceof File) {
+      formData.append("image", image);
     }
 
-    // 2) multipart/form-data 전송
+    // 🔍 디버깅 로그
+    console.log("🚀 업로드 데이터:", {
+      category,
+      content,
+      image: image instanceof File ? image.name : "No Image",
+    });
+
     const response = await axios.post(`${BASE_URL}/post/create`, formData, {
       headers: {
-        Authorization: token ? `Bearer ${token}` : undefined,
-        "Content-Type": "multipart/form-data",
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data', // ✅ 파일 업로드 시 필요
       },
     });
 
-    return response.data; // { result: 'success', ... }
+    return response.data;
   } catch (error) {
-    console.error("게시글 생성 API 에러:", error);
+    console.error("🚨 게시글 생성 API 에러:", error);
     return null;
   }
 }
+
+
 
 //커뮤니티 좋아요 API
 export async function toggleLike(postId) {
@@ -148,7 +156,7 @@ export async function getCommunityDetail(communityId) {
 }
 
 // 커뮤니티 댓글 목록 API
-export async function getCommentList(page=0, size=10, category, postId) {
+export async function getCommentList(page = 0, size = 10, category, postId) {
   const token = localStorage.getItem("token");
   if (!token) return false;
 
@@ -234,7 +242,7 @@ export async function postCommentLike(commentId) {
   }
 }
 
-// 대댓글 목록 조회 API
+//대댓글 목록 조회 API
 export async function getReplyList(commentId) {
   const token = localStorage.getItem("token");
   if (!token) return false;
@@ -253,7 +261,7 @@ export async function getReplyList(commentId) {
   }
 }
 
-// ✅ API 호출 함수
+//API 호출 함수
 export async function postReply({ postId, parentId, content }) {
   const token = localStorage.getItem("token");
 
@@ -281,7 +289,7 @@ export async function postReply({ postId, parentId, content }) {
   }
 }
 
-// ✅ 커뮤니티 게시글 삭제 API
+//커뮤니티 게시글 삭제 API
 export async function deleteCommunityPost(postId) {
   const token = localStorage.getItem("token");
 

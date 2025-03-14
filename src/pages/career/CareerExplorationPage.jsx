@@ -8,6 +8,7 @@ import style from "./CareerExplorationPage.module.css";
 import { getJopList } from "../../api/career/career";
 
 export default function CareerExplorationPage() {
+
   const [jobs, setJobs] = useState([]);
   const [activeTab, setActiveTab] = useState("조선사업");
   const [selectedJobs, setSelectedJobs] = useState([]);
@@ -66,7 +67,8 @@ export default function CareerExplorationPage() {
 
   const filteredJobs = jobs
     .filter((job) => job.industry === activeTab)
-    .filter((job) => searchKeyword === "" || job.name.toLowerCase().includes(searchKeyword.toLowerCase()));
+    .filter((job) => searchKeyword === "" || job.name.toLowerCase().includes(searchKeyword.toLowerCase()))
+    .filter((job) => selectedJobs.length === 0 || selectedJobs.includes(job.id)); // ✅ 추가된 필터링
 
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;

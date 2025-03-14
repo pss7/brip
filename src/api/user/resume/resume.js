@@ -67,7 +67,6 @@ export async function updateResume(resumeId, formData) {
   }
 }
 
-
 //이력서 상세 조회 API
 export async function getResumeDetail(resumeId) {
   const token = localStorage.getItem("token");

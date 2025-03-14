@@ -154,6 +154,11 @@ export default function ChatRoomDetailPage() {
                   </Link>
                   <h4>{chatRoom.roomName}</h4>
                 </div>
+
+
+
+
+                
                 <p className="chatStartDate">{getChatStartDate()}</p>
                 {/* groupedMessages를 순회하며 날짜별로 출력 */}
                 <div className="chatMessages">

@@ -10,37 +10,31 @@ import { applyStatus, cancelApplication } from "../../api/user/applystatus/apply
 import { useAuthStore } from "../../store/useAuthStore.js";
 
 export default function ApplyPage() {
-
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
-  //로그인 체크
+  // 로그인 확인
   useEffect(() => {
     if (!token) {
       navigate("/signin");
     }
   }, [token, navigate]);
 
-  //날짜 변환 함수 (YYYY-MM-DD)
+  // 날짜 변환 함수 (YYYY-MM-DD 형식)
   const formatDateLocal = (date) => {
     if (!(date instanceof Date)) return "";
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return date.toISOString().split("T")[0];
   };
 
-  //오늘 날짜 & 한 달 전 날짜
+  // 오늘 날짜 & 한 달 전 날짜 기본값 설정
   const today = new Date();
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(today.getMonth() - 1);
 
-  //날짜 상태 (항상 `Date` 객체 유지)
-  const [startDate, setStartDate] = useState(new Date(oneMonthAgo));
-  const [endDate, setEndDate] = useState(new Date(today));
-
-  //지원 내역 및 상태
+  const [startDate, setStartDate] = useState(oneMonthAgo);
+  const [endDate, setEndDate] = useState(today);
   const [filteredList, setFilteredList] = useState([]);
+  console.log(filteredList);
   const [stats, setStats] = useState({
     applied: 0,
     viewed: 0,
@@ -48,46 +42,47 @@ export default function ApplyPage() {
     canceled: 0,
   });
 
-  //API 호출 (미열람 지원 내역만 가져오기)
+  // API 호출 함수
   const fetchApplications = async () => {
     const formattedStart = formatDateLocal(startDate);
     const formattedEnd = formatDateLocal(endDate);
 
-    console.log("📌 요청 startDate:", formattedStart);
-    console.log("📌 요청 endDate:", formattedEnd);
-
     try {
-      // 미열람 상태만 요청
-      const data = await applyStatus(formattedStart, formattedEnd, "미열람");
-      console.log("📌 API 응답 데이터:", data);
+      const data = await applyStatus(formattedStart, formattedEnd, { status: "미열람" });
+
+      console.log("📌 API 응답 데이터:", data); // ✅ API 응답 데이터 확인
+      console.log("📌 applications 리스트:", data?.applications); // ✅ applications 확인
 
       if (data && Array.isArray(data.applications)) {
         setFilteredList(data.applications);
         setStats(data.statusCounts || { applied: 0, viewed: 0, unviewed: 0, canceled: 0 });
+
+        console.log("✅ 업데이트된 지원 내역:", data.applications);
       } else {
-        console.warn("⚠️ 지원 내역 데이터가 없습니다.");
         setFilteredList([]);
         setStats({ applied: 0, viewed: 0, unviewed: 0, canceled: 0 });
+        console.warn("⚠️ 지원 내역 데이터가 없습니다.");
       }
     } catch (error) {
       console.error("❌ 지원 내역 API 호출 오류:", error);
     }
   };
 
-  //날짜 변경 시 API 호출
+
+  // 날짜 변경 시 API 호출
   useEffect(() => {
     if (startDate && endDate) {
       fetchApplications();
     }
   }, [startDate, endDate]);
 
-  //지원 취소
+  // 지원 취소
   const handleCancel = async (applicationId) => {
     try {
       await cancelApplication(applicationId);
-      fetchApplications();
+      setFilteredList((prev) => prev.filter((app) => app.applicationId !== applicationId));
     } catch (error) {
-      console.error("지원 취소 오류:", error);
+      console.error("❌ 지원 취소 오류:", error);
     }
   };
 
@@ -145,7 +140,7 @@ export default function ApplyPage() {
 
                 {/* 📌 지원 내역 리스트 */}
                 <ul className={style.applyList}>
-                  {filteredList.length > 0 ? (
+                  {filteredList && filteredList.length > 0 ? (
                     filteredList.map(({ applicationId, employId, companyName, employTitle, appliedAt, status }) => (
                       <li key={applicationId}>
                         <Link to={`/employment-detail/${employId}`} className={style.topBox}>
@@ -168,9 +163,10 @@ export default function ApplyPage() {
                       </li>
                     ))
                   ) : (
-                    <p className={style.noData}>미열람된 지원 내역이 없습니다.</p>
+                    <p className={style.noData}>지원 내역이 없습니다.</p>
                   )}
                 </ul>
+
               </div>
             </div>
           </div>

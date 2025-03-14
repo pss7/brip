@@ -4,7 +4,7 @@ import Main from "../../components/layout/Main";
 import { getCommunityList, reportCommunity, toggleLike } from "../../api/community/community";
 import Loading from "../../components/Loading";
 import { useLoadingStore } from "../../store/useLoadingStore";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import { getProfile } from "../../api/user";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -15,6 +15,8 @@ import AddPopup from "../../components/AddPopup";
 import RoomList from "./RoomList"; // 실시간 채팅방 목록 컴포넌트
 
 export default function CommunityPage() {
+
+  const location = useLocation();
   const navigate = useNavigate();
   const { token } = useAuthStore();
   if (!token) {
@@ -32,7 +34,7 @@ export default function CommunityPage() {
 
   // 카테고리 관리
   const categories = ["노하우&Q&A", "실시간채팅", "업종별/연차별", "정보공유"];
-  const [selectedCategory, setSelectedCategory] = useState("노하우&Q&A");
+  const [selectedCategory, setSelectedCategory] = useState(location.state?.selectedCategory || "노하우&Q&A");
   const filteredData = communityData.filter((data) => data.category === selectedCategory);
 
   // 추가된 실시간 채팅 관련 상태
@@ -42,7 +44,9 @@ export default function CommunityPage() {
 
   // WebSocket 연결 (마운트 시 한 번 실행)
   useEffect(() => {
-    const ws = new WebSocket('wss://light-dolls-repair.loca.lt/ws');
+
+    const ws = new WebSocket('wss://api.spl-itm.com/ws');
+
     ws.onopen = () => {
       console.log("WebSocket 연결됨");
       ws.send(JSON.stringify({ protocol: "REQUEST_ROOM_LIST" }));
@@ -122,10 +126,10 @@ export default function CommunityPage() {
         prevData.map((post) =>
           post.post_id === post_id
             ? {
-                ...post,
-                heart_count: post.isLiked ? post.heart_count - 1 : post.heart_count + 1,
-                isLiked: !post.isLiked,
-              }
+              ...post,
+              heart_count: post.isLiked ? post.heart_count - 1 : post.heart_count + 1,
+              isLiked: !post.isLiked,
+            }
             : post
         )
       );
@@ -135,18 +139,26 @@ export default function CommunityPage() {
   // 신고
   async function handleReport(post_id) {
     const reason = prompt("신고 사유를 입력하세요:");
-    if (!reason) {
-      setPopupMessage("신고 사유를 입력해야 합니다.");
-      setPopupError(true);
-      setPopupOpen(true);
-      return;
-    }
-    const response = await reportCommunity(post_id, reason);
-    if (response) {
-      setPopupMessage("신고가 접수되었습니다.");
-      setPopupError(false);
-    } else {
-      setPopupMessage("신고 처리 중 오류가 발생했습니다.");
+    if (reason === null) return; // 취소 시 아무 동작도 하지 않음
+
+    try {
+      const response = await reportCommunity(post_id, reason);
+
+      // API 응답 예시: { result: "fail", message: "이미 신고한 게시물입니다." }
+      if (response.result === "fail") {
+        setPopupMessage("이미 신고한 게시물입니다.");
+        setPopupError(true);
+      } else if (response.result === "success") {
+        setPopupMessage("신고가 접수되었습니다.");
+        setPopupError(false);
+      } else {
+        // 그 외의 경우
+        setPopupMessage("신고 중 오류가 발생했습니다.");
+        setPopupError(true);
+      }
+    } catch (error) {
+      console.error("서버 오류:", error);
+      setPopupMessage("서버 오류가 발생했습니다.");
       setPopupError(true);
     }
     setPopupOpen(true);
@@ -180,11 +192,19 @@ export default function CommunityPage() {
                 </div>
                 <div className="addBtnBox">
                   {/* 채팅방 생성 버튼 (실시간채팅 기능) */}
-                  <button className="addBtn" onClick={() => setAddPopupOpen(true)}>
+                  {/* <button className="addBtn" onClick={() => setAddPopupOpen(true)}>
                     <span>채팅방 생성</span>
+                  </button> */}
+                  <button
+                    className="addBtn chatBtn"
+                    onClick={() => {
+                      setSelectedCategory("실시간채팅"); // 실시간 채팅 탭으로 변경
+                    }}
+                  >
+                    <span>실시간채팅</span>
                   </button>
                   <button
-                    className="addBtn communityWrite"
+                    className="addBtn writeBtn"
                     onClick={() => setCommunityPopupOpen(true)}
                   >
                     <span>커뮤니티 글쓰기</span>
@@ -229,6 +249,9 @@ export default function CommunityPage() {
                             <Link to={`/community-detail/${data.post_id}`} className="contentText">
                               {data.content}
                             </Link>
+                            <div className="communityImgBox">
+                              <img src={data.img_url} alt="" />
+                            </div>
                           </div>
                           {/* 좋아요, 댓글 수, 신고 기능 */}
                           <div className="communityCommentBox">

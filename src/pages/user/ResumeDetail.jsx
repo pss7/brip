@@ -8,6 +8,7 @@ import Loading from "../../components/Loading";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import { getResumeDetail } from "../../api/user/resume/resume";
 import FileImg from "../../assets/images/sub/file_img.svg";
+import { getProfile } from "../../api/user";
 
 // 읽기 전용 필드 컴포넌트
 const ResumeField = ({ label, value }) => (
@@ -18,13 +19,18 @@ const ResumeField = ({ label, value }) => (
 );
 
 export default function ResumeDetail() {
+
   const { resume_Id } = useParams();
-  const navigate = useNavigate();
-  const [resumeData, setResumeData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const [resumeData, setResumeData] = useState(null);
   const [profileImage, setProfileImage] = useState("");
+  const [profileData, setProfileData] = useState({});
 
   useEffect(() => {
+
+    //이력서 상세 데이터 불러오기
     async function fetchResumeDetail() {
       try {
         setLoading(true);
@@ -43,10 +49,30 @@ export default function ResumeDetail() {
         setLoading(false);
       }
     }
+
+    //프로필 데이터 불러오기
+    async function fetchProfile() {
+      try {
+        setLoading(true);
+        const response = await getProfile();
+        setProfileData(response.data);
+        if (response.data.profileImage) {
+          setProfileImageUrl(response.data.profileImage);
+        }
+      } catch (error) {
+        console.error("프로필 데이터 가져오기 오류:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProfile();
     fetchResumeDetail();
+
   }, [resume_Id, navigate]);
 
   if (loading) return <Loading fullScreen />;
+
   if (!resumeData) return <p>이력서 정보를 불러올 수 없습니다.</p>;
 
   return (
@@ -64,6 +90,7 @@ export default function ResumeDetail() {
               </aside>
 
               <div className={`content ${style.content} flexColumn`}>
+
                 {/* 이력서 제목 */}
                 <h4 className={style.userGreeting}>{resumeData.resume_title}</h4>
 
@@ -78,10 +105,10 @@ export default function ResumeDetail() {
 
                 {/* 인적사항 */}
                 <h5 className={style.title}>인적사항</h5>
-                <ResumeField label="이름" value={resumeData.name} />
-                <ResumeField label="이메일" value={resumeData.email} />
-                <ResumeField label="휴대폰번호" value={resumeData.phone} />
-                <ResumeField label="생년월일" value={resumeData.birth_date} />
+                <ResumeField label="이름" value={profileData.name} />
+                <ResumeField label="이메일" value={profileData.email} />
+                <ResumeField label="휴대폰번호" value={profileData.phone} />
+                <ResumeField label="생년월일" value={profileData.birth_date} />
 
                 {/* 학력 */}
                 {resumeData.education?.length > 0 && (

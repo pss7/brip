@@ -54,6 +54,7 @@ import NotificationDetail from './pages/user/NotificationDetail';
 import Loading from './components/Loading';
 import { useEffect, useState } from 'react';
 import ResumeDetail from './pages/user/ResumeDetail';
+import ChatRoom from './pages/community/ChatRoom';
 
 function App() {
 
@@ -87,7 +88,7 @@ function App() {
         {/* 커뮤니티 */}
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community-detail/:community_Id" element={<CommunityDetailPage />} />
-        <Route path="/chat/:roomId" element={<ChatRoomDetailPage />} />
+        <Route path="/chat/:roomId" element={<ChatRoom />} />
 
         {/* 커리어 */}
         <Route path="/career" element={<CareerPage />} />

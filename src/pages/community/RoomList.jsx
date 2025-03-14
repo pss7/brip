@@ -1,122 +1,143 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateRoomModal from '../../components/CreateRoomModal';
+import CreateRoomModal from './CreateRoomModal.JSX';
+import Loading from '../../components/Loading';
 
 const RoomList = () => {
   const [roomList, setRoomList] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const navigate = useNavigate();
 
-  //방생성 모달
+  // 방 생성 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleJoinRoom = (roomId) => {
     navigate(`/chat/${roomId}`);
-  }
+  };
 
   const handleDeleteRoom = (e, roomId) => {
-    e.stopPropagation(); // 버블링 방지 (방 클릭 이벤트가 발생하지 않도록)
+    e.stopPropagation(); // 버블링 방지
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      socket.send(JSON.stringify({
-        protocol: 'DELETE_ROOM',
-        roomId: roomId
-      }));
+      socket.send(
+        JSON.stringify({
+          protocol: 'DELETE_ROOM',
+          roomId: roomId,
+        })
+      );
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if(!token){
-      navigate("/login");
+    if (!token) {
+      navigate('/login');
       return;
     }
-  
+
     const ws = new WebSocket('wss://light-dolls-repair.loca.lt/ws');
-    
-    // WebSocket 이벤트 핸들러들을 먼저 설정
+
+    // WebSocket 이벤트 핸들러 설정
     ws.onopen = () => {
-      console.log("WebSocket 연결됨");
+      console.log('WebSocket 연결됨');
     };
-  
+
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("data:", data);
-      switch(data.protocol) {
+      console.log('data:', data);
+      switch (data.protocol) {
         case 'CONNECTION_SUCCESS':
-          console.log("연결성공");
-          ws.send(JSON.stringify({
-            protocol: 'REQUEST_ROOM_LIST'
-          }));
+          console.log('연결성공');
+          ws.send(
+            JSON.stringify({
+              protocol: 'REQUEST_ROOM_LIST',
+            })
+          );
           break;
-          
+
         case 'ROOM_LIST':
-          console.log("ROOM_LIST:", data);
+          console.log('ROOM_LIST:', data);
           setRoomList(data.rooms);
+          // 500ms 딜레이 후 로딩 종료
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
           break;
-          
+
         case 'ROOM_CREATED':
-          // 방 생성 성공 시 해당 방으로 이동
+          console.log('ROOM_CREATED:', data);
+          if (data.room) {
+            setRoomList((prevRooms) => [...prevRooms, data.room]);
+          } else {
+            ws.send(JSON.stringify({ protocol: 'REQUEST_ROOM_LIST' }));
+          }
           setIsModalOpen(false);
-          navigate(`/chat/${data.roomId}`);
           break;
 
         case 'ROOM_DELETED':
-          // 방 삭제 성공 시 방 목록 다시 요청
-          ws.send(JSON.stringify({
-            protocol: 'REQUEST_ROOM_LIST'
-          }));
+          ws.send(
+            JSON.stringify({
+              protocol: 'REQUEST_ROOM_LIST',
+            })
+          );
+          break;
+
+        default:
+          break;
       }
     };
-  
+
     ws.onerror = (error) => {
-      console.error("WebSocket 에러:", error);
+      console.error('WebSocket 에러:', error);
     };
-  
+
     ws.onclose = () => {
-      console.log("WebSocket 연결 종료");
+      console.log('WebSocket 연결 종료');
     };
-  
-    // 이벤트 핸들러 설정 후 상태 업데이트
+
     setSocket(ws);
-  
+
     return () => {
-      if(ws && ws.readyState === WebSocket.OPEN) {
+      if (ws && ws.readyState === WebSocket.OPEN) {
         ws.close();
       }
     };
   }, [navigate]);
 
   return (
-    <div>
-      <div>방리스트</div>
-      {
+    <div className="roomListBox">
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="roomAddPopup"
+      >
+        채팅방 만들기
+      </button>
+      <CreateRoomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        socket={socket}
+      />
+
+      {isLoading ? (
+        // 로딩 중일 때 스피너(여기서는 간단한 텍스트)를 표시
+        <Loading />
+      ) : (
         roomList &&
         roomList.map((room) => (
-          <div 
-            key={room.roomId} 
-            className="flex justify-between items-center p-3 hover:bg-gray-100 cursor-pointer border-b"
+          <div
+            key={room.roomId}
+            className="roomBox"
+            onClick={() => handleJoinRoom(room.roomId)}
           >
-            <div onClick={() => handleJoinRoom(room.roomId)}>
-              {room.name}
+            <div className="imgBox">
+              <img src={room.imageUrl} alt="채팅방 이미지" />
             </div>
-            <button
-              onClick={(e) => handleDeleteRoom(e, room.roomId)}
-              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-            >
-              삭제
-            </button>
+            <div className="title">{room.name}</div>
           </div>
         ))
-      }
-      {/* <button 
-        onClick={() => setIsModalOpen(true)}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        방만들기
-      </button>
-      <CreateRoomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} socket={socket}/> */}
+      )}
     </div>
   );
-}
+};
 
-export default RoomList
+export default RoomList;

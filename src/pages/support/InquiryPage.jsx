@@ -24,6 +24,7 @@ export default function InquiryPage() {
   //로딩 상태 관리
   const { isLoading, setLoading } = useLoadingStore();
 
+  //데이터 불러오기
   useEffect(() => {
 
     async function fetchInquiry() {
@@ -55,19 +56,7 @@ export default function InquiryPage() {
     navigate("/signin");
   }
 
-  // const { isPopupOpen, openPopup, closePopup } = usePopup();
-
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem("inquiryData");
-  //   if (storedData) {
-  //     setData(JSON.parse(storedData)); // 로컬스토리지에서 데이터를 불러와서 상태에 저장
-  //   }
-
-  //   if (!user) {
-  //     openPopup(); // 사용자가 로그인하지 않았다면 팝업을 연다
-  //   }
-  // }, [user]);
-
+  //최신순정렬
   const sortedData = inquiryData.sort((a, b) => {
     return new Date(b.inquiryData) - new Date(a.inquiryData); // 최신순 정렬
   });

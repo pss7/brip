@@ -8,13 +8,15 @@ import Input from "../../components/Input";
 import FileImg from "../../assets/images/sub/file_img.svg";
 import ArrowPrevButton from "../../components/ArrowPrevButton";
 import Loading from "../../components/Loading";
-// 이력서 수정 API 함수 임포트
-import { updateResume } from "../../api/user/resume/resume";
-// 프로필 이미지 API는 사용하지 않음
-// import { getProfile, updateProfileImage } from "../../api/user";
+import { getResumeDetail, updateResume } from "../../api/user/resume/resume";
 import { getProfile } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
 import { useAuthStore } from "../../store/useAuthStore";
+
+// 헬퍼 함수: 날짜 문자열("YYYY-MM-DD")을 분리하여 [년, 월] 반환
+function getDateParts(dateString) {
+  return dateString && dateString.includes("-") ? dateString.split("-") : ["", ""];
+}
 
 // ResumeField 컴포넌트
 const ResumeField = ({ label, value, onChange, placeholder, readOnly, type = "text", step }) => (
@@ -23,8 +25,8 @@ const ResumeField = ({ label, value, onChange, placeholder, readOnly, type = "te
     <Input
       type={type}
       step={step}
-      value={value}
-      onChange={onChange}
+      value={value ?? ""}
+      onChange={readOnly ? () => { } : onChange}
       placeholder={placeholder}
       readOnly={readOnly}
     />
@@ -32,87 +34,65 @@ const ResumeField = ({ label, value, onChange, placeholder, readOnly, type = "te
 );
 
 export default function ResumeUpdatepage() {
-
   const { resume_Id } = useParams();
-  console.log("📌 params.resume_id:", resume_Id); // 디버깅
-
   const { token } = useAuthStore();
   const navigate = useNavigate();
 
-  // 기존 이력서 데이터 (수정 페이지이므로 기존 데이터로 초기화)
+  // resumeData 상태: 등록/수정페이지와 동일한 데이터 구조
   const [resumeData, setResumeData] = useState({
     resumeTitle: "",
     resumePhoto: "",
     isDefault: true,
-    education: [
-      {
-        schoolType: "",
-        schoolName: "",
-        major: "",
-        admissionDate: "",
-        graduationDate: "",
-        maxScore: 0,
-        score: 0,
-      },
-    ],
-    languageSkill: [
-      {
-        languageName: "",
-        speakingLevel: "",
-        testName: "",
-        score: "",
-        acquisitionDate: "",
-      },
-    ],
-    certificate: [
-      {
-        certificateName: "",
-        issuingOrganization: "",
-        acquisitionDate: "",
-      },
-    ],
-    activity: [
-      {
-        activityType: "",
-        organizationName: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ],
-    career: [
-      {
-        careerTitle: "",
-        startDate: "",
-        endDate: "",
-      },
-    ],
-    portfolio: [
-      {
-        portfolioName: "",
-        url: "",
-        filePath: "",
-      },
-    ],
+    education: [{
+      schoolType: "",
+      schoolName: "",
+      major: "",
+      admissionDate: "",
+      graduationDate: "",
+      maxScore: 0,
+      score: 0,
+    }],
+    languageSkill: [{
+      languageName: "",
+      speakingLevel: "",
+      testName: "",
+      score: "",
+      acquisitionDate: "",
+    }],
+    certificate: [{
+      certificateName: "",
+      issuingOrganization: "",
+      acquisitionDate: "",
+    }],
+    activity: [{
+      activityType: "",
+      organizationName: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    }],
+    career: [{
+      careerTitle: "",
+      startDate: "",
+      endDate: "",
+    }],
+    portfolio: [{
+      portfolioName: "",
+      url: "",
+      filePath: "",
+    }],
   });
 
-  // 모달 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalError, setModalError] = useState(false);
-
-  // 로딩 상태
   const [loading, setLoading] = useState(false);
-
-  // 파일 상태
   const [resumePhotoFile, setResumePhotoFile] = useState(null);
   const [portfolioFile, setPortfolioFile] = useState(null);
-
-  // 프로필 데이터 및 이미지 상태
   const [profileData, setProfileData] = useState({});
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
-  // 아코디언 상태 (모든 섹션 닫힘)
+  // 아코디언 상태 (초기에는 모두 닫힘)
   const [accordions, setAccordions] = useState({
     education: false,
     languageSkill: false,
@@ -122,24 +102,23 @@ export default function ResumeUpdatepage() {
     portfolio: false,
   });
 
-  // 아코디언 토글 함수
   const toggleAccordion = (section) => {
-    setAccordions((prev) => ({
+    setAccordions(prev => ({
       ...prev,
       [section]: !prev[section],
     }));
   };
 
-  // 공통 필드 변경 핸들러 (배열 내 객체 지원)
+  // 배열 내 객체의 값 변경 (동적 입력 처리)
   function handleFieldChange(index, field, value, group) {
     if (group) {
-      setResumeData((prev) => {
+      setResumeData(prev => {
         const updatedGroup = [...prev[group]];
         updatedGroup[index] = { ...updatedGroup[index], [field]: value };
         return { ...prev, [group]: updatedGroup };
       });
     } else {
-      setResumeData((prev) => ({ ...prev, [field]: value }));
+      setResumeData(prev => ({ ...prev, [field]: value }));
     }
   }
 
@@ -173,7 +152,7 @@ export default function ResumeUpdatepage() {
     if (file) {
       setResumePhotoFile(file);
       const imageURL = URL.createObjectURL(file);
-      setResumeData((prev) => ({ ...prev, resumePhoto: imageURL }));
+      setResumeData(prev => ({ ...prev, resumePhoto: imageURL }));
     }
   }
 
@@ -182,22 +161,77 @@ export default function ResumeUpdatepage() {
     const file = e.target.files[0];
     if (file) {
       setPortfolioFile(file);
-      setResumeData((prev) => {
+      setResumeData(prev => {
         const updatedPortfolio = [...prev.portfolio];
         updatedPortfolio[0] = { ...updatedPortfolio[0], filePath: file.name };
         return { ...prev, portfolio: updatedPortfolio };
       });
     }
   }
+
   function handlePortfolioFileDelete() {
     setPortfolioFile(null);
-    setResumeData((prev) => {
+    setResumeData(prev => {
       const updatedPortfolio = [...prev.portfolio];
       updatedPortfolio[0] = { ...updatedPortfolio[0], filePath: "" };
       return { ...prev, portfolio: updatedPortfolio };
     });
     document.getElementById("portfolioFileInput").value = "";
   }
+
+  // 동적 항목 추가 함수 (최대 개수 제한 적용)
+  const addLanguageSkill = () => {
+    setResumeData(prev => {
+      if (prev.languageSkill.length >= 5) return prev;
+      return {
+        ...prev,
+        languageSkill: [
+          ...prev.languageSkill,
+          { languageName: "", speakingLevel: "", testName: "", score: "", acquisitionDate: "" }
+        ]
+      };
+    });
+  };
+
+  const addCertificate = () => {
+    setResumeData(prev => {
+      if (prev.certificate.length >= 10) return prev;
+      return {
+        ...prev,
+        certificate: [
+          ...prev.certificate,
+          { certificateName: "", issuingOrganization: "", acquisitionDate: "" }
+        ]
+      };
+    });
+  };
+
+  const addActivity = () => {
+    setResumeData(prev => {
+      if (prev.activity.length >= 5) return prev;
+      return {
+        ...prev,
+        activity: [
+          ...prev.activity,
+          { activityType: "", organizationName: "", startDate: "", endDate: "", description: "" }
+        ]
+      };
+    });
+  };
+
+  const addCareer = () => {
+    setResumeData(prev => ({
+      ...prev,
+      career: [...prev.career, { careerTitle: "", startDate: "", endDate: "" }]
+    }));
+  };
+
+  const addPortfolio = () => {
+    setResumeData(prev => ({
+      ...prev,
+      portfolio: [...prev.portfolio, { portfolioName: "", url: "", filePath: "" }]
+    }));
+  };
 
   // 프로필 데이터 불러오기
   useEffect(() => {
@@ -209,10 +243,8 @@ export default function ResumeUpdatepage() {
         if (response.data.profileImage) {
           setProfileImageUrl(response.data.profileImage);
         }
-        // 수정 페이지인 경우, 기존 이력서 데이터도 불러온다고 가정 (추후 별도 API 연동)
-        // 예시) setResumeData(response.data.resume);
       } catch (error) {
-        console.error("error:", error);
+        console.error("프로필 데이터 가져오기 오류:", error);
       } finally {
         setLoading(false);
       }
@@ -220,12 +252,120 @@ export default function ResumeUpdatepage() {
     fetchProfile();
   }, []);
 
-  if (loading) {
-    return <Loading fullScreen />;
-  }
-  if (!token) {
-    navigate("/signin");
-  }
+
+  useEffect(() => {
+
+    async function fetchResumeDetail() {
+
+      try {
+        setLoading(true);
+
+        const response = await getResumeDetail(resume_Id);
+
+        if (response) {
+          setResumeData({
+            resumeTitle: response.resume_title || "",
+            resumePhoto: response.resume_photo || "",
+            isDefault: response.is_default ?? true,
+            education: response.education?.length > 0 ? response.education.map(item => ({
+              schoolType: item.school_type || "",
+              schoolName: item.school_name || "",
+              major: item.major || "",
+              admissionDate: item.admission_date || "",
+              graduationDate: item.graduation_date || "",
+              maxScore: item.max_score || 0,
+              score: item.score || 0,
+            })) : [{
+              schoolType: "",
+              schoolName: "",
+              major: "",
+              admissionDate: "",
+              graduationDate: "",
+              maxScore: 0,
+              score: 0,
+            }],
+            languageSkill: Array.isArray(response.languageSkill) && response.languageSkill.length > 0
+              ? response.languageSkill.map(item => ({
+                languageName: item.language_name || "",
+                speakingLevel: item.speaking_level || "",
+                testName: item.test_name || "",
+                score: item.score || "",
+                acquisitionDate: item.acquisition_date || "",
+              }))
+              : response.languageSkill
+                ? [{
+                  languageName: response.languageSkill.language_name || "",
+                  speakingLevel: response.languageSkill.speaking_level || "",
+                  testName: response.languageSkill.test_name || "",
+                  score: response.languageSkill.score || "",
+                  acquisitionDate: response.languageSkill.acquisition_date || "",
+                }]
+                : [{
+                  languageName: "",
+                  speakingLevel: "",
+                  testName: "",
+                  score: "",
+                  acquisitionDate: "",
+                }],
+            certificate: response.certificate?.length > 0 ? response.certificate.map(item => ({
+              certificateName: item.certificate_name || "",
+              issuingOrganization: item.issuing_organization || "",
+              acquisitionDate: item.acquisition_date || "",
+            })) : [{
+              certificateName: "",
+              issuingOrganization: "",
+              acquisitionDate: "",
+            }],
+            activity: response.activity?.length > 0 ? response.activity.map(item => ({
+              activityType: item.activity_type || "",
+              organizationName: item.organization_name || "",
+              startDate: item.start_date || "",
+              endDate: item.end_date || "",
+              description: item.description || "",
+            })) : [{
+              activityType: "",
+              organizationName: "",
+              startDate: "",
+              endDate: "",
+              description: "",
+            }],
+            career: response.career?.length > 0 ? response.career.map(item => ({
+              careerTitle: item.career_title || "",
+              startDate: item.start_date || "",
+              endDate: item.end_date || "",
+            })) : [{
+              careerTitle: "",
+              startDate: "",
+              endDate: "",
+            }],
+            portfolio: response.portfolio?.length > 0 ? response.portfolio.map(item => ({
+              portfolioName: item.portfolio_name || "",
+              url: item.url || "",
+              filePath: item.file_path || "",
+            })) : [{
+              portfolioName: "",
+              url: "",
+              filePath: "",
+            }],
+          });
+        } else {
+          navigate("/resume");
+        }
+      } catch (error) {
+        console.error("이력서 상세 조회 오류:", error);
+        navigate("/resume");
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (resume_Id) {
+      fetchResumeDetail();
+    }
+  }, [resume_Id, navigate]);
+
+  if (loading) return <Loading fullScreen />;
+
+  if (!token) navigate("/signin");
 
   // 필수 입력 항목 검증 함수
   function validateForm() {
@@ -236,13 +376,7 @@ export default function ResumeUpdatepage() {
       return false;
     }
     const edu = resumeData.education[0];
-    if (
-      !edu.schoolType ||
-      !edu.schoolName.trim() ||
-      !edu.major.trim() ||
-      !edu.admissionDate ||
-      !edu.graduationDate
-    ) {
+    if (!edu.schoolType || !edu.schoolName.trim() || !edu.major.trim() || !edu.admissionDate || !edu.graduationDate) {
       setModalMessage("학력 정보의 필수 입력사항을 모두 입력해주세요.");
       setModalError(true);
       setIsModalOpen(true);
@@ -250,15 +384,15 @@ export default function ResumeUpdatepage() {
     }
     const lang = resumeData.languageSkill[0];
     const langFields = [lang.languageName, lang.speakingLevel, lang.testName, lang.score, lang.acquisitionDate];
-    if (langFields.some((field) => field) && langFields.some((field) => !field)) {
-      setModalMessage("언어능력 정보의 필수 입력사항을 모두 입력해주세요.");
+    if (langFields.some(field => field) && langFields.some(field => !field)) {
+      setModalMessage("외국어 정보의 필수 입력사항을 모두 입력해주세요.");
       setModalError(true);
       setIsModalOpen(true);
       return false;
     }
     const cert = resumeData.certificate[0];
     const certFields = [cert.certificateName, cert.issuingOrganization, cert.acquisitionDate];
-    if (certFields.some((field) => field) && certFields.some((field) => !field)) {
+    if (certFields.some(field => field) && certFields.some(field => !field)) {
       setModalMessage("자격증 정보의 필수 입력사항을 모두 입력해주세요.");
       setModalError(true);
       setIsModalOpen(true);
@@ -266,7 +400,7 @@ export default function ResumeUpdatepage() {
     }
     const act = resumeData.activity[0];
     const actFields = [act.activityType, act.organizationName, act.startDate, act.endDate, act.description];
-    if (actFields.some((field) => field) && actFields.some((field) => !field)) {
+    if (actFields.some(field => field) && actFields.some(field => !field)) {
       setModalMessage("대외활동 정보의 필수 입력사항을 모두 입력해주세요.");
       setModalError(true);
       setIsModalOpen(true);
@@ -274,7 +408,7 @@ export default function ResumeUpdatepage() {
     }
     const career = resumeData.career[0];
     const careerFields = [career.careerTitle, career.startDate, career.endDate];
-    if (careerFields.some((field) => field) && careerFields.some((field) => !field)) {
+    if (careerFields.some(field => field) && careerFields.some(field => !field)) {
       setModalMessage("경력 정보의 필수 입력사항을 모두 입력해주세요.");
       setModalError(true);
       setIsModalOpen(true);
@@ -290,34 +424,27 @@ export default function ResumeUpdatepage() {
     return true;
   }
 
-  // 모달 닫기 (성공 시 페이지 이동)
   function handleClosePopup() {
     setIsModalOpen(false);
-    if (!modalError) {
-      navigate("/resume");
-    }
+    if (!modalError) navigate("/resume");
   }
 
-  // 프로필 이미지 파일 선택 시 처리 (updateProfileImage API 호출 제거)
   function handleProfileImageChange(e) {
     const file = e.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setProfileImageUrl(imageURL);
-      setResumeData((prev) => ({ ...prev, resumePhoto: imageURL }));
-      // updateProfileImage 호출 없이, 향후 handleSubmit에서 파일을 함께 전송
+      setResumeData(prev => ({ ...prev, resumePhoto: imageURL }));
       setResumePhotoFile(file);
     }
   }
 
-  // 수정 API 호출 (updateResume)
   async function handleSubmit() {
     if (!validateForm()) return;
     try {
       const formData = new FormData();
       const dataObject = {
         resumeTitle: resumeData.resumeTitle,
-        resumePhoto: resumeData.resumePhoto, // 이미지 URL 또는 update 시 파일로 대체
         isDefault: resumeData.isDefault,
         education: resumeData.education,
         languageSkill: resumeData.languageSkill,
@@ -327,17 +454,12 @@ export default function ResumeUpdatepage() {
         portfolio: resumeData.portfolio,
       };
       formData.append("resumeData", JSON.stringify(dataObject));
-      if (resumePhotoFile) {
-        formData.append("resumePhoto", resumePhotoFile);
-      }
-      if (portfolioFile) {
-        formData.append("portfolioFile", portfolioFile);
-      }
+      if (resumePhotoFile) formData.append("resumePhoto", resumePhotoFile);
+      if (portfolioFile) formData.append("portfolioFile", portfolioFile);
       // 디버그: formData 내용 출력
       for (let pair of formData.entries()) {
         console.log(pair[0], ":", pair[1]);
       }
-      // resume_Id 값을 함께 전달
       const response = await updateResume(resume_Id, formData);
       if (response) {
         setModalMessage("이력서 수정이 완료되었습니다");
@@ -351,7 +473,6 @@ export default function ResumeUpdatepage() {
       setIsModalOpen(true);
     }
   }
-  
 
   return (
     <Main className="subWrap bg">
@@ -371,7 +492,7 @@ export default function ResumeUpdatepage() {
                   {profileData.name}님의 <br />이력서를 수정해주세요.
                 </h4>
 
-                {/* 프로필 이미지 업데이트 섹션 */}
+                {/* 프로필 이미지 업로드 */}
                 <div className={style.imgFileBox}>
                   <input
                     type="file"
@@ -380,17 +501,9 @@ export default function ResumeUpdatepage() {
                     id="profileImageInput"
                     onChange={handleProfileImageChange}
                   />
-                  {!profileImageUrl ? (
-                    <label htmlFor="profileImageInput" className={style.fileLabel}>
-                      <img src={FileImg} alt="프로필 이미지 선택" />
-                    </label>
-                  ) : (
-                    <img
-                      src={profileImageUrl}
-                      alt="선택된 프로필 이미지"
-                      className={style.profileImg}
-                    />
-                  )}
+                  <label htmlFor="profileImageInput" className={style.fileLabel}>
+                    <img src={profileImageUrl || FileImg} alt="프로필 이미지 선택" />
+                  </label>
                 </div>
 
                 {/* 이력서 제목 */}
@@ -407,12 +520,10 @@ export default function ResumeUpdatepage() {
                 <ResumeField label="이메일" readOnly={true} value={profileData.email} />
                 <ResumeField label="생년월일" readOnly={true} value={profileData.birth_date} />
 
-                {/* 학력 섹션 */}
+                {/* 학력 섹션 (단일 입력) */}
                 <div className={style.resumeRegBox}>
-                  <button
-                    className={`${style.accordionBtn} ${accordions.education ? style.active : ""}`}
-                    onClick={() => toggleAccordion("education")}
-                  >
+                  <button className={`${style.accordionBtn} ${accordions.education ? style.active : ""}`}
+                    onClick={() => toggleAccordion("education")}>
                     <h5 className={style.title}>학력</h5>
                   </button>
                   {accordions.education && (
@@ -423,9 +534,7 @@ export default function ResumeUpdatepage() {
                           id="SchoolClassification"
                           className={style.select}
                           value={resumeData.education[0].schoolType}
-                          onChange={(e) =>
-                            handleFieldChange(0, "schoolType", e.target.value, "education")
-                          }
+                          onChange={(e) => handleFieldChange(0, "schoolType", e.target.value, "education")}
                         >
                           <option value="" disabled>학교 구분 선택</option>
                           <option value="대학교">대학교</option>
@@ -436,105 +545,108 @@ export default function ResumeUpdatepage() {
                         label="학교명"
                         placeholder="학교명 입력"
                         value={resumeData.education[0].schoolName}
-                        onChange={(e) =>
-                          handleFieldChange(0, "schoolName", e.target.value, "education")
-                        }
+                        onChange={(e) => handleFieldChange(0, "schoolName", e.target.value, "education")}
                       />
                       <ResumeField
                         label="전공명"
                         placeholder="전공명 입력"
                         value={resumeData.education[0].major}
-                        onChange={(e) =>
-                          handleFieldChange(0, "major", e.target.value, "education")
-                        }
+                        onChange={(e) => handleFieldChange(0, "major", e.target.value, "education")}
                       />
                       <div className={style.selectBox}>
                         <label>입학 연월</label>
                         <div className={style.layoutBox}>
-                          <div className={style.box}>
-                            <select
-                              className={style.select}
-                              value={resumeData.education[0].admissionDate.split("-")[0] || ""}
-                              onChange={(e) => {
-                                const month = resumeData.education[0].admissionDate.split("-")[1] || "01";
-                                handleFieldChange(0, "admissionDate", `${e.target.value}-${month}`, "education");
-                              }}
-                            >
-                              <option value="" disabled>년</option>
-                              {generateYears().map((year) => (
-                                <option key={year} value={year}>{year}</option>
-                              ))}
-                            </select>
-                            <span>년</span>
-                          </div>
-                          <div className={style.box}>
-                            <select
-                              className={style.select}
-                              value={resumeData.education[0].admissionDate.split("-")[1] || ""}
-                              onChange={(e) => {
-                                const year = resumeData.education[0].admissionDate.split("-")[0] || "";
-                                handleFieldChange(0, "admissionDate", `${year}-${e.target.value}`, "education");
-                              }}
-                            >
-                              <option value="" disabled>월</option>
-                              {generateMonths().map((month) => (
-                                <option key={month} value={month < 10 ? `0${month}` : month}>
-                                  {month < 10 ? `0${month}` : month}
-                                </option>
-                              ))}
-                            </select>
-                            <span>월</span>
-                          </div>
+                          {(() => {
+                            const [year, month] = getDateParts(resumeData.education[0].admissionDate);
+                            return (
+                              <>
+                                <div className={style.box}>
+                                  <select className={style.select}
+                                    value={year}
+                                    onChange={(e) => {
+                                      const m = month || "01";
+                                      handleFieldChange(0, "admissionDate", `${e.target.value}-${m}`, "education");
+                                    }}
+                                  >
+                                    <option value="" disabled>년</option>
+                                    {generateYears().map((yr) => (
+                                      <option key={yr} value={yr}>{yr}</option>
+                                    ))}
+                                  </select>
+                                  <span>년</span>
+                                </div>
+                                <div className={style.box}>
+                                  <select className={style.select}
+                                    value={month}
+                                    onChange={(e) => {
+                                      const y = year || "";
+                                      handleFieldChange(0, "admissionDate", `${y}-${e.target.value}`, "education");
+                                    }}
+                                  >
+                                    <option value="" disabled>월</option>
+                                    {generateMonths().map((mn) => (
+                                      <option key={mn} value={mn < 10 ? `0${mn}` : mn}>
+                                        {mn < 10 ? `0${mn}` : mn}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <span>월</span>
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                       </div>
                       <div className={style.selectBox}>
                         <label>졸업 연월</label>
                         <div className={style.layoutBox}>
-                          <div className={style.box}>
-                            <select
-                              className={style.select}
-                              value={resumeData.education[0].graduationDate.split("-")[0] || ""}
-                              onChange={(e) => {
-                                const month = resumeData.education[0].graduationDate.split("-")[1] || "01";
-                                handleFieldChange(0, "graduationDate", `${e.target.value}-${month}`, "education");
-                              }}
-                            >
-                              <option value="" disabled>년</option>
-                              {generateYears().map((year) => (
-                                <option key={year} value={year}>{year}</option>
-                              ))}
-                            </select>
-                            <span>년</span>
-                          </div>
-                          <div className={style.box}>
-                            <select
-                              className={style.select}
-                              value={resumeData.education[0].graduationDate.split("-")[1] || ""}
-                              onChange={(e) => {
-                                const year = resumeData.education[0].graduationDate.split("-")[0] || "";
-                                handleFieldChange(0, "graduationDate", `${year}-${e.target.value}`, "education");
-                              }}
-                            >
-                              <option value="" disabled>월</option>
-                              {generateMonths().map((month) => (
-                                <option key={month} value={month < 10 ? `0${month}` : month}>
-                                  {month < 10 ? `0${month}` : month}
-                                </option>
-                              ))}
-                            </select>
-                            <span>월</span>
-                          </div>
+                          {(() => {
+                            const [year, month] = getDateParts(resumeData.education[0].graduationDate);
+                            return (
+                              <>
+                                <div className={style.box}>
+                                  <select className={style.select}
+                                    value={year}
+                                    onChange={(e) => {
+                                      const m = month || "01";
+                                      handleFieldChange(0, "graduationDate", `${e.target.value}-${m}`, "education");
+                                    }}
+                                  >
+                                    <option value="" disabled>년</option>
+                                    {generateYears().map((yr) => (
+                                      <option key={yr} value={yr}>{yr}</option>
+                                    ))}
+                                  </select>
+                                  <span>년</span>
+                                </div>
+                                <div className={style.box}>
+                                  <select className={style.select}
+                                    value={month}
+                                    onChange={(e) => {
+                                      const y = year || "";
+                                      handleFieldChange(0, "graduationDate", `${y}-${e.target.value}`, "education");
+                                    }}
+                                  >
+                                    <option value="" disabled>월</option>
+                                    {generateMonths().map((mn) => (
+                                      <option key={mn} value={mn < 10 ? `0${mn}` : mn}>
+                                        {mn < 10 ? `0${mn}` : mn}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <span>월</span>
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                       </div>
                       <div className={style.selectBox}>
                         <label>학점</label>
                         <div className={style.layoutBox}>
-                          <select
-                            className={style.select}
+                          <select className={style.select}
                             value={resumeData.education[0].maxScore}
-                            onChange={(e) =>
-                              handleFieldChange(0, "maxScore", Number(e.target.value), "education")
-                            }
+                            onChange={(e) => handleFieldChange(0, "maxScore", Number(e.target.value), "education")}
                           >
                             <option value="" disabled>만점선택</option>
                             {generateScores().map((score) => (
@@ -546,9 +658,7 @@ export default function ResumeUpdatepage() {
                             value={resumeData.education[0].score}
                             type="number"
                             step="0.1"
-                            onChange={(e) =>
-                              handleFieldChange(0, "score", parseFloat(e.target.value), "education")
-                            }
+                            onChange={(e) => handleFieldChange(0, "score", parseFloat(e.target.value), "education")}
                           />
                         </div>
                       </div>
@@ -556,281 +666,246 @@ export default function ResumeUpdatepage() {
                   )}
                 </div>
 
-                {/* 언어능력 섹션 */}
+                {/* 외국어(언어능력) 섹션 - 동적 항목 */}
                 <div className={style.resumeRegBox}>
-                  <button
-                    className={`${style.accordionBtn} ${accordions.languageSkill ? style.active : ""}`}
-                    onClick={() => toggleAccordion("languageSkill")}
-                  >
-                    <h5 className={style.title}>언어능력</h5>
+                  <button className={`${style.accordionBtn} ${accordions.languageSkill ? style.active : ""}`}
+                    onClick={() => toggleAccordion("languageSkill")}>
+                    <h5 className={style.title}>외국어</h5>
                   </button>
                   {accordions.languageSkill && (
                     <div className={style.accordionBox}>
-                      <div className={style.selectBox}>
-                        <label>외국어명</label>
-                        <select
-                          className={style.select}
-                          value={resumeData.languageSkill[0].languageName}
-                          onChange={(e) =>
-                            handleFieldChange(0, "languageName", e.target.value, "languageSkill")
-                          }
-                        >
-                          <option value="" disabled>외국어명 선택</option>
-                          <option value="영어">영어</option>
-                          <option value="한국어">한국어</option>
-                        </select>
-                      </div>
-                      <div className={style.selectBox}>
-                        <label>회화능력</label>
-                        <select
-                          className={style.select}
-                          value={resumeData.languageSkill[0].speakingLevel}
-                          onChange={(e) =>
-                            handleFieldChange(0, "speakingLevel", e.target.value, "languageSkill")
-                          }
-                        >
-                          <option value="" disabled>회화능력 선택</option>
-                          <option value="하">하</option>
-                          <option value="중">중</option>
-                          <option value="상">상</option>
-                        </select>
-                      </div>
-                      <div className={style.selectBox}>
-                        <label>시험명</label>
-                        <select
-                          className={style.select}
-                          value={resumeData.languageSkill[0].testName}
-                          onChange={(e) =>
-                            handleFieldChange(0, "testName", e.target.value, "languageSkill")
-                          }
-                        >
-                          <option value="" disabled>시험명 선택</option>
-                          <option value="TOEIC">TOEIC</option>
-                          <option value="TOEFL">TOEFL</option>
-                          <option value="IELTS">IELTS</option>
-                        </select>
-                      </div>
-                      <div className={style.selectBox}>
-                        <ResumeField
-                          label="점수/급수"
-                          placeholder="점수 입력 (예: 850)"
-                          value={resumeData.languageSkill[0].score}
-                          onChange={(e) =>
-                            handleFieldChange(0, "score", e.target.value, "languageSkill")
-                          }
-                        />
-                      </div>
-                      <ResumeField
-                        label="취득 년월"
-                        placeholder="취득 년월 (ex. 2023-01)"
-                        value={resumeData.languageSkill[0].acquisitionDate}
-                        onChange={(e) =>
-                          handleFieldChange(0, "acquisitionDate", e.target.value, "languageSkill")
-                        }
-                      />
+                      {resumeData.languageSkill.map((item, idx) => (
+                        <div key={idx} className={style.dynamicField}>
+                          <div className={style.selectBox}>
+                            <label>외국어명</label>
+                            <select className={style.select}
+                              value={item.languageName}
+                              onChange={(e) => handleFieldChange(idx, "languageName", e.target.value, "languageSkill")}
+                            >
+                              <option value="" disabled>외국어명 선택</option>
+                              <option value="영어">영어</option>
+                              <option value="한국어">한국어</option>
+                            </select>
+                          </div>
+                          <div className={style.selectBox}>
+                            <label>회화능력</label>
+                            <select className={style.select}
+                              value={item.speakingLevel}
+                              onChange={(e) => handleFieldChange(idx, "speakingLevel", e.target.value, "languageSkill")}
+                            >
+                              <option value="" disabled>회화능력 선택</option>
+                              <option value="하">하</option>
+                              <option value="중">중</option>
+                              <option value="상">상</option>
+                            </select>
+                          </div>
+                          <div className={style.selectBox}>
+                            <label>시험명</label>
+                            <select className={style.select}
+                              value={item.testName}
+                              onChange={(e) => handleFieldChange(idx, "testName", e.target.value, "languageSkill")}
+                            >
+                              <option value="" disabled>시험명 선택</option>
+                              <option value="TOEIC">TOEIC</option>
+                              <option value="TOEFL">TOEFL</option>
+                              <option value="IELTS">IELTS</option>
+                            </select>
+                          </div>
+                          <ResumeField
+                            label="점수/급수"
+                            placeholder="점수 입력 (예: 850)"
+                            value={item.score}
+                            onChange={(e) => handleFieldChange(idx, "score", e.target.value, "languageSkill")}
+                          />
+                          <ResumeField
+                            label="취득 년월"
+                            placeholder="취득 년월 (ex. 2023-01)"
+                            value={item.acquisitionDate}
+                            onChange={(e) => handleFieldChange(idx, "acquisitionDate", e.target.value, "languageSkill")}
+                          />
+                        </div>
+                      ))}
+                      {resumeData.languageSkill.length < 5 && (
+                        <Button text="추가" onClick={addLanguageSkill} />
+                      )}
                     </div>
                   )}
                 </div>
 
-                {/* 자격증 섹션 */}
+                {/* 자격증 섹션 - 동적 항목 */}
                 <div className={style.resumeRegBox}>
-                  <button
-                    className={`${style.accordionBtn} ${accordions.certificate ? style.active : ""}`}
-                    onClick={() => toggleAccordion("certificate")}
-                  >
+                  <button className={`${style.accordionBtn} ${accordions.certificate ? style.active : ""}`}
+                    onClick={() => toggleAccordion("certificate")}>
                     <h5 className={style.title}>자격증</h5>
                   </button>
                   {accordions.certificate && (
                     <div className={style.accordionBox}>
-                      <ResumeField
-                        label="자격증명"
-                        placeholder="자격증명 입력"
-                        value={resumeData.certificate[0].certificateName}
-                        onChange={(e) =>
-                          handleFieldChange(0, "certificateName", e.target.value, "certificate")
-                        }
-                      />
-                      <ResumeField
-                        label="발급 기관"
-                        placeholder="발급 기관 입력"
-                        value={resumeData.certificate[0].issuingOrganization}
-                        onChange={(e) =>
-                          handleFieldChange(0, "issuingOrganization", e.target.value, "certificate")
-                        }
-                      />
-                      <ResumeField
-                        label="취득일"
-                        placeholder="취득일 (ex. 2023-06)"
-                        value={resumeData.certificate[0].acquisitionDate}
-                        onChange={(e) =>
-                          handleFieldChange(0, "acquisitionDate", e.target.value, "certificate")
-                        }
-                      />
+                      {resumeData.certificate.map((item, idx) => (
+                        <div key={idx} className={style.dynamicField}>
+                          <ResumeField
+                            label="자격증명"
+                            placeholder="자격증명 입력"
+                            value={item.certificateName}
+                            onChange={(e) => handleFieldChange(idx, "certificateName", e.target.value, "certificate")}
+                          />
+                          <ResumeField
+                            label="발급 기관"
+                            placeholder="발급 기관 입력"
+                            value={item.issuingOrganization}
+                            onChange={(e) => handleFieldChange(idx, "issuingOrganization", e.target.value, "certificate")}
+                          />
+                          <ResumeField
+                            label="취득일"
+                            placeholder="취득일 (ex. 2023-06)"
+                            value={item.acquisitionDate}
+                            onChange={(e) => handleFieldChange(idx, "acquisitionDate", e.target.value, "certificate")}
+                          />
+                        </div>
+                      ))}
+                      {resumeData.certificate.length < 10 && (
+                        <Button text="추가" onClick={addCertificate} />
+                      )}
                     </div>
                   )}
                 </div>
 
-                {/* 대외활동 섹션 */}
+                {/* 대외활동 섹션 - 동적 항목 */}
                 <div className={style.resumeRegBox}>
-                  <button
-                    className={`${style.accordionBtn} ${accordions.activity ? style.active : ""}`}
-                    onClick={() => toggleAccordion("activity")}
-                  >
+                  <button className={`${style.accordionBtn} ${accordions.activity ? style.active : ""}`}
+                    onClick={() => toggleAccordion("activity")}>
                     <h5 className={style.title}>대외활동</h5>
                   </button>
                   {accordions.activity && (
                     <div className={style.accordionBox}>
-                      <div className={style.selectBox}>
-                        <label>활동 유형</label>
-                        <select
-                          className={style.select}
-                          value={resumeData.activity[0].activityType}
-                          onChange={(e) =>
-                            handleFieldChange(0, "activityType", e.target.value, "activity")
-                          }
-                        >
-                          <option value="" disabled>활동 유형 선택</option>
-                          <option value="인턴">인턴</option>
-                          <option value="봉사활동">봉사활동</option>
-                          <option value="공모전">공모전</option>
-                        </select>
-                      </div>
-                      <ResumeField
-                        label="기관명"
-                        placeholder="기관명 입력"
-                        value={resumeData.activity[0].organizationName}
-                        onChange={(e) =>
-                          handleFieldChange(0, "organizationName", e.target.value, "activity")
-                        }
-                      />
-                      <div className={style.regBox}>
-                        <label>활동 기간</label>
-                        <div className={style.regDateBox}>
+                      {resumeData.activity.map((item, idx) => (
+                        <div key={idx} className={style.dynamicField}>
+                          <div className={style.selectBox}>
+                            <label>활동 유형</label>
+                            <select className={style.select}
+                              value={item.activityType}
+                              onChange={(e) => handleFieldChange(idx, "activityType", e.target.value, "activity")}
+                            >
+                              <option value="" disabled>활동 유형 선택</option>
+                              <option value="인턴">인턴</option>
+                              <option value="봉사활동">봉사활동</option>
+                              <option value="공모전">공모전</option>
+                            </select>
+                          </div>
                           <ResumeField
-                            placeholder="시작일 (YYYY-MM)"
-                            value={resumeData.activity[0].startDate}
-                            onChange={(e) =>
-                              handleFieldChange(0, "startDate", e.target.value, "activity")
-                            }
+                            label="기관명"
+                            placeholder="기관명 입력"
+                            value={item.organizationName}
+                            onChange={(e) => handleFieldChange(idx, "organizationName", e.target.value, "activity")}
                           />
-                          ~
                           <ResumeField
-                            placeholder="종료일 (YYYY-MM)"
-                            value={resumeData.activity[0].endDate}
-                            onChange={(e) =>
-                              handleFieldChange(0, "endDate", e.target.value, "activity")
-                            }
+                            label="시작일 (YYYY-MM)"
+                            placeholder="시작일 입력"
+                            value={item.startDate}
+                            onChange={(e) => handleFieldChange(idx, "startDate", e.target.value, "activity")}
+                          />
+                          <ResumeField
+                            label="종료일 (YYYY-MM)"
+                            placeholder="종료일 입력"
+                            value={item.endDate}
+                            onChange={(e) => handleFieldChange(idx, "endDate", e.target.value, "activity")}
+                          />
+                          <ResumeField
+                            label="활동 내용"
+                            placeholder="활동 내용 입력"
+                            value={item.description}
+                            onChange={(e) => handleFieldChange(idx, "description", e.target.value, "activity")}
                           />
                         </div>
-                      </div>
-                      <ResumeField
-                        label="활동 내용"
-                        placeholder="활동 내용 입력"
-                        value={resumeData.activity[0].description}
-                        onChange={(e) =>
-                          handleFieldChange(0, "description", e.target.value, "activity")
-                        }
-                      />
+                      ))}
+                      {resumeData.activity.length < 5 && (
+                        <Button text="추가" onClick={addActivity} />
+                      )}
                     </div>
                   )}
                 </div>
 
-                {/* 경력 섹션 */}
+                {/* 경력 섹션 - 동적 항목 (제한 없음) */}
                 <div className={style.resumeRegBox}>
-                  <button
-                    className={`${style.accordionBtn} ${accordions.career ? style.active : ""}`}
-                    onClick={() => toggleAccordion("career")}
-                  >
+                  <button className={`${style.accordionBtn} ${accordions.career ? style.active : ""}`}
+                    onClick={() => toggleAccordion("career")}>
                     <h5 className={style.title}>경력</h5>
                   </button>
                   {accordions.career && (
                     <div className={style.accordionBox}>
-                      <ResumeField
-                        label="경력 타이틀"
-                        placeholder="예: 주니어 개발자"
-                        value={resumeData.career[0].careerTitle}
-                        onChange={(e) =>
-                          handleFieldChange(0, "careerTitle", e.target.value, "career")
-                        }
-                      />
-                      <div className={style.regBox}>
-                        <label>경력 기간</label>
-                        <div className={style.regDateBox}>
+                      {resumeData.career.map((item, idx) => (
+                        <div key={idx} className={style.dynamicField}>
                           <ResumeField
-                            placeholder="시작일 (YYYY-MM)"
-                            value={resumeData.career[0].startDate}
-                            onChange={(e) =>
-                              handleFieldChange(0, "startDate", e.target.value, "career")
-                            }
+                            label="경력 타이틀"
+                            placeholder="예: 주니어 개발자"
+                            value={item.careerTitle}
+                            onChange={(e) => handleFieldChange(idx, "careerTitle", e.target.value, "career")}
                           />
-                          ~
                           <ResumeField
-                            placeholder="종료일 (YYYY-MM)"
-                            value={resumeData.career[0].endDate}
-                            onChange={(e) =>
-                              handleFieldChange(0, "endDate", e.target.value, "career")
-                            }
+                            label="시작일 (YYYY-MM)"
+                            placeholder="시작일 입력"
+                            value={item.startDate}
+                            onChange={(e) => handleFieldChange(idx, "startDate", e.target.value, "career")}
+                          />
+                          <ResumeField
+                            label="종료일 (YYYY-MM)"
+                            placeholder="종료일 입력"
+                            value={item.endDate}
+                            onChange={(e) => handleFieldChange(idx, "endDate", e.target.value, "career")}
                           />
                         </div>
-                      </div>
+                      ))}
+                      <Button text="추가" onClick={addCareer} />
                     </div>
                   )}
                 </div>
 
-                {/* 포트폴리오 섹션 */}
+                {/* 포트폴리오 섹션 - 동적 항목 (제한 없음) */}
                 <div className={style.resumeRegBox}>
-                  <button
-                    className={`${style.accordionBtn} ${accordions.portfolio ? style.active : ""}`}
-                    onClick={() => toggleAccordion("portfolio")}
-                  >
+                  <button className={`${style.accordionBtn} ${accordions.portfolio ? style.active : ""}`}
+                    onClick={() => toggleAccordion("portfolio")}>
                     <h5 className={style.title}>포트폴리오</h5>
                   </button>
                   {accordions.portfolio && (
                     <div className={style.accordionBox}>
-                      <ResumeField
-                        label="포트폴리오명"
-                        placeholder="포트폴리오명 입력"
-                        value={resumeData.portfolio[0].portfolioName}
-                        onChange={(e) =>
-                          handleFieldChange(0, "portfolioName", e.target.value, "portfolio")
-                        }
-                      />
-                      <ResumeField
-                        label="URL"
-                        placeholder="URL 입력"
-                        value={resumeData.portfolio[0].url}
-                        onChange={(e) =>
-                          handleFieldChange(0, "url", e.target.value, "portfolio")
-                        }
-                      />
-                      <div className={style.resumeRegBox}>
-                        <label>파일첨부</label>
-                        <div className={style.fileWrap}>
-                          <label
-                            htmlFor="portfolioFileInput"
-                            className={style.fileUploadLeft}
-                            aria-label="파일선택"
-                          >
-                            <input
-                              type="file"
-                              id="portfolioFileInput"
-                              accept="image/*,application/pdf"
-                              onChange={handlePortfolioFileChange}
-                              style={{ display: "none" }}
-                            />
-                          </label>
-                          {resumeData.portfolio[0].filePath && (
-                            <div className={style.fileUploadRight}>
-                              <span className={style.fileName}>
-                                {resumeData.portfolio[0].filePath}
-                              </span>
-                              <button onClick={handlePortfolioFileDelete} className={style.deleteBtn}>
-                                <span className="blind">첨부파일삭제</span>
-                              </button>
+                      {resumeData.portfolio.map((item, idx) => (
+                        <div key={idx} className={style.dynamicField}>
+                          <ResumeField
+                            label="포트폴리오명"
+                            placeholder="포트폴리오명 입력"
+                            value={item.portfolioName}
+                            onChange={(e) => handleFieldChange(idx, "portfolioName", e.target.value, "portfolio")}
+                          />
+                          <ResumeField
+                            label="URL"
+                            placeholder="URL 입력"
+                            value={item.url}
+                            onChange={(e) => handleFieldChange(idx, "url", e.target.value, "portfolio")}
+                          />
+                          <div className={style.resumeRegBox}>
+                            <label>파일첨부</label>
+                            <div className={style.fileWrap}>
+                              <label htmlFor="portfolioFileInput" className={style.fileUploadLeft} aria-label="파일선택">
+                                <input
+                                  type="file"
+                                  id="portfolioFileInput"
+                                  accept="image/*,application/pdf"
+                                  onChange={handlePortfolioFileChange}
+                                  style={{ display: "none" }}
+                                />
+                              </label>
+                              {item.filePath && (
+                                <div className={style.fileUploadRight}>
+                                  <span className={style.fileName}>{item.filePath}</span>
+                                  <button onClick={handlePortfolioFileDelete} className={style.deleteBtn}>
+                                    <span className="blind">첨부파일삭제</span>
+                                  </button>
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
                         </div>
-                      </div>
+                      ))}
+                      <Button text="추가" onClick={addPortfolio} />
                     </div>
                   )}
                 </div>

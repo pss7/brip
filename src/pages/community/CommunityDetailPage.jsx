@@ -21,7 +21,6 @@ export default function CommunityDetailPage() {
   const { community_Id } = useParams();
   const communityId = Number(community_Id);
 
-
   //강제 리렌더링 트리거
   const [forceRender, setForceRender] = useState(false);
 
@@ -43,7 +42,7 @@ export default function CommunityDetailPage() {
   const [commentInput, setCommentInput] = useState("");
 
   // 팝업 상태
-  const [communityPopupOpen, setCommunityPopupOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupError, setPopupError] = useState(false);
@@ -195,7 +194,7 @@ export default function CommunityDetailPage() {
     fetchCommentList();
   }, [communityDetail.category, communityDetail.post_id]);
 
-  // ✅ 대댓글 등록 API 호출
+  //대댓글 등록 API 호출
   async function handleReplySubmit(commentId) {
     const content = replyInput[commentId];
 
@@ -206,13 +205,13 @@ export default function CommunityDetailPage() {
 
     try {
       const response = await postReply({
-        postId: communityId,  // ✅ 현재 게시글 ID 전달
-        parentId: commentId,  // ✅ 부모 댓글 ID 전달
-        content: content,     // ✅ 입력된 대댓글 내용 전달
+        postId: communityId,
+        parentId: commentId,
+        content: content,
       });
 
       if (response?.result === "success") {
-        console.log("✅ 대댓글 등록 성공!");
+        console.log("대댓글 등록 성공!");
 
         // 대댓글 목록 다시 불러오기
         fetchReplyList(commentId);
@@ -227,8 +226,7 @@ export default function CommunityDetailPage() {
     }
   }
 
-
-  // ✅ 대댓글 목록 불러오기
+  //대댓글 목록 불러오기
   async function fetchReplyList(commentId) {
     try {
       const response = await getReplyList(commentId);
@@ -241,12 +239,17 @@ export default function CommunityDetailPage() {
   }
 
 
-  // ✅ 답글 버튼 클릭 시 대댓글 조회
+  //답글 버튼 클릭 시 대댓글 조회
   function toggleReplyBox(commentId) {
     setOpenReplies((prev) => ({ ...prev, [commentId]: !prev[commentId] }));
     if (!openReplies[commentId]) {
       fetchReplyList(commentId);
     }
+  }
+
+  function openWritePopup() {
+    console.log("📌 커뮤니티 글쓰기 버튼 클릭됨!");
+    setShowPopup(true);
   }
 
   useEffect(() => {
@@ -276,13 +279,13 @@ export default function CommunityDetailPage() {
                   </div>
                 </div>
                 <div className="addBtnBox">
-                  <button className="addBtn">
-                    <span>채팅방 생성</span>
-                  </button>
                   <button
-                    className="addBtn communityWrite"
-                    onClick={() => setCommunityPopupOpen(true)}
+                    className="addBtn chatBtn"
+                    onClick={() => navigate("/community", { state: { selectedCategory: "실시간채팅" } })}
                   >
+                    <span>실시간채팅</span>
+                  </button>
+                  <button className="addBtn writeBtn" onClick={openWritePopup}>
                     <span>커뮤니티 글쓰기</span>
                   </button>
                 </div>
@@ -358,7 +361,7 @@ export default function CommunityDetailPage() {
                             <span className="commentNumber">댓글 {item.reply_count}</span>
 
                             <div className="commentAuthor">
-                              <span className="commentName">{item.user_name}</span>
+                              <span className="commentName">{item.user_nickname}</span>
                               <span className="commentDay">{commentTimeAgo}</span>
                             </div>
 
@@ -436,13 +439,7 @@ export default function CommunityDetailPage() {
         </Container>
       </div>
 
-      {/* 글쓰기 팝업 */}
-      {communityPopupOpen && (
-        <WritePopup
-          isOpen={communityPopupOpen}
-          closePopup={() => setCommunityPopupOpen(false)}
-        />
-      )}
+      {showPopup && <WritePopup isOpen={showPopup} closePopup={closePopup} />}
 
       {/* 신고/완료 팝업 */}
       {popupOpen && (
@@ -453,6 +450,7 @@ export default function CommunityDetailPage() {
           onClose={() => setPopupOpen(false)}
         />
       )}
+
     </Main>
   );
 }

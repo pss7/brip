@@ -158,11 +158,12 @@ export default function ActivityPage() {
                         <ViewButton
                           handleToggle={handleToggle}
                           data={post}
-                          idKey="post_id"  // ✅ post_id 사용
                           className={style.viewBox}
                           onEdit={handleEdit}
-                          onDelete={handleDeleteClick} // ✅ 삭제 클릭 시 컨펌 팝업 열기
+                          onDelete={handleDeleteClick}
+                          idKey="post_id"  // post_id를 사용하도록 지정
                         />
+
                       </li>
                     ))}
                   </ul>

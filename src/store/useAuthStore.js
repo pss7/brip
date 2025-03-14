@@ -4,7 +4,7 @@ import { create } from "zustand";
 export const useAuthStore = create((set) => ({
   token: localStorage.getItem("token") || null,
   email: "",
-  nickname: "",
+  nickname: localStorage.getItem("nickname") || null,
   cuid: "",
 
   // 로그인 상태 설정 함수
@@ -18,6 +18,7 @@ export const useAuthStore = create((set) => ({
 
     // localStorage에 토큰 저장
     localStorage.setItem("token", data.token);
+    localStorage.setItem("nickname", data.nickname);
   },
 
   // 로그아웃 함수 (UI 상태 즉시 반영)

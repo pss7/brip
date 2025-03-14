@@ -15,7 +15,6 @@ import CompletePopup from "../../components/CompletePopup";
 import { useAuthStore } from "../../store/useAuthStore";
 
 export default function EmploymentPage() {
-
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
@@ -23,86 +22,64 @@ export default function EmploymentPage() {
     if (!token) {
       navigate("/signin");
     }
-  }, []);
+  }, [token, navigate]);
 
-  // 활성 탭 상태 ("지역별", "직무별", "경력별", "근무형태")
   const [activeTab, setActiveTab] = useState("지역별");
-
-  // 각 탭(정적 필터)별 선택된 값들
   const [selectedFilters, setSelectedFilters] = useState({
     "지역별": [],
     "직무별": [],
     "경력별": [],
     "근무형태": [],
   });
-
-  // API에서 받아온 채용공고 데이터
   const [jobPostings, setJobPostings] = useState([]);
-
-  // 검색어 상태
   const [searchTerm, setSearchTerm] = useState("");
 
-  // "지역별" 탭: 대지역 선택 시 해당 객체 저장 (소지역은 대지역의 subLocations 이용)
+  // 지역별: 대지역/소지역 상태
   const [activeRegion, setActiveRegion] = useState(null);
-  // "지역별" 탭: 소지역 선택 (대지역 선택 후 소지역 id 배열)
   const [activeSubRegions, setActiveSubRegions] = useState([]);
 
-  // 이력서 ID (즉시지원 시 사용)
+  // 이력서 관련
   const [resumeId, setResumeId] = useState(null);
 
-  // 즉시지원 모달 상태 및 선택된 채용공고 id
+  // 즉시지원 모달
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [selectedEmployId, setSelectedEmployId] = useState(null);
 
-  // CompletePopup 모달 상태 (오류 또는 완료 메시지용)
+  // CompletePopup
   const [isCompletePopupOpen, setIsCompletePopupOpen] = useState(false);
   const [completePopupError, setCompletePopupError] = useState(false);
   const [completePopupMessage, setCompletePopupMessage] = useState("");
 
-  // CompletePopup 닫기 핸들러
   const closeCompletePopup = () => {
     setIsCompletePopupOpen(false);
   };
 
-  // 이력서 API 호출: 기본 이력서(isDefault === true) 또는 첫번째 이력서를 선택
+  // 이력서 API: 기본 이력서 또는 첫 번째 이력서를 선택
   useEffect(() => {
     getResumes()
       .then((data) => {
-        if (data && data.result === "success" && data.resumes.length > 0) {
-          const defaultResume =
-            data.resumes.find((r) => r.isDefault) || data.resumes[0];
+        if (data?.result === "success" && data.resumes.length > 0) {
+          const defaultResume = data.resumes.find((r) => r.isDefault) || data.resumes[0];
           setResumeId(defaultResume.id);
         }
       })
-      .catch((error) => console.error("이력서 API 호출 에러:", error));
+      .catch((error) => console.error("이력서 API 에러:", error));
   }, []);
 
-  // API 호출: 사용자가 선택한 필터와 검색어를 기반으로 채용공고 데이터 받아오기
+  // 채용공고 목록 API
   useEffect(() => {
     const params = {
       page: 1,
       pageSize: 10,
       keyword: searchTerm,
-      regions:
-        selectedFilters["지역별"].length > 0
-          ? selectedFilters["지역별"]
-          : undefined,
-      careers:
-        selectedFilters["경력별"].length > 0
-          ? selectedFilters["경력별"]
-          : undefined,
-      workTypes:
-        selectedFilters["근무형태"].length > 0
-          ? selectedFilters["근무형태"]
-          : undefined,
-      skills:
-        selectedFilters["직무별"].length > 0
-          ? selectedFilters["직무별"]
-          : undefined,
+      regions: selectedFilters["지역별"].length > 0 ? selectedFilters["지역별"] : undefined,
+      careers: selectedFilters["경력별"].length > 0 ? selectedFilters["경력별"] : undefined,
+      workTypes: selectedFilters["근무형태"].length > 0 ? selectedFilters["근무형태"] : undefined,
+      skills: selectedFilters["직무별"].length > 0 ? selectedFilters["직무별"] : undefined,
     };
 
     const cleanParams = Object.fromEntries(
-      Object.entries(params).filter(([key, value]) => value !== undefined)
+      Object.entries(params).filter(([_, value]) => value !== undefined)
     );
 
     getEmploymentList(
@@ -115,7 +92,7 @@ export default function EmploymentPage() {
       cleanParams.workTypes
     )
       .then((data) => {
-        if (data && data.result === "success") {
+        if (data?.result === "success") {
           const normalized = data.employs.map((item) => ({
             id: item.id,
             company: item.company_name,
@@ -132,26 +109,21 @@ export default function EmploymentPage() {
           setJobPostings(normalized);
         }
       })
-      .catch((error) => console.error("Employment API 호출 에러:", error));
+      .catch((error) => console.error("채용공고 API 에러:", error));
   }, [searchTerm, selectedFilters]);
 
-  // 정적 탭 데이터에서 현재 활성 탭의 필터 옵션 반환
+  // 현재 활성 탭의 필터 옵션
   const getFilterData = () => {
     const tab = employmentTabData.find((t) => t.id === activeTab);
     return tab ? tab.data : [];
   };
 
-  // 탭 메뉴 클릭 핸들러
+  // 탭 클릭 시
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    setSelectedFilters((prev) => ({ ...prev, [tab]: [] }));
-    if (tab === "지역별") {
-      setActiveRegion(null);
-      setActiveSubRegions([]);
-    }
   };
 
-  // 정적 필터 버튼 클릭 시 해당 필터 선택/해제
+  // 정적 필터 선택/해제 (직무별, 경력별, 근무형태 등)
   const handleFilterSelection = (filterType, filterId) => {
     setSelectedFilters((prev) => {
       const newFilters = prev[filterType].includes(filterId)
@@ -161,19 +133,53 @@ export default function EmploymentPage() {
     });
   };
 
-  // "지역별" 탭: 대지역 클릭 시 해당 객체 저장 및 소지역 목록 표시
+  // 대지역 클릭: 대지역 클릭 시 소지역은 보여주지만 필터는 적용하지 않음.
   const handleRegionClick = (region) => {
     setActiveRegion(region);
     setActiveSubRegions([]);
-    handleFilterSelection("지역별", region.id);
+    // 대지역 자체는 필터에 반영하지 않음.
+    setSelectedFilters((prev) => ({
+      ...prev,
+      "지역별": [],
+    }));
   };
 
-  // "지역별" 탭: 소지역 선택/해제
+  // 소지역 클릭: "전체" 옵션 포함, 소지역 선택 시 필터에 반영
   const handleSubRegionSelection = (subId) => {
-    setActiveSubRegions((prev) =>
-      prev.includes(subId) ? prev.filter((id) => id !== subId) : [...prev, subId]
-    );
-    handleFilterSelection("지역별", subId);
+    if (subId === "전체") {
+      const allSubIds = activeRegion?.subLocations.map((sub) => sub.id) || [];
+      if (activeSubRegions.length === allSubIds.length) {
+        // 전체 해제
+        setActiveSubRegions([]);
+        setSelectedFilters((prev) => ({
+          ...prev,
+          "지역별": [],
+        }));
+      } else {
+        // 전체 선택: 여기서는 "전체" 버튼만 active 스타일을 주고,
+        // 개별 버튼은 active 스타일을 주지 않음.
+        setActiveSubRegions(allSubIds);
+        setSelectedFilters((prev) => ({
+          ...prev,
+          "지역별": allSubIds,
+        }));
+      }
+    } else {
+      // 개별 소지역 선택/해제
+      setActiveSubRegions((prev) => {
+        let newSub;
+        if (prev.includes(subId)) {
+          newSub = prev.filter((id) => id !== subId);
+        } else {
+          newSub = [...prev, subId];
+        }
+        setSelectedFilters((prevFilters) => ({
+          ...prevFilters,
+          "지역별": newSub,
+        }));
+        return newSub;
+      });
+    }
   };
 
   // 검색어 업데이트
@@ -181,7 +187,7 @@ export default function EmploymentPage() {
     setSearchTerm(term);
   };
 
-  // 필터 및 선택 초기화
+  // 선택 초기화
   const handleReset = () => {
     setSelectedFilters({
       "지역별": [],
@@ -194,34 +200,41 @@ export default function EmploymentPage() {
     setSearchTerm("");
   };
 
-  // 채용공고 필터링: 선택된 필터와 검색어 적용
+  // 필터링 로직: 부분 매칭
   const filteredJobPostings = jobPostings.filter((posting) => {
     const regionFilters = selectedFilters["지역별"];
     const jobFilters = selectedFilters["직무별"];
     const careerFilters = selectedFilters["경력별"];
     const workTypeFilters = selectedFilters["근무형태"];
 
+    const main = (posting.regionMain || "").toLowerCase();
+    const sub = (posting.regionSub || "").toLowerCase();
+
     const regionMatch =
       regionFilters.length === 0 ||
-      regionFilters.some((filter) =>
-        posting.regionMain.includes(filter) ||
-        posting.regionSub.includes(filter)
-      );
+      regionFilters.some((filter) => {
+        const f = filter.toLowerCase();
+        return main.includes(f) || sub.includes(f);
+      });
+
     const jobMatch =
       jobFilters.length === 0 ||
       jobFilters.some((filter) =>
         posting.title.toLowerCase().includes(filter.toLowerCase())
       );
+
     const careerMatch =
       careerFilters.length === 0 ||
       careerFilters.some((filter) =>
         posting.experience.toLowerCase().includes(filter.toLowerCase())
       );
+
     const workMatch =
       workTypeFilters.length === 0 ||
       workTypeFilters.some((filter) =>
         posting.employmentType.toLowerCase().includes(filter.toLowerCase())
       );
+
     const searchMatch =
       searchTerm === "" ||
       posting.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -235,13 +248,11 @@ export default function EmploymentPage() {
       .then(() => {
         setJobPostings((prev) =>
           prev.map((posting) =>
-            posting.id === id
-              ? { ...posting, isLiked: !posting.isLiked }
-              : posting
+            posting.id === id ? { ...posting, isLiked: !posting.isLiked } : posting
           )
         );
       })
-      .catch((error) => console.error("좋아요 API 호출 에러:", error));
+      .catch((error) => console.error("좋아요 API 에러:", error));
   };
 
   // 즉시지원 모달 열기
@@ -250,13 +261,11 @@ export default function EmploymentPage() {
     setIsApplyModalOpen(true);
   };
 
-  // 즉시지원 모달 닫기
   const closeApplyModal = () => {
     setIsApplyModalOpen(false);
     setSelectedEmployId(null);
   };
 
-  // 즉시지원 API 호출 (employId와 resumeId 전달)
   const confirmApply = () => {
     if (!resumeId) {
       setCompletePopupMessage("지원하기 전에 등록된 이력서가 없습니다. 이력서를 작성해 주세요.");
@@ -273,7 +282,7 @@ export default function EmploymentPage() {
         );
         closeApplyModal();
       })
-      .catch((error) => console.error("즉시지원 API 호출 에러:", error));
+      .catch((error) => console.error("즉시지원 API 에러:", error));
   };
 
   return (
@@ -286,117 +295,139 @@ export default function EmploymentPage() {
         <div className="employmentContent">
           <Container className="container">
             <SubSearch onSearch={handleSearch} />
-            <div className="employmentInfoList">
 
-              {/* 탭 메뉴 */}
-              <div className="tabContainer">
-                <div className="tabBox">
-                  {employmentTabData.map((tab) => (
-                    <div className="box" key={tab.id}>
-                      <button
-                        className={`tabBtn ${activeTab === tab.id ? "active" : ""}`}
-                        onClick={() => handleTabClick(tab.id)}
-                      >
-                        {tab.id}
-                      </button>
-                    </div>
-                  ))}
-                </div>
+            {/* 탭 메뉴 */}
+            <div className="tabContainer">
+              <div className="tabBox">
+                {employmentTabData.map((tab) => (
+                  <div className="box" key={tab.id}>
+                    <button
+                      className={`tabBtn ${activeTab === tab.id ? "active" : ""}`}
+                      onClick={() => handleTabClick(tab.id)}
+                    >
+                      {tab.id}
+                    </button>
+                  </div>
+                ))}
+              </div>
 
-                {/* 탭 콘텐츠: 정적 필터 옵션 나열 */}
-                <div className="tabContentBox">
-                  {activeTab === "지역별" ? (
-                    <div className="tabContent">
-                      <div className="regionBox">
-                        {/* 대지역 버튼 */}
-                        <div className="regionList scroll">
-                          {getFilterData().map((region) => (
-                            <button
-                              key={region.id}
-                              className={`button ${activeRegion && activeRegion.id === region.id ? "active" : ""}`}
-                              onClick={() => handleRegionClick(region)}
-                            >
-                              {region.name}
-                            </button>
-                          ))}
-                        </div>
-                        {/* 대지역 선택 시 소지역 버튼 */}
-                        {activeRegion && activeRegion.subLocations && (
-                          <div className="subRegionList">
-                            {activeRegion.subLocations.map((sub) => (
-                              <div key={sub.id} className="subRegionBox">
-                                <button
-                                  className={`button ${activeSubRegions.includes(sub.id) ? "active" : ""}`}
-                                  onClick={() => handleSubRegionSelection(sub.id)}
-                                >
-                                  {sub.name}
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="tabContent">
-                      <div className="box">
-                        {getFilterData().map((filter) => (
+              {/* 탭 콘텐츠 */}
+              <div className="tabContentBox">
+                {activeTab === "지역별" ? (
+                  <div className="tabContent">
+                    <div className="regionBox">
+                      {/* 대지역 버튼 */}
+                      <div className="regionList scroll">
+                        {getFilterData().map((region) => (
                           <button
-                            key={filter.id}
-                            className={`button ${selectedFilters[activeTab].includes(filter.id) ? "active" : ""}`}
-                            onClick={() => handleFilterSelection(activeTab, filter.id)}
+                            key={region.id}
+                            className={`button ${activeRegion && activeRegion.id === region.id ? "active" : ""}`}
+                            onClick={() => handleRegionClick(region)}
                           >
-                            {filter.name}
+                            {region.name}
                           </button>
                         ))}
                       </div>
+                      {/* 소지역 버튼 (상단에 "전체" 버튼 추가) */}
+                      {activeRegion && activeRegion.subLocations && (
+                        <div className="subRegionList">
+                          <div className="subRegionBox">
+                            <button
+                              className={`button ${activeSubRegions.length === activeRegion.subLocations.length ? "active" : ""}`}
+                              onClick={() => handleSubRegionSelection("전체")}
+                            >
+                              전체
+                            </button>
+                          </div>
+                          {activeRegion.subLocations.map((sub) => (
+                            <div key={sub.id} className="subRegionBox">
+                              <button
+                                className={`button ${
+                                  // 만약 전체가 선택되었다면 개별 버튼은 active 클래스 제거
+                                  activeSubRegions.length === activeRegion.subLocations.length
+                                    ? ""
+                                    : activeSubRegions.includes(sub.id)
+                                      ? "active"
+                                      : ""
+                                  }`}
+                                onClick={() => handleSubRegionSelection(sub.id)}
+                              >
+                                {sub.name}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-
-              {/* 선택 초기화 버튼 */}
-              <div className="resetBtnBox">
-                <button className="resetBtn" onClick={handleReset}>
-                  <span>선택 초기화</span>
-                </button>
-              </div>
-
-              {/* 필터링된 채용공고 리스트 */}
-              <div className="employmentList">
-                {filteredJobPostings.length > 0 ? (
-                  filteredJobPostings.map((posting) => (
-                    <div className="box" key={posting.id}>
-                      <div className="companyBox">
-                        <div className="company">{posting.company}</div>
-                        <button className={`likeBtn ${posting.isLiked ? "active" : ""}`} onClick={() => handleLike(posting.id)}>
-                          <span className="blind">{posting.isLiked ? "좋아요 취소" : "좋아요"}</span>
-                        </button>
-                      </div>
-                      <div className="titleBox">
-                        <Link to={`/employment-detail/${posting.id}`}>
-                          <h4>{posting.title}</h4>
-                        </Link>
-                        <ul className="infoList">
-                          <li>{posting.experience}</li>
-                          <li>{posting.education}</li>
-                          <li>{posting.employmentType}</li>
-                          <li>{`${posting.regionMain} ${posting.regionSub}`}</li>
-                          <li>{posting.deadline}</li>
-                        </ul>
-                      </div>
-                      <button
-                        className={`applyBtn ${posting.isApplied ? "complete" : ""}`}
-                        onClick={() => openApplyModal(posting.id)}
-                      >
-                        <span>{posting.isApplied ? "지원완료" : "즉시지원"}</span>
-                      </button>
-                    </div>
-                  ))
+                  </div>
                 ) : (
-                  <p>검색된 채용공고가 없습니다.</p>
+                  <div className="tabContent">
+                    <div className="box">
+                      {getFilterData().map((filter) => (
+                        <button
+                          key={filter.id}
+                          className={`button ${selectedFilters[activeTab].includes(filter.id) ? "active" : ""}`}
+                          onClick={() => handleFilterSelection(activeTab, filter.id)}
+                        >
+                          {filter.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
+            </div>
+
+            {/* 선택 초기화 버튼 */}
+            <div className="resetBtnBox">
+              <button className="resetBtn" onClick={handleReset}>
+                <span>선택 초기화</span>
+              </button>
+            </div>
+
+            {/* 필터링된 채용공고 리스트 */}
+            <div className="employmentList">
+              {filteredJobPostings.length > 0 ? (
+                filteredJobPostings.map((posting) => (
+                  <div className="box" key={posting.id}>
+                    <div className="companyBox">
+                      <div className="company">{posting.company}</div>
+                      <button
+                        className={`likeBtn ${posting.isLiked ? "active" : ""}`}
+                        onClick={() => handleLike(posting.id)}
+                      >
+                        <span className="blind">
+                          {posting.isLiked ? "좋아요 취소" : "좋아요"}
+                        </span>
+                      </button>
+                    </div>
+                    <div className="titleBox">
+                      <Link to={`/employment-detail/${posting.id}`}>
+                        <h4>{posting.title}</h4>
+                      </Link>
+                      <ul className="infoList">
+                        <li>{posting.experience}</li>
+                        <li>{posting.education}</li>
+                        <li>{posting.employmentType}</li>
+                        <li>{`${posting.regionMain} ${posting.regionSub}`}</li>
+                        <li>{posting.deadline}</li>
+                      </ul>
+                    </div>
+                    <button
+                      className={`applyBtn ${posting.isApplied ? "complete" : ""}`}
+                      onClick={() => {
+                        if (!posting.isApplied) {
+                          openApplyModal(posting.id);
+                        }
+                      }}
+                    >
+                      <span>{posting.isApplied ? "지원완료" : "즉시지원"}</span>
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>검색된 채용공고가 없습니다.</p>
+              )}
             </div>
           </Container>
         </div>
@@ -413,7 +444,7 @@ export default function EmploymentPage() {
         onConfirm={confirmApply}
       />
 
-      {/* CompletePopup: 이력서가 등록되지 않았거나 기타 오류 메시지 표시 */}
+      {/* CompletePopup: 이력서가 등록되지 않았거나 오류 시 사용 */}
       <CompletePopup
         isOpen={isCompletePopupOpen}
         onClose={closeCompletePopup}

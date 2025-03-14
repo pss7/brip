@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./Button";
 import Input from "./Input";
 import CompletePopup from "./CompletePopup";
@@ -13,20 +13,51 @@ export default function AddPopup({ isOpen, closePopup, socket }) {
 
   const [imagePreview, setImagePreview] = useState(null);
   const [isCompletePopupOpen, setIsCompletePopupOpen] = useState(false);
+  const [isSocketConnected, setIsSocketConnected] = useState(socket?.readyState === WebSocket.OPEN);
+
+  // ✅ WebSocket 상태 감지 (닫혔을 경우 재연결)
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleOpen = () => {
+      console.log("✅ WebSocket 연결 성공!");
+      setIsSocketConnected(true);
+    };
+
+    const handleClose = () => {
+      console.log("❌ WebSocket 연결 종료. 3초 후 재연결 시도...");
+      setIsSocketConnected(false);
+
+      // ✅ 3초 후 자동 재연결
+      setTimeout(() => {
+        if (socket.readyState === WebSocket.CLOSED) {
+          socket = new WebSocket('wss://api.spl-itm.com/ws');
+        }
+      }, 3000);
+    };
+
+    socket.addEventListener("open", handleOpen);
+    socket.addEventListener("close", handleClose);
+
+    return () => {
+      socket.removeEventListener("open", handleOpen);
+      socket.removeEventListener("close", handleClose);
+    };
+  }, [socket]);
 
   // ✅ 채팅방 유형 변경 핸들러
   const handleTypeChange = (event) => {
     setRoomData({ ...roomData, type: event.target.value });
   };
 
-  // ✅ 파일 업로드 핸들러 (실제 업로드 구현 필요)
+  // ✅ 파일 업로드 핸들러
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
-        setRoomData({ ...roomData, imageUrl: reader.result }); // Replace with actual URL after upload
+        setRoomData({ ...roomData, imageUrl: reader.result });
       };
       reader.readAsDataURL(file);
     }
@@ -41,14 +72,19 @@ export default function AddPopup({ isOpen, closePopup, socket }) {
       return;
     }
 
-    console.log("CREATE_ROOM 호출전");
+    if (!isSocketConnected || !socket || socket.readyState !== WebSocket.OPEN) {
+      alert("웹소켓 연결이 끊어졌습니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
+    console.log("🟢 CREATE_ROOM 호출 전");
     socket.send(
       JSON.stringify({
         protocol: "CREATE_ROOM",
         ...roomData,
       })
     );
-    console.log("CREATE_ROOM 호출후");
+    console.log("🟢 CREATE_ROOM 호출 후");
 
     setIsCompletePopupOpen(true);
   };
@@ -69,9 +105,7 @@ export default function AddPopup({ isOpen, closePopup, socket }) {
           <form onSubmit={handleCreateChat}>
             {/* 채팅방 이름 */}
             <div className="box">
-              <label htmlFor="roomName" className="label">
-                채팅방 이름
-              </label>
+              <label htmlFor="roomName" className="label">채팅방 이름</label>
               <Input
                 id="roomName"
                 placeholder="채팅방 이름 입력"
@@ -84,37 +118,34 @@ export default function AddPopup({ isOpen, closePopup, socket }) {
             <div className="box">
               <label className="label">채팅 유형</label>
               <div className="chatTypeOptions">
-                <label className="customRadio">
-                  <input
-                    type="radio"
-                    name="chatType"
-                    value="GROUP"
-                    checked={roomData.type === "GROUP"}
-                    onChange={handleTypeChange}
-                    className="blind"
-                  />
-                  그룹 채팅
-                </label>
-                <label className="customRadio">
-                  <input
-                    type="radio"
-                    name="chatType"
-                    value="INDIVIDUAL"
-                    checked={roomData.type === "INDIVIDUAL"}
-                    onChange={handleTypeChange}
-                    className="blind"
-                  />
-                  1:1 채팅
-                </label>
+                <input
+                  id="radio01"
+                  type="radio"
+                  name="chatType"
+                  value="GROUP"
+                  checked={roomData.type === "GROUP"}
+                  onChange={handleTypeChange}
+                  className="blind"
+                />
+                <label htmlFor="radio01" className="customRadio">그룹 채팅</label>
+
+                <input
+                  id="radio02"
+                  type="radio"
+                  name="chatType"
+                  value="INDIVIDUAL"
+                  checked={roomData.type === "INDIVIDUAL"}
+                  onChange={handleTypeChange}
+                  className="blind"
+                />
+                <label htmlFor="radio02" className="customRadio">1:1 채팅</label>
               </div>
             </div>
 
             {/* 최대 인원 (그룹채팅일 경우만) */}
             {roomData.type === "GROUP" && (
               <div className="box">
-                <label htmlFor="maxUsers" className="label">
-                  최대 인원
-                </label>
+                <label htmlFor="maxUsers" className="label">최대 인원</label>
                 <Input
                   id="maxUsers"
                   type="number"
@@ -126,9 +157,9 @@ export default function AddPopup({ isOpen, closePopup, socket }) {
             )}
 
             {/* 파일 업로드 */}
-            <div className="box">
-              <h4>대표 이미지</h4>
-              <div className="imageUpload">
+            <h4 className="imgTitle">파일 첨부</h4>
+            <div className="imageUpload">
+              <div className="box">
                 <input
                   type="file"
                   accept="image/*"
@@ -136,15 +167,18 @@ export default function AddPopup({ isOpen, closePopup, socket }) {
                   id="upload"
                   className="blind"
                 />
-                <label htmlFor="upload" className="uploadButton">
-                  이미지 첨부
-                </label>
-                {imagePreview && (
-                  <div className="imagePreview">
-                    <img src={imagePreview} alt="첨부된 이미지" className="previewImage" />
-                  </div>
-                )}
+                <label htmlFor="upload" className="uploadButton">이미지 첨부</label>
+                <p className="imgInfoText">
+                  운영정책에 어긋나는<br />
+                  이미지 등록 시 이용이 제한<br />
+                  될 수 있습니다.
+                </p>
               </div>
+              {imagePreview && (
+                <div className="imagePreview">
+                  <img src={imagePreview} alt="첨부된 이미지" className="previewImage" />
+                </div>
+              )}
             </div>
 
             {/* 버튼 */}

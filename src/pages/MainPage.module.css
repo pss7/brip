@@ -223,6 +223,7 @@
 #educationBox .cardList::after{content: ''; position: absolute; top: 0; right: -100%; bottom: -84px; background-color: #fff; width: calc(100% - 15px); z-index: 99;}
 #educationBox .cardList :global .slick-slide{flex: 0 0 321px; margin-right: 18px;}
 #educationBox .cardList :global .slick-list{overflow: visible;}
+#educationBox .cardList :global .slick-track{margin: 0;}
 #educationBox .control{position: absolute; top:39px; right:0;}
 #educationBox a{width: auto;}
 

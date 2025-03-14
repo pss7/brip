@@ -16,6 +16,7 @@ export default function ResumePage() {
   //토큰
   const { token } = useAuthStore();
 
+  //경로
   const navigate = useNavigate();
 
   //이력서 상태 관리
@@ -31,7 +32,7 @@ export default function ResumePage() {
   const [completeMessage, setCompleteMessage] = useState("");
   const [completeError, setCompleteError] = useState(false);
 
-  // 데이터 불러오기
+  //이력서 데이터 불러오기
   useEffect(() => {
     async function fetchResume() {
       setLoading(true);
@@ -74,6 +75,7 @@ export default function ResumePage() {
     setIsConfirmOpen(true);
   }
 
+  //이력서 삭제 함수
   async function handleConfirmDelete() {
     try {
       const response = await deleteResume(targetResumeId);
@@ -168,16 +170,16 @@ export default function ResumePage() {
                             className={`${style.viewBox}`}
                             handleToggle={handleToggle}
                             data={resumeData}
+                            onDelete={handleOpenDeleteConfirm}
                             onEdit={() => {
-                              console.log("📌 수정할 이력서 ID:", resumeData.resume_id); // 여기서 확인
+                              console.log("수정할 이력서 ID:", resumeData.resume_id);
                               if (resumeData.resume_id) {
                                 navigate(`/resume-update/${resumeData.resume_id}`);
                               } else {
-                                console.error("❌ 이력서 ID가 존재하지 않습니다. 데이터 구조를 확인하세요.");
+                                console.error("이력서 ID가 존재하지 않습니다. 데이터 구조를 확인하세요.");
                               }
                             }}
                           />
-
                         </div>
                       ))
                     ) : (
@@ -194,7 +196,6 @@ export default function ResumePage() {
                 <Button
                   text="이력서작성"
                   href={`/resume-registration`}
-                  customClass={style.btn}
                 />
 
               </div>

@@ -9,6 +9,7 @@ export default function WritePopup({ isOpen, closePopup, onSuccess }) {
 
   const [category, setCategory] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  console.log(selectedFile);
   const [previewURL, setPreviewURL] = useState(null);
   const [content, setContent] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -40,39 +41,41 @@ export default function WritePopup({ isOpen, closePopup, onSuccess }) {
     }
   };
 
-  // 게시글 등록
-  async function handleCommunity() {
-    if (!category || !content) {
-      setCompletePopupMessage("카테고리와 내용을 입력해주세요.");
-      setCompletePopupError(true);
-      setCompletePopupOpen(true);
-      return;
-    }
-
-    try {
-      const response = await postCommunity({
-        category,
-        content,
-        file: selectedFile,
-      });
-
-      if (response?.result === "success") {
-        // 등록 성공
-        setCompletePopupMessage("게시가 완료되었습니다!");
-        setCompletePopupError(false);
-      } else {
-        setCompletePopupMessage("게시 중 오류가 발생했습니다.");
-        setCompletePopupError(true);
-      }
-    } catch (error) {
-      console.error("서버 오류:", error);
-      const serverMessage = error.response?.data?.message || "서버 오류가 발생했습니다.";
-      setCompletePopupMessage(serverMessage);
-      setCompletePopupError(true);
-    }
-
+// 게시글 등록
+async function handleCommunity() {
+  if (!category || !content) {
+    setCompletePopupMessage("카테고리와 내용을 입력해주세요.");
+    setCompletePopupError(true);
     setCompletePopupOpen(true);
+    return;
   }
+
+  try {
+    // 🔍 디버그: 현재 상태 확인
+    console.log("등록 데이터:", { category, content, selectedFile });
+
+    const response = await postCommunity({
+      category,
+      content,
+      image : selectedFile,  // ✅ 파일 객체 전달!
+    });
+
+    if (response?.result === "success") {
+      setCompletePopupMessage("게시가 완료되었습니다!");
+      setCompletePopupError(false);
+    } else {
+      setCompletePopupMessage("게시 중 오류가 발생했습니다.");
+      setCompletePopupError(true);
+    }
+  } catch (error) {
+    console.error("서버 오류:", error);
+    const serverMessage = error.response?.data?.message || "서버 오류가 발생했습니다.";
+    setCompletePopupMessage(serverMessage);
+    setCompletePopupError(true);
+  }
+
+  setCompletePopupOpen(true);
+}
 
   // 완료 팝업 닫기
   const handleCompletePopupClose = () => {

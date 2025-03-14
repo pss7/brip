@@ -160,7 +160,7 @@ export async function resetPassword(email, password) {
 // 카카오 로그인 URL 생성 함수
 export function getKakaoAuthUrl() {
   const KAKAO_CLIENT_ID = 'b8f42e7ca7621dd36afb2846a53293bf';
-  const REDIRECT_URI = 'https://light-dolls-repair.loca.lt/api/user/kakao-login'; // 백엔드에서 토큰 교환 및 로그인 처리할 URI
+  const REDIRECT_URI = 'https://api.spl-itm.com/api/user/kakao-login'; // 백엔드에서 토큰 교환 및 로그인 처리할 URI
   return `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 }
 
@@ -184,7 +184,7 @@ export async function kakaoLogin(code) {
 // 구글 로그인 관련 함수
 export function getGoogleAuthUrl() {
   const clientId = '591838263861-khs699q1690jec198bd2aost4rnlljl4.apps.googleusercontent.com';
-  const redirectUri = 'http://127.0.0.1:8080/api/user/google-login';
+  const redirectUri = 'https://api.spl-itm.com/api/user/google-login';
   const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
 
   // 필요한 스코프 설정 (이메일, 프로필 등)
@@ -225,7 +225,7 @@ export async function googleLogin(code) {
 // 네이버 로그인 URL 생성 함수
 export function getNaverAuthUrl() {
   const NAVER_CLIENT_ID = 'UZgFqw43EZdedZq0USWx';
-  const REDIRECT_URI = 'http://127.0.0.1:8080/api/user/naver-login';
+  const REDIRECT_URI = 'https://api.spl-itm.com/api/user/naver-login';
 
   // 로컬스토리지에 state 값이 없으면 새로 생성해서 저장 (CSRF 방지 용도)
   let state = localStorage.getItem('naverOAuthState');
