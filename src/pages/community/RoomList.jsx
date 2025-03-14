@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateRoomModal from './CreateRoomModal.JSX';
+
 import Loading from '../../components/Loading';
+import CreateRoomModal from './CreateRoomModal';
 
 const RoomList = () => {
   const [roomList, setRoomList] = useState([]);
