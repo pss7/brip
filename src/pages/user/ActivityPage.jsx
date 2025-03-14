@@ -160,6 +160,9 @@ export default function ActivityPage() {
                         </div>
 
                         <p className={style.content}>{post.content}</p>
+                        <div className={style.imgBox}>
+                          <img src={post.img_url} alt="" />
+                        </div>
 
                         <div className={style.btnWrap}>
                           <div className={style.btnBox}>

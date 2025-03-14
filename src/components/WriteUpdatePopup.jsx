@@ -124,7 +124,9 @@ export default function WriteUpdatePopup({ isOpen, closePopup, onSuccess, initia
               이미지 첨부
             </label>
             <p className="imgInfoText">
-              운영정책에 어긋나는 이미지 등록 시 이용이 제한될 수 있습니다.
+              운영정책에 어긋나는 <br />
+              이미지 등록 시 이용이 <br />
+              제한될 수 있습니다.
             </p>
           </div>
 

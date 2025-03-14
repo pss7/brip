@@ -70,3 +70,19 @@ export async function submitRoadmapAnswers(answersObj) {
     return null;
   }
 }
+
+//로드맵 점수 api
+export async function fetchRoadmapScores() {
+  const token = getAuthToken();
+  try {
+    const response = await axios.get(`${BASE_URL}/roadmap/scores`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : undefined,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("로드맵 점수 조회 API 에러:", error);
+    return null;
+  }
+}
