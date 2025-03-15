@@ -268,7 +268,7 @@ export default function CommunityPage() {
                         </div>
                       ))
                     ) : (
-                      <p style={{ marginTop: "30px" }}>
+                      <p className="infoText">
                         현재 "{selectedCategory}" 게시물이 없습니다.
                       </p>
                     )}

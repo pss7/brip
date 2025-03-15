@@ -35,8 +35,8 @@ export default function ResumePage() {
   //이력서 데이터 불러오기
   useEffect(() => {
     async function fetchResume() {
-      setLoading(true);
       try {
+        setLoading(true);
         const response = await getResume();
         setResumeList(response);
       } catch (error) {
@@ -47,9 +47,6 @@ export default function ResumePage() {
     }
     fetchResume();
   }, []);
-
-  // 로딩 처리
-  if (loading) return <Loading fullScreen />;
 
   // 날짜 형식 변환 (YYYY-MM-DD)
   const formatDate = (dateString) => {
@@ -113,21 +110,8 @@ export default function ResumePage() {
     setIsCompleteOpen(false);
   }
 
-  // 이력서 수정
-  function updateResume(updatedResume) {
-    setResumeList((prevList) =>
-      prevList.map((resume) =>
-        resume.resume_id === updatedResume.id ? updatedResume : resume
-      )
-    );
-  }
-
   if (!token) {
     navigate("/signin");
-  }
-
-  if (loading) {
-    return <Loading />
   }
 
   return (
@@ -153,44 +137,41 @@ export default function ResumePage() {
                 </p>
 
                 <div className={style.resumeList}>
-                  {
-                    resumeList.length > 0 ? (
-                      resumeList.map((resumeData) => (
-                        <div className={style.resumeBox} key={resumeData.resume_id}>
-                          {resumeData.is_default && (
-                            <span className={style.basicResume}>기본이력서</span>
-                          )}
-                          <h5>
-                            <Link to={`/resume-detail/${resumeData.resume_id}`}>{resumeData.resume_title}</Link>
-                          </h5>
-                          <span className={style.date}>
-                            {formatDate(resumeData.created_at)}
-                          </span>
-                          <ViewButton
-                            className={`${style.viewBox}`}
-                            handleToggle={handleToggle}
-                            data={resumeData}
-                            onDelete={handleOpenDeleteConfirm}
-                            onEdit={() => {
-                              console.log("수정할 이력서 ID:", resumeData.resume_id);
-                              if (resumeData.resume_id) {
-                                navigate(`/resume-update/${resumeData.resume_id}`);
-                              } else {
-                                console.error("이력서 ID가 존재하지 않습니다. 데이터 구조를 확인하세요.");
-                              }
-                            }}
-                          />
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <p className="infoText">
-                          등록된 이력서가 없습니다.
-                        </p>
-                      </>
-                    )
-                  }
-
+                  {loading ? (
+                    <Loading center />
+                  ) : resumeList.length > 0 ? (
+                    resumeList.map((resumeData) => (
+                      <div className={style.resumeBox} key={resumeData.resume_id}>
+                        {resumeData.is_default && (
+                          <span className={style.basicResume}>기본이력서</span>
+                        )}
+                        <h5>
+                          <Link to={`/resume-detail/${resumeData.resume_id}`}>
+                            {resumeData.resume_title}
+                          </Link>
+                        </h5>
+                        <span className={style.date}>
+                          {formatDate(resumeData.created_at)}
+                        </span>
+                        <ViewButton
+                          className={`${style.viewBox}`}
+                          handleToggle={handleToggle}
+                          data={resumeData}
+                          onDelete={handleOpenDeleteConfirm}
+                          onEdit={() => {
+                            console.log("수정할 이력서 ID:", resumeData.resume_id);
+                            if (resumeData.resume_id) {
+                              navigate(`/resume-update/${resumeData.resume_id}`);
+                            } else {
+                              console.error("이력서 ID가 존재하지 않습니다. 데이터 구조를 확인하세요.");
+                            }
+                          }}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <p className="infoText">등록된 이력서가 없습니다.</p>
+                  )}
                 </div>
 
                 <Button

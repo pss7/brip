@@ -18,7 +18,7 @@ export const employmentTabData = [
           { id: '송파구', name: '송파구' },
           { id: '영등포구', name: '영등포구' },
           { id: '강동구', name: '강동구' },
-          { id: '동작구', name: '동작구' },
+          { id: '동작구', name: '동작구' }
         ]
       },
       {
@@ -35,7 +35,7 @@ export const employmentTabData = [
           { id: '사하구', name: '사하구' },
           { id: '기장군', name: '기장군' },
           { id: '북구', name: '북구' },
-          { id: '동부', name: '동부' },
+          { id: '동부', name: '동부' }
         ]
       },
       {
@@ -52,7 +52,7 @@ export const employmentTabData = [
           { id: '남양주', name: '남양주' },
           { id: '오송', name: '오송' },
           { id: '평택', name: '평택' },
-          { id: '하남', name: '하남' },
+          { id: '하남', name: '하남' }
         ]
       },
       {
@@ -66,7 +66,7 @@ export const employmentTabData = [
           { id: '동구', name: '동구' },
           { id: '계양구', name: '계양구' },
           { id: '종로구', name: '종로구' },
-          { id: '서초구', name: '서초구' },
+          { id: '서초구', name: '서초구' }
         ]
       },
       {
@@ -76,7 +76,7 @@ export const employmentTabData = [
           { id: '동구', name: '동구' },
           { id: '대구광역시', name: '대구광역시' },
           { id: '경산', name: '경산' },
-          { id: '나주', name: '나주' },
+          { id: '나주', name: '나주' }
         ]
       },
       {
@@ -87,7 +87,7 @@ export const employmentTabData = [
           { id: '유성구', name: '유성구' },
           { id: '서구', name: '서구' },
           { id: '동구', name: '동구' },
-          { id: '진천', name: '진천' },
+          { id: '진천', name: '진천' }
         ]
       },
       {
@@ -95,39 +95,46 @@ export const employmentTabData = [
         name: '제주',
         subLocations: [
           { id: '제주시', name: '제주시' },
-          { id: '서귀포시', name: '서귀포시' },
+          { id: '서귀포시', name: '서귀포시' }
         ]
       }
     ]
   },
   {
-    id: "직무별",
-    data: [
-      { id: '프론트엔드 개발자', name: '프론트엔드 개발자' },
-      { id: '백엔드 개발자', name: '백엔드 개발자' },
-      { id: '풀스택 개발자', name: '풀스택 개발자' },
-      { id: '디자이너', name: '디자이너' },
-      { id: '마케팅 전문가', name: '마케팅 전문가' },
-      { id: '인사 전문가', name: '인사 전문가' },
-      { id: '영업 전문가', name: '영업 전문가' },
-    ]
-  },
-  {
     id: "경력별",
     data: [
+      { id: '신입·경력', name: '신입·경력' },
       { id: '신입', name: '신입' },
-      { id: '주니어(1-3년)', name: '주니어(1-3년)' },
-      { id: '미드레벨(3-5년)', name: '미드레벨(3-5년)' },
-      { id: '시니어(5년 이상)', name: '시니어(5년 이상)' },
+      { id: '1년', name: '1년' },
+      { id: '2년', name: '2년' },
+      { id: '3년', name: '3년' },
+      { id: '4년', name: '4년' },
+      { id: '5년', name: '5년' },
+      { id: '6년', name: '6년' },
+      { id: '7년', name: '7년' },
+      { id: '8년', name: '8년' },
+      { id: '9년', name: '9년' },
+      { id: '10년이상', name: '10년이상' }
     ]
   },
   {
     id: "근무형태",
     data: [
       { id: '정규직', name: '정규직' },
-      { id: '계약직', name: '계약직' },
-      { id: '인턴', name: '인턴' },
       { id: '프리랜서', name: '프리랜서' },
+      { id: '인턴', name: '인턴' },
+      { id: '파트타임', name: '파트타임' },
+      { id: '리모트', name: '리모트' }
+    ]
+  },
+  {
+    id: "기술스택",
+    data: [
+      { id: 'React', name: 'React' },
+      { id: 'Vue', name: 'Vue' },
+      { id: 'Angular', name: 'Angular' },
+      { id: 'Node.js', name: 'Node.js' },
+      { id: 'Python', name: 'Python' }
     ]
   }
 ];

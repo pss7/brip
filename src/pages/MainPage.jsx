@@ -26,12 +26,18 @@ import BgCard from "../components/BgCard";
 import { useAuthStore } from "../store/useAuthStore";
 import { getCareerCourses, getJopList } from "../api/career/career";
 import { getEmploymentList } from "../api/employment/employment";
+import Loading from "../components/Loading";
 
 export default function MainPage() {
 
   const defaultImage = "/assets/images/main/Card_Img01.png";
 
   const [jobList, setJobList] = useState([]);
+
+  //로딩 상태 관리
+  const [loadingEmployment, setLoadingEmployment] = useState(false);
+  const [loadingCourses, setLoadingCourses] = useState(false);
+  const [loadingJobList, setLoadingJobList] = useState(false);
 
   // 4가지 Guide 이미지 배열 (순환 적용)
   const defaultGuideImages = [Guide01, Guide02, Guide03, Guide04];
@@ -127,6 +133,9 @@ export default function MainPage() {
   //커리어 교육 데이터 불러오기
   useEffect(() => {
     async function fetchCourses() {
+
+      setLoadingCourses(true);
+
       try {
         const response = await getCareerCourses({
           page: 0,
@@ -142,16 +151,23 @@ export default function MainPage() {
         }
       } catch (error) {
         console.error("error", error);
+      } finally {
+        setLoadingCourses(false);
       }
     }
+
     fetchCourses();
+
   }, [activeTab]);
 
   //채용공고 데이터 불러오기
   useEffect(() => {
-    async function fetchEmploymentData() {
-      try {
 
+    async function fetchEmploymentData() {
+
+      setLoadingEmployment(true);
+
+      try {
         const response = await getEmploymentList({
           page: 1,
           pageSize: 8,
@@ -159,24 +175,34 @@ export default function MainPage() {
         if (response.result === "success") {
           setEmploymentData(response.employs);
         }
-
       } catch (error) {
         console.error("채용공고 목록 불러오기 에러:", error);
+      } finally {
+        setLoadingEmployment(false);
       }
     }
+
     fetchEmploymentData();
+
   }, []);
 
   useEffect(() => {
     async function fetchJobList() {
-      const data = await getJopList();
-      // API 응답 형식에 따라 조정 (예: data.careers 또는 data.result === "success" 이후 data.careers)
-      if (data && data.careers) {
-        setJobList(data.careers);
-      } else {
-        setJobList([]);
+
+      setLoadingJobList(true);
+
+      try {
+        const response = await getJopList();
+        if (response && response.careers) {
+          setJobList(response.careers);
+        }
+      } catch (error) {
+        console.error("error", error);
+      } finally {
+        setLoadingJobList(false);
       }
     }
+
     fetchJobList();
   }, []);
 
@@ -334,25 +360,32 @@ export default function MainPage() {
             <div data-aos="fade-up">
 
               {token ? (
-                jobList.length > 0 ? (
+                loadingJobList ? (
+                  <Loading />
+                ) : jobList.length > 0 ? (
                   <Slider className={style.guideList} ref={sliderRef01} {...settings}>
-                    {
-                      jobList.map((job, index) => (
-                        <div key={job.id} className={style.slide}>
-                          <BgCard
-                            href={`/careerexploration-detail/${job.id}`}
-                            title={job.name}
-                            imgSrc={job.imgSrc || defaultGuideImages[index % defaultGuideImages.length]}
-                            bg={{
-                              backgroundColor: job.bgColor || defaultBgColors[index % defaultBgColors.length],
-                            }}
-                            imgBg={{
-                              backgroundColor: job.imgBgColor || defaultImgBgColors[index % defaultImgBgColors.length],
-                            }}
-                          />
-                        </div>
-                      ))
-                    }
+                    {jobList.map((job, index) => (
+                      <div key={job.id} className={style.slide}>
+                        <BgCard
+                          href={`/careerexploration-detail/${job.id}`}
+                          title={job.name}
+                          imgSrc={
+                            job.imgSrc ||
+                            defaultGuideImages[index % defaultGuideImages.length]
+                          }
+                          bg={{
+                            backgroundColor:
+                              job.bgColor ||
+                              defaultBgColors[index % defaultBgColors.length],
+                          }}
+                          imgBg={{
+                            backgroundColor:
+                              job.imgBgColor ||
+                              defaultImgBgColors[index % defaultImgBgColors.length],
+                          }}
+                        />
+                      </div>
+                    ))}
                   </Slider>
                 ) : (
                   <p className="infoText">등록된 직무가 없습니다.</p>
@@ -400,7 +433,9 @@ export default function MainPage() {
 
             <div className={style.cardList} data-aos="fade-up">
               {token ? (
-                courses.length > 0 ? (
+                loadingCourses ? (
+                  <Loading />
+                ) : courses.length > 0 ? (
                   <Slider className={style.cardSlider} ref={sliderRef02} {...settings}>
                     {courses.map((data, index) => (
                       <div key={index} data-aos="fade-up">
@@ -444,7 +479,9 @@ export default function MainPage() {
             <div className={style.cardList} data-aos="fade-up">
               {
                 token ? (
-                  employmentData.length > 0 ? (
+                  loadingEmployment ? (
+                    <Loading />
+                  ) : employmentData.length > 0 ? (
                     employmentData.map((job) => (
                       <Card
                         key={job.id}
@@ -465,7 +502,6 @@ export default function MainPage() {
                   <p className="infoText">로그인 후 확인할 수 있습니다.</p>
                 )
               }
-
             </div>
           </div>
         </Container>

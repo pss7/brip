@@ -8,10 +8,14 @@ import style from "./RoadMapDesignPage.module.css";
 import { fetchRoadmapQuestions, submitRoadmapAnswers } from "../../api/roadmap/roadmap.js";
 import CompletePopup from "../../components/CompletePopup.jsx";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading.jsx";
 
 export default function RoadMapDesignPage() {
 
   const navigate = useNavigate();
+
+  //로딩 상태 
+  const [isLoading, setIsLoading] = useState(false);
 
   // 팝업 상태
   const [popupOpen, setPopupOpen] = useState(false);
@@ -23,7 +27,11 @@ export default function RoadMapDesignPage() {
 
   // 질문 불러오기
   useEffect(() => {
+
     async function loadQuestions() {
+
+      setIsLoading(true);
+
       try {
         const response = await fetchRoadmapQuestions();
         if (response?.result === "success") {
@@ -31,9 +39,13 @@ export default function RoadMapDesignPage() {
         }
       } catch (error) {
         console.error("로드맵 질문 로딩 에러:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
+
     loadQuestions();
+
   }, []);
 
   // RADIO 선택
@@ -139,11 +151,19 @@ export default function RoadMapDesignPage() {
               <h3>나만의 커리어 로드맵 설계</h3>
             </div>
 
-            {/* 모든 질문 표시 */}
-            {questions.map(renderQuestionBox)}
+            {
+              isLoading ? (
+                <Loading center />
+              ) : (
+                <>
+                  {/* 모든 질문 표시 */}
+                  {questions.map(renderQuestionBox)}
 
-            {/* 완료 버튼 */}
-            <Button text="완료" onClick={handleComplete} />
+                  {/* 완료 버튼 */}
+                  <Button text="완료" onClick={handleComplete} />
+                </>
+              )
+            }
 
             <div className="linkBox">
               <ArrowPrevButton href="/roadmap-info" hiddenText="로드맵안내화면으로 이동" />

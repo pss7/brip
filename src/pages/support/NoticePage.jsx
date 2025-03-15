@@ -105,11 +105,6 @@ export default function NoticePage() {
     };
   }, [hasMore, isLoading]);
 
-  if (isLoading && page === 0) {
-    // 초기 로딩 시 전체 화면 로딩 스패너
-    return <Loading fullScreen />;
-  }
-
   return (
     <Main className="subWrap bg">
       <div className="noticeBox">
@@ -166,7 +161,9 @@ export default function NoticePage() {
                   </div>
                 </div>
 
-                {noticeData.length === 0 ? (
+                {isLoading ? (
+                  <Loading center />
+                ) : noticeData.length === 0 ? (
                   "검색결과가 없습니다."
                 ) : (
                   <Table

@@ -10,11 +10,9 @@ import { useEffect, useState } from "react";
 import { getnicknameCheck, getProfile, updateEmail, updateNickname, updatePhone } from "../../api/user";
 import CompletePopup from "../../components/CompletePopup";
 import ConfirmPopup from "../../components/ConfirmPopup";
-import { useLoadingStore } from "../../store/useLoadingStore";
 import Loading from "../../components/Loading";
 import { useAuthStore } from "../../store/useAuthStore";
 import { logout, withdraw } from "../../api/auth";
-// SNS 관련 API 함수 import (연결 URL, 해제 API)
 import {
   getKakaoAuthUrl,
   getGoogleAuthUrl,
@@ -47,7 +45,7 @@ export default function MyPage() {
   }
 
   // 로딩 상태 관리
-  const { isLoading, setLoading } = useLoadingStore();
+  const [isLoading, setLoading] = useState(false);
 
   // 데이터 상태 관리
   const [profileData, setProfileData] = useState([]);
@@ -226,9 +224,10 @@ export default function MyPage() {
 
   // 데이터 불러오기
   useEffect(() => {
+
     async function fetchProfile() {
+      setLoading(true);
       try {
-        setLoading(true);
         const response = await getProfile();
         if (response && response.data) {
           setProfileData(response.data);
@@ -244,12 +243,8 @@ export default function MyPage() {
       }
     }
     fetchProfile();
-  }, []);
 
-  // 로딩 중일 때 로딩 표시
-  if (isLoading) {
-    return <Loading fullScreen />;
-  }
+  }, []);
 
   return (
     <Main className="subWrap bg">
@@ -270,159 +265,144 @@ export default function MyPage() {
               <div className={`content ${style.content}`}>
                 <div className={style.box}>
                   <h4 className={`title ${style.title}`}>프로필</h4>
-                  <form>
-                    <div className="inputWrap">
-                      <div className="inputBox">
-                        <Input
-                          id="name"
-                          type="text"
-                          value={profileData.name}
-                          label="이름"
-                          className="mb-15"
-                          disabled={true}
-                        />
-                      </div>
-                    </div>
 
-                    <div className="inputWrap">
-                      <label htmlFor="nickname" className="mb-15"> 닉네임</label>
-                      <div className={`inputBox ${style.inputNicknameBox}`}>
-                        <Input id="nickname" type="text" value={nickname} onChange={handleNicknameChange} />
+                  {
+                    isLoading ? (
+                      <Loading center />
+                    ) : (
+                      <>
+                        <form>
+                          <div className="inputWrap">
+                            <div className="inputBox">
+                              <Input
+                                id="name"
+                                type="text"
+                                value={profileData.name}
+                                label="이름"
+                                className="mb-15"
+                                disabled={true}
+                              />
+                            </div>
+                          </div>
 
-                        {
+                          <div className="inputWrap">
+                            <label htmlFor="nickname" className="mb-15">닉네임</label>
+                            <div className={`inputBox ${style.inputNicknameBox}`}>
+                              <Input id="nickname" type="text" value={nickname} onChange={handleNicknameChange} />
+                              {isNicknameValid ? (
+                                <button className={style.changeBtn} type="button" onClick={handleNicknameUpdate}>
+                                  변경
+                                </button>
+                              ) : (
+                                <button className={style.duplicateChkBtn} type="button" onClick={handleDuplicateCheck}>
+                                  중복 체크
+                                </button>
+                              )}
+                            </div>
+                          </div>
 
-                          isNicknameValid ? (
-                            <button className={style.changeBtn} type="button" onClick={handleNicknameUpdate}>
-                              변경
-                            </button>
-                          ) : (
-                            <button className={style.duplicateChkBtn} type="button" onClick={handleDuplicateCheck}>
-                              중복 체크
-                            </button>
-                          )
+                          <div className="inputWrap">
+                            <label htmlFor="phone" className="mb-15">휴대폰 번호</label>
+                            <div className="inputBox">
+                              <Input id="phone" type="text" value={phone} onChange={e => setPhone(e.target.value)} />
+                              <button className={style.changeBtn} type="button" onClick={handlePhoneUpdate}>
+                                변경
+                              </button>
+                            </div>
+                          </div>
 
-                        }
-                      </div>
-                    </div>
+                          <div className="inputWrap">
+                            <label htmlFor="email">이메일</label>
+                            <div className="inputBox">
+                              <Input id="email" type="text" value={email} onChange={e => setEmail(e.target.value)} />
+                              <button className={style.changeBtn} type="button" onClick={handleEmailUpdate}>
+                                변경
+                              </button>
+                            </div>
+                          </div>
 
-                    <div className="inputWrap">
-                      <label htmlFor="phone" className="mb-15">휴대폰 번호</label>
-                      <div className="inputBox">
-                        <Input id="phone" type="text" value={phone} onChange={e => setPhone(e.target.value)} />
-                        <button className={style.changeBtn} type="button" onClick={handlePhoneUpdate}>
-                          변경
+                          <div className="inputWrap">
+                            <div className="inputBox">
+                              <Input
+                                id="birthdate"
+                                type="text"
+                                value={profileData.birth_date}
+                                label="생년월일"
+                                className="mb-15"
+                                disabled={true}
+                              />
+                            </div>
+                          </div>
+                        </form>
+
+                        <div className={style.snsSignInBox}>
+                          <h5>SNS 로그인 연결</h5>
+                          <ul className={style.snsSignInList}>
+                            <li className={style.naver}>
+                              <div className={style.imgBox}>
+                                <img src={naver} alt="네이버로그인" />
+                              </div>
+                              <span className={style.snsText}>네이버 로그인</span>
+                              {snsStatus.naver ? (
+                                <button className={style.disconnectBtn} onClick={() => handleDisconnectSNS("naver")}>
+                                  해제
+                                </button>
+                              ) : (
+                                <button className={style.connectBtn} onClick={() => handleConnectSNS("naver")}>
+                                  연결
+                                </button>
+                              )}
+                            </li>
+                            <li className={style.kakao}>
+                              <div className={style.imgBox}>
+                                <img src={kakao} alt="카카오로그인" />
+                              </div>
+                              <span className={style.snsText}>카카오 로그인</span>
+                              {snsStatus.kakao ? (
+                                <button className={style.disconnectBtn} onClick={() => handleDisconnectSNS("kakao")}>
+                                  해제
+                                </button>
+                              ) : (
+                                <button className={style.connectBtn} onClick={() => handleConnectSNS("kakao")}>
+                                  연결
+                                </button>
+                              )}
+                            </li>
+                            <li className={style.google}>
+                              <div className={style.imgBox}>
+                                <img src={google} alt="구글로그인" />
+                              </div>
+                              <span className={style.snsText}>구글 로그인</span>
+                              {snsStatus.google ? (
+                                <button className={style.disconnectBtn} onClick={() => handleDisconnectSNS("google")}>
+                                  해제
+                                </button>
+                              ) : (
+                                <button className={style.connectBtn} onClick={() => handleConnectSNS("google")}>
+                                  연결
+                                </button>
+                              )}
+                            </li>
+                          </ul>
+                        </div>
+
+                        <button className={style.btn} onClick={handleLogout}>
+                          로그아웃
                         </button>
-                      </div>
-                    </div>
 
-                    <div className="inputWrap">
-                      <label htmlFor="email">이메일</label>
-                      <div className="inputBox">
-                        <Input id="email" type="text" value={email} onChange={e => setEmail(e.target.value)} />
-                        <button className={style.changeBtn} type="button" onClick={handleEmailUpdate}>
-                          변경
+                        <button className={style.btn} onClick={openConfirmPopup}>
+                          서비스 해지
                         </button>
-                      </div>
-                    </div>
+                      </>
+                    )
+                  }
 
-                    <div className="inputWrap">
-                      <div className="inputBox">
-                        <Input
-                          id="birthdate"
-                          type="text"
-                          value={profileData.birth_date}
-                          label="생년월일"
-                          className="mb-15"
-                          disabled={true}
-                        />
-                      </div>
-                    </div>
-                  </form>
-
-                  <div className={style.snsSignInBox}>
-                    <h5>SNS 로그인 연결</h5>
-                    <ul className={style.snsSignInList}>
-                      <li className={style.naver}>
-                        <div className={style.imgBox}>
-                          <img src={naver} alt="네이버로그인" />
-                        </div>
-                        <span className={style.snsText}>네이버 로그인</span>
-                        {snsStatus.naver ? (
-                          <button
-                            className={style.disconnectBtn}
-                            onClick={() => handleDisconnectSNS("naver")}
-                          >
-                            해제
-                          </button>
-                        ) : (
-                          <button
-                            className={style.connectBtn}
-                            onClick={() => handleConnectSNS("naver")}
-                          >
-                            연결
-                          </button>
-                        )}
-                      </li>
-
-                      <li className={style.kakao}>
-                        <div className={style.imgBox}>
-                          <img src={kakao} alt="카카오로그인" />
-                        </div>
-                        <span className={style.snsText}>카카오 로그인</span>
-                        {snsStatus.kakao ? (
-                          <button
-                            className={style.disconnectBtn}
-                            onClick={() => handleDisconnectSNS("kakao")}
-                          >
-                            해제
-                          </button>
-                        ) : (
-                          <button
-                            className={style.connectBtn}
-                            onClick={() => handleConnectSNS("kakao")}
-                          >
-                            연결
-                          </button>
-                        )}
-                      </li>
-
-                      <li className={style.google}>
-                        <div className={style.imgBox}>
-                          <img src={google} alt="구글로그인" />
-                        </div>
-                        <span className={style.snsText}>구글 로그인</span>
-                        {snsStatus.google ? (
-                          <button
-                            className={style.disconnectBtn}
-                            onClick={() => handleDisconnectSNS("google")}
-                          >
-                            해제
-                          </button>
-                        ) : (
-                          <button
-                            className={style.connectBtn}
-                            onClick={() => handleConnectSNS("google")}
-                          >
-                            연결
-                          </button>
-                        )}
-                      </li>
-                    </ul>
-                  </div>
-
-                  <button className={style.btn} onClick={handleLogout}>
-                    로그아웃
-                  </button>
-
-                  <button className={style.btn} onClick={openConfirmPopup}>
-                    서비스 해지
-                  </button>
                 </div>
               </div>
             </div>
-          </div>
-        </Container>
-      </div>
+          </div >
+        </Container >
+      </div >
 
       <ConfirmPopup
         isOpen={confirmPopupOpen}
@@ -439,6 +419,6 @@ export default function MyPage() {
         error={popupError}
         onClose={() => setPopupOpen(false)}
       />
-    </Main>
+    </Main >
   );
 }

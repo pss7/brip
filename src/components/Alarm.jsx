@@ -100,7 +100,7 @@ export default function Alarm({ alarmOpen, setAlarmOpen, className }) {
         <div className={style.alarmListBox}>
           <div className={style.alarmList}>
             {isLoading ? (
-              <Loading />
+              <Loading center />
             ) : notifications.length === 0 ? (
               <p className={style.infoText}>새로운 알림이 없습니다.</p>
             ) : (

@@ -46,8 +46,10 @@ export default function CareerPage() {
   useEffect(() => {
 
     async function fetchCourses() {
+
+      setLoading(true);
+
       try {
-        setLoading(true);
         const response = await getCareerCourses({
           page: 0,
           size: 10,

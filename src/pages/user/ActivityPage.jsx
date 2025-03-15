@@ -6,11 +6,11 @@ import style from "./ActivityPage.module.css";
 import { useAuthStore } from "../../store/useAuthStore";
 import { getProfile } from "../../api/user";
 import Loading from "../../components/Loading";
-import ViewButton from "../../components/ViewButton"; // ✅ ViewButton 추가
-import ConfirmPopup from "../../components/ConfirmPopup"; // ✅ ConfirmPopup 추가
+import ViewButton from "../../components/ViewButton";
+import ConfirmPopup from "../../components/ConfirmPopup";
 import { getCommunityList } from "../../api/community/community";
-import { deleteCommunityPost } from "../../api/community/community"; // ✅ 삭제 API 추가
-import WriteUpdatePopup from "../../components/WriteUpdatePopup"; // ✅ 업데이트 팝업 컴포넌트 추가
+import { deleteCommunityPost } from "../../api/community/community";
+import WriteUpdatePopup from "../../components/WriteUpdatePopup";
 
 export default function ActivityPage() {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ export default function ActivityPage() {
 
   // 프로필을 가져온 후 활동 데이터 로드
   const fetchProfileAndPosts = async () => {
+
     setLoading(true);
     try {
       const profileResponse = await getProfile();
@@ -111,10 +112,6 @@ export default function ActivityPage() {
       console.error("❌ 게시글 삭제 오류:", error);
     }
   };
-
-  if (loading) {
-    return <Loading fullScreen />;
-  }
 
   return (
     <Main className="subWrap bg">

@@ -74,10 +74,10 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 }
 
-.employmentList .box{padding: 42px 0 42px 0; position: relative; display: flex; align-items: center; border: 1px solid #D9D9D9; border-width: 1px 0; margin-bottom: -1px;}
+.employmentList .box{padding: 42px 0 75px 0; position: relative; display: flex; align-items: center; border: 1px solid #D9D9D9; border-width: 1px 0; margin-bottom: -1px;}
 .employmentList .box .companyBox{min-width: 210px; display: flex; flex-shrink: 0; margin-right: 79px; gap: 0 20px;}
 .employmentList .box .titleBox{ display: flex; flex-direction: column; gap: 17px 0;}
-.employmentList .box .titleBox h4{font-size: 20px; color: #000; font-weight: 600;}
+.employmentList .box .titleBox a{display: block; font-size: 20px; color: #000; font-weight: 600;}
 .employmentList .infoList{display: flex; gap: 0 30px;}
 .employmentList .infoList li{ position: relative; color: #5f616d;}
 .employmentList .infoList li::after{content: ''; position: absolute; top: 5px;
@@ -85,7 +85,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 .employmentList .infoList li:last-child::after{display: none;}
 .employmentList .likeBtn{display: block; width: 28px; height: 24px; background: url(../src/assets/images/sub/Like_Btn.svg)no-repeat;}
 .employmentList .likeBtn.active{background: url(../src/assets/images/sub/Like_Active_Icon.svg)no-repeat;}
-.employmentList .applyBtn{position: absolute; top: 50%; right:71px; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 98px; height: 36px; border-radius: 4px;  background-color: #000; } 
+.employmentList .applyBtn{position: absolute; bottom: 10px; right:20px; display: flex; align-items: center; justify-content: center; width: 98px; height: 36px; border-radius: 4px;  background-color: #000; } 
 .employmentList .applyBtn span{padding-left: 20px; position: relative; font-size: 14px; font-weight: 700; color: #fff;}
 .employmentList .applyBtn span::before{width: 13px; height: 12px; content: ''; position: absolute; top:4px; left:0; background: url(../src/assets/images/sub/Chk_Icon.svg)no-repeat center; }
 .employmentList .applyBtn.complete{background-color: #fff; border: 1px solid #E9E9E9; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);}
@@ -94,7 +94,7 @@ button:disabled{ cursor: auto!important; background-color: #ddd!important;}
 
 @media(max-width: 1199px){
 
-  .employmentList .box{flex-direction: column; gap: 10px 0;}
+  .employmentList .box{padding: 35px 0; flex-direction: column; gap: 10px 0;}
   .employmentList .box .companyBox{min-width: auto; margin: 0;}
   .employmentList .box .titleBox h4{text-align: center;}
   .employmentList .infoList{flex-wrap: wrap;}
