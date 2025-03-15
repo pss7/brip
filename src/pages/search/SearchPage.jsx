@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import Main from "../../components/layout/Main";
 import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
 import Card from "../../components/Card";
 import BgCard from "../../components/BgCard";
 import style from "./SearchPage.module.css";
@@ -13,9 +12,6 @@ import { getEmploymentList } from "../../api/employment/employment";
 import { getCareerCourses, getJopList } from "../../api/career/career";
 
 export default function SearchPage() {
-  const defaultImage = "/assets/images/main/Card_Img01.png";
-
-  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [courses, setCourses] = useState([]);
   const [employmentData, setEmploymentData] = useState([]);
@@ -25,22 +21,25 @@ export default function SearchPage() {
   const defaultGuideImages = [Guide02, Guide03, Guide04];
   const defaultBgColors = ["#EDC2F6", "#CCE7FE", "#FFD3EB", "#FFEEA6"];
   const defaultImgBgColors = ["#C6FFD0", "#F6F0B3", "#CCE7FE", "#5E5C5C"];
-
+  
+  // URL 쿼리 파라미터에서 검색어 가져오기
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get("query"); // 쿼리 파라미터에서 검색어 가져오기
+    const queryParams = new URLSearchParams(window.location.search);
+    const query = queryParams.get("query");
     if (query) {
       setSearchQuery(query);
       fetchEmploymentData(query);
       fetchCourses(query);
       fetchJobList(query);
     }
-  }, [location.search]);
+  }, []);
 
   // 채용 공고 데이터 가져오기
   const fetchEmploymentData = async (query) => {
     try {
-      const result = await getEmploymentList(1, 6, query); // 검색어 전달
+      console.log("채용 검색어:", query);
+      const result = await getEmploymentList(1, 6, query); // API 호출 방식 확인 필요
+      console.log("채용공고 API 응답:", result);
       if (result?.result === "success" && result.employs) {
         setEmploymentData(result.employs);
       } else {
@@ -76,7 +75,6 @@ export default function SearchPage() {
     try {
       const data = await getJopList();
       if (data && data.careers) {
-        // 검색어가 있을 경우 필터링
         const filtered = data.careers.filter((job) =>
           job.name.toLowerCase().includes(query.toLowerCase())
         );
@@ -153,26 +151,21 @@ export default function SearchPage() {
               <em className={style.searchResultText}>
                 직무 <span>{jobList.length}</span>
               </em>
-              <div
-                className={`cardContainer cardContainerSt ${style.searchResultList}`}
-              >
+              <div className={`cardContainer cardContainerSt ${style.searchResultList}`}>
                 {jobList.length > 0 ? (
                   jobList.map((job, index) => (
                     <BgCard
                       key={job.id}
                       bg={{
                         backgroundColor:
-                          job.bgColor ||
-                          defaultBgColors[index % defaultBgColors.length],
+                          job.bgColor || defaultBgColors[index % defaultBgColors.length],
                       }}
                       imgBg={{
                         backgroundColor:
-                          job.imgBgColor ||
-                          defaultImgBgColors[index % defaultImgBgColors.length],
+                          job.imgBgColor || defaultImgBgColors[index % defaultImgBgColors.length],
                       }}
                       imgSrc={
-                        job.imgSrc ||
-                        defaultGuideImages[index % defaultGuideImages.length]
+                        job.imgSrc || defaultGuideImages[index % defaultGuideImages.length]
                       }
                       title={job.name}
                     />

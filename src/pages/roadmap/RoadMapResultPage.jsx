@@ -9,7 +9,6 @@ import Result_Img01 from "../../assets/images/sub/Result_Img01.png";
 import Result_Img02 from "../../assets/images/sub/Result_Img02.png";
 import Result_Img03 from "../../assets/images/sub/Result_Img03.png";
 import style from "./RoadMapResultPage.module.css";
-
 import { Link, useParams } from "react-router-dom";
 import { getRoadmapScores } from "../../api/roadmap/roadmap";
 import { useEffect, useState } from "react";

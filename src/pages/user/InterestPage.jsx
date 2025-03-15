@@ -6,12 +6,16 @@ import { announcementData } from "../../data/announcementData";
 import { useEffect, useState } from "react";
 import style from "./InterestPage.module.css";
 import { getEmploymentList } from "../../api/employment/employment";
+import Loading from "../../components/Loading";
 
 export default function InterestPage() {
 
   const [announcements, setAnnouncements] = useState(announcementData);
   const [employmentData, setEmploymentData] = useState([]);
-  
+
+  //로딩 상태 관리
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLikeToggle = (id) => {
     setAnnouncements(prevAnnouncements =>
       prevAnnouncements.map(announcement =>
@@ -26,6 +30,7 @@ export default function InterestPage() {
   useEffect(() => {
 
     async function fetchEmployments() {
+      setIsLoading(true);
       try {
         const response = await getEmploymentList({}); // 빈 객체 전달하여 기본값 적용
         if (response && response.result === "success" && Array.isArray(response.employs)) {
@@ -36,13 +41,15 @@ export default function InterestPage() {
         }
       } catch (error) {
         console.error("error", error);
+      } finally {
+        setIsLoading(false);
       }
     }
-    
+
     fetchEmployments();
 
   }, []);
-  
+
   return (
     <Main className="subWrap bg">
 
@@ -75,23 +82,33 @@ export default function InterestPage() {
 
                 <div className={style.cardList}>
 
-                  {employmentData.length > 0 ? (
-                    employmentData.slice(0, 6).map((data) => (
-                      <Card
-                        href={`/employment-detail/${data.id}`}
-                        key={data.id}
-                        className="cardType"
-                        text={`${data.company_name}`}
-                        imgSrc="/src/assets/images/sub/Result_Img02.png"
-                        title={data.title}
-                        subText={`${data.deadline}`}
-                        isLiked={data.is_liked === 1}
-                        handleLikeToggle={handleLikeToggle}
-                      />
-                    ))
-                  ) : (
-                    <p className="infoText">좋아요한 공고가 없습니다.</p>
-                  )}
+                  {
+                    isLoading ? (
+                      <Loading center />
+                    ) : (
+                      <>
+                        {
+                          employmentData.length > 0 ? (
+                            employmentData.slice(0, 6).map((data) => (
+                              <Card
+                                href={`/employment-detail/${data.id}`}
+                                key={data.id}
+                                className="cardType"
+                                text={`${data.company_name}`}
+                                imgSrc="/src/assets/images/sub/Result_Img02.png"
+                                title={data.title}
+                                subText={`${data.deadline}`}
+                                isLiked={data.is_liked === 1}
+                                handleLikeToggle={handleLikeToggle}
+                              />
+                            ))
+                          ) : (
+                            <p className="infoText">좋아요한 공고가 없습니다.</p>
+                          )
+                        }
+                      </>
+                    )
+                  }
 
                 </div>
               </div>
