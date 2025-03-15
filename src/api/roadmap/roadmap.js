@@ -72,7 +72,7 @@ export async function submitRoadmapAnswers(answersObj) {
 }
 
 //로드맵 점수 api
-export async function fetchRoadmapScores() {
+export async function getRoadmapScores() {
   const token = getAuthToken();
   try {
     const response = await axios.get(`${BASE_URL}/roadmap/scores`, {

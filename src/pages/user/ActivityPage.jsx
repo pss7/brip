@@ -113,7 +113,7 @@ export default function ActivityPage() {
   };
 
   if (loading) {
-    return <Loading />;
+    return <Loading fullScreen />;
   }
 
   return (
@@ -145,7 +145,7 @@ export default function ActivityPage() {
                 <p className="subTitle">내가 작성한 게시물을 확인할 수 있습니다.</p>
 
                 {loading ? (
-                  <Loading />
+                  <Loading center />
                 ) : activities.length === 0 ? (
                   <p className={style.noData}>내 활동 내역이 없습니다.</p>
                 ) : (

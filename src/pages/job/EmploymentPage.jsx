@@ -13,16 +13,14 @@ import { employmentTabData } from "../../data/employmentTabData";
 import ConfirmPopup from "../../components/ConfirmPopup";
 import CompletePopup from "../../components/CompletePopup";
 import { useAuthStore } from "../../store/useAuthStore";
+import Loading from "../../components/Loading";
 
 export default function EmploymentPage() {
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/signin");
-    }
-  }, [token, navigate]);
+  // 로딩 상태 관리
+  const [loading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState("지역별");
   const [selectedFilters, setSelectedFilters] = useState({
@@ -82,6 +80,7 @@ export default function EmploymentPage() {
       Object.entries(params).filter(([_, value]) => value !== undefined)
     );
 
+    setLoading(true);
     getEmploymentList(
       cleanParams.page,
       cleanParams.pageSize,
@@ -93,6 +92,7 @@ export default function EmploymentPage() {
     )
       .then((data) => {
         if (data?.result === "success") {
+          // 응답 데이터의 application_status에 따라 isApplied 값을 결정합니다.
           const normalized = data.employs.map((item) => ({
             id: item.id,
             company: item.company_name,
@@ -103,13 +103,15 @@ export default function EmploymentPage() {
             regionMain: item.region_main,
             regionSub: item.region_sub,
             deadline: item.deadline,
-            isApplied: item.is_applied === 1,
+            // application_status가 "지원완료"인 경우에만 true로 처리
+            isApplied: item.application_status === "지원완료",
             isLiked: item.is_liked === 1,
           }));
           setJobPostings(normalized);
         }
       })
-      .catch((error) => console.error("채용공고 API 에러:", error));
+      .catch((error) => console.error("채용공고 API 에러:", error))
+      .finally(() => setLoading(false));
   }, [searchTerm, selectedFilters]);
 
   // 현재 활성 탭의 필터 옵션
@@ -155,24 +157,13 @@ export default function EmploymentPage() {
 
       if (subId === "전체") {
         // "전체" 버튼이 클릭되었을 때
-        if (prev.length === allSubIds.length) {
-          // 모든 선택 해제
-          newSubRegions = [];
-        } else {
-          // 전체 선택
-          newSubRegions = allSubIds;
-        }
+        newSubRegions = prev.length === allSubIds.length ? [] : allSubIds;
       } else {
         // 개별 소지역 선택/해제
-        if (prev.includes(subId)) {
-          newSubRegions = prev.filter((id) => id !== subId);
-        } else {
-          newSubRegions = [...prev, subId];
-        }
+        newSubRegions = prev.includes(subId)
+          ? prev.filter((id) => id !== subId)
+          : [...prev, subId];
       }
-
-      // "전체" 버튼은 모든 소지역이 선택되었을 때만 활성화
-      const isAllSelected = newSubRegions.length === allSubIds.length;
 
       setSelectedFilters((prevFilters) => ({
         ...prevFilters,
@@ -182,7 +173,6 @@ export default function EmploymentPage() {
       return newSubRegions;
     });
   };
-
 
   // 검색어 업데이트
   const handleSearch = (term) => {
@@ -268,7 +258,9 @@ export default function EmploymentPage() {
     setSelectedEmployId(null);
   };
 
+  // 즉시지원 확인 및 API 호출
   const confirmApply = () => {
+    console.log("confirmApply called", selectedEmployId, resumeId);
     if (!resumeId) {
       setCompletePopupMessage("지원하기 전에 등록된 이력서가 없습니다. 이력서를 작성해 주세요.");
       setCompletePopupError(true);
@@ -276,16 +268,46 @@ export default function EmploymentPage() {
       return;
     }
     applyEmployment(selectedEmployId, resumeId)
-      .then(() => {
-        setJobPostings((prev) =>
-          prev.map((posting) =>
-            posting.id === selectedEmployId ? { ...posting, isApplied: true } : posting
-          )
-        );
-        closeApplyModal();
+      .then((res) => {
+        if (res.result === "success") {
+          setJobPostings((prev) =>
+            prev.map((posting) =>
+              posting.id === selectedEmployId ? { ...posting, isApplied: true } : posting
+            )
+          );
+          closeApplyModal();
+        } else {
+          // 만약 오류 메시지가 "이미 지원한 채용 공고입니다."라면,
+          // 사용자에게 재지원이 불가능하다는 메시지를 보여줍니다.
+          if (res.message === "이미 지원한 채용 공고입니다.") {
+            setCompletePopupMessage("이미 지원한 기록이 있습니다. 지원취소 후 다시 지원해 주세요.");
+            setCompletePopupError(true);
+            setIsCompletePopupOpen(true);
+            // UI 상으로는 이미 지원된 것으로 업데이트
+            setJobPostings((prev) =>
+              prev.map((posting) =>
+                posting.id === selectedEmployId ? { ...posting, isApplied: true } : posting
+              )
+            );
+          } else {
+            setCompletePopupMessage(res.message);
+            setCompletePopupError(true);
+            setIsCompletePopupOpen(true);
+          }
+          closeApplyModal();
+        }
       })
-      .catch((error) => console.error("즉시지원 API 에러:", error));
+      .catch((error) => {
+        console.error("즉시지원 API 에러:", error);
+        setCompletePopupMessage("지원 도중 오류가 발생했습니다. 다시 시도해 주세요.");
+        setCompletePopupError(true);
+        setIsCompletePopupOpen(true);
+      });
   };
+
+  if (!token) {
+    navigate("/signin");
+  }
 
   return (
     <Main className="subWrap">
@@ -331,26 +353,19 @@ export default function EmploymentPage() {
                         ))}
                       </div>
                       {/* 소지역 버튼 (상단에 "전체" 버튼 추가) */}
-
                       {activeRegion && activeRegion.subLocations && (
                         <div className="subRegionList">
-                          {/* 전체 버튼 */}
                           <div className="subRegionBox">
                             <button
-                              className={`button ${activeSubRegions.length === activeRegion.subLocations.length
-                                ? "active"
-                                : ""
-                                }`}
+                              className={`button ${activeSubRegions.length === activeRegion.subLocations.length ? "active" : ""}`}
                               onClick={() => handleSubRegionSelection("전체")}
                             >
                               전체
                             </button>
                           </div>
-                          {/* 개별 소지역 버튼 */}
                           {activeRegion.subLocations.map((sub) => {
                             const totalCount = activeRegion.subLocations.length;
                             let btnClass = "";
-                            // 소지역이 여러 개인 경우, 전체가 선택되었다면 개별 버튼은 active 클래스를 제거
                             if (totalCount > 1) {
                               btnClass =
                                 activeSubRegions.length === totalCount
@@ -359,15 +374,11 @@ export default function EmploymentPage() {
                                     ? "active"
                                     : "";
                             } else {
-                              // 소지역이 1개인 경우
                               btnClass = activeSubRegions.includes(sub.id) ? "active" : "";
                             }
                             return (
                               <div key={sub.id} className="subRegionBox">
-                                <button
-                                  className={`button ${btnClass}`}
-                                  onClick={() => handleSubRegionSelection(sub.id)}
-                                >
+                                <button className={`button ${btnClass}`} onClick={() => handleSubRegionSelection(sub.id)}>
                                   {sub.name}
                                 </button>
                               </div>
@@ -404,7 +415,9 @@ export default function EmploymentPage() {
 
             {/* 필터링된 채용공고 리스트 */}
             <div className="employmentList">
-              {filteredJobPostings.length > 0 ? (
+              {loading ? (
+                <Loading center />
+              ) : filteredJobPostings.length > 0 ? (
                 filteredJobPostings.map((posting) => (
                   <div className="box" key={posting.id}>
                     <div className="companyBox">
@@ -413,9 +426,7 @@ export default function EmploymentPage() {
                         className={`likeBtn ${posting.isLiked ? "active" : ""}`}
                         onClick={() => handleLike(posting.id)}
                       >
-                        <span className="blind">
-                          {posting.isLiked ? "좋아요 취소" : "좋아요"}
-                        </span>
+                        <span className="blind">{posting.isLiked ? "좋아요 취소" : "좋아요"}</span>
                       </button>
                     </div>
                     <div className="titleBox">

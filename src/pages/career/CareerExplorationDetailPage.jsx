@@ -14,6 +14,8 @@ export default function CareerExplorationDetailPage() {
 
   // 상세 데이터 상태 관리
   const [jobDetailData, setJobDetailData] = useState({});
+  console.log(jobDetailData);
+
   // 로딩 상태 관리
   const [loading, setLoading] = useState(false);
   // 탭 상태 관리
@@ -33,17 +35,17 @@ export default function CareerExplorationDetailPage() {
   // 커스텀 부드러운 스크롤 함수 (오프셋 적용)
   const smoothScrollWithOffset = (element) => {
     if (!element) return; // 요소가 없으면 종료
-  
+
     const headerOffset = 80; // 고정 헤더 높이
     const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
     const offsetPosition = elementPosition - headerOffset;
-  
+
     window.scrollTo({
       top: offsetPosition,
       behavior: "smooth", // 부드러운 스크롤 적용
     });
   };
-  
+
 
   // 탭 클릭 시 해당 섹션으로 부드럽게 스크롤 이동하는 함수
   const handleTabClick = (tab) => {
@@ -60,7 +62,7 @@ export default function CareerExplorationDetailPage() {
       }
     }, 100); // 100ms 딜레이 후 실행
   };
-  
+
 
   useEffect(() => {
     async function fetchJobDetail() {
@@ -91,7 +93,7 @@ export default function CareerExplorationDetailPage() {
             {/* 상단 이미지 및 헤더 */}
             <div className={style.careerDetailTop}>
               <div className={style.imgBox}>
-                <img src={Career_Img01} alt="선박엔지니어" />
+                <img src={jobDetailData.job_image} alt={jobDetailData.job_title} />
               </div>
               <h3>{jobDetailData.job_title}</h3>
               <ArrowPrevButton
@@ -105,16 +107,16 @@ export default function CareerExplorationDetailPage() {
             <ul className={style.careerDetailTab}>
               {["직무정보", "경력단계", "로드맵", "성공사례"].map((tab) => (
                 <li key={tab}>
-<Link
-  to="#"
-  onClick={(e) => {
-    e.preventDefault(); // 기본 이벤트 방지
-    handleTabClick(tab);
-  }}
-  className={activeTab === tab ? style.active : ""}
->
-  {tab === "직무정보" ? "직무정의" : tab}
-</Link>
+                  <Link
+                    to="#"
+                    onClick={(e) => {
+                      e.preventDefault(); // 기본 이벤트 방지
+                      handleTabClick(tab);
+                    }}
+                    className={activeTab === tab ? style.active : ""}
+                  >
+                    {tab === "직무정보" ? "직무정의" : tab}
+                  </Link>
 
                 </li>
               ))}

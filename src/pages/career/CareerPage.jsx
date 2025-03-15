@@ -121,7 +121,7 @@ export default function CareerPage() {
 
         <div className={style.cardList}>
           {loading ? (
-            <Loading />
+            <Loading center />
           ) : courses.length > 0 ? (
             courses.map((course, index) => (
               <Card

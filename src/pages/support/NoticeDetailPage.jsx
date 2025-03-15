@@ -95,7 +95,6 @@ export default function NoticeDetailPage() {
                 </p>
 
                 <Button
-                  customClass={style.btn}
                   text="목록으로"
                   href="/notice"
                 />

@@ -8,23 +8,15 @@ import CalendarIcon from "../../assets/images/sub/Calendar_Icon.svg";
 import style from "./ApplyPage.module.css";
 import { applyStatus, cancelApplication } from "../../api/user/applystatus/applyStatus.js";
 import { useAuthStore } from "../../store/useAuthStore.js";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import Loading from "../../components/Loading.jsx";
 
 export default function ApplyPage() {
+
+  dayjs.extend(utc);
   const navigate = useNavigate();
   const { token } = useAuthStore();
-
-  // 로그인 확인
-  useEffect(() => {
-    if (!token) {
-      navigate("/signin");
-    }
-  }, [token, navigate]);
-
-  // 날짜 변환 함수 (YYYY-MM-DD 형식)
-  const formatDateLocal = (date) => {
-    if (!(date instanceof Date)) return "";
-    return date.toISOString().split("T")[0];
-  };
 
   // 오늘 날짜 & 한 달 전 날짜 기본값 설정
   const today = new Date();
@@ -34,7 +26,7 @@ export default function ApplyPage() {
   const [startDate, setStartDate] = useState(oneMonthAgo);
   const [endDate, setEndDate] = useState(today);
   const [filteredList, setFilteredList] = useState([]);
-  console.log(filteredList);
+  const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({
     applied: 0,
     viewed: 0,
@@ -42,38 +34,31 @@ export default function ApplyPage() {
     canceled: 0,
   });
 
-  // API 호출 함수
-  const fetchApplications = async () => {
-    const formattedStart = formatDateLocal(startDate);
-    const formattedEnd = formatDateLocal(endDate);
-
-    try {
-      const data = await applyStatus(formattedStart, formattedEnd, { status: "미열람" });
-
-      console.log("📌 API 응답 데이터:", data); // ✅ API 응답 데이터 확인
-      console.log("📌 applications 리스트:", data?.applications); // ✅ applications 확인
-
-      if (data && Array.isArray(data.applications)) {
-        setFilteredList(data.applications);
-        setStats(data.statusCounts || { applied: 0, viewed: 0, unviewed: 0, canceled: 0 });
-
-        console.log("✅ 업데이트된 지원 내역:", data.applications);
-      } else {
-        setFilteredList([]);
-        setStats({ applied: 0, viewed: 0, unviewed: 0, canceled: 0 });
-        console.warn("⚠️ 지원 내역 데이터가 없습니다.");
-      }
-    } catch (error) {
-      console.error("❌ 지원 내역 API 호출 오류:", error);
-    }
-  };
-
-
   // 날짜 변경 시 API 호출
   useEffect(() => {
+
+    const fetchApplications = async () => {
+      try {
+        setLoading(true);
+        // endDate에 하루를 추가하여 해당 날짜의 전체를 포함하도록 함
+        const formattedStartDate = dayjs(startDate).format("YYYY-MM-DD");
+        const formattedEndDate = dayjs(endDate).add(1, "day").format("YYYY-MM-DD");
+
+        const response = await applyStatus(formattedStartDate, formattedEndDate, { status: "지원완료" });
+        if (response.result === "success") {
+          setFilteredList(response.applications);
+          setStats(response.statusCounts);
+        }
+      } catch (error) {
+        console.error("지원 내역 API 호출 오류:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     if (startDate && endDate) {
       fetchApplications();
     }
+
   }, [startDate, endDate]);
 
   // 지원 취소
@@ -85,6 +70,10 @@ export default function ApplyPage() {
       console.error("❌ 지원 취소 오류:", error);
     }
   };
+
+  if (!token) {
+    navigate("/signin");
+  }
 
   return (
     <Main className="subWrap bg">
@@ -103,7 +92,7 @@ export default function ApplyPage() {
                 <h4 className="title">지원 현황</h4>
                 <p className="subTitle">내가 지원한 채용 공고 중 미열람된 내역을 확인하세요</p>
 
-                {/* 📌 날짜 선택 박스 */}
+                {/* 날짜 선택 박스 */}
                 <div className="datepickerBox">
                   <div className="box">
                     <label htmlFor="datepicker01">
@@ -130,7 +119,7 @@ export default function ApplyPage() {
                   </div>
                 </div>
 
-                {/* 📌 지원 상태 카운트 */}
+                {/* 지원 상태 카운트 */}
                 <ul className={style.infoList}>
                   <li><span>지원완료</span><em>{stats.applied}</em></li>
                   <li><span>열람</span><em>{stats.viewed}</em></li>
@@ -138,34 +127,41 @@ export default function ApplyPage() {
                   <li><span>지원취소</span><em>{stats.canceled}</em></li>
                 </ul>
 
-                {/* 📌 지원 내역 리스트 */}
-                <ul className={style.applyList}>
-                  {filteredList && filteredList.length > 0 ? (
-                    filteredList.map(({ applicationId, employId, companyName, employTitle, appliedAt, status }) => (
-                      <li key={applicationId}>
-                        <Link to={`/employment-detail/${employId}`} className={style.topBox}>
-                          <span className={style.receipt}>접수마감</span>
-                          <div className={style.textBox}>
-                            <em>{companyName}</em>
-                            <h5>{employTitle}</h5>
-                          </div>
-                        </Link>
-                        <div className={style.dateBox}>
-                          <span>지원일</span>
-                          <em className={style.date}>{new Date(appliedAt).toLocaleDateString()}</em>
-                          <span className={style.viewingDate}>{status}</span>
-                        </div>
-                        <div className={style.buttonBox}>
-                          <button className={style.delBtn} onClick={() => handleCancel(applicationId)}>
-                            지원 취소
-                          </button>
-                        </div>
-                      </li>
-                    ))
-                  ) : (
-                    <p className={style.noData}>지원 내역이 없습니다.</p>
-                  )}
-                </ul>
+                {/* 지원 내역 리스트 */}
+                {loading ? (
+                  <Loading center />
+                ) : (
+                  <>
+                    {filteredList && filteredList.length > 0 ? (
+                      <ul className={style.applyList}>
+                        {filteredList.map(({ applicationId, employId, companyName, employTitle, appliedAt, status }) => (
+                          <li key={applicationId}>
+                            <Link to={`/employment-detail/${employId}`} className={style.topBox}>
+                              <div className={style.textBox}>
+                                <em>{companyName}</em>
+                                <h5>{employTitle}</h5>
+                              </div>
+                            </Link>
+                            <div className={style.dateBox}>
+                              <span>지원일</span>
+                              <em className={style.date}>
+                                {dayjs(appliedAt).format("YYYY-MM-DD")}
+                              </em>
+                              <span className={style.viewingDate}>{status}</span>
+                            </div>
+                            <div className={style.buttonBox}>
+                              <button className={style.delBtn} onClick={() => handleCancel(applicationId)}>
+                                지원 취소
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className={style.noData}>지원 내역이 없습니다.</p>
+                    )}
+                  </>
+                )}
 
               </div>
             </div>

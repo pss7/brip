@@ -10,9 +10,39 @@ import Result_Img02 from "../../assets/images/sub/Result_Img02.png";
 import Result_Img03 from "../../assets/images/sub/Result_Img03.png";
 import style from "./RoadMapResultPage.module.css";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { getRoadmapScores } from "../../api/roadmap/roadmap";
+import { useEffect, useState } from "react";
+import Loading from "../../components/Loading";
 
 export default function RoadMapResultPage() {
+
+  const { roadmap_Id } = useParams();
+  console.log(roadmap_Id);
+
+  const [scoresData, setScoresData] = useState(null);
+  console.log(scoresData);
+  const [loading, setLoading] = useState(true);
+
+  // API에서 점수 데이터 로드
+  useEffect(() => {
+
+    async function postRoadmapScores() {
+      setLoading(true);
+      const response = await getRoadmapScores();
+      if (response && response.result === "success") {
+        setScoresData(response);
+      }
+      setLoading(false);
+    }
+
+    postRoadmapScores();
+
+  }, [roadmap_Id]);
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <Main className="subWrap bg">

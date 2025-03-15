@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import Loading from '../../components/Loading';
 import CreateRoomModal from './CreateRoomModal';
 
 const RoomList = () => {
+
   const [roomList, setRoomList] = useState([]);
   const [socket, setSocket] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
@@ -120,8 +120,7 @@ const RoomList = () => {
       />
 
       {isLoading ? (
-        // 로딩 중일 때 스피너(여기서는 간단한 텍스트)를 표시
-        <Loading />
+        <Loading center />
       ) : (
         roomList &&
         roomList.map((room) => (
@@ -137,6 +136,7 @@ const RoomList = () => {
           </div>
         ))
       )}
+
     </div>
   );
 };

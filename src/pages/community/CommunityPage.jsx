@@ -15,7 +15,6 @@ import AddPopup from "../../components/AddPopup";
 import RoomList from "./RoomList"; // 실시간 채팅방 목록 컴포넌트
 
 export default function CommunityPage() {
-
   const location = useLocation();
   const navigate = useNavigate();
   const { token } = useAuthStore();
@@ -44,7 +43,6 @@ export default function CommunityPage() {
 
   // WebSocket 연결 (마운트 시 한 번 실행)
   useEffect(() => {
-
     const ws = new WebSocket('wss://api.spl-itm.com/ws');
 
     ws.onopen = () => {
@@ -81,8 +79,8 @@ export default function CommunityPage() {
 
   // 커뮤니티 목록 가져오기
   const fetchCommunity = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const response = await getCommunityList({
         page: 0,
         size: 10,
@@ -126,10 +124,10 @@ export default function CommunityPage() {
         prevData.map((post) =>
           post.post_id === post_id
             ? {
-              ...post,
-              heart_count: post.isLiked ? post.heart_count - 1 : post.heart_count + 1,
-              isLiked: !post.isLiked,
-            }
+                ...post,
+                heart_count: post.isLiked ? post.heart_count - 1 : post.heart_count + 1,
+                isLiked: !post.isLiked,
+              }
             : post
         )
       );
@@ -164,10 +162,6 @@ export default function CommunityPage() {
     setPopupOpen(true);
   }
 
-  if (isLoading) {
-    return <Loading fullScreen />;
-  }
-
   // 글쓰기 팝업 등록 성공 시
   const handlePostSuccess = () => {
     setCommunityPopupOpen(false);
@@ -192,9 +186,6 @@ export default function CommunityPage() {
                 </div>
                 <div className="addBtnBox">
                   {/* 채팅방 생성 버튼 (실시간채팅 기능) */}
-                  {/* <button className="addBtn" onClick={() => setAddPopupOpen(true)}>
-                    <span>채팅방 생성</span>
-                  </button> */}
                   <button
                     className="addBtn chatBtn"
                     onClick={() => {
@@ -236,7 +227,9 @@ export default function CommunityPage() {
                 ) : (
                   // 나머지 카테고리는 기존 커뮤니티 게시글 표시
                   <div className="communityListContainer">
-                    {filteredData.length > 0 ? (
+                    {isLoading ? (
+                      <Loading center />
+                    ) : filteredData.length > 0 ? (
                       filteredData.map((data) => (
                         <div key={data.post_id} className="communityListBox">
                           <div className="communityInfoBox">
@@ -311,9 +304,7 @@ export default function CommunityPage() {
         isOpen={addPopupOpen}
         closePopup={() => setAddPopupOpen(false)}
         socket={socket}
-        updateRoomList={(newRoom) =>
-          setRoomList((prevList) => [...prevList, newRoom])
-        }
+        updateRoomList={(newRoom) => setRoomList((prevList) => [...prevList, newRoom])}
       />
     </Main>
   );

@@ -1,4 +1,4 @@
 .loadingBox.fullScreen{height: 100vh; display: flex; justify-content: center; align-items: center;  flex-direction: column;  text-align: center;}
+.loadingBox.center{width: 100%; display: flex; justify-content: center;}
 .loadingText{color: #202224; margin-bottom: 15px;}
-
 .loadingBox{ margin: 20px 0;}
